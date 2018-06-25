@@ -87,7 +87,7 @@ macro_rules! impl_ops_vector_arithmetic {
             mod [test_ops_vector_arithmetic_ $id] {
                 use super::*;
                 #[test]
-                fn arithmetic() {
+                fn ops_vector_arithmetic() {
                     let z = $id::splat(0 as $elem_ty);
                     let o = $id::splat(1 as $elem_ty);
                     let t = $id::splat(2 as $elem_ty);

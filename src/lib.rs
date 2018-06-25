@@ -5,12 +5,18 @@
 #![cfg_attr(test, plugin(interpolate_idents))]
 #![no_std]
 
+#[cfg(test)]
+use core::mem;
 use core::{cmp, fmt, ops};
 
 mod llvm;
 mod sealed;
 #[macro_use]
 mod api;
+
+/// 32-bit wide mask.
+#[derive(Copy, Clone)]
+pub struct m32(i32);
 
 /// SIMD vector type
 ///
@@ -33,4 +39,7 @@ impl_u!([u32; 4]: u32x4 | x0, x1, x2, x3 |
 );
 impl_f!([f32; 4]: f32x4 | x0, x1, x2, x3 |
         /// A 128-bit vector with 4 `f32` lanes.
+);
+impl_m!([m32; 4]: m32x4 | i32 | x0, x1, x2, x3 |
+        /// A 128-bit vector with 4 `m32` lanes.
 );

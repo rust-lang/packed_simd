@@ -1,5 +1,7 @@
 //! Sealed traits
 
+use super::m32;
+
 /// Trait implemented by arrays that can be SIMD types
 pub trait SimdArray {
     type Tuple: Copy + Clone;
@@ -24,3 +26,4 @@ macro_rules! impl_simd_array {
 impl_simd_array!([i32; 4]: i32x4 | i32, i32, i32, i32);
 impl_simd_array!([u32; 4]: u32x4 | u32, u32, u32, u32);
 impl_simd_array!([f32; 4]: f32x4 | f32, f32, f32, f32);
+impl_simd_array!([m32; 4]: m32x4 | i32, i32, i32, i32);
