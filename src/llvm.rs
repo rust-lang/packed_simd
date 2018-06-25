@@ -1,4 +1,5 @@
 //! LLVM's simd platform intrinsics
+#![allow(dead_code)] // FIXME: remove this allow
 
 extern "platform-intrinsic" {
     pub fn simd_eq<T, U>(x: T, y: T) -> U;

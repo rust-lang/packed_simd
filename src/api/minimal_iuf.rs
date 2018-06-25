@@ -83,5 +83,58 @@ macro_rules! impl_minimal_iuf {
                 Simd(simd_insert(self.0, index as u32, new_value))
             }
         }
+
+        #[cfg(test)]
+        interpolate_idents! {
+            mod [test_minimal_ $tuple_id] {
+                use super::*;
+                #[test]
+                fn minimal() {
+                    // lanes:
+                    assert_eq!($elem_count, $tuple_id::lanes());
+
+                    // splat and extract / extract_unchecked:
+                    const VAL: $elem_ty = 7 as $elem_ty;
+                    const VEC: $tuple_id = $tuple_id::splat(VAL);
+                    for i in 0..$tuple_id::lanes() {
+                        assert_eq!(VAL, VEC.extract(i));
+                        assert_eq!(VAL, unsafe { VEC.extract_unchecked(i) });
+                    }
+
+                    // replace / replace_unchecked
+                    let new_vec = VEC.replace(1, 42 as $elem_ty);
+                    for i in 0..$tuple_id::lanes() {
+                        if i == 1 {
+                            assert_eq!(42 as $elem_ty, new_vec.extract(i));
+                        } else {
+                            assert_eq!(VAL, new_vec.extract(i));
+                        }
+                    }
+                    let new_vec = unsafe { VEC.replace_unchecked(1, 42 as $elem_ty) };
+                    for i in 0..$tuple_id::lanes() {
+                        if i == 1 {
+                            assert_eq!(42 as $elem_ty, new_vec.extract(i));
+                        } else {
+                            assert_eq!(VAL, new_vec.extract(i));
+                        }
+                    }
+                }
+
+                #[test]
+                #[should_panic]
+                fn minimal_extract_panic_on_out_of_bounds() {
+                    const VAL: $elem_ty = 7 as $elem_ty;
+                    const VEC: $tuple_id = $tuple_id::splat(VAL);
+                    let _ = VEC.extract($tuple_id::lanes());
+                }
+                #[test]
+                #[should_panic]
+                fn minimal_replace_panic_on_out_of_bounds() {
+                    const VAL: $elem_ty = 7 as $elem_ty;
+                    const VEC: $tuple_id = $tuple_id::splat(VAL);
+                    let _ = VEC.replace($tuple_id::lanes(), 42 as $elem_ty);
+                }
+            }
+        }
     }
 }

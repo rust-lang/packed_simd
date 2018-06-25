@@ -3,4 +3,10 @@ name = "spmd"
 version = "0.1.0"
 authors = ["gnzlbg <gonzalobg88@gmail.com>"]
 
-[dependencies]
+[features]
+default = []
+testing = []
+
+[dev-dependencies]
+mashup = "^0.1"
+interpolate_idents = "^0.2"
