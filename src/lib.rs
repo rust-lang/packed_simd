@@ -21,6 +21,8 @@ mod api;
 /// let v = Simd::<[i32; 4]>::new(0, 1, 2, 3);
 /// assert_eq!(v.extract(2), 2);
 /// ```
+#[repr(transparent)]
+#[derive(Copy, Clone)]
 pub struct Simd<A: sealed::SimdArray>(<A as sealed::SimdArray>::Tuple);
 
 impl_i!([i32; 4]: i32x4 | x0, x1, x2, x3 |
