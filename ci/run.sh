@@ -24,7 +24,6 @@ cargo_test() {
     cmd="cargo $CARGO_SUBCMD --target=$TARGET $1"
     $cmd
 }
-
 cargo_test
 cargo_test "--release"
 

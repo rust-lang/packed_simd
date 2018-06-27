@@ -2,9 +2,11 @@
 
 #[macro_use]
 mod debug;
-
-macro_rules! impl_fmt {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
-        impl_fmt_debug!([$elem_ty; $elem_count]: $id);
-    };
-}
+#[macro_use]
+mod lower_hex;
+#[macro_use]
+mod upper_hex;
+#[macro_use]
+mod octal;
+#[macro_use]
+mod binary;

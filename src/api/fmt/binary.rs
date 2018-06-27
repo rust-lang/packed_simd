@@ -1,8 +1,8 @@
-//! Implement debug formatting
+//! Implement Octal formatting
 
-macro_rules! impl_fmt_debug {
+macro_rules! impl_fmt_binary {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
-        impl ::fmt::Debug for $id {
+        impl ::fmt::Binary for $id {
             fn fmt(&self, f: &mut ::fmt::Formatter) -> ::fmt::Result {
                 write!(f, "{}(", stringify!($id))?;
                 for i in 0..$elem_count {
@@ -16,17 +16,17 @@ macro_rules! impl_fmt_debug {
         }
         #[cfg(test)]
         interpolate_idents! {
-            mod [$id _fmt_debug] {
+            mod [$id _fmt_binary] {
                 use super::*;
                 #[test]
-                fn debug() {
+                fn binary() {
                     use arrayvec::{ArrayString,ArrayVec};
                     type TinyString = ArrayString<[u8; 512]>;
 
                     use fmt::Write;
                     let v = $id::splat($elem_ty::default());
                     let mut s = TinyString::new();
-                    write!(&mut s, "{:?}", v).unwrap();
+                    write!(&mut s, "{:#b}", v).unwrap();
 
                     let mut beg = TinyString::new();
                     write!(&mut beg, "{}(", stringify!($id)).unwrap();
@@ -37,7 +37,7 @@ macro_rules! impl_fmt_debug {
                     assert_eq!(s.len(), $id::lanes());
                     for (index, ss) in s.into_iter().enumerate() {
                         let mut e = TinyString::new();
-                        write!(&mut e, "{:?}", v.extract(index)).unwrap();
+                        write!(&mut e, "{:#b}", v.extract(index)).unwrap();
                         assert_eq!(ss, e);
                     }
                 }

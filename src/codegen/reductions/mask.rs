@@ -142,9 +142,9 @@ cfg_if! {
                     #[target_feature(enable = "avx")]
                     unsafe fn any(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use coresimd::arch::x86::_mm256_testz_si256;
+                        use core::arch::x86::_mm256_testz_si256;
                         #[cfg(target_arch = "x86_64")]
-                        use coresimd::arch::x86_64::_mm256_testz_si256;
+                        use core::arch::x86_64::_mm256_testz_si256;
                         _mm256_testz_si256(
                             ::mem::transmute(self),
                             ::mem::transmute(self),
@@ -200,7 +200,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use coresimd::arch::arm::$vpmax;
+                        use core::arch::arm::$vpmax;
                         use mem::transmute;
                         // pmax((a, b), (-,-)) => (b, -).0 => b
                         let tmp: $id =
@@ -230,7 +230,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use coresimd::arch::arm::$vpmax;
+                        use core::arch::arm::$vpmax;
                         use mem::transmute;
                         // tmp = pmax((a, b, c, d), (-,-,-,-)) => (a, c, -, -)
                         let tmp = $vpmax(transmute(self), ::mem::uninitialized());
@@ -272,7 +272,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use coresimd::arch::arm::$vpmax;
+                        use core::arch::arm::$vpmax;
                         use mem::transmute;
                         // tmp = pmax(
                         //     (a, b, c, d, e, f, g, h),
@@ -320,7 +320,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use coresimd::arch::arm::$vpmax;
+                        use core::arch::arm::$vpmax;
                         use mem::transmute;
                         union U {
                             halves: ($half, $half),
@@ -352,7 +352,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "neon")]
                     unsafe fn any(self) -> bool {
-                        use coresimd::arch::aarch64::$vmax;
+                        use core::arch::aarch64::$vmax;
                         $vmax(::mem::transmute(self)) != 0
                     }
                 }
@@ -528,7 +528,7 @@ macro_rules! impl_mask_all_any {
     ($id:ident) => { fallback_impl!($id); };
 }
 
-use sealed::*;
+use crate::*;
 
 // impl_mask_all_any!(m1x8);
 // impl_mask_all_any!(m1x16);

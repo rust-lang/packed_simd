@@ -23,10 +23,9 @@ macro_rules! impl_reduction_integer_arithmetic {
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
-                    use codegen::wrapping::Wrapping;
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
-                        x = Wrapping::add(x, self.extract(i) as $elem_ty);
+                        x = x.wrapping_add(self.extract(i) as $elem_ty);
                     }
                     x
                 }
@@ -52,10 +51,9 @@ macro_rules! impl_reduction_integer_arithmetic {
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
-                    use super::codegen::wrapping::Wrapping;
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
-                        x = Wrapping::mul(x, self.extract(i) as $elem_ty);
+                        x = x.wrapping_mul(self.extract(i) as $elem_ty);
                     }
                     x
                 }

@@ -1,20 +1,27 @@
 //! SPMD - Single Program Multiple Data
-#![feature(rust_2018_preview, repr_simd, const_fn, platform_intrinsics)]
+#![feature(rust_2018_preview, repr_simd, const_fn, platform_intrinsics,
+           stdsimd, aarch64_target_feature, arm_target_feature)]
 #![allow(non_camel_case_types, non_snake_case)]
-#![cfg_attr(test, feature(plugin))]
+#![cfg_attr(test, feature(plugin, hashmap_internals))]
 #![cfg_attr(test, plugin(interpolate_idents))]
 #![no_std]
 
 #[macro_use]
 extern crate cfg_if;
 
-use core::{cmp, fmt, marker, mem, ops};
+#[cfg(test)]
+extern crate arrayvec;
 
-mod llvm;
-mod sealed;
+use core::{cmp, default, fmt, hash, marker, mem, ops};
+
 #[macro_use]
 mod api;
 mod codegen;
+mod llvm;
+mod masks;
+mod sealed;
+
+pub use self::masks::*;
 
 /// SIMD vector type
 ///
@@ -28,26 +35,6 @@ mod codegen;
 #[repr(transparent)]
 #[derive(Copy, Clone)]
 pub struct Simd<A: sealed::SimdArray>(<A as sealed::SimdArray>::Tuple);
-
-/// 8-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m8(i8);
-
-/// 16-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m16(i16);
-
-/// 32-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m32(i32);
-
-/// 64-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m64(i64);
-
-/// 128-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m128(i128);
 
 // 128-bit wide vector types
 

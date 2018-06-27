@@ -18,3 +18,6 @@ mod scalar_bitwise;
 mod vector_shifts;
 #[macro_use]
 mod scalar_shifts;
+
+#[macro_use]
+mod vector_neg;

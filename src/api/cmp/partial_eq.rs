@@ -1,5 +1,4 @@
 //! Implements `PartialEq` for vector types.
-#![allow(unused)]
 
 macro_rules! impl_cmp_partial_eq {
     (

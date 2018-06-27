@@ -6,12 +6,12 @@ macro_rules! impl_reduction_mask {
             /// Are `all` vector lanes `true`?
             #[inline]
             pub fn all(self) -> bool {
-                unsafe { crate::codegen::reductions::mask::All::all(self.0) }
+                unsafe { crate::codegen::reductions::mask::All::all(self) }
             }
             /// Is `any` vector lanes `true`?
             #[inline]
             pub fn any(self) -> bool {
-                unsafe { crate::codegen::reductions::mask::Any::any(self.0) }
+                unsafe { crate::codegen::reductions::mask::Any::any(self) }
             }
             /// Are `all` vector lanes `false`?
             #[inline]
