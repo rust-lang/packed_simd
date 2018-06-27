@@ -49,7 +49,7 @@ macro_rules! fallback_impl {
                 }
             }
         }
-    }
+    };
 }
 
 cfg_if! {

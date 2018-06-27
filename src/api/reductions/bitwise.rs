@@ -2,16 +2,22 @@
 #![allow(unused)]
 
 macro_rules! impl_reduction_bitwise {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | ($true:expr, $false:expr)) => {
+    (
+        [$elem_ty:ident; $elem_count:expr]:
+        $id:ident |
+        ($true:expr, $false:expr)
+    ) => {
         impl $id {
             /// Lane-wise bitwise `and` of the vector elements.
             #[inline]
             pub fn and(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use llvm::simd_reduce_and;
                     unsafe { simd_reduce_and(self.0) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on aarch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
                     let mut x = self.extract(0) as $elem_ty;
@@ -25,11 +31,13 @@ macro_rules! impl_reduction_bitwise {
             /// Lane-wise bitwise `or` of the vector elements.
             #[inline]
             pub fn or(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use llvm::simd_reduce_or;
                     unsafe { simd_reduce_or(self.0) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on aarch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
                     let mut x = self.extract(0) as $elem_ty;
@@ -43,11 +51,13 @@ macro_rules! impl_reduction_bitwise {
             /// Lane-wise bitwise `xor` of the vector elements.
             #[inline]
             pub fn xor(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use llvm::simd_reduce_xor;
                     unsafe { simd_reduce_xor(self.0) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on aarch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
                     let mut x = self.extract(0) as $elem_ty;

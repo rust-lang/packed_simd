@@ -16,7 +16,6 @@ mod ops;
 #[macro_use]
 mod reductions;
 
-
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident
      | $($elem_ids:ident),* | $(#[$doc:meta])*) => {

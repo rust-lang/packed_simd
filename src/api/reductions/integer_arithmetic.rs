@@ -14,11 +14,13 @@ macro_rules! impl_reduction_integer_arithmetic {
             /// modulo `2^n` where `n` is the number of times it overflows.
             #[inline]
             pub fn wrapping_sum(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use llvm::simd_reduce_add_ordered;
                     unsafe { simd_reduce_add_ordered(self.0, 0 as $elem_ty) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
                     use codegen::wrapping::Wrapping;
@@ -41,11 +43,13 @@ macro_rules! impl_reduction_integer_arithmetic {
             /// modulo `2^n` where `n` is the number of times it overflows.
             #[inline]
             pub fn wrapping_product(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use llvm::simd_reduce_mul_ordered;
                     unsafe { simd_reduce_mul_ordered(self.0, 1 as $elem_ty) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
                     use super::codegen::wrapping::Wrapping;
