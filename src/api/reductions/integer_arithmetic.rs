@@ -84,10 +84,17 @@ macro_rules! impl_reduction_integer_arithmetic {
                     let v = $id::splat(1 as $elem_ty);
                     assert_eq!(v.wrapping_sum(), $id::lanes() as $elem_ty);
                     let v = alternating(2);
-                    assert_eq!(
-                        v.wrapping_sum(),
-                        ($id::lanes() / 2 + $id::lanes()) as $elem_ty
-                    );
+                    if $id::lanes() > 1 {
+                        assert_eq!(
+                            v.wrapping_sum(),
+                            ($id::lanes() / 2 + $id::lanes()) as $elem_ty
+                        );
+                    } else {
+                        assert_eq!(
+                            v.wrapping_sum(),
+                            2 as $elem_ty
+                        );
+                    }
                 }
                 #[test]
                 fn wrapping_product() {
@@ -102,10 +109,17 @@ macro_rules! impl_reduction_integer_arithmetic {
                         _ => 2,
                     };
                     let v = alternating(f);
-                    assert_eq!(
-                        v.wrapping_product(),
-                        (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
-                    );
+                    if $id::lanes() > 1 {
+                        assert_eq!(
+                            v.wrapping_product(),
+                            (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
+                        );
+                    } else {
+                        assert_eq!(
+                            v.wrapping_product(),
+                            2 as $elem_ty
+                        );
+                    }
                 }
             }
         }

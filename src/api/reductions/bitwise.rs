@@ -9,6 +9,9 @@ macro_rules! impl_reduction_bitwise {
     ) => {
         impl $id {
             /// Lane-wise bitwise `and` of the vector elements.
+            ///
+            /// Note: if the vector has one lane, the first element of the
+            /// vector is returned.
             #[inline]
             pub fn and(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
@@ -29,6 +32,9 @@ macro_rules! impl_reduction_bitwise {
             }
 
             /// Lane-wise bitwise `or` of the vector elements.
+            ///
+            /// Note: if the vector has one lane, the first element of the
+            /// vector is returned.
             #[inline]
             pub fn or(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
@@ -49,6 +55,9 @@ macro_rules! impl_reduction_bitwise {
             }
 
             /// Lane-wise bitwise `xor` of the vector elements.
+            ///
+            /// Note: if the vector has one lane, the first element of the
+            /// vector is returned.
             #[inline]
             pub fn xor(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
@@ -82,10 +91,15 @@ macro_rules! impl_reduction_bitwise {
                     assert_eq!(v.and(), $true);
                     let v = $id::splat($false);
                     let v = v.replace(0, $true);
-                    assert_eq!(v.and(), $false);
+                    if $id::lanes() > 1 {
+                        assert_eq!(v.and(), $false);
+                    } else {
+                        assert_eq!(v.and(), $true);
+                    }
                     let v = $id::splat($true);
                     let v = v.replace(0, $false);
                     assert_eq!(v.and(), $false);
+
                 }
                 #[test]
                 fn or() {
@@ -98,20 +112,32 @@ macro_rules! impl_reduction_bitwise {
                     assert_eq!(v.or(), $true);
                     let v = $id::splat($true);
                     let v = v.replace(0, $false);
-                    assert_eq!(v.or(), $true);
+                    if $id::lanes() > 1 {
+                        assert_eq!(v.or(), $true);
+                    } else {
+                        assert_eq!(v.or(), $false);
+                    }
                 }
                 #[test]
                 fn xor() {
                     let v = $id::splat($false);
                     assert_eq!(v.xor(), $false);
                     let v = $id::splat($true);
-                    assert_eq!(v.xor(), $false);
+                    if $id::lanes() > 1 {
+                        assert_eq!(v.xor(), $false);
+                    } else {
+                        assert_eq!(v.xor(), $true);
+                    }
                     let v = $id::splat($false);
                     let v = v.replace(0, $true);
                     assert_eq!(v.xor(), $true);
                     let v = $id::splat($true);
                     let v = v.replace(0, $false);
-                    assert_eq!(v.xor(), $true);
+                    if $id::lanes() > 1 {
+                        assert_eq!(v.xor(), $true);
+                    } else {
+                        assert_eq!(v.xor(), $false);
+                    }
                 }
             }
         }

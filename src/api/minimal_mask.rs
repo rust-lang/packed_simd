@@ -108,17 +108,17 @@ macro_rules! impl_minimal_mask {
                     }
 
                     // replace / replace_unchecked
-                    let new_vec = vec.replace(1, false);
+                    let new_vec = vec.replace(0, false);
                     for i in 0..$id::lanes() {
-                        if i == 1 {
+                        if i == 0 {
                             assert_eq!(false, new_vec.extract(i));
                         } else {
                             assert_eq!(true, new_vec.extract(i));
                         }
                     }
-                    let new_vec = unsafe { vec.replace_unchecked(1, false) };
+                    let new_vec = unsafe { vec.replace_unchecked(0, false) };
                     for i in 0..$id::lanes() {
-                        if i == 1 {
+                        if i == 0 {
                             assert_eq!(false, new_vec.extract(i));
                         } else {
                             assert_eq!(true, new_vec.extract(i));

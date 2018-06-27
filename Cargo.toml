@@ -11,5 +11,4 @@ testing = []
 cfg-if = "^0.1"
 
 [dev-dependencies]
-mashup = "^0.1"
 interpolate_idents = "^0.2"

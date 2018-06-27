@@ -96,28 +96,24 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "sse2")]
                     unsafe fn all(self) -> bool {
-                        unsafe {
-                            union U {
-                                halves: ($v128, $v128),
-                                vec: $id,
-                            }
-                            let halves = U { vec: self }.halves;
-                            halves.0.all() && halves.1.all()
+                        union U {
+                            halves: ($v128, $v128),
+                            vec: $id,
                         }
+                        let halves = U { vec: self }.halves;
+                        halves.0.all() && halves.1.all()
                     }
                 }
                 impl Any for $id {
                     #[inline]
                     #[target_feature(enable = "sse2")]
                     unsafe fn any(self) -> bool {
-                        unsafe {
-                            union U {
-                                halves: ($v128, $v128),
-                                vec: $id,
-                            }
-                            let halves = U { vec: self }.halves;
-                            halves.0.any() || halves.1.any()
+                        union U {
+                            halves: ($v128, $v128),
+                            vec: $id,
                         }
+                        let halves = U { vec: self }.halves;
+                        halves.0.any() || halves.1.any()
                     }
                 }
             };
@@ -534,25 +530,24 @@ macro_rules! impl_mask_all_any {
 
 use sealed::*;
 
-/*
-impl_mask_all_any!(m1x8);
-impl_mask_all_any!(m1x16);
-impl_mask_all_any!(m1x32);
-impl_mask_all_any!(m1x64);
-impl_mask_all_any!(m8x2);
-impl_mask_all_any!(m8x4);
-impl_mask_all_any!(m8x8);
+// impl_mask_all_any!(m1x8);
+// impl_mask_all_any!(m1x16);
+// impl_mask_all_any!(m1x32);
+// impl_mask_all_any!(m1x64);
+// impl_mask_all_any!(m8x2);
+// impl_mask_all_any!(m8x4);
+// impl_mask_all_any!(m8x8);
+
 impl_mask_all_any!(m8x16);
 impl_mask_all_any!(m8x32);
-impl_mask_all_any!(m16x2);
-impl_mask_all_any!(m16x4);
+// impl_mask_all_any!(m16x2);
+// impl_mask_all_any!(m16x4);
 impl_mask_all_any!(m16x8);
 impl_mask_all_any!(m16x16);
-impl_mask_all_any!(m32x2);
-*/
+// impl_mask_all_any!(m32x2);
 impl_mask_all_any!(m32x4);
-/*
 impl_mask_all_any!(m32x8);
 impl_mask_all_any!(m64x2);
-impl_mask_all_any!(m64x);
-*/
+impl_mask_all_any!(m64x4);
+impl_mask_all_any!(m128x1);
+impl_mask_all_any!(m128x2);

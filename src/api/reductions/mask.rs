@@ -31,13 +31,15 @@ macro_rules! impl_reduction_mask {
                     let a = $id::splat(false);
                     assert!(!a.all());
 
-                    for i in 0..$id::lanes() {
-                        let mut a = $id::splat(true);
-                        a = a.replace(i, false);
-                        assert!(!a.all());
-                        let mut a = $id::splat(false);
-                        a = a.replace(i, true);
-                        assert!(!a.all());
+                    if $id::lanes() > 1 {
+                        for i in 0..$id::lanes() {
+                            let mut a = $id::splat(true);
+                            a = a.replace(i, false);
+                            assert!(!a.all());
+                            let mut a = $id::splat(false);
+                            a = a.replace(i, true);
+                            assert!(!a.all());
+                        }
                     }
                 }
                 #[test]
@@ -47,13 +49,15 @@ macro_rules! impl_reduction_mask {
                     let a = $id::splat(false);
                     assert!(!a.any());
 
-                    for i in 0..$id::lanes() {
-                        let mut a = $id::splat(true);
-                        a = a.replace(i, false);
-                        assert!(a.any());
-                        let mut a = $id::splat(false);
-                        a = a.replace(i, true);
-                        assert!(a.any());
+                    if $id::lanes() > 1 {
+                        for i in 0..$id::lanes() {
+                            let mut a = $id::splat(true);
+                            a = a.replace(i, false);
+                            assert!(a.any());
+                            let mut a = $id::splat(false);
+                            a = a.replace(i, true);
+                            assert!(a.any());
+                        }
                     }
                 }
                 #[test]
@@ -63,13 +67,15 @@ macro_rules! impl_reduction_mask {
                     let a = $id::splat(false);
                     assert!(a.none());
 
-                    for i in 0..$id::lanes() {
-                        let mut a = $id::splat(true);
-                        a = a.replace(i, false);
-                        assert!(!a.none());
-                        let mut a = $id::splat(false);
-                        a = a.replace(i, true);
-                        assert!(!a.none());
+                    if $id::lanes() > 1 {
+                        for i in 0..$id::lanes() {
+                            let mut a = $id::splat(true);
+                            a = a.replace(i, false);
+                            assert!(!a.none());
+                            let mut a = $id::splat(false);
+                            a = a.replace(i, true);
+                            assert!(!a.none());
+                        }
                     }
                 }
             }

@@ -102,17 +102,17 @@ macro_rules! impl_minimal_iuf {
                     }
 
                     // replace / replace_unchecked
-                    let new_vec = VEC.replace(1, 42 as $elem_ty);
+                    let new_vec = VEC.replace(0, 42 as $elem_ty);
                     for i in 0..$id::lanes() {
-                        if i == 1 {
+                        if i == 0 {
                             assert_eq!(42 as $elem_ty, new_vec.extract(i));
                         } else {
                             assert_eq!(VAL, new_vec.extract(i));
                         }
                     }
-                    let new_vec = unsafe { VEC.replace_unchecked(1, 42 as $elem_ty) };
+                    let new_vec = unsafe { VEC.replace_unchecked(0, 42 as $elem_ty) };
                     for i in 0..$id::lanes() {
-                        if i == 1 {
+                        if i == 0 {
                             assert_eq!(42 as $elem_ty, new_vec.extract(i));
                         } else {
                             assert_eq!(VAL, new_vec.extract(i));
