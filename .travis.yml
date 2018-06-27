@@ -8,69 +8,43 @@ matrix:
     - env: TARGET=i586-unknown-linux-gnu
     - env: TARGET=i686-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated STDSIMD_TEST_EVERYTHING=1
+    - env: TARGET=x86_64-unknown-linux-gnu-emulated
     - env: TARGET=x86_64-linux-android
     - env: TARGET=arm-unknown-linux-gnueabihf
     - env: TARGET=arm-linux-androideabi
     - env: TARGET=armv7-unknown-linux-gnueabihf
     - env: TARGET=aarch64-unknown-linux-gnu
-    - env: TARGET=mips-unknown-linux-gnu NORUN=1
-    - env: TARGET=mipsel-unknown-linux-gnu NORUN=1
-    - env: TARGET=mips64-unknown-linux-gnuabi64 NORUN=1
-    - env: TARGET=mips64el-unknown-linux-gnuabi64 NORUN=1
     - env: TARGET=mips-unknown-linux-gnu
     - env: TARGET=mipsel-unknown-linux-gnu
     - env: TARGET=mips64-unknown-linux-gnuabi64
     - env: TARGET=mips64el-unknown-linux-gnuabi64
-
     - env: TARGET=aarch64-linux-android
     - env: TARGET=powerpc-unknown-linux-gnu
     - env: TARGET=powerpc64-unknown-linux-gnu
     - env: TARGET=powerpc64le-unknown-linux-gnu
-    - env: TARGET=s390x-unknown-linux-gnu NORUN=1
     - env: TARGET=s390x-unknown-linux-gnu
+    - env: TARGET=wasm32-unknown-unknown
     - os: osx
       env: TARGET=i686-apple-darwin
       script: ci/run.sh
     - os: osx
       env: TARGET=x86_64-apple-darwin NO_ADD=1
       script: ci/run.sh
-    - env: TARGET=wasm32-unknown-unknown
-      before_script:
-        - git clone --recursive https://github.com/WebAssembly/wabt
-        - (cd wabt && git reset --hard a0bdeb7 && make -j4)
-        - export PATH=$PATH:$PWD/wabt/bin
-      script:
-        - cargo build --target wasm32-unknown-unknown -p stdsimd
-        - cargo build --target wasm32-unknown-unknown -p stdsimd --release
-        - cargo rustc --target wasm32-unknown-unknown -p stdsimd --release --example wasm -- -C lto
-        - wasm2wat target/wasm32-unknown-unknown/release/examples/wasm.wasm -o wasm.wat
-        - cat wasm.wat
-        - grep current_memory wasm.wat
-        - grep grow_memory wasm.wat
     - env: DOCUMENTATION
       install: true
       script: ci/dox.sh
-    - env: VERIFY_X86
-      script: cargo test --manifest-path crates/stdsimd-verify/Cargo.toml
-      install: true
-    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
+    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu
       before_script:
       - rustup component add rustfmt-preview
       script:
       - cargo fmt --all -- --check
-    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-      script: |
-        cargo install clippy
-        cargo clippy --all -- -D clippy-pedantic
+    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu
+      before_script:
+      - cargo install clippy
+      script:
+      - cargo clippy --all -- -D clippy-pedantic
   allow_failures:
-    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-    - env: TARGET=mips-unknown-linux-gnu
-    - env: TARGET=mipsel-unknown-linux-gnu
-    - env: TARGET=mips64-unknown-linux-gnuabi64
-    - env: TARGET=mips64el-unknown-linux-gnuabi64
-    - env: TARGET=s390x-unknown-linux-gnu
+    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu
 
 install:
   - rustup target add $TARGET || true
@@ -84,4 +58,4 @@ notifications:
     on_success: never
 env:
   global:
-    secure: "jmh7FfVwtPYQN/xPrVYmX7ys70GvX9YsKYtDpp8UwtIihCr81KHi2P2a1/KZNvQN0gPO+nneKieCbNQSCEtxDG9plUoB+OhX8ov9g3ImTJbyt+oW35Vlqq9ftB+Hr/Wn42o4OSTYxRfy1gf9VMePBaJfdkuym3BB75K4s+k+akuVqJv+KAm3zz0wSqU4O/evj2EGz1ldMzqxpogrO2WJQkXyl4xaW/1E0y8IZfRy0bJPKALFUpTDp39ZiWvzjNdr8CXUW1DChJdFPNo7yswxyl/NL5e/meHqF2dzS5b0YyOhcCzlBm7eZoEwyHZWB73t7n5Tuo0uYpX/kBXPAvtDrljQjBNcpm9vJtg6sj3oG0bGAI8pJfNNpLdHLHO6CjmORGP/rzZLeRdEFVb8t7UIXG7l3NcoBpRNiwPFY4gpE5dgiRsKjNrtmNe3GahhsYwbPkc+QUeQFIDtYYRxdJVZj+KvU9jIEpRh5Zv8FZBfsfx0LcLEdtRBjJxFNGGO5NY8nP0OWNVyt4ckRbRMtVzcbcOdzcfUc74/wZYZj8SrfcbSqsfylMQbxLAHJCynvuFmoMf3udPqP3aPuO+4EjDYDIQ1kHwKK87lwqlXFHdhRepAmhRR//g3bDUxzXd96KJqbFU3MYZnn/jzIi0kl+jx3FxivT380cYLVjrD29aGc7M="
+    secure: i5Am1bhaK+6Zw/7b6uBxCPW+TYsPQ1EHaL8FMp0+KBeGtvpOIT1HsZd31C2gdvWouOVB/vjhS5qWa9YtkUw47Z7skiVRXdJfO+8ZUbH3ac8MUDc2uMrIRtEn37ncdn6IdsedD0MfqJc5BmGu9DUztHQ2oMokzEXGJINOdbadrZv8XUKNx+nlXOFXq6wQln8XhjBIFCP/JTkOr8zeuQdSH/TpaYMxsgfxwy4TSSQFRUmgUOevegcbjakeWvfd6pPiis0h275Ppykm9Jjkf7/RxL6C6uVgOZKcO7qVT/22PbrJwl5kucYelZr+gWXnxh65wyLXIy+t//6B1/3dhwuyr6U/LlxesvB8ZnS8Bt0cA4Loxh6yX/TTYTg734O56hjXRU6rlJW6RaaO6Vukv2s8kU+LhCSWijMtwRf7c2H0K1tksBT9wRZQZ06QxnR7P7jN48/QqAp1QZdT7jhXvOr8s7ROsJhbku0scUAOoNfTZ47SHjbMxGc7klI31BhaxFeaNsWAZMyIeigebhJ8gnZcPDO78J/6svBb83AgMLRPaO4l9y1png4iLdtXtkxr0S8F8pAf9VnDVSJBH6SN9/d7dRa1QwpNDpVcW52GEY5OQkVJ1Xkp9xbnW5nJpOXQIeJeix8VwsUXX289MUyPfOxDQhRCzeSExqks7P1veL+TNss=
