@@ -32,7 +32,7 @@ macro_rules! impl_ops_vector_shifts {
         }
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_ops_vector_shifts_ $id] {
+            mod [$id _ops_vector_shifts] {
                 use super::*;
                 #[test]
                 fn ops_vector_shifts() {

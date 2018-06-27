@@ -1,4 +1,10 @@
-// #[macro_use]
-// mod arithmetic;
-// #[macro_use]
-// mod bitwise;
+//! Reductions
+
+#[macro_use]
+mod float_arithmetic;
+#[macro_use]
+mod integer_arithmetic;
+#[macro_use]
+mod bitwise;
+#[macro_use]
+mod mask;

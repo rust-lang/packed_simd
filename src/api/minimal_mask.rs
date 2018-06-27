@@ -91,7 +91,7 @@ macro_rules! impl_minimal_mask {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_minimal_mask_ $id] {
+            mod [$id _minimal] {
                 use super::*;
                 #[test]
                 fn minimal() {
@@ -127,13 +127,13 @@ macro_rules! impl_minimal_mask {
                 }
                 #[test]
                 #[should_panic]
-                fn minimal_extract_panic_on_out_of_bounds() {
+                fn extract_panic_oob() {
                     let vec = $id::splat(false);
                     let _ = vec.extract($id::lanes());
                 }
                 #[test]
                 #[should_panic]
-                fn minimal_replace_panic_on_out_of_bounds() {
+                fn replace_panic_oob() {
                     let vec = $id::splat(false);
                     let _ = vec.replace($id::lanes(), true);
                 }

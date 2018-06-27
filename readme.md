@@ -1,4 +1,4 @@
-# `Simd<[T; N]>` - alternative fully-conforming implementation of `std::simd`
+# `Simd<[T; N]>` - Implementation of RFC2366 (`std::simd`)
 
 > WIP
 

@@ -13,6 +13,9 @@ mod minimal_iuf;
 mod minimal_mask;
 #[macro_use]
 mod ops;
+#[macro_use]
+mod reductions;
+
 
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident
@@ -25,6 +28,8 @@ macro_rules! impl_i {
         impl_ops_scalar_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (!(0 as $elem_ty), 0));
         impl_ops_vector_shifts!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_scalar_shifts!([$elem_ty; $elem_count]: $tuple_id);
+        impl_reduction_integer_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
+        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | (!(0 as $elem_ty), 0));
         impl_fmt!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
     }
@@ -41,6 +46,8 @@ macro_rules! impl_u {
         impl_ops_scalar_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (!(0 as $elem_ty), 0));
         impl_ops_vector_shifts!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_scalar_shifts!([$elem_ty; $elem_count]: $tuple_id);
+        impl_reduction_integer_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
+        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | (!(0 as $elem_ty), 0));
         impl_fmt!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1, 0));
     }
@@ -53,6 +60,7 @@ macro_rules! impl_f {
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_scalar_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
+        impl_reduction_float_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1., 0.));
     }
@@ -65,6 +73,7 @@ macro_rules! impl_m {
                            $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_mask_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (true, false));
         impl_ops_scalar_mask_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (true, false));
+        impl_reduction_mask!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));
     }

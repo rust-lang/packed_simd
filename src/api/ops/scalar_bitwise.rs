@@ -72,7 +72,7 @@ macro_rules! impl_ops_scalar_bitwise {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_ops_scalar_bitwise_ $id] {
+            mod [$id _ops_scalar_bitwise] {
                 use super::*;
 
                 #[test]

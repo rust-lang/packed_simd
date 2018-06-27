@@ -31,7 +31,7 @@ macro_rules! impl_ops_scalar_shifts {
         }
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_ops_scalar_shifts_ $id] {
+            mod [$id _ops_scalar_shifts] {
                 use super::*;
                 #[test]
                 fn ops_scalar_shifts() {

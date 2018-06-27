@@ -1,18 +1,20 @@
 //! SPMD - Single Program Multiple Data
 #![feature(rust_2018_preview, repr_simd, const_fn, platform_intrinsics)]
-#![allow(non_camel_case_types)]
+#![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin))]
 #![cfg_attr(test, plugin(interpolate_idents))]
 #![no_std]
 
-#[cfg(test)]
-use core::mem;
-use core::{cmp, fmt, ops};
+#[macro_use]
+extern crate cfg_if;
+
+use core::{cmp, fmt, marker, mem, ops};
 
 mod llvm;
 mod sealed;
 #[macro_use]
 mod api;
+mod codegen;
 
 /// 32-bit wide mask.
 #[derive(Copy, Clone)]

@@ -84,7 +84,7 @@ macro_rules! impl_ops_vector_arithmetic {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_ops_vector_arithmetic_ $id] {
+            mod [$id _ops_vector_arith] {
                 use super::*;
                 #[test]
                 fn ops_vector_arithmetic() {

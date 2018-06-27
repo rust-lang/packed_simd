@@ -58,7 +58,7 @@ macro_rules! impl_ops_vector_mask_bitwise {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_ops_vector_mask_bitwise_ $id] {
+            mod [$id _ops_vector_mask_bitwise] {
                 use super::*;
                 #[test]
                 fn ops_vector_mask_bitwise() {

@@ -27,7 +27,7 @@ macro_rules! impl_cmp_partial_eq {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_cmp_partial_eq_ $id] {
+            mod [$id _cmp_PartialEq] {
                 use super::*;
                 #[test]
                 fn partial_eq() {

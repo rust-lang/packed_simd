@@ -7,6 +7,9 @@ authors = ["gnzlbg <gonzalobg88@gmail.com>"]
 default = []
 testing = []
 
+[dependencies]
+cfg-if = "^0.1"
+
 [dev-dependencies]
 mashup = "^0.1"
 interpolate_idents = "^0.2"

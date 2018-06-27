@@ -86,7 +86,7 @@ macro_rules! impl_minimal_iuf {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_minimal_ $id] {
+            mod [$id _minimal] {
                 use super::*;
                 #[test]
                 fn minimal() {
@@ -122,14 +122,14 @@ macro_rules! impl_minimal_iuf {
 
                 #[test]
                 #[should_panic]
-                fn minimal_extract_panic_on_out_of_bounds() {
+                fn extract_panic_oob() {
                     const VAL: $elem_ty = 7 as $elem_ty;
                     const VEC: $id = $id::splat(VAL);
                     let _ = VEC.extract($id::lanes());
                 }
                 #[test]
                 #[should_panic]
-                fn minimal_replace_panic_on_out_of_bounds() {
+                fn replace_panic_oob() {
                     const VAL: $elem_ty = 7 as $elem_ty;
                     const VEC: $id = $id::splat(VAL);
                     let _ = VEC.replace($id::lanes(), 42 as $elem_ty);

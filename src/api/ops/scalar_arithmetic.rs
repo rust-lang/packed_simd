@@ -114,7 +114,7 @@ macro_rules! impl_ops_scalar_arithmetic {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [test_ops_scalar_arithmetic_ $id] {
+            mod [$id _ops_scalar_arith] {
                 use super::*;
                 #[test]
                 fn ops_scalar_arithmetic() {
