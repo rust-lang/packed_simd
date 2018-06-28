@@ -1,7 +1,8 @@
-//! SPMD - Single Program Multiple Data
+//! Sim<[T; N]> - Packed vector type
 #![feature(
     rust_2018_preview, repr_simd, const_fn, platform_intrinsics, stdsimd,
-    aarch64_target_feature, arm_target_feature
+    aarch64_target_feature, arm_target_feature, link_llvm_intrinsics,
+    core_intrinsics
 )]
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]
@@ -14,7 +15,8 @@ extern crate cfg_if;
 #[cfg(test)]
 extern crate arrayvec;
 
-use core::{cmp, default, fmt, hash, marker, mem, ops};
+#[allow(unused_imports)]
+use core::{cmp, default, f32, f64, fmt, hash, intrinsics, marker, mem, ops};
 
 #[macro_use]
 mod api;
@@ -22,7 +24,7 @@ mod codegen;
 mod llvm;
 mod sealed;
 
-/// Packed SIMD vector type
+/// Packed vector type
 ///
 /// # Examples
 ///

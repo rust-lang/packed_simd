@@ -1,5 +1,6 @@
 //! Code-generation utilities
 
+crate mod math;
 crate mod reductions;
 
 macro_rules! impl_simd_array {

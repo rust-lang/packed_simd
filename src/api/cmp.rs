@@ -5,3 +5,6 @@ mod partial_eq;
 
 #[macro_use]
 mod eq;
+
+#[macro_use]
+mod vertical;

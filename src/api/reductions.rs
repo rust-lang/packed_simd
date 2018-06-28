@@ -8,3 +8,5 @@ mod integer_arithmetic;
 mod bitwise;
 #[macro_use]
 mod mask;
+#[macro_use]
+mod min_max;

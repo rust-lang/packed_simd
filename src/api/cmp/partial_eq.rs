@@ -9,18 +9,11 @@ macro_rules! impl_cmp_partial_eq {
         impl ::cmp::PartialEq<$id> for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
-                for i in 0..$elem_count {
-                    if self.extract(i) != other.extract(i) {
-                        return false;
-                    }
-                }
-                true
-                // FIXME: $id::eq(*self, *other).all()
+                $id::eq(*self, *other).all()
             }
             #[inline]
             fn ne(&self, other: &Self) -> bool {
-                !self.eq(other)
-                // FIXME: $id::ne(*self, *other).all()
+                $id::ne(*self, *other).all()
             }
         }
 
