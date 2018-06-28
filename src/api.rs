@@ -25,6 +25,8 @@ mod minimal;
 mod ops;
 #[macro_use]
 mod reductions;
+#[macro_use]
+mod select;
 
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
@@ -51,6 +53,8 @@ macro_rules! impl_i {
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));
+
+        test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2));
     }
 }
 
@@ -78,6 +82,8 @@ macro_rules! impl_u {
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1, 0));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));
+
+        test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2));
     }
 }
 
@@ -104,6 +110,8 @@ macro_rules! impl_f {
         impl_math_float_sqrt!([$elem_ty; $elem_count]: $tuple_id);
         impl_math_float_sqrte!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1., 0.));
+
+        test_select!($elem_ty, $mask_ty, $tuple_id, (1., 2.));
     }
 }
 
@@ -121,5 +129,6 @@ macro_rules! impl_m {
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $tuple_id, true, (true, false));
+        impl_select!([$elem_ty; $elem_count]: $tuple_id);
     }
 }

@@ -15,6 +15,7 @@ macro_rules! impl_simd_array {
             type Tuple = $tuple_id;
             type T = $elem_ty;
             const N: usize = $elem_cnt;
+            type NT = [u32; $elem_cnt];
         }
     }
 }
