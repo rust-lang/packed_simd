@@ -38,7 +38,7 @@ macro_rules! impl_i {
         impl_ops_scalar_shifts!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_vector_neg!([$elem_ty; $elem_count]: $tuple_id);
         impl_reduction_integer_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
-        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | (!(0 as $elem_ty), 0));
+        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | $elem_ty | (|x|{ x }) | (!(0 as $elem_ty), 0));
         impl_fmt_debug!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_lower_hex!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_upper_hex!([$elem_ty; $elem_count]: $tuple_id);
@@ -63,7 +63,7 @@ macro_rules! impl_u {
         impl_ops_vector_shifts!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_scalar_shifts!([$elem_ty; $elem_count]: $tuple_id);
         impl_reduction_integer_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
-        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | (!(0 as $elem_ty), 0));
+        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | $elem_ty | (|x|{ x }) | (!(0 as $elem_ty), 0));
         impl_fmt_debug!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_lower_hex!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_upper_hex!([$elem_ty; $elem_count]: $tuple_id);
@@ -98,7 +98,7 @@ macro_rules! impl_m {
                            $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_mask_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (true, false));
         impl_ops_scalar_mask_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (true, false));
-        impl_reduction_bitwise!([bool; $elem_count]: $tuple_id | (true, false));
+        impl_reduction_bitwise!([bool; $elem_count]: $tuple_id | $ielem_ty | (|x|{ x != 0 }) | (true, false));
         impl_reduction_mask!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_debug!([bool; $elem_count]: $tuple_id);
         impl_default!([bool; $elem_count]: $tuple_id);

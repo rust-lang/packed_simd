@@ -5,6 +5,8 @@ macro_rules! impl_reduction_bitwise {
     (
         [$elem_ty:ident; $elem_count:expr]:
         $id:ident |
+        $ielem_ty:ident |
+        ($convert:expr) |
         ($true:expr, $false:expr)
     ) => {
         impl $id {
@@ -17,7 +19,8 @@ macro_rules! impl_reduction_bitwise {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_and;
-                    unsafe { simd_reduce_and(self.0) }
+                    let r: $ielem_ty = unsafe { simd_reduce_and(self.0) };
+                    $convert(r)
                 }
                 #[cfg(target_arch = "aarch64")]
                 {
@@ -40,7 +43,8 @@ macro_rules! impl_reduction_bitwise {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_or;
-                    unsafe { simd_reduce_or(self.0) }
+                    let r: $ielem_ty = unsafe { simd_reduce_or(self.0) };
+                    $convert(r)
                 }
                 #[cfg(target_arch = "aarch64")]
                 {
@@ -63,7 +67,8 @@ macro_rules! impl_reduction_bitwise {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_xor;
-                    unsafe { simd_reduce_xor(self.0) }
+                    let r: $ielem_ty = unsafe { simd_reduce_xor(self.0) };
+                    $convert(r)
                 }
                 #[cfg(target_arch = "aarch64")]
                 {

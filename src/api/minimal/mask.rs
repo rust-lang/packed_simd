@@ -13,7 +13,7 @@ macro_rules! impl_minimal_mask {
             /// with the provided values.
             #[inline]
             pub const fn new($($elem_name: bool),*) -> Self {
-                Simd(sealed::$id($(Self::bool_to_internal($elem_name)),*))
+                Simd(codegen::$id($(Self::bool_to_internal($elem_name)),*))
             }
 
             /// Converts a boolean type into the type of the vector lanes.
@@ -32,7 +32,7 @@ macro_rules! impl_minimal_mask {
             /// `value`.
             #[inline]
             pub const fn splat(value: bool) -> Self {
-                Simd(sealed::$id($({
+                Simd(codegen::$id($({
                     #[allow(non_camel_case_types, dead_code)]
                     struct $elem_name;
                     Self::bool_to_internal(value)

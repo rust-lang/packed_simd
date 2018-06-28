@@ -13,7 +13,7 @@ macro_rules! impl_minimal_iuf {
             /// with the provided values.
             #[inline]
             pub const fn new($($elem_name: $elem_ty),*) -> Self {
-                Simd(sealed::$id($($elem_name),*))
+                Simd(codegen::$id($($elem_name),*))
             }
 
             /// Returns the number of vector lanes.
@@ -26,7 +26,7 @@ macro_rules! impl_minimal_iuf {
             /// `value`.
             #[inline]
             pub const fn splat(value: $elem_ty) -> Self {
-                Simd(sealed::$id($({
+                Simd(codegen::$id($({
                     #[allow(non_camel_case_types, dead_code)]
                     struct $elem_name;
                     value

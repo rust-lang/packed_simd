@@ -23,7 +23,7 @@ macro_rules! fallback_impl {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_all;
-                    simd_reduce_all(self)
+                    simd_reduce_all(self.0)
                 }
                 #[cfg(target_arch = "aarch64")]
                 {
@@ -39,7 +39,7 @@ macro_rules! fallback_impl {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_any;
-                    simd_reduce_any(self)
+                    simd_reduce_any(self.0)
                 }
                 #[cfg(target_arch = "aarch64")]
                 {
