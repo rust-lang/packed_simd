@@ -1,13 +1,4 @@
 //! Implements the Simd<[T; N]> APIs
-//!
-//! TODO:
-//! - load/store
-//! - gather/scatter
-//! - shuffles
-//! - select
-//! - codegen
-//! - minmax red
-//! - partial ord / ord
 
 #[macro_use]
 mod cmp;
@@ -27,6 +18,8 @@ mod ops;
 mod reductions;
 #[macro_use]
 mod select;
+#[macro_use]
+mod shuffle;
 
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
@@ -55,6 +48,7 @@ macro_rules! impl_i {
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2));
+        // test_shuffle!([$elem_ty; $elem_count]: $tuple_id); // FIXME
     }
 }
 

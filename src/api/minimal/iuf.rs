@@ -8,6 +8,12 @@ macro_rules! impl_minimal_iuf {
         $(#[$doc])*
         pub type $id = Simd<[$elem_ty; $elem_count]>;
 
+        impl sealed::Simd for $id {
+            type Element = $elem_ty;
+            const LANES: usize = $elem_count;
+            type LanesType = [u32; $elem_count];
+        }
+
         impl Simd<[$elem_ty; $elem_count]> {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.

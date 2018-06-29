@@ -1,5 +1,52 @@
-//! LLVM's simd platform intrinsics
+//! LLVM's platform intrinsics
 #![allow(dead_code)] // FIXME: remove this allow
+
+use sealed::{Shuffle};
+#[allow(unused_imports)] // FIXME:
+use sealed::{Simd};
+
+// Shuffle intrinsics: expanded in users' crates, therefore public.
+extern "platform-intrinsic" {
+    /// FIXME: Passing this intrinsics an `idx` array with an index that is
+    /// out-of-bounds will produce a monomorphization-time error.
+    pub fn simd_shuffle2<T, U>(x: T, y: T, idx: [u32; 2]) -> U
+    where
+        T: Simd,
+        <T as Simd>::Element: Shuffle<[u32; 2], Output = U>;
+
+    pub fn simd_shuffle4<T, U>(x: T, y: T, idx: [u32; 4]) -> U
+    where
+        T: Simd,
+        <T as Simd>::Element: Shuffle<[u32; 4], Output = U>;
+
+    pub fn simd_shuffle8<T, U>(x: T, y: T, idx: [u32; 8]) -> U
+    where
+        T: Simd,
+        <T as Simd>::Element: Shuffle<[u32; 8], Output = U>;
+
+    pub fn simd_shuffle16<T, U>(x: T, y: T, idx: [u32; 16]) -> U
+    where
+        T: Simd,
+        <T as Simd>::Element: Shuffle<[u32; 16], Output = U>;
+
+    pub fn simd_shuffle32<T, U>(x: T, y: T, idx: [u32; 32]) -> U
+    where
+        T: Simd,
+        <T as Simd>::Element: Shuffle<[u32; 32], Output = U>;
+
+    pub fn simd_shuffle64<T, U>(x: T, y: T, idx: [u32; 64]) -> U
+    where
+        T: Simd,
+        <T as Simd>::Element: Shuffle<[u32; 64], Output = U>;
+}
+
+pub use self::simd_shuffle16 as __shuffle_vector16;
+pub use self::simd_shuffle2 as __shuffle_vector2;
+pub use self::simd_shuffle32 as __shuffle_vector32;
+pub use self::simd_shuffle4 as __shuffle_vector4;
+pub use self::simd_shuffle64 as __shuffle_vector64;
+pub use self::simd_shuffle8 as __shuffle_vector8;
+
 
 extern "platform-intrinsic" {
     crate fn simd_eq<T, U>(x: T, y: T) -> U;
@@ -8,12 +55,6 @@ extern "platform-intrinsic" {
     crate fn simd_le<T, U>(x: T, y: T) -> U;
     crate fn simd_gt<T, U>(x: T, y: T) -> U;
     crate fn simd_ge<T, U>(x: T, y: T) -> U;
-
-    pub fn simd_shuffle2<T, U>(x: T, y: T, idx: [u32; 2]) -> U;
-    pub fn simd_shuffle4<T, U>(x: T, y: T, idx: [u32; 4]) -> U;
-    pub fn simd_shuffle8<T, U>(x: T, y: T, idx: [u32; 8]) -> U;
-    pub fn simd_shuffle16<T, U>(x: T, y: T, idx: [u32; 16]) -> U;
-    pub fn simd_shuffle32<T, U>(x: T, y: T, idx: [u32; 32]) -> U;
 
     crate fn simd_insert<T, U>(x: T, idx: u32, val: U) -> T;
     crate fn simd_extract<T, U>(x: T, idx: u32) -> U;
