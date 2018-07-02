@@ -13,7 +13,7 @@ macro_rules! impl_cmp_partial_eq {
             }
             #[inline]
             fn ne(&self, other: &Self) -> bool {
-                $id::ne(*self, *other).all()
+                $id::ne(*self, *other).any()
             }
         }
 
@@ -24,6 +24,14 @@ macro_rules! impl_cmp_partial_eq {
                 #[test]
                 fn partial_eq() {
                     let a = $id::splat($false);
+                    let b = $id::splat($true);
+
+                    assert!(a != b);
+                    assert!(!(a == b));
+                    assert!(a == a);
+                    assert!(!(a != a));
+
+                    let a = $id::splat($false).replace(0, $true);
                     let b = $id::splat($true);
 
                     assert!(a != b);
