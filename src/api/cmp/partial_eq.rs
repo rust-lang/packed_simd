@@ -31,13 +31,16 @@ macro_rules! impl_cmp_partial_eq {
                     assert!(a == a);
                     assert!(!(a != a));
 
-                    let a = $id::splat($false).replace(0, $true);
-                    let b = $id::splat($true);
 
-                    assert!(a != b);
-                    assert!(!(a == b));
-                    assert!(a == a);
-                    assert!(!(a != a));
+                    if $id::lanes() > 1 {
+                        let a = $id::splat($false).replace(0, $true);
+                        let b = $id::splat($true);
+
+                        assert!(a != b);
+                        assert!(!(a == b));
+                        assert!(a == a);
+                        assert!(!(a != a));
+                    }
                 }
             }
         }
