@@ -50,6 +50,12 @@ macro_rules! impl_ops_vector_shifts {
                     assert_eq!(z >> t, z);
                     assert_eq!(z >> t, z);
 
+                    #[cfg(target_arch = "s390x")] {
+                        // FIXME: rust produces bad codegen for shifts:
+                        // https://github.com/rust-lang/rust/issues/52015
+                        return;
+                    }
+
                     assert_eq!(o >> z, o);
                     assert_eq!(t >> z, t);
                     assert_eq!(f >> z, f);

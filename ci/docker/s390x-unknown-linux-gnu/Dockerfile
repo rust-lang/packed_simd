@@ -5,7 +5,7 @@ RUN apt-get update && \
     ca-certificates \
     curl \
     cmake \
-    gcc
+    gcc \
     libc6-dev \
     g++-s390x-linux-gnu \
     libc6-dev-s390x-cross \

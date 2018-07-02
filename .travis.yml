@@ -24,6 +24,9 @@ matrix:
     - env: TARGET=powerpc64le-unknown-linux-gnu
     - env: TARGET=s390x-unknown-linux-gnu
     - env: TARGET=wasm32-unknown-unknown
+      script: |
+        cargo build --target $TARGET
+        cargo build --target --release $TARGET
     - os: osx
       env: TARGET=i686-apple-darwin
       script: ci/run.sh

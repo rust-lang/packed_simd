@@ -24,7 +24,7 @@ cargo_test() {
     cmd="cargo $CARGO_SUBCMD --target=$TARGET $1"
     $cmd
 }
-cargo_test
+#cargo_test
 cargo_test "--release"
 
 # Test some of the targets compiled with different features
