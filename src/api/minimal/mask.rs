@@ -18,12 +18,14 @@ macro_rules! impl_minimal_mask {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
             #[inline]
+            #[cfg_attr(feature = "cargo-clippy", allow(too_many_arguments))]
             pub const fn new($($elem_name: bool),*) -> Self {
                 Simd(codegen::$id($(Self::bool_to_internal($elem_name)),*))
             }
 
             /// Converts a boolean type into the type of the vector lanes.
             #[inline]
+            #[cfg_attr(feature = "cargo-clippy", allow(indexing_slicing))]
             const fn bool_to_internal(x: bool) -> $ielem_ty {
                 [0 as $ielem_ty, !(0 as $ielem_ty)][x as usize]
             }

@@ -1,9 +1,12 @@
 //! Code generation workaround for `all()` mask horizontal reduction.
 //!
-//! LLVM bug: https://bugs.llvm.org/show_bug.cgi?id=36702
+//! Works arround [LLVM bug 36702].
 //!
-//! FIXME: for masks generated from floating-point vectors LLVM6 emits pmovmskb
-//! but should emit movmskps: https://bugs.llvm.org/show_bug.cgi?id=37087
+//! FIXME: For masks generated from floating-point vectors LLVM6 emits `pmovmskb`
+//! but should emit `movmskps` ([LLVM bug 37087]).
+//!
+//! [LLVM bug 36702]: https://bugs.llvm.org/show_bug.cgi?id=36702
+//! [LLVM bug 37087]: https://bugs.llvm.org/show_bug.cgi?id=37087
 #![allow(unused_macros)]
 
 crate trait All: crate::marker::Sized {
@@ -71,7 +74,7 @@ cfg_if! {
                         // bits are set, then all 16 lanes of the mask are
                         // true.
                         _mm_movemask_epi8(::mem::transmute(self))
-                            == u16::max_value() as i32
+                            == i32::from(u16::max_value())
                     }
                 }
                 impl Any for $id {
