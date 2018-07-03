@@ -1,9 +1,9 @@
 //! LLVM's platform intrinsics
 #![allow(dead_code)] // FIXME: remove this allow
 
-use sealed::{Shuffle};
+use sealed::Shuffle;
 #[allow(unused_imports)] // FIXME:
-use sealed::{Simd};
+use sealed::Simd;
 
 // Shuffle intrinsics: expanded in users' crates, therefore public.
 extern "platform-intrinsic" {
@@ -46,7 +46,6 @@ pub use self::simd_shuffle32 as __shuffle_vector32;
 pub use self::simd_shuffle4 as __shuffle_vector4;
 pub use self::simd_shuffle64 as __shuffle_vector64;
 pub use self::simd_shuffle8 as __shuffle_vector8;
-
 
 extern "platform-intrinsic" {
     crate fn simd_eq<T, U>(x: T, y: T) -> U;

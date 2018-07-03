@@ -4,6 +4,8 @@ macro_rules! impl_fmt_binary {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
         impl ::fmt::Binary for $id {
             fn fmt(&self, f: &mut ::fmt::Formatter) -> ::fmt::Result {
+                // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2891
+                #[cfg_attr(feature = "cargo-clippy", allow(write_literal))]
                 write!(f, "{}(", stringify!($id))?;
                 for i in 0..$elem_count {
                     if i > 0 {

@@ -6,6 +6,8 @@ macro_rules! impl_cmp_partial_eq {
         $id:ident |
         ($true:expr, $false:expr)
     ) => {
+        // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
+        #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
         impl ::cmp::PartialEq<$id> for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
