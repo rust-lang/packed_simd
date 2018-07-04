@@ -6,6 +6,8 @@ macro_rules! impl_cmp_partial_eq {
         $id:ident |
         ($true:expr, $false:expr)
     ) => {
+        // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
+        #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
         impl ::cmp::PartialEq<$id> for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
@@ -31,13 +33,15 @@ macro_rules! impl_cmp_partial_eq {
                     assert!(a == a);
                     assert!(!(a != a));
 
-                    let a = $id::splat($false).replace(0, $true);
-                    let b = $id::splat($true);
+                    if $id::lanes() > 1 {
+                        let a = $id::splat($false).replace(0, $true);
+                        let b = $id::splat($true);
 
-                    assert!(a != b);
-                    assert!(!(a == b));
-                    assert!(a == a);
-                    assert!(!(a != a));
+                        assert!(a != b);
+                        assert!(!(a == b));
+                        assert!(a == a);
+                        assert!(!(a != a));
+                    }
                 }
             }
         }

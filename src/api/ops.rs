@@ -21,3 +21,9 @@ mod scalar_shifts;
 
 #[macro_use]
 mod vector_neg;
+
+#[macro_use]
+mod vector_int_min_max;
+
+#[macro_use]
+mod vector_float_min_max;
