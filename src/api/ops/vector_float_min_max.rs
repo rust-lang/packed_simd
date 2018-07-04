@@ -41,7 +41,7 @@ macro_rules! impl_ops_vector_float_min_max {
                     let o = $id::splat(1. as $elem_ty);
                     let t = $id::splat(2. as $elem_ty);
 
-                    let mut m = o;
+                    let mut m = o; // [1., 2., 1., 2., ...]
                     let mut on = o;
                     for i in 0..$id::lanes() {
                         if i % 2 == 0 {

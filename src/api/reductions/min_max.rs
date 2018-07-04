@@ -86,3 +86,102 @@ macro_rules! impl_reduction_min_max {
         }
     };
 }
+
+macro_rules! test_reduction_float_min_max {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+        #[cfg(test)]
+        interpolate_idents! {
+            mod [$id _reduction_min_max_nan] {
+                use super::*;
+                #[test]
+                fn min_element_test() {
+                    let n = $elem_ty::NAN;
+
+                    assert_eq!(n.min(-3.), -3.);
+                    assert_eq!((-3. as $elem_ty).min(n), -3.);
+
+                    let v0 = $id::splat(-3.);
+
+                    for i in 0..$id::lanes() {
+                        let mut v = v0.replace(i, n);
+                        if i != $id::lanes() - 1 {
+                            assert_eq!(v.min_element(), -3.,
+                                       "nan at {} => {} | {:?}",
+                                       i, v.min_element(), v);
+                            for j in 0..i {
+                                v = v.replace(j, n);
+                                assert_eq!(v.min_element(), -3.,
+                                           "nan at {} => {} | {:?}",
+                                           i, v.min_element(), v);
+                            }
+                        } else {
+                            // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
+                            //
+                            // If there is a NaN, the result should always the smallest element,
+                            // but currently when the last element is NaN the current
+                            // implementation incorrectly returns NaN.
+                            assert!(v.min_element().is_nan(), // FIXME: should be -3.
+                                       "nan at {} => {} | {:?}",
+                                       i, v.min_element(), v);
+                            for j in 0..i {
+                                v = v.replace(j, n);
+                                assert!(v.min_element().is_nan(), // FIXME: should be -3.
+                                           "nan at {} => {} | {:?}",
+                                           i, v.min_element(), v);
+                            }
+                        }
+                    }
+                    // If the vector contains all NaNs the result is NaN:
+                    let vn = $id::splat(n);
+                    assert!(vn.min_element().is_nan(),
+                            "all nans | v={:?} | min={} | is_nan: {}",
+                            vn, vn.min_element(), vn.min_element().is_nan());
+                }
+                #[test]
+                fn max_element_test() {
+                    let n = $elem_ty::NAN;
+
+                    assert_eq!(n.max(-3.), -3.);
+                    assert_eq!((-3. as $elem_ty).max(n), -3.);
+
+                    let v0 = $id::splat(-3.);
+
+                    for i in 0..$id::lanes() {
+                        let mut v = v0.replace(i, n);
+                        if i != $id::lanes() - 1 {
+                            assert_eq!(v.max_element(), -3.,
+                                       "nan at {} => {} | {:?}",
+                                       i, v.max_element(), v);
+                            for j in 0..i {
+                                v = v.replace(j, n);
+                                assert_eq!(v.max_element(), -3.,
+                                           "nan at {} => {} | {:?}",
+                                           i, v.max_element(), v);
+                            }
+                        } else {
+                            // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
+                            //
+                            // If there is a NaN, the result should always the smallest element,
+                            // but currently when the last element is NaN the current
+                            // implementation incorrectly returns NaN.
+                            assert!(v.max_element().is_nan(), // FIXME: should be -3.
+                                       "nan at {} => {} | {:?}",
+                                       i, v.max_element(), v);
+                            for j in 0..i {
+                                v = v.replace(j, n);
+                                assert!(v.max_element().is_nan(), // FIXME: should be -3.
+                                           "nan at {} => {} | {:?}",
+                                           i, v.max_element(), v);
+                            }
+                        }
+                    }
+                    // If the vector contains all NaNs the result is NaN:
+                    let vn = $id::splat(n);
+                    assert!(vn.max_element().is_nan(),
+                            "all nans | v={:?} | max={} | is_nan: {}",
+                            vn, vn.max_element(), vn.max_element().is_nan());
+                }
+            }
+        }
+    }
+}

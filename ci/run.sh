@@ -24,13 +24,17 @@ cargo_test() {
     cmd="cargo $CARGO_SUBCMD --target=$TARGET $1"
     $cmd
 }
-#cargo_test
+cargo_test
 cargo_test "--release"
 
-# Test some of the targets compiled with different features
+# Test different feature sets.
 case ${TARGET} in
     x86*)
+        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+sse4.2"
+        cargo_test "--release"
         RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
+        cargo_test "--release"
+        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx2"
         cargo_test "--release"
         ;;
     armv7*)
@@ -50,6 +54,8 @@ case ${TARGET} in
         cargo_test "--release"
         ;;
     powerpc64-*)
+        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+altivec"
+        cargo_test "--release"
         RUSTFLAGS="${RUSTFLAGS} -C target-feature=+vsx"
         cargo_test "--release"
         ;;

@@ -1,7 +1,6 @@
 //! Sim<[T; N]> - Packed vector type
 //!
 //! TODO:
-//! - load/store
 //! - gather/scatter
 //! - partial ord / ord
 //! - grep for FIXME s
@@ -9,7 +8,7 @@
 #![feature(
     rust_2018_preview, repr_simd, const_fn, platform_intrinsics, stdsimd,
     aarch64_target_feature, arm_target_feature, link_llvm_intrinsics,
-    core_intrinsics, stmt_expr_attributes
+    core_intrinsics, stmt_expr_attributes, align_offset
 )]
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]
@@ -30,7 +29,7 @@ extern crate cfg_if;
 extern crate arrayvec;
 
 #[allow(unused_imports)]
-use core::{cmp, default, f32, f64, fmt, hash, intrinsics, marker, mem, ops};
+use core::{cmp, default, f32, f64, fmt, hash, intrinsics, iter, marker, mem, ops, ptr, slice};
 
 #[macro_use]
 mod api;

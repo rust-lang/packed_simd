@@ -99,6 +99,111 @@ macro_rules! impl_reduction_float_arithmetic {
                         (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
                     );
                 }
+
+                #[test]
+                #[allow(unreachable_code)]
+                fn sum_nan() {
+                    // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
+                    // https://github.com/rust-lang-nursery/stdsimd/issues/409
+                    return;
+
+                    let n0 = $elem_ty::NAN;
+                    let v0 = $id::splat(-3.0);
+                    for i in 0..$id::lanes() {
+                        let mut v = v0.replace(i, n0);
+                        // If the vector contains a NaN the result is NaN:
+                        assert!(
+                            v.sum().is_nan(),
+                            "nan at {} => {} | {:?}",
+                            i,
+                            v.sum(),
+                            v
+                        );
+                        for j in 0..i {
+                            v = v.replace(j, n0);
+                            assert!(v.sum().is_nan());
+                        }
+                    }
+                    let v = $id::splat(n0);
+                    assert!(v.sum().is_nan(), "all nans | {:?}", v);
+                }
+
+                #[test]
+                #[allow(unreachable_code)]
+                fn product_nan() {
+                    // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
+                    // https://github.com/rust-lang-nursery/stdsimd/issues/409
+                    return;
+
+                    let n0 = $elem_ty::NAN;
+                    let v0 = $id::splat(-3.0);
+                    for i in 0..$id::lanes() {
+                        let mut v = v0.replace(i, n0);
+                        // If the vector contains a NaN the result is NaN:
+                        assert!(
+                            v.product().is_nan(),
+                            "nan at {} => {} | {:?}",
+                            i,
+                            v.product(),
+                            v
+                        );
+                        for j in 0..i {
+                            v = v.replace(j, n0);
+                            assert!(v.product().is_nan());
+                        }
+                    }
+                    let v = $id::splat(n0);
+                    assert!(v.product().is_nan(), "all nans | {:?}", v);
+                }
+
+                #[test]
+                #[allow(unused, dead_code)]
+                fn sum_roundoff() {
+                    // Performs a tree-reduction
+                    fn tree_reduce_sum(a: &[[$elem_ty]]) -> $elem_ty {
+                        assert!(!a.is_empty());
+                        if a.len() == 1 {
+                            a[0]
+                        } else if a.len() == 2 {
+                            a[0] + a[1]
+                        } else {
+                            let mid = a.len() / 2;
+                            let (left, right) = a.split_at(mid);
+                            tree_reduce_sum(left) + tree_reduce_sum(right)
+                        }
+                    }
+
+                    let mut start = $elem_ty::EPSILON;
+                    let mut scalar_reduction = 0. as $elem_ty;
+
+                    let mut v = $id::splat(0. as $elem_ty);
+                    for i in 0..$id::lanes() {
+                        let c = if i % 2 == 0 { 1e3 } else { -1. };
+                        start *= 3.14 * c;
+                        scalar_reduction += start;
+                        v = v.replace(i, start);
+                    }
+                    let simd_reduction = v.sum();
+
+                    let mut a = [0. as $elem_ty; $id::lanes()];
+                    v.write_to_slice_unaligned(&mut a);
+                    let tree_reduction = tree_reduce_sum(&a);
+
+                    // tolerate 1 ULP difference:
+                    assert!(
+                        if simd_reduction.to_bits() > tree_reduction.to_bits() {
+                            simd_reduction.to_bits() - tree_reduction.to_bits() < 2
+                        } else {
+                            tree_reduction.to_bits() - simd_reduction.to_bits() < 2
+                        },
+                        "vector: {:?} | simd_reduction: {:?} | \
+                         tree_reduction: {} | scalar_reduction: {}",
+                        v,
+                        simd_reduction,
+                        tree_reduction,
+                        scalar_reduction
+                    );
+                }
             }
         }
     }
