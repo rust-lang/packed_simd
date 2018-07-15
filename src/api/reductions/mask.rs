@@ -8,7 +8,7 @@ macro_rules! impl_reduction_mask {
             pub fn all(self) -> bool {
                 unsafe { crate::codegen::reductions::mask::All::all(self) }
             }
-            /// Is `any` vector lanes `true`?
+            /// Is `any` vector lane `true`?
             #[inline]
             pub fn any(self) -> bool {
                 unsafe { crate::codegen::reductions::mask::Any::any(self) }

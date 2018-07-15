@@ -95,6 +95,21 @@ macro_rules! impl_reduction_integer_arithmetic {
                     }
                 }
                 #[test]
+                fn wrapping_sum_overflow() {
+                    let start = $elem_ty::max_value()
+                        - ($id::lanes() as $elem_ty / 2);
+
+                    let v = $id::splat(start as $elem_ty);
+                    let vwrapping_sum = v.wrapping_sum();
+
+                    let mut wrapping_sum = start;
+                    for _ in 1..$id::lanes() {
+                        wrapping_sum = wrapping_sum.wrapping_add(start);
+                    }
+                    assert_eq!(wrapping_sum, vwrapping_sum, "v = {:?}", v);
+                }
+
+                #[test]
                 fn wrapping_product() {
                     let v = $id::splat(0 as $elem_ty);
                     assert_eq!(v.wrapping_product(), 0 as $elem_ty);
@@ -118,6 +133,21 @@ macro_rules! impl_reduction_integer_arithmetic {
                             2 as $elem_ty
                         );
                     }
+                }
+
+                #[test]
+                fn wrapping_product_overflow() {
+                    let start = $elem_ty::max_value()
+                        - ($id::lanes() as $elem_ty / 2);
+
+                    let v = $id::splat(start as $elem_ty);
+                    let vmul = v.wrapping_product();
+
+                    let mut mul = start;
+                    for _ in 1..$id::lanes() {
+                        mul = mul.wrapping_mul(start);
+                    }
+                    assert_eq!(mul, vmul, "v = {:?}", v);
                 }
             }
         }

@@ -4,6 +4,7 @@ crate mod llvm;
 crate mod math;
 crate mod reductions;
 crate mod shuffle;
+crate mod swap_bytes;
 
 macro_rules! impl_simd_array {
     ([$elem_ty:ident; $elem_count:expr]:

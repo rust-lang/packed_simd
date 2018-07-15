@@ -36,6 +36,9 @@ mod api;
 mod codegen;
 mod sealed;
 
+#[cfg(test)]
+mod test_utils;
+
 /// Packed vector type
 ///
 /// # Examples

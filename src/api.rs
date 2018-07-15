@@ -22,6 +22,8 @@ mod select;
 mod shuffle;
 #[macro_use]
 mod slice;
+#[macro_use]
+mod swap_bytes;
 
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
@@ -48,6 +50,7 @@ macro_rules! impl_i {
         impl_hash!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_write_to_slice!([$elem_ty; $elem_count]: $tuple_id);
+        impl_swap_bytes!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));
@@ -81,6 +84,7 @@ macro_rules! impl_u {
         impl_hash!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_write_to_slice!([$elem_ty; $elem_count]: $tuple_id);
+        impl_swap_bytes!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1, 0));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));

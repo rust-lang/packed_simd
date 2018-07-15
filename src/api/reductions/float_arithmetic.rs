@@ -204,6 +204,55 @@ macro_rules! impl_reduction_float_arithmetic {
                         scalar_reduction
                     );
                 }
+
+                #[test]
+                #[allow(unused, dead_code)]
+                fn product_roundoff() {
+                    // Performs a tree-reduction
+                    fn tree_reduce_product(a: &[[$elem_ty]]) -> $elem_ty {
+                        assert!(!a.is_empty());
+                        if a.len() == 1 {
+                            a[0]
+                        } else if a.len() == 2 {
+                            a[0] * a[1]
+                        } else {
+                            let mid = a.len() / 2;
+                            let (left, right) = a.split_at(mid);
+                            tree_reduce_product(left) * tree_reduce_product(right)
+                        }
+                    }
+
+                    let mut start = $elem_ty::EPSILON;
+                    let mut scalar_reduction = 1. as $elem_ty;
+
+                    let mut v = $id::splat(0. as $elem_ty);
+                    for i in 0..$id::lanes() {
+                        let c = if i % 2 == 0 { 1e3 } else { -1. };
+                        start *= 3.14 * c;
+                        scalar_reduction *= start;
+                        v = v.replace(i, start);
+                    }
+                    let simd_reduction = v.product();
+
+                    let mut a = [0. as $elem_ty; $id::lanes()];
+                    v.write_to_slice_unaligned(&mut a);
+                    let tree_reduction = tree_reduce_product(&a);
+
+                    // tolerate 1 ULP difference:
+                    assert!(
+                        if simd_reduction.to_bits() > tree_reduction.to_bits() {
+                            simd_reduction.to_bits() - tree_reduction.to_bits() < 2
+                        } else {
+                            tree_reduction.to_bits() - simd_reduction.to_bits() < 2
+                        },
+                        "vector: {:?} | simd_reduction: {:?} | \
+                         tree_reduction: {} | scalar_reduction: {}",
+                        v,
+                        simd_reduction,
+                        tree_reduction,
+                        scalar_reduction
+                    );
+                }
             }
         }
     }
