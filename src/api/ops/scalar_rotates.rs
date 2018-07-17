@@ -1,10 +1,10 @@
-//! Implements integer rotates.
+//! Vertical (lane-wise) vector-scalar rotates operations.
 #![allow(unused)]
 
 // inline(always) to encourage the compiler to generate rotate instructions
 // where available
 // FIXME: once codegen is correct, re-evaluate this
-macro_rules! impl_ops_vector_rotates {
+macro_rules! impl_ops_scalar_rotates {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
         impl $id {
             /// Shifts the bits of each lane to the left by the specified amount in
@@ -41,7 +41,7 @@ macro_rules! impl_ops_vector_rotates {
 }
 
 #[cfg(test)]
-macro_rules! test_vector_rotate_ops {
+macro_rules! test_scalar_rotate_ops {
     ($id:ident, $elem_ty:ident) => {
         #[test]
         fn rotate_ops() {
