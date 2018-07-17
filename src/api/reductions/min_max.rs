@@ -11,7 +11,8 @@ macro_rules! impl_reduction_min_max {
                     use llvm::simd_reduce_max;
                     unsafe { simd_reduce_max(self.0) }
                 }
-                #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
+                #[cfg(any(
+                    target_arch = "aarch64", target_arch = "arm"))]
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
@@ -22,20 +23,28 @@ macro_rules! impl_reduction_min_max {
                     }
                     x
                 }
+
             }
 
             /// Smallest vector element value.
             #[inline]
             pub fn min_element(self) -> $elem_ty {
-                #[cfg(not(any(target_arch = "aarch64", target_arch = "arm")))]
+                #[cfg(not(any(
+                    target_arch = "aarch64", target_arch = "arm",
+                    all(target_arch = "x86", not(target_feature = "sse2"))
+                )))]
                 {
                     use llvm::simd_reduce_min;
                     unsafe { simd_reduce_min(self.0) }
                 }
-                #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
+                #[cfg(any(
+                    target_arch = "aarch64", target_arch = "arm",
+                    all(target_arch = "x86", not(target_feature = "sse2"))
+                ))]
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
+                    // FIXME: broken on i586-unknown-linux-gnu
                     use cmp::Ord;
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
