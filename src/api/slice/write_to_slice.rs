@@ -47,6 +47,7 @@ macro_rules! impl_slice_write_to_slice {
             pub unsafe fn write_to_slice_aligned_unchecked(
                 self, slice: &mut [$elem_ty],
             ) {
+                #[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
                 *(slice.get_unchecked_mut(0) as *mut $elem_ty as *mut Self) =
                     self;
             }

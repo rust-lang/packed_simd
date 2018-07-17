@@ -1,13 +1,14 @@
 //! Mask types
 
 macro_rules! impl_mask_ty {
-    ($id:ident: $elem_ty:ident | #[$doc:meta]) => {
+    ($id:ident : $elem_ty:ident | #[$doc:meta]) => {
         #[$doc]
         #[derive(Copy, Clone)]
         pub struct $id($elem_ty);
 
         impl $id {
             /// Instantiate a mask with `value`
+            #[inline]
             pub fn new(x: bool) -> Self {
                 if x {
                     $id(!0)
@@ -16,11 +17,11 @@ macro_rules! impl_mask_ty {
                 }
             }
             /// Test if the mask is set
+            #[inline]
             pub fn test(&self) -> bool {
                 self.0 != 0
             }
         }
-
 
         impl Default for $id {
             #[inline]
@@ -29,6 +30,7 @@ macro_rules! impl_mask_ty {
             }
         }
 
+        #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
         impl PartialEq<$id> for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
@@ -44,7 +46,10 @@ macro_rules! impl_mask_ty {
 
         impl PartialOrd<$id> for $id {
             #[inline]
-            fn partial_cmp(&self, other: &Self) -> Option<crate::cmp::Ordering> {
+            fn partial_cmp(
+                &self,
+                other: &Self,
+            ) -> Option<crate::cmp::Ordering> {
                 // FIXME: add assumes
                 use crate::cmp::Ordering;
                 if self == other {
@@ -82,7 +87,7 @@ macro_rules! impl_mask_ty {
             fn cmp(&self, other: &Self) -> crate::cmp::Ordering {
                 match self.partial_cmp(other) {
                     Some(x) => x,
-                    None => { unsafe { crate::hint::unreachable_unchecked() } }
+                    None => unsafe { crate::hint::unreachable_unchecked() },
                 }
             }
         }
@@ -96,11 +101,15 @@ macro_rules! impl_mask_ty {
 
         impl crate::fmt::Debug for $id {
             #[inline]
-            fn fmt(&self, fmtter: &mut crate::fmt::Formatter) -> Result<(), crate::fmt::Error> {
+            #[cfg_attr(feature = "cargo-clippy", allow(write_literal))]
+            fn fmt(
+                &self,
+                fmtter: &mut crate::fmt::Formatter,
+            ) -> Result<(), crate::fmt::Error> {
                 write!(fmtter, "{}({})", stringify!($id), self.0 != 0)
             }
         }
-    }
+    };
 }
 
 impl_mask_ty!(m8: i8 | /// 8-bit wide mask.

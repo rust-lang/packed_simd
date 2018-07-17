@@ -44,10 +44,14 @@ pub fn test_le<T: PartialOrd + Debug>(a: T, b: T) {
 
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
 pub fn test_cmp<T>(a: T, b: T, o: Option<::cmp::Ordering>)
-    where T: PartialOrd + Debug + crate::sealed::Simd + Copy + Clone,
-          <T as crate::sealed::Simd>::Element: Default + Copy + Clone + PartialOrd
+where
+    T: PartialOrd + Debug + crate::sealed::Simd + Copy + Clone,
+    <T as crate::sealed::Simd>::Element: Default + Copy + Clone + PartialOrd,
 {
-    assert!(T::LANES <= 64, "array length in these two arrays needs updating");
+    assert!(
+        T::LANES <= 64,
+        "array length in these two arrays needs updating"
+    );
     let mut arr_a: [T::Element; 64] = [Default::default(); 64];
     let mut arr_b: [T::Element; 64] = [Default::default(); 64];
 
@@ -61,11 +65,11 @@ pub fn test_cmp<T>(a: T, b: T, o: Option<::cmp::Ordering>)
         Some(::cmp::Ordering::Less) => {
             test_lt(a, b);
             test_le(a, b);
-        },
+        }
         Some(::cmp::Ordering::Greater) => {
             test_lt(b, a);
             test_le(b, a);
-        },
+        }
         Some(::cmp::Ordering::Equal) => {
             assert!(a == b, "{:?}, {:?}", a, b);
             assert!(!(a != b), "{:?}, {:?}", a, b);
@@ -76,7 +80,7 @@ pub fn test_cmp<T>(a: T, b: T, o: Option<::cmp::Ordering>)
 
             test_le(a, b);
             test_le(b, a);
-        },
+        }
         None => {
             assert!(!(a == b), "{:?}, {:?}", a, b);
             assert!(!(a != b), "{:?}, {:?}", a, b);

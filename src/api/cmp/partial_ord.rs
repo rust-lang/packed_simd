@@ -3,9 +3,7 @@
 //! This implements a lexicographical order.
 
 macro_rules! impl_cmp_partial_ord {
-    (
-        [$elem_ty:ident; $elem_count:expr]: $id:ident
-    ) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
         impl ::cmp::PartialOrd<$id> for $id {
             #[inline]
             fn partial_cmp(&self, other: &Self) -> Option<::cmp::Ordering> {
@@ -24,7 +22,9 @@ macro_rules! impl_cmp_partial_ord {
                 let m_lt = Self::lt(*self, *other);
                 let m_eq = Self::eq(*self, *other);
                 for i in 0..$id::lanes() {
-                    if m_eq.extract(i) { continue; }
+                    if m_eq.extract(i) {
+                        continue;
+                    }
                     return m_lt.extract(i);
                 }
                 false
@@ -42,7 +42,9 @@ macro_rules! impl_cmp_partial_ord {
                 let m_gt = Self::gt(*self, *other);
                 let m_eq = Self::eq(*self, *other);
                 for i in 0..$id::lanes() {
-                    if m_eq.extract(i) { continue; }
+                    if m_eq.extract(i) {
+                        continue;
+                    }
                     return m_gt.extract(i);
                 }
                 false

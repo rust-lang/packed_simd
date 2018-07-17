@@ -11,7 +11,7 @@ macro_rules! impl_cmp_ord {
             fn cmp(&self, other: &Self) -> ::cmp::Ordering {
                 match self.partial_cmp(other) {
                     Some(x) => x,
-                    None => { unsafe { ::hint::unreachable_unchecked() } },
+                    None => unsafe { ::hint::unreachable_unchecked() },
                 }
             }
         }

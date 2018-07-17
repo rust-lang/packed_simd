@@ -58,25 +58,23 @@ macro_rules! shuffle {
     ($vec0:expr, $vec1:expr, [$l0:expr, $l1:expr]) => {
         {
             #[allow(unused_unsafe)]
-            let r = unsafe {
+            unsafe {
                 $crate::Simd($crate::__shuffle_vector2(
                     $vec0.0, $vec1.0,
                     [$l0, $l1]
                 ))
-            };
-            r
+            }
         }
     };
     ($vec0:expr, $vec1:expr, [$l0:expr, $l1:expr, $l2:expr, $l3:expr]) => {
         {
             #[allow(unused_unsafe)]
-            let r = unsafe {
+            unsafe {
                 $crate::Simd($crate::__shuffle_vector4(
                     $vec0.0, $vec1.0,
                     [$l0, $l1, $l2, $l3]
                 ))
-            };
-            r
+            }
         }
     };
     ($vec0:expr, $vec1:expr,
@@ -84,14 +82,13 @@ macro_rules! shuffle {
       $l4:expr, $l5:expr, $l6:expr, $l7:expr]) => {
         {
             #[allow(unused_unsafe)]
-            let r = unsafe {
+            unsafe {
                 $crate::Simd($crate::__shuffle_vector8(
                     $vec0.0, $vec1.0,
                     [$l0, $l1, $l2, $l3,
                      $l4, $l5, $l6, $l7]
                 ))
-            };
-            r
+            }
         }
     };
     ($vec0:expr, $vec1:expr,
@@ -101,7 +98,7 @@ macro_rules! shuffle {
       $l12:expr, $l13:expr, $l14:expr, $l15:expr]) => {
         {
             #[allow(unused_unsafe)]
-            let r = unsafe {
+            unsafe {
                 $crate::Simd($crate::__shuffle_vector16(
                     $vec0.0, $vec1.0,
                     [$l0, $l1, $l2, $l3,
@@ -109,8 +106,7 @@ macro_rules! shuffle {
                      $l8, $l9, $l10, $l11,
                      $l12, $l13, $l14, $l15]
                 ))
-            };
-        r
+            }
         }
     };
     ($vec0:expr, $vec1:expr,
@@ -124,7 +120,7 @@ macro_rules! shuffle {
       $l28:expr, $l29:expr, $l30:expr, $l31:expr]) => {
         {
             #[allow(unused_unsafe)]
-            let r = unsafe {
+            unsafe {
                 $crate::Simd($crate::__shuffle_vector32(
                     $vec0.0, $vec1.0,
                     [$l0, $l1, $l2, $l3,
@@ -136,8 +132,7 @@ macro_rules! shuffle {
                      $l24, $l25, $l26, $l27,
                      $l28, $l29, $l30, $l31]
                 ))
-            };
-            r
+            }
         }
     };
     ($vec0:expr, $vec1:expr,
@@ -159,7 +154,7 @@ macro_rules! shuffle {
       $l60:expr, $l61:expr, $l62:expr, $l63:expr]) => {
         {
             #[allow(unused_unsafe)]
-            let r = unsafe {
+            unsafe {
                 $crate::Simd(
                     $crate::__shuffle_vector64(
                     $vec0.0, $vec1.0,
@@ -180,8 +175,7 @@ macro_rules! shuffle {
                      $l56, $l57, $l58, $l59,
                      $l60, $l61, $l62, $l63]
                 ))
-            };
-            r
+            }
         }
     };
     ($vec:expr, [$($l:expr),*]) => {
