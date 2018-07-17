@@ -29,7 +29,7 @@ mod swap_bytes;
 
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
-     | $($elem_ids:ident),* | $(#[$doc:meta])*) => {
+     | $($elem_ids:ident),* | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_iuf!([$elem_ty; $elem_count]: $tuple_id
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
@@ -49,6 +49,7 @@ macro_rules! impl_i {
         impl_fmt_octal!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_binary!([$elem_ty; $elem_count]: $tuple_id);
         impl_from_array!([$elem_ty; $elem_count]: $tuple_id | (1, 1));
+        impl_from_vectors!([$elem_ty; $elem_count]: $tuple_id | $($from_vec_ty),*);
         impl_default!([$elem_ty; $elem_count]: $tuple_id);
         impl_hash!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
@@ -69,7 +70,7 @@ macro_rules! impl_i {
 
 macro_rules! impl_u {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
-     | $($elem_ids:ident),* | $(#[$doc:meta])*) => {
+     | $($elem_ids:ident),* | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_iuf!([$elem_ty; $elem_count]: $tuple_id
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
@@ -81,13 +82,15 @@ macro_rules! impl_u {
         impl_ops_vector_int_min_max!([$elem_ty; $elem_count]: $tuple_id);
         impl_reduction_integer_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
         impl_reduction_min_max!([$elem_ty; $elem_count]: $tuple_id);
-        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | $elem_ty | (|x|{ x }) | (!(0 as $elem_ty), 0));
+        impl_reduction_bitwise!([$elem_ty; $elem_count]: $tuple_id | $elem_ty |
+                                (|x|{ x }) | (!(0 as $elem_ty), 0));
         impl_fmt_debug!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_lower_hex!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_upper_hex!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_octal!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_binary!([$elem_ty; $elem_count]: $tuple_id);
         impl_from_array!([$elem_ty; $elem_count]: $tuple_id | (1, 1));
+        impl_from_vectors!([$elem_ty; $elem_count]: $tuple_id | $($from_vec_ty),*);
         impl_default!([$elem_ty; $elem_count]: $tuple_id);
         impl_hash!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
@@ -109,7 +112,7 @@ macro_rules! impl_u {
 
 macro_rules! impl_f {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
-     | $($elem_ids:ident),* | $(#[$doc:meta])*) => {
+     | $($elem_ids:ident),* | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_iuf!([$elem_ty; $elem_count]: $tuple_id
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
@@ -120,6 +123,7 @@ macro_rules! impl_f {
         impl_reduction_min_max!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_debug!([$elem_ty; $elem_count]: $tuple_id);
         impl_from_array!([$elem_ty; $elem_count]: $tuple_id | (1., 1.));
+        impl_from_vectors!([$elem_ty; $elem_count]: $tuple_id | $($from_vec_ty),*);
         impl_default!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1., 0.));
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
@@ -145,7 +149,7 @@ macro_rules! impl_f {
 
 macro_rules! impl_m {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident | $ielem_ty:ident |
-     $($elem_ids:ident),* | $(#[$doc:meta])*) => {
+     $($elem_ids:ident),* | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_mask!([$elem_ty; $elem_count]: $tuple_id | $ielem_ty |
                            $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_mask_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (true, false));
@@ -154,6 +158,7 @@ macro_rules! impl_m {
         impl_reduction_mask!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_debug!([bool; $elem_count]: $tuple_id);
         impl_from_array!([$elem_ty; $elem_count]: $tuple_id | ($elem_ty::new(true), true));
+        impl_from_vectors!([$elem_ty; $elem_count]: $tuple_id | $($from_vec_ty),*);
         impl_default!([bool; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));

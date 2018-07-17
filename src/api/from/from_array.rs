@@ -25,7 +25,7 @@ macro_rules! impl_from_array {
             }
         }
 
-        // FIXME: Into::into is not inline, but due to
+        // FIXME: `Into::into` is not inline, but due to
         // the blanket impl in `std`, which is not
         // marked `default`, we cannot override it here with
         // specialization.
