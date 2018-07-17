@@ -173,8 +173,7 @@ macro_rules! test_reduction_float_min_max {
                     for i in 0..$id::lanes() {
                         let mut v = v0.replace(i, n);
                         if i == $id::lanes() - 1 &&
-                            !cfg!(any(target_arch = "arm", target_arch = "aarch64")
-                            ))
+                            !cfg!(any(target_arch = "arm", target_arch = "aarch64"))
                         {
                             // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
                             //
