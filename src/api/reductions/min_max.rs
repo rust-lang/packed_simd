@@ -173,9 +173,7 @@ macro_rules! test_reduction_float_min_max {
                     for i in 0..$id::lanes() {
                         let mut v = v0.replace(i, n);
                         if i == $id::lanes() - 1 &&
-                            !cfg!(any(
-                                target_arch = "arm", target_arch = "aarch64",
-                                all(target_arch = "x86", not(target_feature = "sse2"))
+                            !cfg!(any(target_arch = "arm", target_arch = "aarch64")
                             ))
                         {
                             // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
@@ -200,10 +198,8 @@ macro_rules! test_reduction_float_min_max {
                             break
                         }
 
-                        if i == $id::lanes() - 1 && cfg!(any(
-                                target_arch = "arm", target_arch = "aarch64",
-                                all(target_arch = "x86", not(target_feature = "sse2"))
-                        )) {
+                        if i == $id::lanes() - 1 &&
+                          cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
                             assert!(false, "this cannot happen");
                         }
                         assert_eq!(v.max_element(), -3.,
