@@ -38,6 +38,7 @@ macro_rules! impl_i {
         impl_ops_scalar_bitwise!([$elem_ty; $elem_count]: $tuple_id  | (!(0 as $elem_ty), 0));
         impl_ops_vector_shifts!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_scalar_shifts!([$elem_ty; $elem_count]: $tuple_id);
+        impl_ops_scalar_rotates!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_vector_neg!([$elem_ty; $elem_count]: $tuple_id);
         impl_ops_vector_int_min_max!([$elem_ty; $elem_count]: $tuple_id);
         impl_reduction_integer_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
