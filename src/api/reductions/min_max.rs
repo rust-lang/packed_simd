@@ -16,7 +16,6 @@ macro_rules! impl_reduction_min_max {
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
-                    use cmp::Ord;
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
                         x = x.max(self.extract(i));
@@ -45,7 +44,6 @@ macro_rules! impl_reduction_min_max {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
                     // FIXME: broken on i586-unknown-linux-gnu
-                    use cmp::Ord;
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
                         x = x.min(self.extract(i));
