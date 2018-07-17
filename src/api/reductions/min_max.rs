@@ -106,12 +106,12 @@ macro_rules! test_reduction_float_min_max {
                         let mut v = v0.replace(i, n);
                         if i != $id::lanes() - 1 {
                             assert_eq!(v.min_element(), -3.,
-                                       "nan at {} => {} | {:?}",
+                                       "[A]: nan at {} => {} | {:?}",
                                        i, v.min_element(), v);
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert_eq!(v.min_element(), -3.,
-                                           "nan at {} => {} | {:?}",
+                                           "[B]: nan at {} => {} | {:?}",
                                            i, v.min_element(), v);
                             }
                         } else {
@@ -121,12 +121,12 @@ macro_rules! test_reduction_float_min_max {
                             // but currently when the last element is NaN the current
                             // implementation incorrectly returns NaN.
                             assert!(v.min_element().is_nan(), // FIXME: should be -3.
-                                       "nan at {} => {} | {:?}",
+                                       "[C]: nan at {} => {} | {:?}",
                                        i, v.min_element(), v);
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert!(v.min_element().is_nan(), // FIXME: should be -3.
-                                           "nan at {} => {} | {:?}",
+                                           "[D]: nan at {} => {} | {:?}",
                                            i, v.min_element(), v);
                             }
                         }
@@ -150,12 +150,12 @@ macro_rules! test_reduction_float_min_max {
                         let mut v = v0.replace(i, n);
                         if i != $id::lanes() - 1 {
                             assert_eq!(v.max_element(), -3.,
-                                       "nan at {} => {} | {:?}",
+                                       "[A]: nan at {} => {} | {:?}",
                                        i, v.max_element(), v);
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert_eq!(v.max_element(), -3.,
-                                           "nan at {} => {} | {:?}",
+                                           "[B]: nan at {} => {} | {:?}",
                                            i, v.max_element(), v);
                             }
                         } else {
@@ -165,12 +165,12 @@ macro_rules! test_reduction_float_min_max {
                             // but currently when the last element is NaN the current
                             // implementation incorrectly returns NaN.
                             assert!(v.max_element().is_nan(), // FIXME: should be -3.
-                                       "nan at {} => {} | {:?}",
+                                       "[C]: nan at {} => {} | {:?}",
                                        i, v.max_element(), v);
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert!(v.max_element().is_nan(), // FIXME: should be -3.
-                                           "nan at {} => {} | {:?}",
+                                           "[D]: nan at {} => {} | {:?}",
                                            i, v.max_element(), v);
                             }
                         }
