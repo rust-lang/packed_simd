@@ -138,6 +138,12 @@ macro_rules! test_reduction_float_min_max {
                             }
                             break
                         }
+                        if i == $id::lanes() - 1 && cfg!(any(
+                            target_arch = "arm", target_arch = "aarch64",
+                            all(target_arch = "x86", not(target_feature = "sse2"))
+                        )) {
+                            assert!(false, "this cannot happen");
+                        }
 
                         assert_eq!(v.min_element(), -3.,
                                    "[A]: nan at {} => {} | {:?}",
@@ -192,6 +198,13 @@ macro_rules! test_reduction_float_min_max {
                                            i, v.max_element(), v);
                             }
                             break
+                        }
+
+                        if i == $id::lanes() - 1 && cfg!(any(
+                                target_arch = "arm", target_arch = "aarch64",
+                                all(target_arch = "x86", not(target_feature = "sse2"))
+                        )) {
+                            assert!(false, "this cannot happen");
                         }
                         assert_eq!(v.max_element(), -3.,
                                    "[A]: nan at {} => {} | {:?}",
