@@ -111,31 +111,42 @@ macro_rules! test_reduction_float_min_max {
 
                     for i in 0..$id::lanes() {
                         let mut v = v0.replace(i, n);
-                        if i != $id::lanes() - 1 {
-                            assert_eq!(v.min_element(), -3.,
-                                       "[A]: nan at {} => {} | {:?}",
-                                       i, v.min_element(), v);
-                            for j in 0..i {
-                                v = v.replace(j, n);
-                                assert_eq!(v.min_element(), -3.,
-                                           "[B]: nan at {} => {} | {:?}",
-                                           i, v.min_element(), v);
-                            }
-                        } else {
+                        if i == $id::lanes() - 1 &&
+                            !cfg!(any(
+                                target_arch = "arm", target_arch = "aarch64",
+                                all(target_arch = "x86", not(target_feature = "sse2"))
+                            ))
+                        {
                             // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
                             //
                             // If there is a NaN, the result should always the smallest element,
                             // but currently when the last element is NaN the current
                             // implementation incorrectly returns NaN.
+                            //
+                            // The targets mentioned above use different codegen that
+                            // produces the correct result.
+                            //
+                            // These asserts detect if this behavior changes
                             assert!(v.min_element().is_nan(), // FIXME: should be -3.
                                        "[C]: nan at {} => {} | {:?}",
                                        i, v.min_element(), v);
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert!(v.min_element().is_nan(), // FIXME: should be -3.
-                                           "[D]: nan at {} => {} | {:?}",
-                                           i, v.min_element(), v);
+                                        "[D]: nan at {} => {} | {:?}",
+                                        i, v.min_element(), v);
                             }
+                            continue;
+                        }
+
+                        assert_eq!(v.min_element(), -3.,
+                                   "[A]: nan at {} => {} | {:?}",
+                                   i, v.min_element(), v);
+                        for j in 0..i {
+                            v = v.replace(j, n);
+                            assert_eq!(v.min_element(), -3.,
+                                       "[B]: nan at {} => {} | {:?}",
+                                       i, v.min_element(), v);
                         }
                     }
                     // If the vector contains all NaNs the result is NaN:
@@ -155,22 +166,22 @@ macro_rules! test_reduction_float_min_max {
 
                     for i in 0..$id::lanes() {
                         let mut v = v0.replace(i, n);
-                        if i != $id::lanes() - 1 {
-                            assert_eq!(v.max_element(), -3.,
-                                       "[A]: nan at {} => {} | {:?}",
-                                       i, v.max_element(), v);
-                            for j in 0..i {
-                                v = v.replace(j, n);
-                                assert_eq!(v.max_element(), -3.,
-                                           "[B]: nan at {} => {} | {:?}",
-                                           i, v.max_element(), v);
-                            }
-                        } else {
+                        if i == $id::lanes() - 1 &&
+                            !cfg!(any(
+                                target_arch = "arm", target_arch = "aarch64",
+                                all(target_arch = "x86", not(target_feature = "sse2"))
+                            ))
+                        {
                             // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
                             //
-                            // If there is a NaN, the result should always the smallest element,
+                            // If there is a NaN, the result should always the largest element,
                             // but currently when the last element is NaN the current
                             // implementation incorrectly returns NaN.
+                            //
+                            // The targets mentioned above use different codegen that
+                            // produces the correct result.
+                            //
+                            // These asserts detect if this behavior changes
                             assert!(v.max_element().is_nan(), // FIXME: should be -3.
                                        "[C]: nan at {} => {} | {:?}",
                                        i, v.max_element(), v);
@@ -180,6 +191,16 @@ macro_rules! test_reduction_float_min_max {
                                            "[D]: nan at {} => {} | {:?}",
                                            i, v.max_element(), v);
                             }
+                            continue;
+                        }
+                        assert_eq!(v.max_element(), -3.,
+                                   "[A]: nan at {} => {} | {:?}",
+                                   i, v.max_element(), v);
+                        for j in 0..i {
+                            v = v.replace(j, n);
+                            assert_eq!(v.max_element(), -3.,
+                                       "[B]: nan at {} => {} | {:?}",
+                                       i, v.max_element(), v);
                         }
                     }
                     // If the vector contains all NaNs the result is NaN:
