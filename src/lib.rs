@@ -2,8 +2,8 @@
 //!
 //! TODO:
 //! - gather/scatter
-//! - partial ord / ord
-//! - grep for FIXME s
+//! - From<[T; N]>
+//! - grep for fixme's
 
 #![feature(
     rust_2018_preview, repr_simd, const_fn, platform_intrinsics, stdsimd,
@@ -20,6 +20,7 @@
         cast_precision_loss
     )
 )]
+#![cfg_attr(feature = "cargo-clippy", deny(missing_inline_in_public_items))]
 #![no_std]
 
 #[macro_use]
@@ -29,7 +30,7 @@ extern crate cfg_if;
 extern crate arrayvec;
 
 #[allow(unused_imports)]
-use core::{cmp, default, f32, f64, fmt, hash, intrinsics, iter, marker, mem, ops, ptr, slice};
+use core::{cmp, default, f32, f64, fmt, hash, hint, intrinsics, iter, marker, mem, ops, ptr, slice};
 
 #[macro_use]
 mod api;
@@ -56,6 +57,7 @@ pub struct Simd<A: sealed::SimdArray>(
     // `shuffle!` macro to work: it needs to
     // access the internal `repr(simd)` type
     // to call the shuffle intrinsics.
+    #[doc(hidden)]
     pub <A as sealed::SimdArray>::Tuple,
 );
 
@@ -69,6 +71,7 @@ mod v256;
 pub use self::v256::*;
 
 // Re-export the shuffle intrinsics required by the `shuffle!` macro.
+#[doc(hidden)]
 pub use self::codegen::llvm::{
     __shuffle_vector16, __shuffle_vector2, __shuffle_vector32,
     __shuffle_vector4, __shuffle_vector64, __shuffle_vector8,

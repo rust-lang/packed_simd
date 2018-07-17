@@ -14,7 +14,7 @@ macro_rules! impl_minimal_iuf {
             type LanesType = [u32; $elem_count];
         }
 
-        impl Simd<[$elem_ty; $elem_count]> {
+        impl $id {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
             #[inline]

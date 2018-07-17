@@ -6,7 +6,15 @@ macro_rules! impl_cmp_ord {
         $id:ident |
         ($true:expr, $false:expr)
     ) => {
-        impl ::cmp::Ord for $id {}
+        impl ::cmp::Ord for $id {
+            #[inline]
+            fn cmp(&self, other: &Self) -> ::cmp::Ordering {
+                match self.partial_cmp(other) {
+                    Some(x) => x,
+                    None => { unsafe { ::hint::unreachable_unchecked() } },
+                }
+            }
+        }
 
         #[cfg(test)]
         interpolate_idents! {

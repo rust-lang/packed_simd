@@ -19,13 +19,14 @@ macro_rules! impl_math_float_rsqrte {
                 #[test]
                 fn rsqrte() {
                     use $elem_ty::consts::SQRT_2;
+                    let tol = $id::splat(2.4e-4 as $elem_ty);
                     let o = $id::splat(1 as $elem_ty);
-                    assert_eq!(o, o.rsqrte());
+                    let error = (o - o.rsqrte()).abs();
+                    assert!(error.le(tol).all());
 
                     let t = $id::splat(2 as $elem_ty);
                     let e = 1. / SQRT_2;
                     let error = (e - t.rsqrte()).abs();
-                    let tol = $id::splat(2.4e-4 as $elem_ty);
                     assert!(error.le(tol).all());
                 }
             }

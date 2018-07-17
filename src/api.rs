@@ -54,9 +54,13 @@ macro_rules! impl_i {
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));
+        impl_cmp_partial_ord!([$elem_ty; $elem_count]: $tuple_id);
+        impl_cmp_ord!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2));
-        // test_shuffle!([$elem_ty; $elem_count]: $tuple_id); // FIXME
+        // FIXME: test vector shuffles
+        // test_shuffle!([$elem_ty; $elem_count]: $tuple_id);
+        test_cmp_partial_ord_int!([$elem_ty; $elem_count]: $tuple_id);
     }
 }
 
@@ -88,8 +92,14 @@ macro_rules! impl_u {
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1, 0));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $mask_ty, false, (1, 0));
+        impl_cmp_partial_ord!([$elem_ty; $elem_count]: $tuple_id);
+        impl_cmp_ord!([$elem_ty; $elem_count]: $tuple_id | (0, 1));
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2));
+
+        // FIXME: test vector shuffles
+        // test_shuffle!([$elem_ty; $elem_count]: $tuple_id);
+        test_cmp_partial_ord_int!([$elem_ty; $elem_count]: $tuple_id);
     }
 }
 
@@ -122,6 +132,9 @@ macro_rules! impl_f {
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1., 2.));
         test_reduction_float_min_max!([$elem_ty; $elem_count]:$tuple_id);
+
+        // FIXME: test vector shuffles
+        // test_shuffle!([$elem_ty; $elem_count]: $tuple_id);
     }
 }
 
@@ -140,5 +153,11 @@ macro_rules! impl_m {
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));
         impl_cmp_vertical!([$elem_ty; $elem_count]: $tuple_id, $tuple_id, true, (true, false));
         impl_select!([$elem_ty; $elem_count]: $tuple_id);
+        impl_cmp_partial_ord!([$elem_ty; $elem_count]: $tuple_id);
+        impl_cmp_ord!([$elem_ty; $elem_count]: $tuple_id | (false, true));
+
+        // FIXME: test vector shuffles
+        // FIXME: test select on masks
+        test_cmp_partial_ord_mask!([$elem_ty; $elem_count]: $tuple_id);
     }
 }
