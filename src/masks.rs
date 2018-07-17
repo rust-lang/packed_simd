@@ -1,27 +1,27 @@
 //! Mask types
 
-/// 8-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m8(i8);
+macro_rules! impl_mask_ty {
+    ($id:ident: $elem_ty:ident | #[$doc:meta]) => {
+        #[$doc]
+        #[derive(Copy, Clone)]
+        pub struct $id($elem_ty);
 
-/// 16-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m16(i16);
+        impl $id {
+            /// Instantiate a mask with `value`
+            pub fn new(x: bool) -> Self {
+                if x {
+                    $id(!0)
+                } else {
+                    $id(0)
+                }
+            }
+            /// Test if the mask is set
+            pub fn test(&self) -> bool {
+                self.0 != 0
+            }
+        }
 
-/// 32-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m32(i32);
 
-/// 64-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m64(i64);
-
-/// 128-bit wide mask.
-#[derive(Copy, Clone)]
-pub struct m128(i128);
-
-macro_rules! impl_mask_primitive_traits {
-    ($id:ident: $elem_ty:ident) => {
         impl Default for $id {
             #[inline]
             fn default() -> Self {
@@ -103,8 +103,13 @@ macro_rules! impl_mask_primitive_traits {
     }
 }
 
-impl_mask_primitive_traits!(m8: i8);
-impl_mask_primitive_traits!(m16: i16);
-impl_mask_primitive_traits!(m32: i32);
-impl_mask_primitive_traits!(m64: i64);
-impl_mask_primitive_traits!(m128: i128);
+impl_mask_ty!(m8: i8 | /// 8-bit wide mask.
+);
+impl_mask_ty!(m16: i16 | /// 16-bit wide mask.
+);
+impl_mask_ty!(m32: i32 | /// 32-bit wide mask.
+);
+impl_mask_ty!(m64: i64 | /// 64-bit wide mask.
+);
+impl_mask_ty!(m128: i128 | /// 128-bit wide mask.
+);

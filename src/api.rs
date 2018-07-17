@@ -7,6 +7,8 @@ mod default;
 #[macro_use]
 mod fmt;
 #[macro_use]
+mod from;
+#[macro_use]
 mod hash;
 #[macro_use]
 mod math;
@@ -46,6 +48,7 @@ macro_rules! impl_i {
         impl_fmt_upper_hex!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_octal!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_binary!([$elem_ty; $elem_count]: $tuple_id);
+        impl_from_array!([$elem_ty; $elem_count]: $tuple_id | (1, 1));
         impl_default!([$elem_ty; $elem_count]: $tuple_id);
         impl_hash!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
@@ -84,6 +87,7 @@ macro_rules! impl_u {
         impl_fmt_upper_hex!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_octal!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_binary!([$elem_ty; $elem_count]: $tuple_id);
+        impl_from_array!([$elem_ty; $elem_count]: $tuple_id | (1, 1));
         impl_default!([$elem_ty; $elem_count]: $tuple_id);
         impl_hash!([$elem_ty; $elem_count]: $tuple_id);
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
@@ -115,6 +119,7 @@ macro_rules! impl_f {
         impl_reduction_float_arithmetic!([$elem_ty; $elem_count]: $tuple_id);
         impl_reduction_min_max!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_debug!([$elem_ty; $elem_count]: $tuple_id);
+        impl_from_array!([$elem_ty; $elem_count]: $tuple_id | (1., 1.));
         impl_default!([$elem_ty; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (1., 0.));
         impl_slice_from_slice!([$elem_ty; $elem_count]: $tuple_id);
@@ -148,6 +153,7 @@ macro_rules! impl_m {
         impl_reduction_bitwise!([bool; $elem_count]: $tuple_id | $ielem_ty | (|x|{ x != 0 }) | (true, false));
         impl_reduction_mask!([$elem_ty; $elem_count]: $tuple_id);
         impl_fmt_debug!([bool; $elem_count]: $tuple_id);
+        impl_from_array!([$elem_ty; $elem_count]: $tuple_id | ($elem_ty::new(true), true));
         impl_default!([bool; $elem_count]: $tuple_id);
         impl_cmp_partial_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));
         impl_cmp_eq!([$elem_ty; $elem_count]: $tuple_id | (true, false));

@@ -25,9 +25,9 @@ matrix:
     - env: TARGET=s390x-unknown-linux-gnu
     - env: TARGET=sparc64-unknown-linux-gnu
     - env: TARGET=wasm32-unknown-unknown
-      script: |
-        cargo build --target $TARGET
-        cargo build --release --target $TARGET
+      script:
+      - cargo build --target $TARGET
+      - cargo build --release --target $TARGET
     - os: osx
       env: TARGET=i686-apple-darwin
       script: ci/run.sh
@@ -44,7 +44,7 @@ matrix:
       - cargo fmt --all -- --check
     - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu
       before_script:
-      - cargo install clippy
+      - rustup component add clippy-preview
       script:
       - cargo clippy --all -- -D clippy-pedantic
 
