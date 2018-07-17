@@ -52,7 +52,7 @@ macro_rules! impl_ops_scalar_shifts {
                         assert_eq!(z >> ti, z);
                         assert_eq!(z >> ti, z);
 
-                        #[cfg(target_arch = "s390x")] {
+                        #[cfg(any(target_arch = "s390x", target_arch = "sparc64"))] {
                             // FIXME: rust produces bad codegen for shifts:
                             // https://github.com/rust-lang/rust/issues/52015
                             return;

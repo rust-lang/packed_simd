@@ -136,7 +136,7 @@ macro_rules! test_reduction_float_min_max {
                                         "[D]: nan at {} => {} | {:?}",
                                         i, v.min_element(), v);
                             }
-                            continue;
+                            break
                         }
 
                         assert_eq!(v.min_element(), -3.,
@@ -191,7 +191,7 @@ macro_rules! test_reduction_float_min_max {
                                            "[D]: nan at {} => {} | {:?}",
                                            i, v.max_element(), v);
                             }
-                            continue;
+                            break
                         }
                         assert_eq!(v.max_element(), -3.,
                                    "[A]: nan at {} => {} | {:?}",
