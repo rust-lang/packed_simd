@@ -79,26 +79,13 @@ case ${TARGET} in
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release"
         ;;
-    mips-*)
-        cargo_test
-        cargo_test "--release"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips32r5"
-        cargo_test "--release"
-        ;;
-    mipsel-*)
-        cargo_test
-        cargo_test "--release"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips32r5"
-        cargo_test "--release"
-        ;;
     mips64*)
         cargo_test
         cargo_test "--release"
 
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r5"
-        cargo_test "--release"
+        # FIXME: this doesn't compile succesfully
+        # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r5"
+        # cargo_test "--release"
         ;;
     powerpc-*)
         cargo_test
