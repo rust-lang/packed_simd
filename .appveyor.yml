@@ -1,4 +1,5 @@
 environment:
+  matrix:
   - TARGET: nightly-x86_64-pc-windows-msvc
   - TARGET: nightly-i686-pc-windows-msvc
   - TARGET: nightly-x86_64-pc-windows-gnu
@@ -11,5 +12,4 @@ install:
   - rustc -vV
   - cargo -vV
 build: false
-test_script:
-  - C:\msys64\usr\bin\sh ci\run.sh
+test_script: C:\msys64\usr\bin\sh ci\run.sh

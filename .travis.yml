@@ -55,9 +55,14 @@ script:
   - cargo generate-lockfile
   - ci/run-docker.sh $TARGET $FEATURES
 
+env:
+  global:
+    secure: "lPHv7s6+AxQYNaFncycVFQt++Y1asQmMhOikQU1ztlP8CK7+hn2m98cg/euOJyzIOb2iJ3ZX4cGZkzw4lc59MQBByb1GtDbazQoUOzVDbVfe9BDD2f8JVoIFh1CMfjPKQ7Gg/rJqWlwrUlSd5GNxPCutKjY7qZhJuR6SQbJjlWaGN2Vd4fVCzKXz8fHRXgMEZS+d+CR4Nsrkb83J3Z4s5kSdJmhYxJ61AWjuzJVwUh4l3/HEYlSL5XXpuh5R2i7W16h1PlNdaTUgkZli1lHzO8+6Q8LzX9+XiLIEVX9lw3A2NdIKGz8E/+7Qs5oYOkwYhjROsDQxIK7xkSM30bQuN7cwMBybAVIyOPJkqXQ1dQyp83KSdsOj7JMyDDRvcEDLI6ehRlm5EcdH7YrReuboN81iUo0Sa7VsuUmgj5hjERCt9r30f9aWuitABai7vKRtjglg7Sp5CrEVPA4PQs6PqKCCRogoggbXJ/Z5Dyw/RZaXPeNR9+qIKN1Vjm9Gew1sRN2JK/3+vXTKtyJXH/uBxgJt4jQlbuShOJuF+BSfTF88sMe67a/357SSOIb4JkaCyd0flDCWYE8576kaHPlVVMT2peXee0LeRXm1e13nG3Na0t3LS/orJLPHOShNQGoDj7qAP5aEKggRya896JGwtvlaBHHTmSQh65G7cyNErZo="
+branches:
+  only:
+    - staging # bors r+
+    - trying  # bors try
+    - master
 notifications:
   email:
     on_success: never
-env:
-  global:
-    secure: i5Am1bhaK+6Zw/7b6uBxCPW+TYsPQ1EHaL8FMp0+KBeGtvpOIT1HsZd31C2gdvWouOVB/vjhS5qWa9YtkUw47Z7skiVRXdJfO+8ZUbH3ac8MUDc2uMrIRtEn37ncdn6IdsedD0MfqJc5BmGu9DUztHQ2oMokzEXGJINOdbadrZv8XUKNx+nlXOFXq6wQln8XhjBIFCP/JTkOr8zeuQdSH/TpaYMxsgfxwy4TSSQFRUmgUOevegcbjakeWvfd6pPiis0h275Ppykm9Jjkf7/RxL6C6uVgOZKcO7qVT/22PbrJwl5kucYelZr+gWXnxh65wyLXIy+t//6B1/3dhwuyr6U/LlxesvB8ZnS8Bt0cA4Loxh6yX/TTYTg734O56hjXRU6rlJW6RaaO6Vukv2s8kU+LhCSWijMtwRf7c2H0K1tksBT9wRZQZ06QxnR7P7jN48/QqAp1QZdT7jhXvOr8s7ROsJhbku0scUAOoNfTZ47SHjbMxGc7klI31BhaxFeaNsWAZMyIeigebhJ8gnZcPDO78J/6svBb83AgMLRPaO4l9y1png4iLdtXtkxr0S8F8pAf9VnDVSJBH6SN9/d7dRa1QwpNDpVcW52GEY5OQkVJ1Xkp9xbnW5nJpOXQIeJeix8VwsUXX289MUyPfOxDQhRCzeSExqks7P1veL+TNss=

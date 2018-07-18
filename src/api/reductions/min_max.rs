@@ -118,14 +118,19 @@ macro_rules! test_reduction_float_min_max {
 
                     let v0 = $id::splat(-3.);
 
+                    let target_with_broken_last_lane_nan = !cfg!(any(
+                        target_arch = "arm", target_arch = "aarch64",
+                        all(target_arch = "x86", not(target_feature = "sse2"))
+                    ));
+
+                    // The vector is initialized to `-3.`s: [-3, -3, -3, -3]
                     for i in 0..$id::lanes() {
+                        // We replace the i-th element of the vector with `NaN`: [-3, -3, -3, NaN]
                         let mut v = v0.replace(i, n);
-                        if i == $id::lanes() - 1 &&
-                            !cfg!(any(
-                                target_arch = "arm", target_arch = "aarch64",
-                                all(target_arch = "x86", not(target_feature = "sse2"))
-                            ))
-                        {
+
+                        // If the NaN is in the last place, the LLVM implementation of these methods
+                        // is broken on some targets:
+                        if i == $id::lanes() - 1 && target_with_broken_last_lane_nan {
                             // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
                             //
                             // If there is a NaN, the result should always the smallest element,
@@ -137,38 +142,75 @@ macro_rules! test_reduction_float_min_max {
                             //
                             // These asserts detect if this behavior changes
                             assert!(v.min_element().is_nan(), // FIXME: should be -3.
-                                       "[C]: nan at {} => {} | {:?}",
-                                       i, v.min_element(), v);
+                                    "[A]: nan at {} => {} | {:?}",
+                                    i, v.min_element(), v);
+
+                            // If we replace all the elements in the vector up-to the `i-th` lane
+                            // with `NaN`s, the result is still always `-3.` unless all
+                            // elements of the vector are `NaN`s:
+                            //
+                            // This is also broken:
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert!(v.min_element().is_nan(), // FIXME: should be -3.
-                                        "[D]: nan at {} => {} | {:?}",
+                                        "[B]: nan at {} => {} | {:?}",
                                         i, v.min_element(), v);
                             }
+
+                            // We are done here, since we were in the last lane which
+                            // is the last iteration of the loop.
                             break
                         }
-                        if i == $id::lanes() - 1 && !cfg!(any(
-                            target_arch = "arm", target_arch = "aarch64",
-                            all(target_arch = "x86", not(target_feature = "sse2"))
-                        )) {
-                            assert!(false, "this cannot happen, idx: {}, lanes: {}", i, $id::lanes());
+
+                        // We are not in the last lane, and there is only one `NaN`
+                        // in the vector.
+
+                        // If the vector has one lane, the result is `NaN`:
+                        if $id::lanes() == 1 {
+                            assert!(v.min_element().is_nan(),
+                                    "[C]: all nans | v={:?} | min={} | is_nan: {}",
+                                    v, v.min_element(), v.min_element().is_nan());
+
+                            // And we are done, since the vector only has one lane anyways.
+                            break;
                         }
 
+                        // The vector has more than one lane, since there is only
+                        // one `NaN` in the vector, the result is always `-3`.
                         assert_eq!(v.min_element(), -3.,
-                                   "[A]: nan at {} => {} | {:?}",
+                                   "[D]: nan at {} => {} | {:?}",
                                    i, v.min_element(), v);
+
+                        // If we replace all the elements in the vector up-to the `i-th` lane
+                        // with `NaN`s, the result is still always `-3.` unless all
+                        // elements of the vector are `NaN`s:
                         for j in 0..i {
                             v = v.replace(j, n);
-                            assert_eq!(v.min_element(), -3.,
-                                       "[B]: nan at {} => {} | {:?}",
-                                       i, v.min_element(), v);
+
+                            if i == $id::lanes() - 1 && j == i - 1 {
+                                // All elements of the vector are `NaN`s, therefore the
+                                // result is NaN as well.
+                                //
+                                // Note: the #lanes of the vector is > 1, so "i - 1" does not
+                                // overflow.
+                                assert!(v.min_element().is_nan(),
+                                        "[E]: all nans | v={:?} | min={} | is_nan: {}",
+                                        v, v.min_element(), v.min_element().is_nan());
+                            } else {
+                                // There are non-`NaN` elements in the vector, therefore
+                                // the result is `-3.`:
+                                assert_eq!(v.min_element(), -3.,
+                                           "[F]: nan at {} => {} | {:?}",
+                                           i, v.min_element(), v);
+                            }
                         }
                     }
+
                     // If the vector contains all NaNs the result is NaN:
-                    let vn = $id::splat(n);
-                    assert!(vn.min_element().is_nan(),
+                    assert!($id::splat(n).min_element().is_nan(),
                             "all nans | v={:?} | min={} | is_nan: {}",
-                            vn, vn.min_element(), vn.min_element().is_nan());
+                            $id::splat(n), $id::splat(n).min_element(),
+                            $id::splat(n).min_element().is_nan());
                 }
                 #[test]
                 fn max_element_test() {
@@ -179,11 +221,18 @@ macro_rules! test_reduction_float_min_max {
 
                     let v0 = $id::splat(-3.);
 
+                    let target_with_broken_last_lane_nan = !cfg!(any(
+                        target_arch = "arm", target_arch = "aarch64"
+                    ));
+
+                    // The vector is initialized to `-3.`s: [-3, -3, -3, -3]
                     for i in 0..$id::lanes() {
+                        // We replace the i-th element of the vector with `NaN`: [-3, -3, -3, NaN]
                         let mut v = v0.replace(i, n);
-                        if i == $id::lanes() - 1 &&
-                            !cfg!(any(target_arch = "arm", target_arch = "aarch64"))
-                        {
+
+                        // If the NaN is in the last place, the LLVM implementation of these methods
+                        // is broken on some targets:
+                        if i == $id::lanes() - 1 && target_with_broken_last_lane_nan {
                             // FIXME (https://github.com/rust-lang-nursery/stdsimd/issues/408):
                             //
                             // If there is a NaN, the result should always the largest element,
@@ -195,36 +244,75 @@ macro_rules! test_reduction_float_min_max {
                             //
                             // These asserts detect if this behavior changes
                             assert!(v.max_element().is_nan(), // FIXME: should be -3.
-                                       "[C]: nan at {} => {} | {:?}",
-                                       i, v.max_element(), v);
+                                    "[A]: nan at {} => {} | {:?}",
+                                    i, v.max_element(), v);
+
+                            // If we replace all the elements in the vector up-to the `i-th` lane
+                            // with `NaN`s, the result is still always `-3.` unless all
+                            // elements of the vector are `NaN`s:
+                            //
+                            // This is also broken:
                             for j in 0..i {
                                 v = v.replace(j, n);
                                 assert!(v.max_element().is_nan(), // FIXME: should be -3.
-                                           "[D]: nan at {} => {} | {:?}",
-                                           i, v.max_element(), v);
+                                        "[B]: nan at {} => {} | {:?}",
+                                        i, v.max_element(), v);
                             }
+
+                            // We are done here, since we were in the last lane which
+                            // is the last iteration of the loop.
                             break
                         }
 
-                        if i == $id::lanes() - 1 &&
-                          cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
-                            assert!(false, "this cannot happen");
+                        // We are not in the last lane, and there is only one `NaN`
+                        // in the vector.
+
+                        // If the vector has one lane, the result is `NaN`:
+                        if $id::lanes() == 1 {
+                            assert!(v.max_element().is_nan(),
+                                    "[C]: all nans | v={:?} | min={} | is_nan: {}",
+                                    v, v.max_element(), v.max_element().is_nan());
+
+                            // And we are done, since the vector only has one lane anyways.
+                            break;
                         }
+
+                        // The vector has more than one lane, since there is only
+                        // one `NaN` in the vector, the result is always `-3`.
                         assert_eq!(v.max_element(), -3.,
-                                   "[A]: nan at {} => {} | {:?}",
+                                   "[D]: nan at {} => {} | {:?}",
                                    i, v.max_element(), v);
+
+                        // If we replace all the elements in the vector up-to the `i-th` lane
+                        // with `NaN`s, the result is still always `-3.` unless all
+                        // elements of the vector are `NaN`s:
                         for j in 0..i {
                             v = v.replace(j, n);
-                            assert_eq!(v.max_element(), -3.,
-                                       "[B]: nan at {} => {} | {:?}",
-                                       i, v.max_element(), v);
+
+                            if i == $id::lanes() - 1 && j == i - 1 {
+                                // All elements of the vector are `NaN`s, therefore the
+                                // result is NaN as well.
+                                //
+                                // Note: the #lanes of the vector is > 1, so "i - 1" does not
+                                // overflow.
+                                assert!(v.max_element().is_nan(),
+                                        "[E]: all nans | v={:?} | max={} | is_nan: {}",
+                                        v, v.max_element(), v.max_element().is_nan());
+                            } else {
+                                // There are non-`NaN` elements in the vector, therefore
+                                // the result is `-3.`:
+                                assert_eq!(v.max_element(), -3.,
+                                           "[F]: nan at {} => {} | {:?}",
+                                           i, v.max_element(), v);
+                            }
                         }
                     }
+
                     // If the vector contains all NaNs the result is NaN:
-                    let vn = $id::splat(n);
-                    assert!(vn.max_element().is_nan(),
+                    assert!($id::splat(n).max_element().is_nan(),
                             "all nans | v={:?} | max={} | is_nan: {}",
-                            vn, vn.max_element(), vn.max_element().is_nan());
+                            $id::splat(n), $id::splat(n).max_element(),
+                            $id::splat(n).max_element().is_nan());
                 }
             }
         }
