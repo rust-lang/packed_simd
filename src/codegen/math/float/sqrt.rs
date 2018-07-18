@@ -24,20 +24,24 @@ cfg_if! {
     } else {
         #[allow(improper_ctypes)]
         extern "C" {
-            // #[link_name = "llvm.sqrt.v2f32"]
-            // fn sqrt_v2f32(x: f32x2) -> f32x2;
+            #[link_name = "llvm.sqrt.v2f32"]
+            fn sqrt_v2f32(x: f32x2) -> f32x2;
             #[link_name = "llvm.sqrt.v4f32"]
             fn sqrt_v4f32(x: f32x4) -> f32x4;
             #[link_name = "llvm.sqrt.v8f32"]
             fn sqrt_v8f32(x: f32x8) -> f32x8;
-            // #[link_name = "llvm.sqrt.v16f32"]
-            // fn sqrt_v16f32(x: f32x16) -> f32x16;
+            #[link_name = "llvm.sqrt.v16f32"]
+            fn sqrt_v16f32(x: f32x16) -> f32x16;
+            /* FIXME 64-bit single elem vectors
+            #[link_name = "llvm.sqrt.v1f64"]
+            fn sqrt_v1f64(x: f64x1) -> f64x1;
+            */
             #[link_name = "llvm.sqrt.v2f64"]
             fn sqrt_v2f64(x: f64x2) -> f64x2;
             #[link_name = "llvm.sqrt.v4f64"]
             fn sqrt_v4f64(x: f64x4) -> f64x4;
-            // #[link_name = "llvm.sqrt.v8f64"]
-            // fn sqrt_v8f64(x: f64x8) -> f64x8;
+            #[link_name = "llvm.sqrt.v8f64"]
+            fn sqrt_v8f64(x: f64x8) -> f64x8;
         }
     }
 }
@@ -63,10 +67,11 @@ macro_rules! impl_sqrt {
     };
 }
 
-// impl_sqrt!(f32x2: sqrt_v2f32); // FIXME: 64-bit wide vectors
+impl_sqrt!(f32x2: sqrt_v2f32); // FIXME: 64-bit wide vectors
 impl_sqrt!(f32x4: sqrt_v4f32);
 impl_sqrt!(f32x8: sqrt_v8f32);
-// impl_sqrt!(f32x16: sqrt_v16f32); // FIXME: 512-bit wide vectors
+impl_sqrt!(f32x16: sqrt_v16f32);
+// impl_sqrt!(f64x1: sqrt_v1f64); // FIXME 64-bit single elem vectors
 impl_sqrt!(f64x2: sqrt_v2f64);
 impl_sqrt!(f64x4: sqrt_v4f64);
-// impl_sqrt!(f64x8: sqrt_v8f64); // FIXME: 512-bit wide vectors
+impl_sqrt!(f64x8: sqrt_v8f64);

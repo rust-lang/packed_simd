@@ -2,7 +2,6 @@
 //!
 //! TODO:
 //! - gather/scatter
-//! - From
 //! - grep for fixme's
 
 #![feature(
@@ -16,7 +15,8 @@
     link_llvm_intrinsics,
     core_intrinsics,
     stmt_expr_attributes,
-    align_offset
+    align_offset,
+    mmx_target_feature
 )]
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]
@@ -79,11 +79,23 @@ pub struct Simd<A: sealed::SimdArray>(
 mod masks;
 pub use self::masks::*;
 
+mod v16;
+pub use self::v16::*;
+
+mod v32;
+pub use self::v32::*;
+
+mod v64;
+pub use self::v64::*;
+
 mod v128;
 pub use self::v128::*;
 
 mod v256;
 pub use self::v256::*;
+
+mod v512;
+pub use self::v512::*;
 
 // Re-export the shuffle intrinsics required by the `shuffle!` macro.
 #[doc(hidden)]
