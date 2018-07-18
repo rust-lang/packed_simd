@@ -30,8 +30,20 @@ macro_rules! impl_simd_array {
     }
 }
 
+crate mod v16;
+crate use self::v16::*;
+
+crate mod v32;
+crate use self::v32::*;
+
+crate mod v64;
+crate use self::v64::*;
+
 crate mod v128;
 crate use self::v128::*;
 
 crate mod v256;
 crate use self::v256::*;
+
+crate mod v512;
+crate use self::v512::*;

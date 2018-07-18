@@ -57,6 +57,41 @@ macro_rules! fallback_impl {
 
 cfg_if! {
     if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
+        // Implementation for 64-bit wide masks on x86.
+        /// x86/x86_64 128-bit SSE2 implementation
+        #[cfg(target_feature = "mmx")]
+        macro_rules! x86_64_mmx_impl {
+            ($id:ident, $vec128:ident) => {
+                impl All for $id {
+                    #[inline]
+                    #[target_feature(enable = "mmx")]
+                    unsafe fn all(self) -> bool {
+                        #[cfg(target_arch = "x86")]
+                        use core::arch::x86::_mm_movemask_pi8;
+                        #[cfg(target_arch = "x86_64")]
+                        use core::arch::x86_64::_mm_movemask_pi8;
+                        // _mm_movemask_pi8(a) creates an 8bit mask containing the most
+                        // significant bit of each byte of `a`. If all bits are set,
+                        // then all 8 lanes of the mask are true.
+                        _mm_movemask_pi8(::mem::transmute(self))
+                            == u8::max_value() as i32
+                    }
+                }
+                impl Any for $id {
+                    #[inline]
+                    #[target_feature(enable = "mmx")]
+                    unsafe fn any(self) -> bool {
+                        #[cfg(target_arch = "x86")]
+                        use core::arch::x86::_mm_movemask_pi8;
+                        #[cfg(target_arch = "x86_64")]
+                        use core::arch::x86_64::_mm_movemask_pi8;
+
+                        _mm_movemask_pi8(::mem::transmute(self)) != 0
+                    }
+                }
+            };
+        }
+
         /// x86/x86_64 128-bit SSE2 implementation
         #[cfg(target_feature = "sse2")]
         macro_rules! x86_128_sse2_impl {
@@ -404,7 +439,7 @@ macro_rules! impl_mask_all_any {
     (m8x8) => {
         cfg_if! {
             if #[cfg(target_arch = "x86_64")] {
-                x86_64_mmx_movemask_impl!(m8x8, m8x16);
+                x86_64_mmx_impl!(m8x8, m8x16);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_m8x8_v7_neon_impl!(m8x8, vpmin_u8, vpmax_u8);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
@@ -417,7 +452,7 @@ macro_rules! impl_mask_all_any {
     (m16x4) => {
         cfg_if! {
             if #[cfg(target_arch = "x86_64")] {
-                x86_64_mmx_movemask_impl!(m16x4, m16x8);
+                x86_64_mmx_impl!(m16x4, m16x8);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_m16x4_v7_neon_impl!(m16x4, vpmin_u16, vpmax_u16);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
@@ -430,7 +465,7 @@ macro_rules! impl_mask_all_any {
     (m32x2) => {
         cfg_if! {
             if #[cfg(target_arch = "x86_64")] {
-                x86_64_mmx_movemask_impl!(m32x2, m32x4);
+                x86_64_mmx_impl!(m32x2, m32x4);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_m32x2_v7_neon_impl!(m32x2, vpmin_u32, vpmax_u32);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
@@ -446,7 +481,7 @@ macro_rules! impl_mask_all_any {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m8x16);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
-                arm_128_v7_neon_impl!(m8x16, m8x8, vpmin_u8, vpmax_u8);
+                // arm_128_v7_neon_impl!(m8x16, m8x8, vpmin_u8, vpmax_u8);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m8x16, vminvq_u8, vmaxvq_u8);
             } else {
@@ -459,7 +494,7 @@ macro_rules! impl_mask_all_any {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m16x8);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
-                arm_128_v7_neon_impl!(m16x8, m16x4, vpmin_u16, vpmax_u16);
+                // arm_128_v7_neon_impl!(m16x8, m16x4, vpmin_u16, vpmax_u16);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m16x8, vminvq_u16, vmaxvq_u16);
             } else {
@@ -472,7 +507,7 @@ macro_rules! impl_mask_all_any {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m32x4);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
-                arm_128_v7_neon_impl!(m32x4, m32x2, vpmin_u32, vpmax_u32);
+                // arm_128_v7_neon_impl!(m32x4, m32x2, vpmin_u32, vpmax_u32);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m32x4, vminvq_u32, vmaxvq_u32);
             } else {
@@ -532,23 +567,25 @@ macro_rules! impl_mask_all_any {
 
 use crate::*;
 
-// impl_mask_all_any!(m1x8);
-// impl_mask_all_any!(m1x16);
-// impl_mask_all_any!(m1x32);
-// impl_mask_all_any!(m1x64);
-// impl_mask_all_any!(m8x2);
-// impl_mask_all_any!(m8x4);
-// impl_mask_all_any!(m8x8);
+impl_mask_all_any!(m128x4);
+impl_mask_all_any!(m64x8);
+impl_mask_all_any!(m32x16);
+impl_mask_all_any!(m16x32);
+impl_mask_all_any!(m8x64);
 
+impl_mask_all_any!(m8x2);
+impl_mask_all_any!(m8x4);
+impl_mask_all_any!(m8x8);
 impl_mask_all_any!(m8x16);
 impl_mask_all_any!(m8x32);
-// impl_mask_all_any!(m16x2);
-// impl_mask_all_any!(m16x4);
+impl_mask_all_any!(m16x2);
+impl_mask_all_any!(m16x4);
 impl_mask_all_any!(m16x8);
 impl_mask_all_any!(m16x16);
-// impl_mask_all_any!(m32x2);
+impl_mask_all_any!(m32x2);
 impl_mask_all_any!(m32x4);
 impl_mask_all_any!(m32x8);
+// impl_mask_all_any!(m64x1); // FIXME: 64-bit single element vector
 impl_mask_all_any!(m64x2);
 impl_mask_all_any!(m64x4);
 impl_mask_all_any!(m128x1);

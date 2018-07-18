@@ -59,8 +59,16 @@ macro_rules! impl_from_array {
                 use super::*;
                 #[test]
                 fn array() {
-                    let mut array: [$elem_ty; $elem_count] = Default::default();
                     let vec: $id = Default::default();
+
+                    // FIXME: Workaround for arrays with more than 32 elements.
+                    //
+                    // Safe because we never take a reference to any uninitialized element.
+                    let mut array: [$elem_ty; $elem_count] = unsafe { ::mem::uninitialized() };
+                    for i in 0..$elem_count {
+                        let default: $elem_ty = Default::default();
+                        unsafe { ::ptr::write(array.as_mut_ptr().wrapping_add(i), default) };
+                    }
 
                     array[0] = $non_default_array;
                     let vec = vec.replace(0, $non_default_vec);
@@ -68,12 +76,18 @@ macro_rules! impl_from_array {
                     let vec_from_array = $id::from(array);
                     assert_eq!(vec_from_array, vec);
                     let array_from_vec = <[$elem_ty; $elem_count]>::from(vec);
-                    assert_eq!(array_from_vec, array);
+                    // FIXME: Workaround for arrays with more than 32 elements.
+                    for i in 0..$elem_count {
+                        assert_eq!(array_from_vec[[i]], array[[i]]);
+                    }
 
-                    let array_from_into_vec: [$elem_ty; $elem_count] = vec.into();
-                    assert_eq!(array_from_into_vec, array);
                     let vec_from_into_array: $id = array.into();
                     assert_eq!(vec_from_into_array, vec);
+                    let array_from_into_vec: [$elem_ty; $elem_count] = vec.into();
+                    // FIXME: Workaround for arrays with more than 32 elements.
+                    for i in 0..$elem_count {
+                        assert_eq!(array_from_into_vec[[i]], array[[i]]);
+                    }
                 }
             }
         }
