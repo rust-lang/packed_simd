@@ -5,34 +5,50 @@ rust: nightly
 matrix:
   fast_finish: true
   include:
+    # Android:
+    - env: TARGET=x86_64-linux-android
+    - env: TARGET=arm-linux-androideabi
+    - env: TARGET=aarch64-linux-android
+    # Linux:
     - env: TARGET=i586-unknown-linux-gnu
     - env: TARGET=i686-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu-emulated
-    - env: TARGET=x86_64-linux-android
     - env: TARGET=arm-unknown-linux-gnueabihf
-    - env: TARGET=arm-linux-androideabi
     - env: TARGET=armv7-unknown-linux-gnueabihf
+    - env: TARGET=armv7-unknown-linux-gnueabi
     - env: TARGET=aarch64-unknown-linux-gnu
     - env: TARGET=mips-unknown-linux-gnu
     - env: TARGET=mipsel-unknown-linux-musl
     - env: TARGET=mips64-unknown-linux-gnuabi64
     - env: TARGET=mips64el-unknown-linux-gnuabi64
-    - env: TARGET=aarch64-linux-android
     - env: TARGET=powerpc-unknown-linux-gnu
     - env: TARGET=powerpc64-unknown-linux-gnu
     - env: TARGET=powerpc64le-unknown-linux-gnu
     - env: TARGET=s390x-unknown-linux-gnu
     - env: TARGET=sparc64-unknown-linux-gnu
-    - env: TARGET=wasm32-unknown-unknown
-      script:
-      - cargo build --target $TARGET
-      - cargo build --release --target $TARGET
+    # MacOSX:
     - os: osx
       env: TARGET=i686-apple-darwin
       script: ci/run.sh
     - os: osx
-      env: TARGET=x86_64-apple-darwin NO_ADD=1
+      env: TARGET=x86_64-apple-darwin
+      script: ci/run.sh
+    # iOS: 
+    - os: osx
+      env: TARGET=i386-apple-ios NORUN=1
+      script: ci/run.sh
+    - os: osx
+      env: TARGET=x86_64-apple-ios NORUN=1
+      script: ci/run.sh
+    - os: osx
+      env: TARGET=armv7-apple-ios NORUN=1
+      script: ci/run.sh
+    - os: osx
+      env: TARGET=aarch64-apple-ios NORUN=1
+      script: ci/run.sh
+    # WASM:
+    - env: TARGET=wasm32-unknown-unknown NORUN=1
       script: ci/run.sh
     - env: DOCUMENTATION
       install: true
