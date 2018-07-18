@@ -46,11 +46,11 @@ toolchain, and `run` means that the full testsuite passes on the target in CI.
 | `armv7-apple-ios`                 | ✓         | **      |
 | `aarch64-apple-ios`               | ✓         | **      |
 | **xBSD targets:**                 | **build** | **run** |
-| `i686-unknown-freebsd`            | ✓         | **      |
-| `x86_64-unknown-freebsd`          | ✓         | **      |
-| `x86_64-unknown-netbsd`           | ✓         | **      |
+| `i686-unknown-freebsd`            |           | **      |
+| `x86_64-unknown-freebsd`          |           | **      |
+| `x86_64-unknown-netbsd`           |           | **      |
 | **Solaris targets:**              | **build** | **run** |
-| `x86_64-sun-solaris`              | ✓         | **      |
+| `x86_64-sun-solaris`              |           | **      |
 | **WASM targets:**                 | **build** | **run** |
 | `wasm32-unknown-unknown`          | ✓         | **      |
 
