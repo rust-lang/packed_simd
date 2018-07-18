@@ -11,7 +11,7 @@ export RUST_TEST_THREADS=1
 #export RUST_TEST_NOCAPTURE=1
 
 export CARGO_SUBCMD=test
-if [[ ${NORUN} == 1 ]]; then
+if [[ "${NORUN}" == "1" ]]; then
     export CARGO_SUBCMD=build
 fi
 
