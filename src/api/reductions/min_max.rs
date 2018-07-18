@@ -142,7 +142,7 @@ macro_rules! test_reduction_float_min_max {
                             target_arch = "arm", target_arch = "aarch64",
                             all(target_arch = "x86", not(target_feature = "sse2"))
                         )) {
-                            assert!(false, "this cannot happen");
+                            assert!(false, "this cannot happen, idx: {}, lanes: {}", i, $id::lanes());
                         }
 
                         assert_eq!(v.min_element(), -3.,
