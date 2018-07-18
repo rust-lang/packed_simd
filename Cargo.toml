@@ -24,3 +24,10 @@ cfg-if = "^0.1"
 [dev-dependencies]
 interpolate_idents = "^0.2"
 arrayvec = { version = "^0.4", default-features = false }
+
+# FIXME: neon requires recompiling the std library with neon enabled...
+# This works around that by fetching coresimd from the nursery directly,
+# and recompiling it with neon.
+[target.'cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))'.dependencies.coresimd]
+name = "coresimd"
+git = "http://github.com/rust-lang-nursery/stdsimd.git"
