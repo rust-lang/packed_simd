@@ -228,6 +228,7 @@ cfg_if! {
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn all(self) -> bool {
                         use core::arch::arm::$vpmin;
+                        use mem::transmute;
                         // pmin((a, b), (-,-)) => (b, -).0 => b
                         let tmp: $id =
                             transmute($vpmin(transmute(self), ::mem::uninitialized()));
