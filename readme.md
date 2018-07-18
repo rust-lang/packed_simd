@@ -36,16 +36,22 @@ toolchain, and `run` means that the full testsuite passes on the target in CI.
 | `i686-pc-windows-msvc`            | ✓         | ✓       |
 | `x86_64-pc-windows-gnu`           | ✓         | ✓       |
 | `i686-pc-windows-gnu`             | ✓         | ✓       |
-| **Android targets:**              | build     | run     |
+| **Android targets:**              | **build** | **run** |
 | `x86_64-linux-android`            | ✓         | ✓       |
 | `arm-linux-androideabi`           | ✓         | ✓       |
 | `aarch64-linux-android`           | ✓         | ✓       |
-| **iOS targets:**                  | build     | run     |
+| **iOS targets:**                  | **build** | **run** |
 | `i386-apple-ios`                  | ✓         |         |
 | `x86_64-apple-ios`                | ✓         |         |
 | `armv7-apple-ios`                 | ✓         | **      |
 | `aarch64-apple-ios`               | ✓         | **      |
-| **WASM targets:**                 | build     | run     |
+| **xBSD targets:**                 | **build** | **run** |
+| `i686-unknown-freebsd`            | ✓         | **      |
+| `x86_64-unknown-freebsd`          | ✓         | **      |
+| `x86_64-unknown-netbsd`           | ✓         | **      |
+| **Solaris targets:**              | **build** | **run** |
+| `x86_64-sun-solaris`              | ✓         | **      |
+| **WASM targets:**                 | **build** | **run** |
 | `wasm32-unknown-unknown`          | ✓         | **      |
 
 [*] most of the test suite passes correctly on these platform but
