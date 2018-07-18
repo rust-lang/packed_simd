@@ -34,6 +34,7 @@
     feature = "cargo-clippy",
     deny(missing_inline_in_public_items)
 )]
+#![deny(warnings)]
 #![no_std]
 
 #[macro_use]
