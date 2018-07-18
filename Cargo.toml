@@ -1,7 +1,22 @@
 [package]
 name = "ppv"
 version = "0.1.0"
-authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+authors = ["Gonzalo Brito Gadeschi <gonzalobg88@gmail.com>"]
+description = "Portable Packed SIMD vectors"
+documentation = "https://docs.rs/crate/ppv/"
+homepage = "https://github.com/gnzlbg/ppv"
+repository = "https://github.com/gnzlbg/ppv"
+keywords = ["simd", "vector", "portability"]
+categories = ["hardware-support", "concurrency", "no-std", "data-structures"]
+license = "MIT/Apache-2.0"
+
+[badges]
+appveyor = { repository = "gnzlbg/ppv" }
+travis-ci = { repository = "gnzlbg/ppv" }
+codecov = { repository = "gnzlbg/ppv" }
+is-it-maintained-issue-resolution = { repository = "gnzlbg/ppv" }
+is-it-maintained-open-issues = { repository = "gnzlbg/ppv" }
+maintenance = { status = "experimental" }
 
 [dependencies]
 cfg-if = "^0.1"
