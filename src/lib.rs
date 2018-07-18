@@ -62,7 +62,7 @@ mod test_utils;
 /// # Examples
 ///
 /// ```
-/// # use ppv::Simd;
+/// # use packed_simd::Simd;
 /// let v = Simd::<[i32; 4]>::new(0, 1, 2, 3);
 /// assert_eq!(v.extract(2), 2);
 /// ```

@@ -74,14 +74,14 @@ at your option.
 ### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in `ppv` by you, as defined in the Apache-2.0 license, shall be
+for inclusion in `packed_simd` by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
 
-[travis]: https://travis-ci.org/gnzlbg/ppv
-[Travis-CI Status]: https://travis-ci.org/gnzlbg/ppv.svg?branch=master
-[appveyor]: https://ci.appveyor.com/project/gnzlbg/ppv/branch/master
+[travis]: https://travis-ci.org/gnzlbg/packed_simd
+[Travis-CI Status]: https://travis-ci.org/gnzlbg/packed_simd.svg?branch=master
+[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed_simd/branch/master
 [Appveyor Status]: https://ci.appveyor.com/api/projects/status/lobb2qte2q5gbxbo?svg=true
-[Latest Version]: https://img.shields.io/crates/v/ppv.svg
-[crates.io]: https://crates.io/crates/ppv
-[docs]: https://docs.rs/ppv/badge.svg
-[docs.rs]: https://docs.rs/ppv/
+[Latest Version]: https://img.shields.io/crates/v/packed_simd.svg
+[crates.io]: https://crates.io/crates/packed_simd
+[docs]: https://docs.rs/packed_simd/badge.svg
+[docs.rs]: https://docs.rs/packed_simd/

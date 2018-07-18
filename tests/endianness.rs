@@ -1,6 +1,6 @@
-extern crate ppv;
+extern crate packed_simd;
 
-use ppv::*;
+use packed_simd::*;
 use std::{mem, slice};
 
 #[test]
