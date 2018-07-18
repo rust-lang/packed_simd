@@ -220,6 +220,8 @@ cfg_if! {
     } else if #[cfg(
         all(target_arch = "arm", target_feature = "v7", target_feature = "neon")
     )] {
+        use crate::coresimd::arch as arch;
+
         /// ARM m32x2 v7+neon implementation
         macro_rules! arm_m32x2_v7_neon_impl {
             ($id:ident, $vpmin:ident, $vpmax:ident) => {
@@ -227,7 +229,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn all(self) -> bool {
-                        use core::arch::arm::$vpmin;
+                        use arch::arm::$vpmin;
                         use mem::transmute;
                         // pmin((a, b), (-,-)) => (b, -).0 => b
                         let tmp: $id =
@@ -239,7 +241,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use core::arch::arm::$vpmax;
+                        use arch::arm::$vpmax;
                         use mem::transmute;
                         // pmax((a, b), (-,-)) => (b, -).0 => b
                         let tmp: $id =
@@ -256,7 +258,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn all(self) -> bool {
-                        use core::arch::arm::$vpmin;
+                        use arch::arm::$vpmin;
                         use mem::transmute;
                         // tmp = pmin((a, b, c, d), (-,-,-,-)) => (a, c, -, -)
                         let tmp = $vpmin(transmute(self), ::mem::uninitialized());
@@ -269,7 +271,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use core::arch::arm::$vpmax;
+                        use arch::arm::$vpmax;
                         use mem::transmute;
                         // tmp = pmax((a, b, c, d), (-,-,-,-)) => (a, c, -, -)
                         let tmp = $vpmax(transmute(self), ::mem::uninitialized());
@@ -287,7 +289,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn all(self) -> bool {
-                        use core::arch::arm::$vpmin;
+                        use arch::arm::$vpmin;
                         use mem::transmute;
                         // tmp = pmin(
                         //     (a, b, c, d, e, f, g, h),
@@ -311,7 +313,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use core::arch::arm::$vpmax;
+                        use arch::arm::$vpmax;
                         use mem::transmute;
                         // tmp = pmax(
                         //     (a, b, c, d, e, f, g, h),
@@ -341,7 +343,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn all(self) -> bool {
-                        use core::arch::arm::$vpmin;
+                        use arch::arm::$vpmin;
                         use mem::transmute;
                         union U {
                             halves: ($half, $half),
@@ -359,7 +361,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "v7,neon")]
                     unsafe fn any(self) -> bool {
-                        use core::arch::arm::$vpmax;
+                        use arch::arm::$vpmax;
                         use mem::transmute;
                         union U {
                             halves: ($half, $half),
