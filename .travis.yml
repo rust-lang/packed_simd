@@ -50,19 +50,15 @@ matrix:
     - os: osx
       env: TARGET=i386-apple-ios
       script: ci/run.sh
-      osx_image: xcode9.2
     - os: osx
       env: TARGET=x86_64-apple-ios
       script: ci/run.sh
-      osx_image: xcode9.2
     - os: osx
       env: TARGET=armv7-apple-ios NORUN=1
       script: ci/run.sh
-      osx_image: xcode9.2
     - os: osx
       env: TARGET=aarch64-apple-ios NORUN=1
       script: ci/run.sh
-      osx_image: xcode9.2
     # WASM:
     - env: TARGET=wasm32-unknown-unknown NORUN=1
       script: ci/run.sh
