@@ -11,8 +11,7 @@ macro_rules! impl_reduction_min_max {
                     use llvm::simd_reduce_max;
                     unsafe { simd_reduce_max(self.0) }
                 }
-                #[cfg(any(
-                    target_arch = "aarch64", target_arch = "arm"))]
+                #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
@@ -22,24 +21,34 @@ macro_rules! impl_reduction_min_max {
                     }
                     x
                 }
-
             }
 
             /// Smallest vector element value.
             #[inline]
             pub fn min_element(self) -> $elem_ty {
-                #[cfg(not(any(
-                    target_arch = "aarch64", target_arch = "arm",
-                    all(target_arch = "x86", not(target_feature = "sse2"))
-                )))]
+                #[cfg(
+                    not(
+                        any(
+                            target_arch = "aarch64",
+                            target_arch = "arm",
+                            all(
+                                target_arch = "x86",
+                                not(target_feature = "sse2")
+                            )
+                        )
+                    )
+                )]
                 {
                     use llvm::simd_reduce_min;
                     unsafe { simd_reduce_min(self.0) }
                 }
-                #[cfg(any(
-                    target_arch = "aarch64", target_arch = "arm",
-                    all(target_arch = "x86", not(target_feature = "sse2"))
-                ))]
+                #[cfg(
+                    any(
+                        target_arch = "aarch64",
+                        target_arch = "arm",
+                        all(target_arch = "x86", not(target_feature = "sse2"))
+                    )
+                )]
                 {
                     // FIXME: broken on AArch64
                     // https://bugs.llvm.org/show_bug.cgi?id=36796
@@ -138,7 +147,7 @@ macro_rules! test_reduction_float_min_max {
                             }
                             break
                         }
-                        if i == $id::lanes() - 1 && cfg!(any(
+                        if i == $id::lanes() - 1 && !cfg!(any(
                             target_arch = "arm", target_arch = "aarch64",
                             all(target_arch = "x86", not(target_feature = "sse2"))
                         )) {

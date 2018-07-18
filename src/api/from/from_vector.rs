@@ -6,8 +6,11 @@ macro_rules! impl_from_vector {
             #[inline]
             fn from(source: $source) -> Self {
                 fn static_assert_same_number_of_lanes<T, U>()
-                    where T: crate::sealed::Simd,
-                          U: crate::sealed::Simd<LanesType=T::LanesType> {}
+                where
+                    T: crate::sealed::Simd,
+                    U: crate::sealed::Simd<LanesType = T::LanesType>,
+                {
+                }
                 use llvm::simd_cast;
                 static_assert_same_number_of_lanes::<$id, $source>();
                 Simd(unsafe { simd_cast(source.0) })
@@ -15,17 +18,17 @@ macro_rules! impl_from_vector {
         }
 
         // FIXME: `Into::into` is not inline, but due to
-        // the blanket impl in `std`, which is not
-        // marked `default`, we cannot override it here with
-        // specialization.
-        /*
-        impl Into<$id> for $source {
-            #[inline]
-            fn into(self) -> $id {
-                unsafe { simd_cast(self) }
-            }
-        }
-        */
+                // the blanket impl in `std`, which is not
+                // marked `default`, we cannot override it here with
+                // specialization.
+                /*
+                impl Into<$id> for $source {
+                    #[inline]
+                    fn into(self) -> $id {
+                        unsafe { simd_cast(self) }
+                    }
+                }
+                */
 
         #[cfg(test)]
         interpolate_idents! {
