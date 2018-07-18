@@ -173,7 +173,7 @@ cfg_if! {
             ($id:ident, $half_id:ident) => {
                 cfg_if! {
                     if #[cfg(target_feature = "avx")] {
-                        x86_256_avx_test_impl!($id);
+                        x86_256_avx_impl!($id);
                     } else if #[cfg(target_feature = "sse2")] {
                         x86_256_sse2_impl!($id, $half_id);
                     } else {
