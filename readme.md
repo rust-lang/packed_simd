@@ -15,8 +15,8 @@ toolchain, and `run` means that the full testsuite passes on the target in CI.
 | `i586-unknown-linux-gnu`          | ✓         | ✓       |
 | `i686-unknown-linux-gnu`          | ✓         | ✓       |
 | `x86_64-unknown-linux-gnu`        | ✓         | ✓       |
+| `arm-unknown-linux-gnueabi`       |           |         |
 | `arm-unknown-linux-gnueabihf`     | ✓         | ✓       |
-| `armv7-unknown-linux-gnueabihf`   | ✓         | ✓       |
 | `armv7-unknown-linux-gnueabi`     | ✓         | ✓       |
 | `aarch64-unknown-linux-gnu`       | ✓         | ✓       |
 | `mips-unknown-linux-gnu`          | ✓         | ✓       |

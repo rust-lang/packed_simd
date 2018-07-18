@@ -14,9 +14,9 @@ matrix:
     - env: TARGET=i686-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu-emulated
+    - env: TARGET=arm-unknown-linux-gnueabi
     - env: TARGET=arm-unknown-linux-gnueabihf
     - env: TARGET=armv7-unknown-linux-gnueabihf
-    - env: TARGET=armv7-unknown-linux-gnueabi
     - env: TARGET=aarch64-unknown-linux-gnu
     - env: TARGET=mips-unknown-linux-gnu
     - env: TARGET=mipsel-unknown-linux-musl
@@ -65,6 +65,7 @@ matrix:
       - cargo clippy --all -- -D clippy-pedantic
 
   allow_failures:
+    - env: TARGET=arm-unknown-linux-gnueabi
     - env: TARGET=powerpc-unknown-linux-gnu
     - env: TARGET=powerpc64-unknown-linux-gnu
     - env: TARGET=powerpc64le-unknown-linux-gnu
