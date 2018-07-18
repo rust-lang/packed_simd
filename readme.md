@@ -85,7 +85,7 @@ dual licensed as above, without any additional terms or conditions.
 [travis]: https://travis-ci.org/gnzlbg/ppv
 [Travis-CI Status]: https://travis-ci.org/gnzlbg/ppv.svg?branch=master
 [appveyor]: https://ci.appveyor.com/project/gnzlbg/ppv/branch/master
-[Appveyor Status]: https://ci.appveyor.com/project/gnzlbg/ppv/branch/master
+[Appveyor Status]: https://ci.appveyor.com/api/projects/status/lobb2qte2q5gbxbo?svg=true
 [Latest Version]: https://img.shields.io/crates/v/ppv.svg
 [crates.io]: https://crates.io/crates/ppv
 [docs]: https://docs.rs/ppv/badge.svg
