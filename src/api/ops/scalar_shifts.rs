@@ -34,6 +34,7 @@ macro_rules! impl_ops_scalar_shifts {
             mod [$id _ops_scalar_shifts] {
                 use super::*;
                 #[test]
+                #[allow(unreachable_code)] // FIXME: see s390x/sparc64 below
                 fn ops_scalar_shifts() {
                     let z = $id::splat(0 as $elem_ty);
                     let o = $id::splat(1 as $elem_ty);
