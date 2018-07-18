@@ -6,9 +6,9 @@
 
 # Platform support
 
-The following table describes the supported platforms: `build` means that the
-library compiles correctly for the target using an appropriate cross-compilation
-toolchain, and `run` means that the full testsuite passes on the target in CI.
+The following table describes the supported platforms: `build` shows whether the
+library compiles without issues for a given target, while `run` shows whether
+the full testsuite passes on the target.
 
 | Linux targets:                    | build     | run     |
 |-----------------------------------|-----------|---------|
