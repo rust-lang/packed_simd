@@ -67,9 +67,9 @@ cfg_if! {
                     #[target_feature(enable = "mmx")]
                     unsafe fn all(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use core::arch::x86::_mm_movemask_pi8;
+                        use ::arch::x86::_mm_movemask_pi8;
                         #[cfg(target_arch = "x86_64")]
-                        use core::arch::x86_64::_mm_movemask_pi8;
+                        use ::arch::x86_64::_mm_movemask_pi8;
                         // _mm_movemask_pi8(a) creates an 8bit mask containing the most
                         // significant bit of each byte of `a`. If all bits are set,
                         // then all 8 lanes of the mask are true.
@@ -82,9 +82,9 @@ cfg_if! {
                     #[target_feature(enable = "mmx")]
                     unsafe fn any(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use core::arch::x86::_mm_movemask_pi8;
+                        use ::arch::x86::_mm_movemask_pi8;
                         #[cfg(target_arch = "x86_64")]
-                        use core::arch::x86_64::_mm_movemask_pi8;
+                        use ::arch::x86_64::_mm_movemask_pi8;
 
                         _mm_movemask_pi8(::mem::transmute(self)) != 0
                     }
@@ -101,9 +101,9 @@ cfg_if! {
                     #[target_feature(enable = "sse2")]
                     unsafe fn all(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use core::arch::x86::_mm_movemask_epi8;
+                        use ::arch::x86::_mm_movemask_epi8;
                         #[cfg(target_arch = "x86_64")]
-                        use core::arch::x86_64::_mm_movemask_epi8;
+                        use ::arch::x86_64::_mm_movemask_epi8;
                         // _mm_movemask_epi8(a) creates a 16bit mask containing the
                         // most significant bit of each byte of `a`. If all
                         // bits are set, then all 16 lanes of the mask are
@@ -117,9 +117,9 @@ cfg_if! {
                     #[target_feature(enable = "sse2")]
                     unsafe fn any(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use core::arch::x86::_mm_movemask_epi8;
+                        use ::arch::x86::_mm_movemask_epi8;
                         #[cfg(target_arch = "x86_64")]
-                        use core::arch::x86_64::_mm_movemask_epi8;
+                        use ::arch::x86_64::_mm_movemask_epi8;
 
                         _mm_movemask_epi8(::mem::transmute(self)) != 0
                     }
@@ -166,9 +166,9 @@ cfg_if! {
                     #[target_feature(enable = "avx")]
                     unsafe fn all(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use core::arch::x86::_mm256_testc_si256;
+                        use ::arch::x86::_mm256_testc_si256;
                         #[cfg(target_arch = "x86_64")]
-                        use core::arch::x86_64::_mm256_testc_si256;
+                        use ::arch::x86_64::_mm256_testc_si256;
                         _mm256_testc_si256(
                             ::mem::transmute(self),
                             ::mem::transmute($id::splat(true)),
@@ -180,9 +180,9 @@ cfg_if! {
                     #[target_feature(enable = "avx")]
                     unsafe fn any(self) -> bool {
                         #[cfg(target_arch = "x86")]
-                        use core::arch::x86::_mm256_testz_si256;
+                        use ::arch::x86::_mm256_testz_si256;
                         #[cfg(target_arch = "x86_64")]
-                        use core::arch::x86_64::_mm256_testz_si256;
+                        use ::arch::x86_64::_mm256_testz_si256;
                         _mm256_testz_si256(
                             ::mem::transmute(self),
                             ::mem::transmute(self),
@@ -220,8 +220,6 @@ cfg_if! {
     } else if #[cfg(
         all(target_arch = "arm", target_feature = "v7", target_feature = "neon")
     )] {
-        use crate::coresimd::arch as arch;
-
         /// ARM m32x2 v7+neon implementation
         macro_rules! arm_m32x2_v7_neon_impl {
             ($id:ident, $vpmin:ident, $vpmax:ident) => {
@@ -385,7 +383,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "neon")]
                     unsafe fn all(self) -> bool {
-                        use core::arch::aarch64::$vmin;
+                        use ::arch::aarch64::$vmin;
                         $vmin(::mem::transmute(self)) != 0
                     }
                 }
@@ -393,7 +391,7 @@ cfg_if! {
                     #[inline]
                     #[target_feature(enable = "neon")]
                     unsafe fn any(self) -> bool {
-                        use core::arch::aarch64::$vmax;
+                        use ::arch::aarch64::$vmax;
                         $vmax(::mem::transmute(self)) != 0
                     }
                 }
@@ -484,7 +482,7 @@ macro_rules! impl_mask_all_any {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m8x16);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
-                // arm_128_v7_neon_impl!(m8x16, m8x8, vpmin_u8, vpmax_u8);
+                arm_128_v7_neon_impl!(m8x16, m8x8, vpmin_u8, vpmax_u8);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m8x16, vminvq_u8, vmaxvq_u8);
             } else {
@@ -497,7 +495,7 @@ macro_rules! impl_mask_all_any {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m16x8);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
-                // arm_128_v7_neon_impl!(m16x8, m16x4, vpmin_u16, vpmax_u16);
+                arm_128_v7_neon_impl!(m16x8, m16x4, vpmin_u16, vpmax_u16);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m16x8, vminvq_u16, vmaxvq_u16);
             } else {
@@ -510,7 +508,7 @@ macro_rules! impl_mask_all_any {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m32x4);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
-                // arm_128_v7_neon_impl!(m32x4, m32x2, vpmin_u32, vpmax_u32);
+                arm_128_v7_neon_impl!(m32x4, m32x2, vpmin_u32, vpmax_u32);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m32x4, vminvq_u32, vmaxvq_u32);
             } else {

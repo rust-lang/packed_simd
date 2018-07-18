@@ -40,6 +40,17 @@
 #[macro_use]
 extern crate cfg_if;
 
+cfg_if! {
+    if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+        extern crate coresimd;
+        #[allow(unused)]
+        use coresimd::arch;
+    } else {
+        #[allow(unused)]
+        use core::arch;
+    }
+}
+
 #[cfg(test)]
 extern crate arrayvec;
 

@@ -65,6 +65,13 @@ case ${TARGET} in
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release"
         ;;
+    arm*)
+        cargo_test
+        cargo_test "--release"
+
+        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+v7,+neon"
+        cargo_test "--release"
+        ;;
     aarch64*)
         cargo_test
         cargo_test "--release"
