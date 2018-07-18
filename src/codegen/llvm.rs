@@ -1,4 +1,5 @@
 //! LLVM's platform intrinsics
+#![allow(dead_code)]
 
 use sealed::Shuffle;
 #[allow(unused_imports)] // FIXME: spurious warning?
@@ -70,17 +71,13 @@ extern "platform-intrinsic" {
     crate fn simd_or<T>(x: T, y: T) -> T;
     crate fn simd_xor<T>(x: T, y: T) -> T;
 
-    #[allow(dead_code)]
     crate fn simd_reduce_add_unordered<T, U>(x: T) -> U;
-    #[allow(dead_code)]
     crate fn simd_reduce_mul_unordered<T, U>(x: T) -> U;
     crate fn simd_reduce_add_ordered<T, U>(x: T, acc: U) -> U;
     crate fn simd_reduce_mul_ordered<T, U>(x: T, acc: U) -> U;
     crate fn simd_reduce_min<T, U>(x: T) -> U;
     crate fn simd_reduce_max<T, U>(x: T) -> U;
-    #[allow(dead_code)]
     crate fn simd_reduce_min_nanless<T, U>(x: T) -> U;
-    #[allow(dead_code)]
     crate fn simd_reduce_max_nanless<T, U>(x: T) -> U;
     crate fn simd_reduce_and<T, U>(x: T) -> U;
     crate fn simd_reduce_or<T, U>(x: T) -> U;
