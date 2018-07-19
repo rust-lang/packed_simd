@@ -109,6 +109,9 @@ pub use self::v256::*;
 mod v512;
 pub use self::v512::*;
 
+#[cfg(feature = "into_bits")]
+pub use self::api::into_bits::*;
+
 // Re-export the shuffle intrinsics required by the `shuffle!` macro.
 #[doc(hidden)]
 pub use self::codegen::llvm::{

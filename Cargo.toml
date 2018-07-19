@@ -30,3 +30,7 @@ arrayvec = { version = "^0.4", default-features = false }
 # and recompiling it with neon.
 [target.'cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))'.dependencies.coresimd]
 git = "http://github.com/rust-lang-nursery/stdsimd.git"
+
+[features]
+default = []
+into_bits = []

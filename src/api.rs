@@ -27,6 +27,9 @@ mod slice;
 #[macro_use]
 mod swap_bytes;
 
+#[cfg(feature = "into_bits")]
+crate mod into_bits;
+
 macro_rules! impl_i {
     ([$elem_ty:ident; $elem_count:expr]: $tuple_id:ident, $mask_ty:ident
      | $($elem_ids:ident),* | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {

@@ -64,11 +64,21 @@ macro_rules! impl_from_array {
                     // FIXME: Workaround for arrays with more than 32 elements.
                     //
                     // Safe because we never take a reference to any uninitialized element.
-                    let mut array: [$elem_ty; $elem_count] = unsafe { ::mem::uninitialized() };
+                    union W {
+                        array: [$elem_ty; $elem_count],
+                        other: ()
+                    }
+                    let mut array = W { other: () };
                     for i in 0..$elem_count {
                         let default: $elem_ty = Default::default();
-                        unsafe { ::ptr::write(array.as_mut_ptr().wrapping_add(i), default) };
+                        // note: array.other is the active member and initialized
+                        // so we can take a reference to it:
+                        let p = unsafe { &mut array.other as *mut () as *mut $elem_ty };
+                        // note: default is a valid bit-pattern for $elem_ty:
+                        unsafe { ::ptr::write(p.wrapping_add(i), default) };
                     }
+                    // note: the array variant of the union is properly initialized:
+                    let mut array = unsafe { array.array };
 
                     array[0] = $non_default_array;
                     let vec = vec.replace(0, $non_default_vec);
