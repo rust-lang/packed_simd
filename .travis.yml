@@ -31,11 +31,11 @@ matrix:
     - os: osx
       env: TARGET=i686-apple-darwin
       script: ci/run.sh
-      osx_image: xcode9.2
+      osx_image: xcode9.4
     - os: osx
       env: TARGET=x86_64-apple-darwin
       script: ci/run.sh
-      osx_image: xcode9.2
+      osx_image: xcode9.4
     # *BSDs:
     #- env: TARGET=i686-unknown-freebsd NORUN=1
     #  script: ci/run.sh
@@ -50,15 +50,19 @@ matrix:
     - os: osx
       env: TARGET=i386-apple-ios
       script: ci/run.sh
+      osx_image: xcode9.4
     - os: osx
       env: TARGET=x86_64-apple-ios
       script: ci/run.sh
+      osx_image: xcode9.4
     - os: osx
       env: TARGET=armv7-apple-ios NORUN=1
       script: ci/run.sh
+      osx_image: xcode9.4
     - os: osx
       env: TARGET=aarch64-apple-ios NORUN=1
       script: ci/run.sh
+      osx_image: xcode9.4
     # WASM:
     - env: TARGET=wasm32-unknown-unknown NORUN=1
       script: ci/run.sh
@@ -87,6 +91,11 @@ matrix:
     #- env: TARGET=x86_64-unknown-freebsd NORUN=1
     #- env: TARGET=x86_64-unknown-netbsd NORUN=1
     #- env: TARGET=x86_64-sun-solaris NORUN=1
+    
+    # FIXME: iOS
+    # https://github.com/gnzlbg/packed_simd/issues/26
+    - env: TARGET=i386-apple-ios
+    - env: TARGET=x86_64-apple-ios
 
 install:
   - rustup target add $TARGET || true

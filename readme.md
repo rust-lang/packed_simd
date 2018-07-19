@@ -15,7 +15,7 @@ the full testsuite passes on the target.
 | `i586-unknown-linux-gnu`          | ✓         | ✓       |
 | `i686-unknown-linux-gnu`          | ✓         | ✓       |
 | `x86_64-unknown-linux-gnu`        | ✓         | ✓       |
-| `arm-unknown-linux-gnueabi`       |           |         |
+| `arm-unknown-linux-gnueabi`       | ✗         | ✗       |
 | `arm-unknown-linux-gnueabihf`     | ✓         | ✓       |
 | `armv7-unknown-linux-gnueabi`     | ✓         | ✓       |
 | `aarch64-unknown-linux-gnu`       | ✓         | ✓       |
@@ -23,9 +23,9 @@ the full testsuite passes on the target.
 | `mipsel-unknown-linux-musl`       | ✓         | ✓       |
 | `mips64-unknown-linux-gnuabi64`   | ✓         | ✓       |
 | `mips64el-unknown-linux-gnuabi64` | ✓         | ✓       |
-| `powerpc-unknown-linux-gnu`       |           |         |
-| `powerpc64-unknown-linux-gnu`     |           |         |
-| `powerpc64le-unknown-linux-gnu`   |           |         |
+| `powerpc-unknown-linux-gnu`       | ✗         | ✗       |
+| `powerpc64-unknown-linux-gnu`     | ✗         | ✗       |
+| `powerpc64le-unknown-linux-gnu`   | ✗         | ✗       |
 | `s390x-unknown-linux-gnu`         | ✓         | ✓*      |
 | `sparc64-unknown-linux-gnu`       | ✓         | ✓*      |
 | **MacOSX targets:**               | **build** | **run** |
@@ -41,18 +41,18 @@ the full testsuite passes on the target.
 | `arm-linux-androideabi`           | ✓         | ✓       |
 | `aarch64-linux-android`           | ✓         | ✓       |
 | **iOS targets:**                  | **build** | **run** |
-| `i386-apple-ios`                  | ✓         |         |
-| `x86_64-apple-ios`                | ✓         |         |
-| `armv7-apple-ios`                 | ✓         | **      |
-| `aarch64-apple-ios`               | ✓         | **      |
+| `i386-apple-ios`                  | ✓         | ✗       |
+| `x86_64-apple-ios`                | ✓         | ✗       |
+| `armv7-apple-ios`                 | ✓         | ✗**     |
+| `aarch64-apple-ios`               | ✓         | ✗**     |
 | **xBSD targets:**                 | **build** | **run** |
-| `i686-unknown-freebsd`            |           | **      |
-| `x86_64-unknown-freebsd`          |           | **      |
-| `x86_64-unknown-netbsd`           |           | **      |
+| `i686-unknown-freebsd`            | ✗         | ✗**     |
+| `x86_64-unknown-freebsd`          | ✗         | ✗**     |
+| `x86_64-unknown-netbsd`           | ✗         | ✗**     |
 | **Solaris targets:**              | **build** | **run** |
-| `x86_64-sun-solaris`              |           | **      |
+| `x86_64-sun-solaris`              | ✗         | ✗**     |
 | **WASM targets:**                 | **build** | **run** |
-| `wasm32-unknown-unknown`          | ✓         | **      |
+| `wasm32-unknown-unknown`          | ✓         | ✗**     |
 
 [*] most of the test suite passes correctly on these platform but
 there are correctness bugs open in the issue tracker.
@@ -79,8 +79,8 @@ dual licensed as above, without any additional terms or conditions.
 
 [travis]: https://travis-ci.org/gnzlbg/packed_simd
 [Travis-CI Status]: https://travis-ci.org/gnzlbg/packed_simd.svg?branch=master
-[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed_simd/branch/master
-[Appveyor Status]: https://ci.appveyor.com/api/projects/status/lobb2qte2q5gbxbo?svg=true
+[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd/branch/master
+[Appveyor Status]: https://ci.appveyor.com/api/projects/status/h9079ut0qaeruccr/branch/master?svg=true
 [Latest Version]: https://img.shields.io/crates/v/packed_simd.svg
 [crates.io]: https://crates.io/crates/packed_simd
 [docs]: https://docs.rs/packed_simd/badge.svg
