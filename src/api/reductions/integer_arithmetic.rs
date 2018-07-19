@@ -22,7 +22,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: broken on AArch64
-                    // https://bugs.llvm.org/show_bug.cgi?id=36796
+                    // https://github.com/gnzlbg/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
                         x = x.wrapping_add(self.extract(i) as $elem_ty);
@@ -50,7 +50,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: broken on AArch64
-                    // https://bugs.llvm.org/show_bug.cgi?id=36796
+                    // https://github.com/gnzlbg/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
                         x = x.wrapping_mul(self.extract(i) as $elem_ty);

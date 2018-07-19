@@ -7,8 +7,9 @@ use sealed::Simd;
 
 // Shuffle intrinsics: expanded in users' crates, therefore public.
 extern "platform-intrinsic" {
-    /// FIXME: Passing this intrinsics an `idx` array with an index that is
-    /// out-of-bounds will produce a monomorphization-time error.
+    // FIXME: Passing this intrinsics an `idx` array with an index that is
+    // out-of-bounds will produce a monomorphization-time error.
+    // https://github.com/gnzlbg/packed_simd/issues/21
     pub fn simd_shuffle2<T, U>(x: T, y: T, idx: [u32; 2]) -> U
     where
         T: Simd,
@@ -88,7 +89,7 @@ extern "platform-intrinsic" {
     crate fn simd_select<M, T>(m: M, a: T, b: T) -> T;
 
     crate fn simd_fmin<T>(a: T, b: T) -> T;
-    // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/416
+    // FIXME: https://github.com/gnzlbg/packed_simd/issues/7
     // crate fn simd_fmax<T>(a: T, b: T) -> T;
 
     crate fn simd_fsqrt<T>(a: T) -> T;

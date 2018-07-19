@@ -35,6 +35,8 @@ macro_rules! impl_ops_vector_shifts {
             mod [$id _ops_vector_shifts] {
                 use super::*;
                 #[test]
+                #[cfg_attr(any(target_arch = "s390x", target_arch = "sparc64"),
+                           allow(unreachable_code, unused_variables))]
                 fn ops_vector_shifts() {
                     let z = $id::splat(0 as $elem_ty);
                     let o = $id::splat(1 as $elem_ty);
@@ -52,7 +54,7 @@ macro_rules! impl_ops_vector_shifts {
 
                     #[cfg(any(target_arch = "s390x", target_arch = "sparc64"))] {
                         // FIXME: rust produces bad codegen for shifts:
-                        // https://github.com/rust-lang/rust/issues/52015
+                        // https://github.com/gnzlbg/packed_simd/issues/13
                         return;
                     }
 

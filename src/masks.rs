@@ -50,7 +50,6 @@ macro_rules! impl_mask_ty {
                 &self,
                 other: &Self,
             ) -> Option<crate::cmp::Ordering> {
-                // FIXME: add assumes
                 use crate::cmp::Ordering;
                 if self == other {
                     Some(Ordering::Equal)

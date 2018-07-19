@@ -1,5 +1,8 @@
 //! Implements portable vector shuffles
 
+// FIXME: comprehensive tests
+// https://github.com/gnzlbg/packed_simd/issues/20
+
 /// Shuffles vector elements.
 ///
 /// This macro returns a new vector that contains a shuffle of the elements in
