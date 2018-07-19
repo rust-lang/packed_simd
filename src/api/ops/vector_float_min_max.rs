@@ -19,16 +19,8 @@ macro_rules! impl_ops_vector_float_min_max {
             /// the input vector lanes.
             #[inline]
             pub fn max(self, x: Self) -> Self {
-                // FIXME: https://github.com/gnzlbg/packed_simd/issues/7
-                // use codegen::llvm::simd_fmin;
-                // unsafe { Simd(simd_fmin(self.0, x.0)) }
-                let mut r = self;
-                for i in 0..$id::lanes() {
-                    let a = self.extract(i);
-                    let b = x.extract(i);
-                    r = r.replace(i, a.max(b))
-                }
-                r
+                use codegen::llvm::simd_fmax;
+                unsafe { Simd(simd_fmax(self.0, x.0)) }
             }
         }
         #[cfg(test)]
