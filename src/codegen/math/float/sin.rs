@@ -51,10 +51,12 @@ macro_rules! impl_fsin {
         impl Sin for $id {
             #[inline]
             fn sin(self) -> Self {
-                #[cfg(not(target_arch = "s390x"))] {
+                #[cfg(not(target_arch = "s390x"))]
+                {
                     unsafe { $fn(self) }
                 }
-                #[cfg(target_arch = "s390x")] {
+                #[cfg(target_arch = "s390x")]
+                {
                     // FIXME: https://github.com/gnzlbg/packed_simd/issues/14
                     let mut v = $id::splat(0.);
                     for i in 0..$id::lanes() {

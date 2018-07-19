@@ -110,7 +110,14 @@ macro_rules! impl_swap_bytes {
 impl_swap_bytes!(v16: u8x2, i8x2,);
 impl_swap_bytes!(v32: u8x4, i8x4, u16x2, i16x2,);
 // FIXME: 64-bit single element vector
-impl_swap_bytes!(v64: u8x8, i8x8, u16x4, i16x4, u32x2, i32x2, /*u64x1, i64x1,*/);
+impl_swap_bytes!(
+    v64: u8x8,
+    i8x8,
+    u16x4,
+    i16x4,
+    u32x2,
+    i32x2, /*u64x1, i64x1,*/
+);
 impl_swap_bytes!(
     v128: u8x16,
     i8x16,

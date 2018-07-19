@@ -34,10 +34,12 @@ macro_rules! impl_fma {
         impl Fma for $id {
             #[inline]
             fn fma(self, y: Self, z: Self) -> Self {
-                #[cfg(not(target_arch = "s390x"))] {
+                #[cfg(not(target_arch = "s390x"))]
+                {
                     unsafe { $fn(self, y, z) }
                 }
-                #[cfg(target_arch = "s390x")] {
+                #[cfg(target_arch = "s390x")]
+                {
                     // FIXME: https://github.com/gnzlbg/packed_simd/issues/14
                     self * y + z
                 }
