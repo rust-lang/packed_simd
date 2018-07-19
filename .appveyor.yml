@@ -12,4 +12,4 @@ install:
   - rustc -vV
   - cargo -vV
 build: false
-test_script: C:\msys64\usr\bin\sh ci\run.sh
+test_script: C:\msys64\usr\bin\bash ci\run.sh

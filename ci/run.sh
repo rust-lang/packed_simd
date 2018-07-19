@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -ex
 
@@ -15,10 +15,15 @@ if [[ "${NORUN}" == "1" ]]; then
     export CARGO_SUBCMD=build
 fi
 
+echo "TARGET=${TARGET}"
+rustc --version
 echo "RUSTFLAGS=${RUSTFLAGS}"
 echo "FEATURES=${FEATURES}"
 echo "NORUN=${NORUN}"
 echo "CARGO_SUBCMD=${CARGO_SUBCMD}"
+echo "RUST_TEST_THREADS=${RUST_TEST_THREADS}"
+echo "RUST_BACKTRACE=${RUST_BACKTRACE}"
+echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
@@ -46,17 +51,20 @@ case ${TARGET} in
     x86*)
         if [[ ${TARGET} == *"ios"* ]]; then
             echo "ERROR: ${TARGET} must run in the iOS simulator"
+            exit 1
         fi
 
         cargo_test
         cargo_test "--release"
 
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+sse4.2"
+        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
+
+        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
         cargo_test "--release"
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
+        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
         cargo_test "--release"
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test "--release"
+
+        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     armv7*)
         cargo_test
@@ -84,6 +92,8 @@ case ${TARGET} in
         cargo_test "--release"
 
         # FIXME: this doesn't compile succesfully
+        # https://github.com/gnzlbg/packed_simd/issues/18
+        #
         # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r5"
         # cargo_test "--release"
         ;;
@@ -98,10 +108,14 @@ case ${TARGET} in
         cargo_test
         cargo_test "--release"
 
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+altivec"
+        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
+
+        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+altivec"
         cargo_test "--release"
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+vsx"
+        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+vsx"
         cargo_test "--release"
+
+        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     *)
         cargo_test
