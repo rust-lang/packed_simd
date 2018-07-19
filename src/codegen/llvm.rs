@@ -89,10 +89,8 @@ extern "platform-intrinsic" {
     crate fn simd_select<M, T>(m: M, a: T, b: T) -> T;
 
     crate fn simd_fmin<T>(a: T, b: T) -> T;
-    // FIXME: https://github.com/gnzlbg/packed_simd/issues/7
-    // crate fn simd_fmax<T>(a: T, b: T) -> T;
+    crate fn simd_fmax<T>(a: T, b: T) -> T;
 
     crate fn simd_fsqrt<T>(a: T) -> T;
-    #[allow(dead_code)]
     crate fn simd_fma<T>(a: T, b: T, c: T) -> T;
 }
