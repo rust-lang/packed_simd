@@ -28,6 +28,7 @@ echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
     $cmd
+    $cmd --features into_bits
 }
 
 case ${TARGET} in
