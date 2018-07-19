@@ -1,9 +1,6 @@
 //! Vertical (lane-wise) vector-scalar rotates operations.
 #![allow(unused)]
 
-// inline(always) to encourage the compiler to generate rotate instructions
-// where available
-// FIXME: once codegen is correct, re-evaluate this
 macro_rules! impl_ops_scalar_rotates {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
         impl $id {
@@ -11,10 +8,9 @@ macro_rules! impl_ops_scalar_rotates {
             /// the corresponding lane of `n`, wrapping the truncated bits to
             /// the end of the resulting integer.
             ///
-            /// Please note this isn't the same operation as `<<`!. Also note it
-            /// isn't equivalent to `slice::rotate_left`, it doesn't move the vector's
-            /// lanes around. (that can be implemented with vector shuffles).
-            #[inline(always)]
+            /// Note: this is neither the same operation as `<<` nor equivalent
+            /// to `slice::rotate_left`.
+            #[inline]
             pub fn rotate_left(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts
@@ -26,10 +22,9 @@ macro_rules! impl_ops_scalar_rotates {
             /// the corresponding lane of `n`, wrapping the truncated bits to
             /// the beginning of the resulting integer.
             ///
-            /// Please note this isn't the same operation as `>>`!. Also note it
-            /// isn't similar to `slice::rotate_right`, it doesn't move the vector's
-            /// lanes around. (that can be implemented with vector shuffles).
-            #[inline(always)]
+            /// Note: this is neither the same operation as `<<` nor equivalent
+            /// to `slice::rotate_left`.
+            #[inline]
             pub fn rotate_right(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts

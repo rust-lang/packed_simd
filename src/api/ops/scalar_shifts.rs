@@ -34,7 +34,8 @@ macro_rules! impl_ops_scalar_shifts {
             mod [$id _ops_scalar_shifts] {
                 use super::*;
                 #[test]
-                #[allow(unreachable_code)] // FIXME: see s390x/sparc64 below
+                #[cfg_attr(any(target_arch = "s390x", target_arch = "sparc64"),
+                           allow(unreachable_code, unused_variables))]
                 fn ops_scalar_shifts() {
                     let z = $id::splat(0 as $elem_ty);
                     let o = $id::splat(1 as $elem_ty);
@@ -54,8 +55,7 @@ macro_rules! impl_ops_scalar_shifts {
                         assert_eq!(z >> ti, z);
 
                         #[cfg(any(target_arch = "s390x", target_arch = "sparc64"))] {
-                            // FIXME: rust produces bad codegen for shifts:
-                            // https://github.com/rust-lang/rust/issues/52015
+                            // FIXME: https://github.com/gnzlbg/packed_simd/issues/13
                             return;
                         }
 

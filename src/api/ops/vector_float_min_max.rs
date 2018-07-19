@@ -19,7 +19,7 @@ macro_rules! impl_ops_vector_float_min_max {
             /// the input vector lanes.
             #[inline]
             pub fn max(self, x: Self) -> Self {
-                // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/416
+                // FIXME: https://github.com/gnzlbg/packed_simd/issues/7
                 // use codegen::llvm::simd_fmin;
                 // unsafe { Simd(simd_fmin(self.0, x.0)) }
                 let mut r = self;

@@ -38,7 +38,7 @@ macro_rules! impl_fma {
                     unsafe { $fn(self, y, z) }
                 }
                 #[cfg(target_arch = "s390x")] {
-                    // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/501
+                    // FIXME: https://github.com/gnzlbg/packed_simd/issues/14
                     self * y + z
                 }
             }

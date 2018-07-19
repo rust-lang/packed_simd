@@ -55,7 +55,7 @@ macro_rules! impl_fsin {
                     unsafe { $fn(self) }
                 }
                 #[cfg(target_arch = "s390x")] {
-                    // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/501
+                    // FIXME: https://github.com/gnzlbg/packed_simd/issues/14
                     let mut v = $id::splat(0.);
                     for i in 0..$id::lanes() {
                         v = v.replace(i, self.extract(i).scalar_sin())
