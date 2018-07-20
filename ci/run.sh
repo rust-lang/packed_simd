@@ -27,6 +27,7 @@ echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
+    mkdir -p target || true
     $cmd |& tee > target/output
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
         cat target/output
