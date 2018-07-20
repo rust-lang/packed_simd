@@ -1,0 +1,28 @@
+[[package]]
+name = "cfg-if"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "coresimd"
+version = "0.0.3"
+source = "git+http://github.com/rust-lang-nursery/stdsimd.git#0fa99a1795e3f4525b9821fdfff887d34bff6d35"
+
+[[package]]
+name = "nbody"
+version = "0.1.0"
+dependencies = [
+ "packed_simd 0.1.0",
+]
+
+[[package]]
+name = "packed_simd"
+version = "0.1.0"
+dependencies = [
+ "cfg-if 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "coresimd 0.0.3 (git+http://github.com/rust-lang-nursery/stdsimd.git)",
+]
+
+[metadata]
+"checksum cfg-if 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "efe5c877e17a9c717a0bf3613b2709f723202c4e4675cc8f12926ded29bcb17e"
+"checksum coresimd 0.0.3 (git+http://github.com/rust-lang-nursery/stdsimd.git)" = "<none>"
