@@ -27,9 +27,9 @@ echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
-    $cmd |& tee > output
+    $cmd |& tee > target/output
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
-        cat output
+        cat target/output
         return 1
     fi
 }
