@@ -128,3 +128,6 @@ case ${TARGET} in
 
         ;;
 esac
+
+# Examples
+cargo test --release --manifest-path=examples/nbody/Cargo.toml
