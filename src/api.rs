@@ -27,6 +27,8 @@ mod slice;
 #[macro_use]
 mod swap_bytes;
 
+crate mod into_trunc;
+
 #[cfg(feature = "into_bits")]
 crate mod into_bits;
 

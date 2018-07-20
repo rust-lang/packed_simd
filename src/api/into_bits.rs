@@ -2,7 +2,7 @@
 
 /// Safe lossless bitwise conversion from `T` to `Self`.
 pub trait FromBits<T>: ::marker::Sized {
-    /// Safe lossless bitwise from `T` to `Self`.
+    /// Safe lossless bitwise transmute from `T` to `Self`.
     fn from_bits(T) -> Self;
 }
 
