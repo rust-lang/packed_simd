@@ -93,7 +93,7 @@ matrix:
 
     # FIXME: this fails only on travis, and not always
     # https://github.com/gnzlbg/packed_simd/issues/25
-    env: TARGET=x86_64-apple-darwin
+    - env: TARGET=x86_64-apple-darwin
 
     # FIXME: iOS
     # https://github.com/gnzlbg/packed_simd/issues/26
