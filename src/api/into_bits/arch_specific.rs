@@ -1,8 +1,8 @@
 //! `FromBits` and `IntoBits` between portable vector types and the
 //! architecture-specific vector types.
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 // FIXME: MIPS FromBits/IntoBits
-// FIXME: , i128x1, u128x1, m128x1 , i128x2, u128x2, m128x2
 
 #[allow(unused)]
 use crate::*;
@@ -29,17 +29,20 @@ macro_rules! impl_arch {
     ([$arch:ident[$arch_tt:tt]: $($arch_ty:ident),*] |
      from: $($from_ty:ident),* | into: $($into_ty:ident),*) => {
         // note: If the target is "arm", "+v7,+neon" must be enabled
-        #[cfg(any(not(target_arch = "arm"), all(target_feature = "v7", target_feature = "neon")))]
+        #[cfg(any(not(target_arch = "arm"),
+                  all(target_feature = "v7", target_feature = "neon")))]
         #[cfg(target_arch = $arch_tt)]
         use crate::arch::$arch::{
             $($arch_ty),*
         };
 
-        #[cfg(any(not(target_arch = "arm"), all(target_feature = "v7", target_feature = "neon")))]
+        #[cfg(any(not(target_arch = "arm"),
+                  all(target_feature = "v7", target_feature = "neon")))]
         #[cfg(target_arch = $arch_tt)]
         impl_arch!($($arch_ty),* | $($from_ty),* | $($into_ty),*);
     };
-    ($arch_head:ident, $($arch_tail:ident),* | $($from_ty:ident),* | $($into_ty:ident),*) => {
+    ($arch_head:ident, $($arch_tail:ident),* | $($from_ty:ident),*
+     | $($into_ty:ident),*) => {
         impl_arch!($arch_head | $($from_ty),* | $($into_ty),*);
         impl_arch!($($arch_tail),* | $($from_ty),* | $($into_ty),*);
     };
@@ -49,6 +52,7 @@ macro_rules! impl_arch {
     };
 }
 
+////////////////////////////////////////////////////////////////////////////////
 // Implementations for the 64-bit wide vector types:
 
 // FIXME: 64-bit single element types
@@ -65,8 +69,7 @@ impl_arch!(
     into: i8x8, u8x8, i16x4, u16x4, i32x2, u32x2, f32x2
 );
 
-// FIXME: from/into for arm/aarch poly_t
-
+////////////////////////////////////////////////////////////////////////////////
 // Implementations for the 128-bit wide vector types:
 
 // FIXME: arm/aarch float16x8_t missing
@@ -86,29 +89,69 @@ impl_arch!(
      uint16x8_t, poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t,
      uint64x2_t, float64x2_t],
     [powerpc["powerpc"]: vector_signed_char, vector_unsigned_char,
-     vector_bool_char, vector_signed_short, vector_unsigned_short,
-     vector_bool_short, vector_signed_int, vector_unsigned_int,
-     vector_bool_int, vector_float],
+     vector_signed_short, vector_unsigned_short, vector_signed_int,
+     vector_unsigned_int, vector_float],
     [powerpc["powerpc64"]: vector_signed_char, vector_unsigned_char,
-     vector_bool_char, vector_signed_short, vector_unsigned_short,
-     vector_bool_short, vector_signed_int, vector_unsigned_int,
-     vector_bool_int, vector_float, vector_signed_long,
-     vector_unsigned_long, vector_bool_long, vector_double] |
+     vector_signed_short, vector_unsigned_short, vector_signed_int,
+     vector_unsigned_int,  vector_float, vector_signed_long,
+     vector_unsigned_long, vector_double] |
     from: i8x16, u8x16, m8x16, i16x8, u16x8, m16x8, i32x4, u32x4, f32x4, m32x4,
     i64x2, u64x2, f64x2, m64x2, i128x1, u128x1, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4, i64x2, u64x2, f64x2,
     i128x1, u128x1
 );
 
-// FIXME: ppc vector bool to mask casts
+impl_arch!(
+    [powerpc["powerpc"]: vector_bool_char],
+    [powerpc["powerpc64"]: vector_bool_char] |
+    from: m8x16, m16x8, m32x4, m64x2, m128x1 |
+    into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
+    i64x2, u64x2, f64x2, i128x1, u128x1,
+    // Masks:
+    m8x16
+);
 
+impl_arch!(
+    [powerpc["powerpc"]: vector_bool_short],
+    [powerpc["powerpc64"]: vector_bool_short] |
+    from: m16x8, m32x4, m64x2, m128x1 |
+    into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
+    i64x2, u64x2, f64x2, i128x1, u128x1,
+    // Masks:
+    m8x16, m16x8
+);
+
+impl_arch!(
+    [powerpc["powerpc"]: vector_bool_int],
+    [powerpc["powerpc64"]: vector_bool_int] |
+    from: m32x4, m64x2, m128x1 |
+    into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
+    i64x2, u64x2, f64x2, i128x1, u128x1,
+    // Masks:
+    m8x16, m16x8, m32x4
+);
+
+impl_arch!(
+    [powerpc["powerpc64"]: vector_bool_long] |
+    from: m64x2, m128x1 |
+    into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
+    i64x2, u64x2, f64x2, i128x1, u128x1,
+    // Masks:
+    m8x16, m16x8, m32x4, m64x2
+);
+
+////////////////////////////////////////////////////////////////////////////////
 // Implementations for the 256-bit wide vector types
 
 impl_arch!(
     [x86["x86"]: __m256, __m256i, __m256d],
     [x86_64["x86_64"]:  __m256, __m256i, __m256d] |
-    from: i8x32, u8x32, m8x32, i16x16, u16x16, m16x16, i32x8, u32x8, f32x8, m32x8, i64x4, u64x4, f64x4, m64x4, i128x2, u128x2, m128x2 |
-    into: i8x32, u8x32, i16x16, u16x16, i32x8, u32x8, f32x8, i64x4, u64x4, f64x4, i128x2, u128x2
+    from: i8x32, u8x32, m8x32, i16x16, u16x16, m16x16,
+    i32x8, u32x8, f32x8, m32x8,
+    i64x4, u64x4, f64x4, m64x4, i128x2, u128x2, m128x2 |
+    into: i8x32, u8x32, i16x16, u16x16, i32x8, u32x8, f32x8,
+    i64x4, u64x4, f64x4, i128x2, u128x2
 );
 
-// FIXME: FromBits/IntoBits for arch-specific 512-bit wide vector types
+////////////////////////////////////////////////////////////////////////////////
+// FIXME: Implementations for the 512-bit wide vector types
