@@ -27,8 +27,11 @@ echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
-    $cmd
-    $cmd --features into_bits
+    $cmd |& tee > output
+    if [[ ${PIPESTATUS[0]} != 0 ]]; then
+        cat output
+        return 1
+    fi
 }
 
 case ${TARGET} in
@@ -39,7 +42,7 @@ case ${TARGET} in
         export CARGO_TARGET_X86_64_APPLE_IOS_RUNNER=$HOME/runtest
 
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         ;;
     i386-apple-ios)
         export RUSTFLAGS=-Clink-arg=-mios-simulator-version-min=7.0
@@ -47,7 +50,7 @@ case ${TARGET} in
         export CARGO_TARGET_I386_APPLE_IOS_RUNNER=$HOME/runtest
 
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         ;;
     x86*)
         if [[ ${TARGET} == *"ios"* ]]; then
@@ -56,71 +59,71 @@ case ${TARGET} in
         fi
 
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     armv7*)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         ;;
     arm*)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+v7,+neon"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         ;;
     aarch64*)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         ;;
     mips64*)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         # FIXME: this doesn't compile succesfully
         # https://github.com/gnzlbg/packed_simd/issues/18
         #
-        # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r5"
-        # cargo_test "--release"
+        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r6"
+        cargo_test "--release" "--features=into_bits"
         ;;
     powerpc-*)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         ;;
     powerpc64-*)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+vsx"
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     *)
         cargo_test
-        cargo_test "--release"
+        cargo_test "--release" "--features=into_bits"
 
         ;;
 esac
