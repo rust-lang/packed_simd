@@ -41,7 +41,7 @@ impl_m!([m32; 2]: m32x2 | i32 | x0, x1 |
         /// A 64-bit vector mask with 2 `m32` lanes.
 );
 impl_f!([f32; 2]: f32x2, m32x2 | x0, x1 |
-        From: i8x2, u8x2, i16x2, u16x2 |
+        From: i8x2, u8x2, i16x2, u16x2, i32x2, u32x2 |
         /// A 64-bit vector with 2 `f32` lanes.
 );
 

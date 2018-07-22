@@ -40,7 +40,7 @@ impl_u!([u32; 4]: u32x4, m32x4 | x0, x1, x2, x3 |
         /// A 128-bit vector with 4 `u32` lanes.
 );
 impl_f!([f32; 4]: f32x4, m32x4 | x0, x1, x2, x3 |
-        From: i8x4, u8x4, i16x4, u16x4 |
+        From: i8x4, u8x4, i16x4, u16x4, i32x4, u32x4 |
         /// A 128-bit vector with 4 `f32` lanes.
 );
 impl_m!([m32; 4]: m32x4 | i32 | x0, x1, x2, x3 |
@@ -57,7 +57,7 @@ impl_u!([u64; 2]: u64x2, m64x2 | x0, x1 |
         /// A 128-bit vector with 2 `u64` lanes.
 );
 impl_f!([f64; 2]: f64x2, m64x2 | x0, x1 |
-        From: i8x2, u8x2, i16x2, u16x2, i32x2, u32x2, f32x2 |
+        From: i8x2, u8x2, i16x2, u16x2, i32x2, u32x2, i64x2, u64x2, f32x2 |
         /// A 128-bit vector with 2 `f64` lanes.
 );
 impl_m!([m64; 2]: m64x2 | i64 | x0, x1 |
