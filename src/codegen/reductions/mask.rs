@@ -218,7 +218,8 @@ cfg_if! {
             };
         }
     } else if #[cfg(
-        all(target_arch = "arm", target_feature = "v7", target_feature = "neon")
+        all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
+            feature = "coresimd")
     )] {
         /// ARM m32x2 v7+neon implementation
         macro_rules! arm_m32x2_v7_neon_impl {
@@ -441,7 +442,8 @@ macro_rules! impl_mask_all_any {
         cfg_if! {
             if #[cfg(target_arch = "x86_64")] {
                 x86_64_mmx_impl!(m8x8, m8x16);
-            } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 arm_m8x8_v7_neon_impl!(m8x8, vpmin_u8, vpmax_u8);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_64_neon_impl!(m8x8, m8x16);
@@ -454,7 +456,8 @@ macro_rules! impl_mask_all_any {
         cfg_if! {
             if #[cfg(target_arch = "x86_64")] {
                 x86_64_mmx_impl!(m16x4, m16x8);
-            } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 arm_m16x4_v7_neon_impl!(m16x4, vpmin_u16, vpmax_u16);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_64_neon_impl!(m16x4, m16x8);
@@ -467,7 +470,8 @@ macro_rules! impl_mask_all_any {
         cfg_if! {
             if #[cfg(target_arch = "x86_64")] {
                 x86_64_mmx_impl!(m32x2, m32x4);
-            } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 arm_m32x2_v7_neon_impl!(m32x2, vpmin_u32, vpmax_u32);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_64_neon_impl!(m32x2, m32x4);
@@ -481,7 +485,8 @@ macro_rules! impl_mask_all_any {
         cfg_if! {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m8x16);
-            } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 arm_128_v7_neon_impl!(m8x16, m8x8, vpmin_u8, vpmax_u8);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m8x16, vminvq_u8, vmaxvq_u8);
@@ -494,7 +499,8 @@ macro_rules! impl_mask_all_any {
         cfg_if! {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m16x8);
-            } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 arm_128_v7_neon_impl!(m16x8, m16x4, vpmin_u16, vpmax_u16);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m16x8, vminvq_u16, vmaxvq_u16);
@@ -507,7 +513,8 @@ macro_rules! impl_mask_all_any {
         cfg_if! {
             if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
                 x86_128_impl!(m32x4);
-            } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 arm_128_v7_neon_impl!(m32x4, m32x2, vpmin_u32, vpmax_u32);
             } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
                 aarch64_128_neon_impl!(m32x4, vminvq_u32, vmaxvq_u32);

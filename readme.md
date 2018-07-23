@@ -4,6 +4,19 @@
 
 > This aims to be a 100% conforming implementation of the RFC2366 for stabilization.
 
+# Cargo features
+
+* `into_bits` (default: disabled): enables `FromBits`/`IntoBits` trait
+  implementations for the vector types. These allow reinterpreting the bits of a
+  vector type as those of another vector type safely by just using the
+  `.into_bits()` method.
+  
+* `coresimd` (default: disabled): when targeting `arm` targets with the `v7` and
+  `neon` target features enabled, the `core::arch` component in the standard
+  library has typically been compiled without NEON, which means that for some
+  operations, NEON won't be used. The `coresimd` feature enables NEON support by
+  using `coresimd::arch` compiled with `v7` and `neon` instead of `core::arch`.
+
 # Platform support
 
 The following table describes the supported platforms: `build` shows whether the

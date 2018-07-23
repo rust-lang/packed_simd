@@ -41,7 +41,8 @@
 extern crate cfg_if;
 
 cfg_if! {
-    if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
+    if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
+                 feature = "coresimd"))] {
         extern crate coresimd;
         #[allow(unused_imports)]
         use coresimd::arch;
