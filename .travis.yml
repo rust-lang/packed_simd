@@ -8,7 +8,17 @@ matrix:
     # Android:
     - env: TARGET=x86_64-linux-android
     - env: TARGET=arm-linux-androideabi
+      install:
+        - rustup target add $TARGET || true
+      script:
+        - cargo generate-lockfile
+        - travis_wait 30 ci/run-docker.sh $TARGET $FEATURES
     - env: TARGET=aarch64-linux-android
+      install:
+        - rustup target add $TARGET || true
+      script:
+        - cargo generate-lockfile
+        - travis_wait 30 ci/run-docker.sh $TARGET $FEATURES
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
     - env: TARGET=i686-unknown-linux-gnu

@@ -28,7 +28,7 @@ echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
     mkdir target || true
-    $cmd |& tee > target/output
+    ${cmd} 2>&1 | tee > target/output
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
         cat target/output
         return 1
@@ -102,8 +102,8 @@ case ${TARGET} in
         # FIXME: this doesn't compile succesfully
         # https://github.com/rust-lang-nursery/packed_simd/issues/18
         #
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r6"
-        cargo_test "--release" "--features=into_bits"
+        # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r6"
+        # cargo_test "--release" "--features=into_bits"
         ;;
     powerpc-*)
         cargo_test
@@ -132,7 +132,14 @@ case ${TARGET} in
         ;;
 esac
 
-# Examples
+# Examples - the source directory is read-only.
+# Need to copy them to the target directory for the Cargo.lock to be
+# properly written.
 mkdir target || true
+
 cp -r examples/nbody target/nbody
-cargo test --release --manifest-path=target/nbody/Cargo.toml
+cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
+
+cp -r examples/mandelbrot target/mandelbrot
+cargo_test "--release" "--manifest-path=target/mandelbrot/Cargo.toml"
+
