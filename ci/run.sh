@@ -53,6 +53,24 @@ case ${TARGET} in
         cargo_test
         cargo_test "--release" "--features=into_bits"
         ;;
+    i586*)
+        if [[ ${TARGET} == *"ios"* ]]; then
+            echo "ERROR: ${TARGET} must run in the iOS simulator"
+            exit 1
+        fi
+
+        cargo_test
+        cargo_test "--release" "--features=into_bits"
+
+        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
+
+        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
+        cargo_test "--release" "--features=into_bits"
+        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
+        cargo_test "--release" "--features=into_bits"
+
+        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
+        ;;
     i686*)
         if [[ ${TARGET} == *"ios"* ]]; then
             echo "ERROR: ${TARGET} must run in the iOS simulator"
