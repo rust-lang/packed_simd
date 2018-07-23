@@ -26,7 +26,7 @@ echo "RUST_BACKTRACE=${RUST_BACKTRACE}"
 echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
-    cmd="cargo ${CARGO_SUBCMD} --target=${TARGET} ${1}"
+    cmd="cargo ${CARGO_SUBCMD} --verbose --target=${TARGET} ${1}"
     mkdir target || true
     ${cmd} 2>&1 | tee > target/output
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
