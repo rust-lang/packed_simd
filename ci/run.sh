@@ -133,4 +133,6 @@ case ${TARGET} in
 esac
 
 # Examples
-cargo test --release --manifest-path=examples/nbody/Cargo.toml
+mkdir target || true
+cp -r examples/nbody target/nbody
+cargo test --release --manifest-path=target/nbody/Cargo.toml
