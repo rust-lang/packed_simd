@@ -52,7 +52,7 @@ the full testsuite passes on the target.
 | **Android targets:**              | **build** | **run** |
 | `x86_64-linux-android`            | ✓         | ✓       |
 | `arm-linux-androideabi`           | ✓         | ✓       |
-| `aarch64-linux-android`           | ✓         | ✓       |
+| `aarch64-linux-android`           | ✓         | ✗       |
 | **iOS targets:**                  | **build** | **run** |
 | `i386-apple-ios`                  | ✓         | ✗       |
 | `x86_64-apple-ios`                | ✓         | ✗       |
