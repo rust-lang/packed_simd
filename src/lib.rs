@@ -109,7 +109,7 @@ pub use self::v256::*;
 mod v512;
 pub use self::v512::*;
 
-pub use self::api::into_trunc::*;
+pub use self::api::cast::*;
 
 #[cfg(feature = "into_bits")]
 pub use self::api::into_bits::*;

@@ -1,5 +1,6 @@
 //! Implements the Simd<[T; N]> APIs
 
+crate mod cast;
 #[macro_use]
 mod cmp;
 #[macro_use]
@@ -26,8 +27,6 @@ mod shuffle;
 mod slice;
 #[macro_use]
 mod swap_bytes;
-
-crate mod into_trunc;
 
 #[cfg(feature = "into_bits")]
 crate mod into_bits;

@@ -1,10 +1,10 @@
-//! Macros implementing `FromTrunc`
+//! Macros implementing `FromCast`
 
-macro_rules! impl_from_trunc_ {
+macro_rules! impl_from_cast_ {
     ($id:ident: $from_ty:ident) => {
-        impl crate::api::into_trunc::FromTrunc<$from_ty> for $id {
+        impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
-            fn from_truncated(x: $from_ty) -> Self {
+            fn from_cast(x: $from_ty) -> Self {
                 use ::codegen::llvm::simd_cast;
                 debug_assert_eq!($from_ty::lanes(), $id::lanes());
                 Simd(unsafe { simd_cast(x.0) })
@@ -13,7 +13,7 @@ macro_rules! impl_from_trunc_ {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [$id _from_trunc_ $from_ty] {
+            mod [$id _from_cast_ $from_ty] {
                 use super::*;
                 #[test]
                 fn test() {
@@ -24,19 +24,19 @@ macro_rules! impl_from_trunc_ {
     }
 }
 
-macro_rules! impl_from_trunc {
+macro_rules! impl_from_cast {
     ($id:ident: $($from_ty:ident),*) => {
         $(
-            impl_from_trunc_!($id: $from_ty);
+            impl_from_cast_!($id: $from_ty);
         )*
     }
 }
 
-macro_rules! impl_from_trunc_mask_ {
+macro_rules! impl_from_cast_mask_ {
     ($id:ident: $from_ty:ident) => {
-        impl crate::api::into_trunc::FromTrunc<$from_ty> for $id {
+        impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
-            fn from_truncated(x: $from_ty) -> Self {
+            fn from_cast(x: $from_ty) -> Self {
                 debug_assert_eq!($from_ty::lanes(), $id::lanes());
                 x.ne($from_ty::default()).select($id::splat(true), $id::splat(false))
             }
@@ -44,14 +44,14 @@ macro_rules! impl_from_trunc_mask_ {
 
         #[cfg(test)]
         interpolate_idents! {
-            mod [$id _from_trunc_ $from_ty] {
+            mod [$id _from_cast_ $from_ty] {
                 use super::*;
                 #[test]
                 fn test() {
                     assert_eq!($id::lanes(), $from_ty::lanes());
 
                     let x = $from_ty::default();
-                    let m: $id = x.into_trunc();
+                    let m: $id = x.cast();
                     assert!(m.none());
                 }
             }
@@ -59,20 +59,20 @@ macro_rules! impl_from_trunc_mask_ {
     }
 }
 
-macro_rules! impl_from_trunc_mask {
+macro_rules! impl_from_cast_mask {
     ($id:ident: $($from_ty:ident),*) => {
         $(
-            impl_from_trunc_mask_!($id: $from_ty);
+            impl_from_cast_mask_!($id: $from_ty);
         )*
     }
 }
 
 
 #[allow(unused)]
-macro_rules! impl_into_trunc {
+macro_rules! impl_into_cast {
     ($id:ident: $($from_ty:ident),*) => {
         $(
-            impl_from_trunc_!($from_ty: $id);
+            impl_from_cast_!($from_ty: $id);
         )*
     }
 }
