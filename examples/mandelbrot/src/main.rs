@@ -9,7 +9,6 @@ fn main() {
 
     let mut m = Mandelbrot::new(width, height);
 
-
     let mut o = ::std::io::stdout();
     if args.next().is_none() {
         simd::output(&mut m, &mut o);

@@ -17,4 +17,3 @@ fn main() {
     println!("{:.9}", energy_before);
     println!("{:.9}", energy_after);
 }
-

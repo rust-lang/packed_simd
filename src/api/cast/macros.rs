@@ -1,11 +1,11 @@
 //! Macros implementing `FromCast`
 
 macro_rules! impl_from_cast_ {
-    ($id:ident: $from_ty:ident) => {
+    ($id:ident : $from_ty:ident) => {
         impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
             fn from_cast(x: $from_ty) -> Self {
-                use ::codegen::llvm::simd_cast;
+                use codegen::llvm::simd_cast;
                 debug_assert_eq!($from_ty::lanes(), $id::lanes());
                 Simd(unsafe { simd_cast(x.0) })
             }
@@ -21,7 +21,7 @@ macro_rules! impl_from_cast_ {
                 }
             }
         }
-    }
+    };
 }
 
 macro_rules! impl_from_cast {
@@ -33,12 +33,13 @@ macro_rules! impl_from_cast {
 }
 
 macro_rules! impl_from_cast_mask_ {
-    ($id:ident: $from_ty:ident) => {
+    ($id:ident : $from_ty:ident) => {
         impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
             fn from_cast(x: $from_ty) -> Self {
                 debug_assert_eq!($from_ty::lanes(), $id::lanes());
-                x.ne($from_ty::default()).select($id::splat(true), $id::splat(false))
+                x.ne($from_ty::default())
+                    .select($id::splat(true), $id::splat(false))
             }
         }
 
@@ -56,7 +57,7 @@ macro_rules! impl_from_cast_mask_ {
                 }
             }
         }
-    }
+    };
 }
 
 macro_rules! impl_from_cast_mask {
@@ -66,7 +67,6 @@ macro_rules! impl_from_cast_mask {
         )*
     }
 }
-
 
 #[allow(unused)]
 macro_rules! impl_into_cast {

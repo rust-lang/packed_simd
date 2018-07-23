@@ -1,6 +1,6 @@
 //! Scalar mandelbrot implementation
 
-use ::*;
+use *;
 
 pub fn mandelbrot(c_x: f32, c_y: f32, max_iter: u32) -> u32 {
     let mut x = c_x;
@@ -12,7 +12,7 @@ pub fn mandelbrot(c_x: f32, c_y: f32, max_iter: u32) -> u32 {
         let yy = y * y;
         let sum = xx + yy;
         if sum > 4.0 {
-            break
+            break;
         }
         count += 1;
         x = xx - yy + c_x;
@@ -22,7 +22,8 @@ pub fn mandelbrot(c_x: f32, c_y: f32, max_iter: u32) -> u32 {
 }
 
 pub fn output<O>(m: &mut Mandelbrot, o: &mut O)
-    where O: ::std::io::Write
+where
+    O: ::std::io::Write,
 {
     let height_step = m.height_step();
     let width_step = m.width_step();
@@ -30,8 +31,8 @@ pub fn output<O>(m: &mut Mandelbrot, o: &mut O)
         let y = m.top + height_step * i as f32;
         for j in 0..m.width {
             let x = m.left + width_step * j as f32;
-            let b = 3*j;
-            let e = 3*(j+1);
+            let b = 3 * j;
+            let e = 3 * (j + 1);
             let val = scalar::mandelbrot(x, y, LIMIT);
             output_one(&mut m.line[b..e], val);
         }

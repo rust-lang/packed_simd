@@ -67,7 +67,10 @@ pub trait Cast<T>: ::marker::Sized {
 }
 
 /// `FromCast` implies `Cast`.
-impl<T, U> Cast<U> for T where U: FromCast<T> {
+impl<T, U> Cast<U> for T
+where
+    U: FromCast<T>,
+{
     #[inline]
     fn cast(self) -> U {
         U::from_cast(self)

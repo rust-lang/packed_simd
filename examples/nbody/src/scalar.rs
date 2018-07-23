@@ -4,7 +4,7 @@
 // contributed by the Rust Project Developers
 // contributed by TeXitoi
 
-use ::std::f64::consts::PI;
+use std::f64::consts::PI;
 const SOLAR_MASS: f64 = 4.0 * PI * PI;
 const DAYS_PER_YEAR: f64 = 365.24;
 
@@ -24,52 +24,68 @@ const BODIES: [Body; N_BODIES] = [
     },
     // Jupiter
     Body {
-        x: [4.84143144246472090e+00,
+        x: [
+            4.84143144246472090e+00,
             -1.16032004402742839e+00,
-            -1.03622044471123109e-01],
-        v: [1.66007664274403694e-03 * DAYS_PER_YEAR,
+            -1.03622044471123109e-01,
+        ],
+        v: [
+            1.66007664274403694e-03 * DAYS_PER_YEAR,
             7.69901118419740425e-03 * DAYS_PER_YEAR,
-            -6.90460016972063023e-05 * DAYS_PER_YEAR],
+            -6.90460016972063023e-05 * DAYS_PER_YEAR,
+        ],
         mass: 9.54791938424326609e-04 * SOLAR_MASS,
     },
     // Saturn
     Body {
-        x: [8.34336671824457987e+00,
+        x: [
+            8.34336671824457987e+00,
             4.12479856412430479e+00,
-            -4.03523417114321381e-01],
-        v: [-2.76742510726862411e-03 * DAYS_PER_YEAR,
+            -4.03523417114321381e-01,
+        ],
+        v: [
+            -2.76742510726862411e-03 * DAYS_PER_YEAR,
             4.99852801234917238e-03 * DAYS_PER_YEAR,
-            2.30417297573763929e-05 * DAYS_PER_YEAR],
+            2.30417297573763929e-05 * DAYS_PER_YEAR,
+        ],
         mass: 2.85885980666130812e-04 * SOLAR_MASS,
     },
     // Uranus
     Body {
-        x: [1.28943695621391310e+01,
+        x: [
+            1.28943695621391310e+01,
             -1.51111514016986312e+01,
-            -2.23307578892655734e-01],
-        v: [2.96460137564761618e-03 * DAYS_PER_YEAR,
+            -2.23307578892655734e-01,
+        ],
+        v: [
+            2.96460137564761618e-03 * DAYS_PER_YEAR,
             2.37847173959480950e-03 * DAYS_PER_YEAR,
-            -2.96589568540237556e-05 * DAYS_PER_YEAR],
+            -2.96589568540237556e-05 * DAYS_PER_YEAR,
+        ],
         mass: 4.36624404335156298e-05 * SOLAR_MASS,
     },
     // Neptune
     Body {
-        x: [1.53796971148509165e+01,
+        x: [
+            1.53796971148509165e+01,
             -2.59193146099879641e+01,
-             1.79258772950371181e-01],
-        v: [2.68067772490389322e-03 * DAYS_PER_YEAR,
+            1.79258772950371181e-01,
+        ],
+        v: [
+            2.68067772490389322e-03 * DAYS_PER_YEAR,
             1.62824170038242295e-03 * DAYS_PER_YEAR,
-            -9.51592254519715870e-05 * DAYS_PER_YEAR],
+            -9.51592254519715870e-05 * DAYS_PER_YEAR,
+        ],
         mass: 5.15138902046611451e-05 * SOLAR_MASS,
     },
 ];
 
-fn advance(bodies: &mut [Body;N_BODIES], dt: f64) {
+fn advance(bodies: &mut [Body; N_BODIES], dt: f64) {
     let mut b_slice: &mut [_] = bodies;
     loop {
         let bi = match shift_mut_ref(&mut b_slice) {
             Some(bi) => bi,
-            None => break
+            None => break,
         };
         for bj in b_slice.iter_mut() {
             let mut dx = [0.; 3];
@@ -96,13 +112,13 @@ fn advance(bodies: &mut [Body;N_BODIES], dt: f64) {
     }
 }
 
-fn energy(bodies: &[Body;N_BODIES]) -> f64 {
+fn energy(bodies: &[Body; N_BODIES]) -> f64 {
     let mut e = 0.0;
     let mut bodies = bodies.iter();
     loop {
         let bi = match bodies.next() {
             Some(bi) => bi,
-            None => break
+            None => break,
         };
         let mut e_l = 0.;
         for i in 0..3 {
@@ -121,7 +137,7 @@ fn energy(bodies: &[Body;N_BODIES]) -> f64 {
     e
 }
 
-fn offset_momentum(bodies: &mut [Body;N_BODIES]) {
+fn offset_momentum(bodies: &mut [Body; N_BODIES]) {
     let mut p = [0.; 3];
     for bi in bodies.iter() {
         for i in 0..3 {
@@ -130,14 +146,16 @@ fn offset_momentum(bodies: &mut [Body;N_BODIES]) {
     }
     let sun = &mut bodies[0];
     for i in 0..3 {
-        sun.v[i] = - p[i] / SOLAR_MASS;
+        sun.v[i] = -p[i] / SOLAR_MASS;
     }
 }
 
 /// Pop a mutable reference off the head of a slice, mutating the slice to no
 /// longer contain the mutable reference.
 fn shift_mut_ref<'a, T>(r: &mut &'a mut [T]) -> Option<&'a mut T> {
-    if r.len() == 0 { return None }
+    if r.len() == 0 {
+        return None;
+    }
     let tmp = ::std::mem::replace(r, &mut []);
     let (h, t) = tmp.split_at_mut(1);
     *r = t;
