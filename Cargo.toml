@@ -11,11 +11,11 @@ categories = ["hardware-support", "concurrency", "no-std", "data-structures"]
 license = "MIT/Apache-2.0"
 
 [badges]
-appveyor = { repository = "gnzlbg/packed_simd" }
-travis-ci = { repository = "gnzlbg/packed_simd" }
-codecov = { repository = "gnzlbg/packed_simd" }
-is-it-maintained-issue-resolution = { repository = "gnzlbg/packed_simd" }
-is-it-maintained-open-issues = { repository = "gnzlbg/packed_simd" }
+appveyor = { repository = "rust-lang-nursery/packed_simd" }
+travis-ci = { repository = "rust-lang-nursery/packed_simd" }
+codecov = { repository = "rust-lang-nursery/packed_simd" }
+is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/packed_simd" }
+is-it-maintained-open-issues = { repository = "rust-lang-nursery/packed_simd" }
 maintenance = { status = "experimental" }
 
 [dependencies]

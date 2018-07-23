@@ -25,7 +25,7 @@ macro_rules! impl_reduction_bitwise {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: broken on aarch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
                         x &= self.extract(i) as $elem_ty;
@@ -49,7 +49,7 @@ macro_rules! impl_reduction_bitwise {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: broken on aarch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
                         x |= self.extract(i) as $elem_ty;
@@ -73,7 +73,7 @@ macro_rules! impl_reduction_bitwise {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: broken on aarch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
                     for i in 1..$id::lanes() {
                         x ^= self.extract(i) as $elem_ty;

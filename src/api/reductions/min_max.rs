@@ -14,7 +14,7 @@ macro_rules! impl_reduction_min_max {
                 #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
                 {
                     // FIXME: broken on AArch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
                         x = x.max(self.extract(i));
@@ -51,9 +51,9 @@ macro_rules! impl_reduction_min_max {
                 )]
                 {
                     // FIXME: broken on AArch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     // FIXME: broken on i586-unknown-linux-gnu
-                    // https://github.com/gnzlbg/packed_simd/issues/22
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/22
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
                         x = x.min(self.extract(i));
