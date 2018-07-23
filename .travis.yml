@@ -101,10 +101,6 @@ matrix:
     #- env: TARGET=x86_64-unknown-netbsd NORUN=1
     #- env: TARGET=x86_64-sun-solaris NORUN=1
 
-    # FIXME: this fails only on travis, and not always
-    # https://github.com/rust-lang-nursery/packed_simd/issues/25
-    - env: TARGET=x86_64-apple-darwin
-
     # FIXME: iOS
     # https://github.com/rust-lang-nursery/packed_simd/issues/26
     - env: TARGET=i386-apple-ios

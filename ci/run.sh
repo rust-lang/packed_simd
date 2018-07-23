@@ -84,8 +84,12 @@ case ${TARGET} in
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
         cargo_test "--release" "--features=into_bits"
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test "--release" "--features=into_bits"
+
+        if [[ ${TARGET} != *"apple"* ]]; then
+            # Travis-CI apple build bots do not appear to support AVX2
+            export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
+            cargo_test "--release" "--features=into_bits"
+        fi
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
@@ -102,8 +106,12 @@ case ${TARGET} in
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
         cargo_test "--release" "--features=into_bits"
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test "--release" "--features=into_bits"
+
+        if [[ ${TARGET} != *"apple"* ]]; then
+            # Travis-CI apple build bots do not appear to support AVX2
+            export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
+            cargo_test "--release" "--features=into_bits"
+        fi
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
