@@ -14,6 +14,5 @@ pub fn run(n: usize) -> (f64, f64) {
 }
 
 #[cfg(test)]
-const RESULTS: &[(usize, &str, &str)] = &[
-    (50_000_000_usize, "-0.169075164", "-0.169059907")
-];
+const RESULTS: &[(usize, &str, &str)] =
+    &[(50_000_000_usize, "-0.169075164", "-0.169059907")];

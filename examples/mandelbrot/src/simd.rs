@@ -1,7 +1,7 @@
 //! Vectorized mandelbrot
 
-use ::packed_simd::*;
-use ::*;
+use packed_simd::*;
+use *;
 
 pub fn mandelbrot(c_x: f32x4, c_y: f32x4, max_iter: u32) -> u32x4 {
     let mut x = c_x;
@@ -12,7 +12,9 @@ pub fn mandelbrot(c_x: f32x4, c_y: f32x4, max_iter: u32) -> u32x4 {
 
     loop {
         let mask = count.ge(max_iter);
-        if mask.all() { break; }
+        if mask.all() {
+            break;
+        }
 
         let xx = x * x;
         let yy = y * y;
@@ -33,14 +35,19 @@ pub fn mandelbrot(c_x: f32x4, c_y: f32x4, max_iter: u32) -> u32x4 {
 }
 
 pub fn output<O>(m: &mut Mandelbrot, o: &mut O)
-    where O: ::std::io::Write
+where
+    O: ::std::io::Write,
 {
     #[allow(non_camel_case_types)]
     type f32s = f32x4;
 
-    assert_eq!(m.width % f32s::lanes(), 0,
-               "image width = {} is not divisible by the number of vector lanes = {}",
-               m.width, f32s::lanes());
+    assert_eq!(
+        m.width % f32s::lanes(),
+        0,
+        "image width = {} is not divisible by the number of vector lanes = {}",
+        m.width,
+        f32s::lanes()
+    );
 
     let height_step = m.height_step();
     let width_step = m.width_step();
@@ -64,4 +71,3 @@ pub fn output<O>(m: &mut Mandelbrot, o: &mut O)
         o.write(&m.line).unwrap();
     }
 }
-

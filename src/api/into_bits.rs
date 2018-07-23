@@ -13,7 +13,10 @@ pub trait IntoBits<T>: ::marker::Sized {
 }
 
 /// `FromBits` implies `IntoBits`.
-impl<T, U> IntoBits<U> for T where U: FromBits<T> {
+impl<T, U> IntoBits<U> for T
+where
+    U: FromBits<T>,
+{
     #[inline]
     fn into_bits(self) -> U {
         debug_assert!(::mem::size_of::<Self>() == ::mem::size_of::<U>());

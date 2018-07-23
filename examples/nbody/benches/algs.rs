@@ -1,8 +1,8 @@
 //! n-body benchmarks
 #![feature(test)]
 
-extern crate test;
 extern crate nbody_lib;
+extern crate test;
 
 use test::{black_box, Bencher};
 
