@@ -31,7 +31,7 @@ macro_rules! fallback_impl {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: Broken on AArch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     self.and()
                 }
             }
@@ -47,7 +47,7 @@ macro_rules! fallback_impl {
                 #[cfg(target_arch = "aarch64")]
                 {
                     // FIXME: Broken on AArch64
-                    // https://github.com/gnzlbg/packed_simd/issues/15
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     self.or()
                 }
             }

@@ -54,7 +54,7 @@ macro_rules! impl_ops_vector_shifts {
 
                     #[cfg(any(target_arch = "s390x", target_arch = "sparc64"))] {
                         // FIXME: rust produces bad codegen for shifts:
-                        // https://github.com/gnzlbg/packed_simd/issues/13
+                        // https://github.com/rust-lang-nursery/packed_simd/issues/13
                         return;
                     }
 

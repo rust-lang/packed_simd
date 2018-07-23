@@ -57,7 +57,7 @@ macro_rules! impl_fsin {
                 }
                 #[cfg(target_arch = "s390x")]
                 {
-                    // FIXME: https://github.com/gnzlbg/packed_simd/issues/14
+                    // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/14
                     let mut v = $id::splat(0.);
                     for i in 0..$id::lanes() {
                         v = v.replace(i, self.extract(i).scalar_sin())

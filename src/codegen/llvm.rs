@@ -9,7 +9,7 @@ use sealed::Simd;
 extern "platform-intrinsic" {
     // FIXME: Passing this intrinsics an `idx` array with an index that is
     // out-of-bounds will produce a monomorphization-time error.
-    // https://github.com/gnzlbg/packed_simd/issues/21
+    // https://github.com/rust-lang-nursery/packed_simd/issues/21
     pub fn simd_shuffle2<T, U>(x: T, y: T, idx: [u32; 2]) -> U
     where
         T: Simd,

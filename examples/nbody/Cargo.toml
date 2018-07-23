@@ -1,7 +1,7 @@
 [package]
 name = "nbody"
 version = "0.1.0"
-authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+authors = ["Gonzalo Brito Gadeschi <gonzalobg88@gmail.com>"]
 
 [dependencies]
 packed_simd = { path = "../.." }

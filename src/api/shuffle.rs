@@ -1,7 +1,7 @@
 //! Implements portable vector shuffles
 
 // FIXME: comprehensive tests
-// https://github.com/gnzlbg/packed_simd/issues/20
+// https://github.com/rust-lang-nursery/packed_simd/issues/20
 
 /// Shuffles vector elements.
 ///

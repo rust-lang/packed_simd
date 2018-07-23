@@ -55,7 +55,7 @@ macro_rules! impl_ops_scalar_shifts {
                         assert_eq!(z >> ti, z);
 
                         #[cfg(any(target_arch = "s390x", target_arch = "sparc64"))] {
-                            // FIXME: https://github.com/gnzlbg/packed_simd/issues/13
+                            // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/13
                             return;
                         }
 

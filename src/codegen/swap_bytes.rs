@@ -1,7 +1,7 @@
 //! Horizontal swap bytes reductions.
 
 // FIXME: investigate using `llvm.bswap`
-// https://github.com/gnzlbg/packed_simd/issues/19
+// https://github.com/rust-lang-nursery/packed_simd/issues/19
 
 use crate::*;
 
