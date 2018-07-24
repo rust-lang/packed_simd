@@ -136,6 +136,8 @@ macro_rules! impl_slice_from_slice {
                     };
                 }
 
+                // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/42
+                #[cfg(packed_simd_disabled)]
                 #[test]
                 #[should_panic]
                 fn from_slice_aligned_fail_align() {

@@ -134,6 +134,8 @@ macro_rules! impl_slice_write_to_slice {
                     };
                 }
 
+                // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/42
+                #[cfg(packed_simd_disabled)]
                 #[test]
                 #[should_panic]
                 fn write_to_slice_aligned_fail_align() {
