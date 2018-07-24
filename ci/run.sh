@@ -10,6 +10,11 @@ export RUST_TEST_THREADS=1
 #export RUST_BACKTRACE=full
 #export RUST_TEST_NOCAPTURE=1
 
+# Some appveyor builds run out-of-memory; this attempts to mitigate that:
+# https://github.com/rust-lang-nursery/packed_simd/issues/39
+export RUSTFLAGS="${RUSTFLAGS} -C codegen-units=1"
+export CARGO_BUILD_JOBS=1
+
 export CARGO_SUBCMD=test
 if [[ "${NORUN}" == "1" ]]; then
     export CARGO_SUBCMD=build
@@ -21,6 +26,7 @@ echo "RUSTFLAGS=${RUSTFLAGS}"
 echo "FEATURES=${FEATURES}"
 echo "NORUN=${NORUN}"
 echo "CARGO_SUBCMD=${CARGO_SUBCMD}"
+echo "CARGO_BUILD_JOBS=${CARGO_BUILD_JOBS}"
 echo "RUST_TEST_THREADS=${RUST_TEST_THREADS}"
 echo "RUST_BACKTRACE=${RUST_BACKTRACE}"
 echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"

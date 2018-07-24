@@ -92,7 +92,7 @@ dual licensed as above, without any additional terms or conditions.
 
 [travis]: https://travis-ci.org/rust-lang-nursery/packed_simd
 [Travis-CI Status]: https://travis-ci.org/rust-lang-nursery/packed_simd.svg?branch=master
-[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd/branch/master
+[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd-j9hcp/branch/master
 [Appveyor Status]: https://ci.appveyor.com/api/projects/status/h9079ut0qaeruccr/branch/master?svg=true
 [Latest Version]: https://img.shields.io/crates/v/packed_simd.svg
 [crates.io]: https://crates.io/crates/packed_simd
