@@ -191,8 +191,13 @@ esac
 mkdir target || true
 
 cp -r examples/nbody target/nbody
+cargo_test "--manifest-path=target/nbody/Cargo.toml"
 cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
 
 cp -r examples/mandelbrot target/mandelbrot
+cargo_test "--manifest-path=target/mandelbrot/Cargo.toml"
 cargo_test "--release" "--manifest-path=target/mandelbrot/Cargo.toml"
 
+cp -r examples/spectral_norm target/spectral_norm
+cargo_test "--manifest-path=target/spectral_norm/Cargo.toml"
+cargo_test "--release" "--manifest-path=target/spectral_norm/Cargo.toml"

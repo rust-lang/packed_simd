@@ -1,8 +1,22 @@
-# `Simd<[T; N]>` - Implementation of [RFC2366: `std::simd`](https://github.com/rust-lang/rfcs/pull/2366)
+# `Simd<[T; N]>` - Implementation of [RFC2366: `std::simd`][rfc2366]
 
 [![Travis-CI Status]][travis] [![Appveyor Status]][appveyor] [![Latest Version]][crates.io] [![docs]][docs.rs]
 
 > This aims to be a 100% conforming implementation of the RFC2366 for stabilization.
+
+
+# Documentation
+
+* [`master` branch][master_docs]
+* [latest release][docs.rs]
+* [RFC2366 `std::simd`][rfc2366]
+
+# Examples
+
+Most of the examples come with both a scalar and a vectorized implementation.
+
+* [`mandelbrot`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/mandelbrot)
+* [`n-body`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/nbody)
 
 # Cargo features
 
@@ -93,8 +107,10 @@ dual licensed as above, without any additional terms or conditions.
 [travis]: https://travis-ci.org/rust-lang-nursery/packed_simd
 [Travis-CI Status]: https://travis-ci.org/rust-lang-nursery/packed_simd.svg?branch=master
 [appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd-j9hcp/branch/master
-[Appveyor Status]: https://ci.appveyor.com/api/projects/status/h9079ut0qaeruccr/branch/master?svg=true
+[Appveyor Status]: https://ci.appveyor.com/api/projects/status/6blrl5jd44idkt9i?svg=true
 [Latest Version]: https://img.shields.io/crates/v/packed_simd.svg
 [crates.io]: https://crates.io/crates/packed_simd
 [docs]: https://docs.rs/packed_simd/badge.svg
 [docs.rs]: https://docs.rs/packed_simd/
+[master_docs]: https://rust-lang-nursery.github.io/packed_simd/packed_simd/
+[rfc2366]: https://github.com/rust-lang/rfcs/pull/2366
