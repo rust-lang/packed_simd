@@ -16,4 +16,11 @@ Each program should:
 
 ## Usage
 
+It takes two arguments in this order:
+
+* `n`: the size of the matrix `A` (n-times-n)
+* (optional) `algorithm`: the algorithm to use - defaults to the fastest one.
+  * `0`: scalar algorithm
+  * `1`: SIMD algorithm
+
 [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/spectralnorm.html#spectralnorm
