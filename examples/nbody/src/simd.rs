@@ -127,7 +127,7 @@ pub fn advance(bodies: &mut [Body; N_BODIES], dt: f64) {
     while i < N {
         let d2s = f64x2::new((r[i] * r[i]).sum(), (r[i + 1] * r[i + 1]).sum());
         let dmags = f64x2::splat(dt) / (d2s * d2s.sqrte());
-        dmags.write_to_slice_aligned(&mut mag[i..]);
+        dmags.write_to_slice_unaligned(&mut mag[i..]);
         i += 2;
     }
 
