@@ -12,13 +12,13 @@ matrix:
         - rustup target add $TARGET || true
       script:
         - cargo generate-lockfile
-        - travis_wait 40 ci/run-docker.sh $TARGET $FEATURES
+        - travis_wait 50 ci/run-docker.sh $TARGET $FEATURES
     - env: TARGET=aarch64-linux-android
       install:
         - rustup target add $TARGET || true
       script:
         - cargo generate-lockfile
-        - travis_wait 40 ci/run-docker.sh $TARGET $FEATURES
+        - travis_wait 50 ci/run-docker.sh $TARGET $FEATURES
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
     - env: TARGET=i686-unknown-linux-gnu
