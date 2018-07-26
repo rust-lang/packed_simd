@@ -144,6 +144,9 @@ case ${TARGET} in
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release" "--features=into_bits"
+
+        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
+        cargo_test "--release" "--features=into_bits,coresimd"
         ;;
     mips64*)
         cargo_test

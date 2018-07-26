@@ -6,11 +6,7 @@ macro_rules! impl_shuffle_bytes {
             /// Shuffles the bytes of the vector according to `indices`.
             #[inline]
             pub fn shuffle_bytes(self, indices: Self) -> Self {
-                let mut result = Self::splat(0);
-                for i in 0..$id::lanes() {
-                    result = result.replace(i, self.extract(indices.extract(i) as usize));
-                }
-                result
+                codegen::shuffle_bytes::ShuffleBytes::shuffle_bytes(self, indices)
             }
         }
 
