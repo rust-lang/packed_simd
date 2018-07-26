@@ -127,8 +127,6 @@ case ${TARGET} in
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release" "--features=into_bits"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release" "--features=into_bits,coresimd"
         ;;
     arm*)
@@ -144,8 +142,6 @@ case ${TARGET} in
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release" "--features=into_bits"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         cargo_test "--release" "--features=into_bits,coresimd"
         ;;
     mips64*)
@@ -190,14 +186,25 @@ esac
 # properly written.
 mkdir target || true
 
-cp -r examples/nbody target/nbody
-cargo_test "--manifest-path=target/nbody/Cargo.toml"
-cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
 
-cp -r examples/mandelbrot target/mandelbrot
-cargo_test "--manifest-path=target/mandelbrot/Cargo.toml"
-cargo_test "--release" "--manifest-path=target/mandelbrot/Cargo.toml"
+# FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/55
+if [[ ${TARGET} != "armv7-apple-ios" ]]; then
+    cp -r examples/nbody target/nbody
+    cargo_test "--manifest-path=target/nbody/Cargo.toml"
+    cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
+fi
+
+# FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/56
+if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
+    cp -r examples/mandelbrot target/mandelbrot
+    cargo_test "--manifest-path=target/mandelbrot/Cargo.toml"
+    cargo_test "--release" "--manifest-path=target/mandelbrot/Cargo.toml"
+fi
 
 cp -r examples/spectral_norm target/spectral_norm
 cargo_test "--manifest-path=target/spectral_norm/Cargo.toml"
 cargo_test "--release" "--manifest-path=target/spectral_norm/Cargo.toml"
+
+cp -r examples/fannkuch_redux target/fannkuch_redux
+cargo_test "--manifest-path=target/fannkuch_redux/Cargo.toml"
+cargo_test "--release" "--manifest-path=target/fannkuch_redux/Cargo.toml"
