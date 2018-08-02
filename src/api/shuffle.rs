@@ -36,8 +36,8 @@
 /// assert_eq!(r, i32x4::new(3, 2, 4, 1));
 ///
 /// // The resulting vector can be smaller than the input:
-/// // let r = shuffle!(x, [1, 3]); // FIXME: doc test fails
-/// // assert_eq!(r, i32x2::new(2, 4)); // FIXME: doc test fails
+/// let r = shuffle!(x, [1, 3]);
+/// assert_eq!(r, i32x2::new(2, 4));
 ///
 /// // Equal:
 /// let r = shuffle!(x, [1, 3, 2, 0]);
