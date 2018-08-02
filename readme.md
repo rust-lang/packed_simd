@@ -15,8 +15,11 @@
 
 Most of the examples come with both a scalar and a vectorized implementation.
 
+* [`aobench`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/aobench)
+* [`fannkuch_redux`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/fannkuch_redux)
 * [`mandelbrot`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/mandelbrot)
 * [`n-body`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/nbody)
+* [`spectral_norm`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/spectral_norm)
 
 # Cargo features
 
