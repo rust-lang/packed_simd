@@ -258,7 +258,7 @@ mod sealed;
 #[cfg(test)]
 mod test_utils;
 
-/// Packed vector type
+/// Packed SIMD vector type.
 ///
 /// # Examples
 ///
@@ -277,6 +277,12 @@ pub struct Simd<A: sealed::SimdArray>(
     // to call the shuffle intrinsics.
     #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
 );
+
+/// Wrapper over `T` implementing `PartialOrd` and/or `Ord`.
+#[repr(transparent)]
+#[derive(Copy,Clone,Debug)]
+#[cfg_attr(feature = "cargo-clippy", allow(missing_inline_in_public_items))]
+pub struct PartiallyOrdered<T>(T);
 
 mod masks;
 pub use self::masks::*;
