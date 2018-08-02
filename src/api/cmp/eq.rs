@@ -7,6 +7,7 @@ macro_rules! impl_cmp_eq {
         ($true:expr, $false:expr)
     ) => {
         impl ::cmp::Eq for $id {}
+        impl ::cmp::Eq for PartiallyOrdered<$id> {}
 
         #[cfg(test)]
         interpolate_idents! {
