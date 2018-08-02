@@ -210,13 +210,11 @@ cargo_test "--release --manifest-path=target/spectral_norm/Cargo.toml"
 
 cp -r examples/fannkuch_redux target/fannkuch_redux
 cargo_test "--manifest-path=target/fannkuch_redux/Cargo.toml"
-<<<<<<< HEAD
-cargo_test "--release" "--manifest-path=target/fannkuch_redux/Cargo.toml"
+cargo_test "--release --manifest-path=target/fannkuch_redux/Cargo.toml"
 
 cp -r examples/aobench target/aobench
 cargo_test "--manifest-path=target/aobench/Cargo.toml"
-cargo_test "--release" "--manifest-path=target/aobench/Cargo.toml --no-default-features"
-cargo_test "--release" "--manifest-path=target/aobench/Cargo.toml --features=256bit"
-=======
-cargo_test "--release --manifest-path=target/fannkuch_redux/Cargo.toml"
->>>>>>> fix bug in ci script
+cargo_test "--release --manifest-path=target/aobench/Cargo.toml --no-default-features"
+cargo_test "--release --manifest-path=target/aobench/Cargo.toml --features=256bit"
+
+
