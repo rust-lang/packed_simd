@@ -10,6 +10,9 @@ mod sqrt;
 mod sqrte;
 
 #[macro_use]
+mod recpre;
+
+#[macro_use]
 mod rsqrte;
 
 #[macro_use]
