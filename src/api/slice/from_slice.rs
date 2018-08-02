@@ -136,8 +136,6 @@ macro_rules! impl_slice_from_slice {
                     };
                 }
 
-                // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/42
-                #[cfg(packed_simd_disabled)]
                 #[test]
                 #[should_panic]
                 fn from_slice_aligned_fail_align() {
@@ -145,15 +143,24 @@ macro_rules! impl_slice_from_slice {
                         let aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
-                        // offset the aligned data by one byte:
-                        let s: &[u8; 2
-                                 * $id::lanes()
-                                 * mem::size_of::<$elem_ty>()] =
-                            mem::transmute(&aligned.data);
-                        let s: &[[$elem_ty]] = slice::from_raw_parts(
-                            s.get_unchecked(1) as *const u8 as *const $elem_ty,
-                            $id::lanes(),
-                        );
+
+                        // get a pointer to the front of data
+                        let ptr: *const $elem_ty = aligned.data.as_ptr() as *const $elem_ty;
+                        // offset pointer by one element
+                        let ptr = ptr.wrapping_add(1);
+
+                        if ptr.align_offset(mem::align_of::<$id>()) == 0 {
+                            // the pointer is properly aligned, so from_slice_aligned
+                            // won't fail here (e.g. this can happen for i128x1). So
+                            // we panic to make the "should_fail" test pass:
+                            panic!("ok");
+                        }
+
+                        // create a slice - this is safe, because the elements
+                        // of the slice exist, are properly initialized, and properly aligned:
+                        let s: &[[$elem_ty]] = slice::from_raw_parts(ptr, $id::lanes());
+                        // this should always panic because the slice alignment does not match
+                        // the alignment requirements for the vector type:
                         let _vec = $id::from_slice_aligned(s);
                     }
                 }
