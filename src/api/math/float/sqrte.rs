@@ -3,6 +3,9 @@
 macro_rules! impl_math_float_sqrte {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
         impl $id {
+            /// Square-root estimate.
+            ///
+            /// FIXME: The precision of the estimate is currently unspecified.
             #[inline]
             pub fn sqrte(self) -> Self {
                 use llvm::simd_fsqrt;

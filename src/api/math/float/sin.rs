@@ -3,6 +3,7 @@
 macro_rules! impl_math_float_sin {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
         impl $id {
+            /// Sine.
             #[inline]
             pub fn sin(self) -> Self {
                 use crate::codegen::math::float::sin::Sin;
