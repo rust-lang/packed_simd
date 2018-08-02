@@ -12,7 +12,9 @@ macro_rules! impl_cmp_partial_ord {
             }
         }
 
-        impl ::cmp::PartialOrd<PartiallyOrdered<$id>> for PartiallyOrdered<$id> {
+        impl ::cmp::PartialOrd<PartiallyOrdered<$id>>
+            for PartiallyOrdered<$id>
+        {
             #[inline]
             fn partial_cmp(&self, other: &Self) -> Option<::cmp::Ordering> {
                 if PartialEq::eq(self, other) {

@@ -9,7 +9,8 @@ pub fn dot_prod(a: &[f32], b: &[f32]) -> f32 {
     let mut sum = f32x4::splat(0.);
 
     for i in (0..a.len()).step_by(4) {
-        sum += f32x4::from_slice_unaligned(&a[i..]) * f32x4::from_slice_unaligned(&b[i..]);
+        sum += f32x4::from_slice_unaligned(&a[i..])
+            * f32x4::from_slice_unaligned(&b[i..]);
     }
 
     sum.sum()

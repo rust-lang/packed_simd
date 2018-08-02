@@ -7,7 +7,11 @@ fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
 }
 
 fn main() {
-    let n: usize = std::env::args().nth(1).expect("need one arg").parse().unwrap();
+    let n: usize = std::env::args()
+        .nth(1)
+        .expect("need one arg")
+        .parse()
+        .unwrap();
 
     let alg = if let Some(v) = std::env::args().nth(2) {
         v.parse().unwrap()
