@@ -49,7 +49,7 @@ case ${TARGET} in
         export CARGO_TARGET_X86_64_APPLE_IOS_RUNNER=$HOME/runtest
 
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
         ;;
     i386-apple-ios)
         export RUSTFLAGS=-Clink-arg=-mios-simulator-version-min=7.0
@@ -57,7 +57,7 @@ case ${TARGET} in
         export CARGO_TARGET_I386_APPLE_IOS_RUNNER=$HOME/runtest
 
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
         ;;
     i586*)
         if [[ ${TARGET} == *"ios"* ]]; then
@@ -66,14 +66,14 @@ case ${TARGET} in
         fi
 
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
@@ -84,17 +84,17 @@ case ${TARGET} in
         fi
 
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         if [[ ${TARGET} != *"apple"* ]]; then
             # Travis-CI apple build bots do not appear to support AVX2
             export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-            cargo_test "--release" "--features=into_bits"
+            cargo_test "--release --features=into_bits"
         fi
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
@@ -106,77 +106,77 @@ case ${TARGET} in
         fi
 
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         if [[ ${TARGET} != *"apple"* ]]; then
             # Travis-CI apple build bots do not appear to support AVX2
             export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-            cargo_test "--release" "--features=into_bits"
+            cargo_test "--release --features=into_bits"
         fi
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     armv7*)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test "--release" "--features=into_bits"
-        cargo_test "--release" "--features=into_bits,coresimd"
+        cargo_test "--release --features=into_bits"
+        cargo_test "--release --features=into_bits,coresimd"
         ;;
     arm*)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+v7,+neon"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
         ;;
     aarch64*)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test "--release" "--features=into_bits"
-        cargo_test "--release" "--features=into_bits,coresimd"
+        cargo_test "--release --features=into_bits"
+        cargo_test "--release --features=into_bits,coresimd"
         ;;
     mips64*)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         # FIXME: this doesn't compile succesfully
         # https://github.com/rust-lang-nursery/packed_simd/issues/18
         #
         # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r6"
-        # cargo_test "--release" "--features=into_bits"
+        # cargo_test "--release --features=into_bits"
         ;;
     powerpc-*)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
         ;;
     powerpc64-*)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+vsx"
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     *)
         cargo_test
-        cargo_test "--release" "--features=into_bits"
+        cargo_test "--release --features=into_bits"
 
         ;;
 esac
@@ -195,24 +195,28 @@ fi
 
 cp -r examples/nbody target/nbody
 cargo_test "--manifest-path=target/nbody/Cargo.toml"
-cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
+cargo_test "--release --manifest-path=target/nbody/Cargo.toml"
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/56
 if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
     cp -r examples/mandelbrot target/mandelbrot
     cargo_test "--manifest-path=target/mandelbrot/Cargo.toml"
-    cargo_test "--release" "--manifest-path=target/mandelbrot/Cargo.toml"
+    cargo_test "--release --manifest-path=target/mandelbrot/Cargo.toml"
 fi
 
 cp -r examples/spectral_norm target/spectral_norm
 cargo_test "--manifest-path=target/spectral_norm/Cargo.toml"
-cargo_test "--release" "--manifest-path=target/spectral_norm/Cargo.toml"
+cargo_test "--release --manifest-path=target/spectral_norm/Cargo.toml"
 
 cp -r examples/fannkuch_redux target/fannkuch_redux
 cargo_test "--manifest-path=target/fannkuch_redux/Cargo.toml"
+<<<<<<< HEAD
 cargo_test "--release" "--manifest-path=target/fannkuch_redux/Cargo.toml"
 
 cp -r examples/aobench target/aobench
 cargo_test "--manifest-path=target/aobench/Cargo.toml"
 cargo_test "--release" "--manifest-path=target/aobench/Cargo.toml --no-default-features"
 cargo_test "--release" "--manifest-path=target/aobench/Cargo.toml --features=256bit"
+=======
+cargo_test "--release --manifest-path=target/fannkuch_redux/Cargo.toml"
+>>>>>>> fix bug in ci script
