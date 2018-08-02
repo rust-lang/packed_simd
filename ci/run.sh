@@ -188,11 +188,14 @@ mkdir target || true
 
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/55
-if [[ ${TARGET} != "armv7-apple-ios" ]]; then
-    cp -r examples/nbody target/nbody
-    cargo_test "--manifest-path=target/nbody/Cargo.toml"
-    cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
+# All examples fail to build for `armv7-apple-ios`.
+if [[ ${TARGET} == "armv7-apple-ios" ]]; then
+    exit 0
 fi
+
+cp -r examples/nbody target/nbody
+cargo_test "--manifest-path=target/nbody/Cargo.toml"
+cargo_test "--release" "--manifest-path=target/nbody/Cargo.toml"
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/56
 if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
