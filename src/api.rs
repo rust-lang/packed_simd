@@ -137,6 +137,7 @@ macro_rules! impl_f {
         impl_math_float_abs!([$elem_ty; $elem_count]: $tuple_id);
         impl_math_float_cos!([$elem_ty; $elem_count]: $tuple_id);
         impl_math_float_fma!([$elem_ty; $elem_count]: $tuple_id);
+        impl_math_float_recpre!([$elem_ty; $elem_count]: $tuple_id);
         impl_math_float_rsqrte!([$elem_ty; $elem_count]: $tuple_id);
         impl_math_float_sin!([$elem_ty; $elem_count]: $tuple_id);
         impl_math_float_sqrt!([$elem_ty; $elem_count]: $tuple_id);
