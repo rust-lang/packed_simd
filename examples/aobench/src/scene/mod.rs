@@ -8,7 +8,8 @@ pub trait Scene: Send + Sync {
     fn plane(&self) -> &Plane;
     fn spheres(&self) -> &[Sphere];
     fn rand_f32xN(&mut self) -> (f32xN, f32xN) {
-        #[cfg(feature = "256bit")] {
+        #[cfg(feature = "256bit")]
+        {
             let r = [
                 self.rand(),
                 self.rand(),
@@ -32,7 +33,8 @@ pub trait Scene: Send + Sync {
                 f32xN::new(r[1], r[3], r[5], r[7], r[9], r[11], r[13], r[15]),
             )
         }
-        #[cfg(not(feature = "256bit"))] {
+        #[cfg(not(feature = "256bit"))]
+        {
             let r = [
                 self.rand(),
                 self.rand(),

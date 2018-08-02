@@ -130,14 +130,12 @@ mod tests {
         let isectxN = rays.intersect(&plane, IsectxN::new());
 
         #[cfg(feature = "256bit")]
-        let expected = m32xN::new(true, false, true, false, true, false, true, false);
+        let expected =
+            m32xN::new(true, false, true, false, true, false, true, false);
         #[cfg(not(feature = "256bit"))]
         let expected = m32xN::new(true, false, true, false);
 
-        assert_eq!(
-            isectxN.hit,
-            expected
-        );
+        assert_eq!(isectxN.hit, expected);
 
         assert_eq!(isect_hit.t, isectxN.t.extract(0));
         assert_eq!(isect_hit.t, isectxN.t.extract(2));

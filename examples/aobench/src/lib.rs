@@ -7,9 +7,9 @@
 #[macro_use]
 extern crate cfg_if;
 extern crate failure;
+extern crate packed_simd;
 extern crate png;
 extern crate rayon;
-extern crate packed_simd;
 
 pub mod ambient_occlusion;
 pub mod geometry;

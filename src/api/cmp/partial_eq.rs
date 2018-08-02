@@ -21,7 +21,9 @@ macro_rules! impl_cmp_partial_eq {
 
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
         #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
-        impl ::cmp::PartialEq<PartiallyOrdered<$id>> for PartiallyOrdered<$id> {
+        impl ::cmp::PartialEq<PartiallyOrdered<$id>>
+            for PartiallyOrdered<$id>
+        {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
                 self.0 == other.0

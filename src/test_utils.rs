@@ -4,7 +4,8 @@ use crate::{cmp::PartialOrd, fmt::Debug, PartiallyOrdered};
 
 /// Tests PartialOrd for `a` and `b` where `a < b` is true.
 pub fn test_lt<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>)
-    where PartiallyOrdered<T>: Debug + PartialOrd
+where
+    PartiallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a < b, "{:?}, {:?}", a, b);
     assert!(b > a, "{:?}, {:?}", a, b);
@@ -27,7 +28,8 @@ pub fn test_lt<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>)
 
 /// Tests PartialOrd for `a` and `b` where `a <= b` is true.
 pub fn test_le<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>)
-    where PartiallyOrdered<T>: Debug + PartialOrd
+where
+    PartiallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a <= b, "{:?}, {:?}", a, b);
     assert!(b >= a, "{:?}, {:?}", a, b);
@@ -47,8 +49,11 @@ pub fn test_le<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>)
 }
 
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
-pub fn test_cmp<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>, o: Option<::cmp::Ordering>)
-    where
+pub fn test_cmp<T>(
+    a: PartiallyOrdered<T>,
+    b: PartiallyOrdered<T>,
+    o: Option<::cmp::Ordering>,
+) where
     PartiallyOrdered<T>: PartialOrd + Debug,
     T: Debug + crate::sealed::Simd + Copy + Clone,
     <T as crate::sealed::Simd>::Element: Default + Copy + Clone + PartialOrd,
@@ -60,8 +65,18 @@ pub fn test_cmp<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>, o: Option<::c
     let mut arr_a: [T::Element; 64] = [Default::default(); 64];
     let mut arr_b: [T::Element; 64] = [Default::default(); 64];
 
-    unsafe { crate::ptr::write_unaligned(arr_a.as_mut_ptr() as *mut PartiallyOrdered<T>, a) }
-    unsafe { crate::ptr::write_unaligned(arr_b.as_mut_ptr() as *mut PartiallyOrdered<T>, b) }
+    unsafe {
+        crate::ptr::write_unaligned(
+            arr_a.as_mut_ptr() as *mut PartiallyOrdered<T>,
+            a,
+        )
+    }
+    unsafe {
+        crate::ptr::write_unaligned(
+            arr_b.as_mut_ptr() as *mut PartiallyOrdered<T>,
+            b,
+        )
+    }
     let expected = arr_a[0..T::LANES].partial_cmp(&arr_b[0..T::LANES]);
     let result = a.partial_cmp(&b);
     assert_eq!(expected, result, "{:?}, {:?}", a, b);

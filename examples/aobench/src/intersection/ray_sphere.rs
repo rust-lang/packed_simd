@@ -53,7 +53,8 @@ impl Intersect<Sphere> for RayxN {
                 isect.t = m.sel(t, isect.t);
                 isect.hit = m | isect.hit;
                 isect.p = m.sel(ray.origin + t * ray.dir, isect.p);
-                isect.n = m.sel((isect.p - sphere.center).normalized(), isect.n);
+                isect.n =
+                    m.sel((isect.p - sphere.center).normalized(), isect.n);
             }
         }
 
@@ -129,14 +130,12 @@ mod tests {
         let isectxN = rays.intersect(&sphere, IsectxN::new());
 
         #[cfg(feature = "256bit")]
-        let expected = m32xN::new(true, false, true, false, true, false, true, false);
+        let expected =
+            m32xN::new(true, false, true, false, true, false, true, false);
         #[cfg(not(feature = "256bit"))]
         let expected = m32xN::new(true, false, true, false);
 
-        assert_eq!(
-            isectxN.hit,
-            expected
-        );
+        assert_eq!(isectxN.hit, expected);
 
         assert_eq!(isect_hit.t, isectxN.t.extract(0));
         assert_eq!(isect_hit.t, isectxN.t.extract(2));

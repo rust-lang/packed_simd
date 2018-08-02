@@ -1,5 +1,5 @@
 //! 4x4 matrix inverse using SIMD
-use ::*;
+use *;
 
 use packed_simd::f32x4;
 
@@ -20,7 +20,6 @@ pub fn inv4x4(m: Matrix4x4) -> Option<Matrix4x4> {
     let row3: f32x4 = shuffle!(m_2, m_3, [2, 3, 6, 7]);
     let row2 = shuffle!(tmp1, row3, [0, 2, 4, 6]);
     let row3 = shuffle!(row3, tmp1, [1, 3, 5, 7]);
-
 
     let tmp1: f32x4 = row2 * row3;
     let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);

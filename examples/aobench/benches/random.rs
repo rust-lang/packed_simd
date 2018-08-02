@@ -6,8 +6,8 @@ extern crate aobench_lib;
 #[macro_use]
 extern crate criterion;
 
+use aobench_lib::geometry::f32xN;
 use aobench_lib::random;
-use aobench_lib::geometry::{f32xN};
 use criterion::*;
 
 fn random_scalar(c: &mut Criterion) {
