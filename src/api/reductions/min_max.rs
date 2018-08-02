@@ -6,12 +6,14 @@ macro_rules! impl_reduction_min_max {
             /// Largest vector element value.
             #[inline]
             pub fn max_element(self) -> $elem_ty {
-                #[cfg(not(any(target_arch = "aarch64", target_arch = "arm")))]
+                #[cfg(not(any(target_arch = "aarch64", target_arch = "arm",
+                              target_arch = "powerpc64",)))]
                 {
                     use llvm::simd_reduce_max;
                     unsafe { simd_reduce_max(self.0) }
                 }
-                #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
+                #[cfg(any(target_arch = "aarch64", target_arch = "arm",
+                          target_arch = "powerpc64",))]
                 {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
@@ -34,7 +36,8 @@ macro_rules! impl_reduction_min_max {
                             all(
                                 target_arch = "x86",
                                 not(target_feature = "sse2")
-                            )
+                            ),
+                            target_arch = "powerpc64",
                         )
                     )
                 )]
@@ -46,7 +49,8 @@ macro_rules! impl_reduction_min_max {
                     any(
                         target_arch = "aarch64",
                         target_arch = "arm",
-                        all(target_arch = "x86", not(target_feature = "sse2"))
+                        all(target_arch = "x86", not(target_feature = "sse2")),
+                        target_arch = "powerpc64",
                     )
                 )]
                 {
@@ -121,7 +125,8 @@ macro_rules! test_reduction_float_min_max {
 
                     let target_with_broken_last_lane_nan = !cfg!(any(
                         target_arch = "arm", target_arch = "aarch64",
-                        all(target_arch = "x86", not(target_feature = "sse2"))
+                        all(target_arch = "x86", not(target_feature = "sse2")),
+                        target_arch = "powerpc64",
                     ));
 
                     // The vector is initialized to `-3.`s: [-3, -3, -3, -3]
@@ -223,7 +228,8 @@ macro_rules! test_reduction_float_min_max {
                     let v0 = $id::splat(-3.);
 
                     let target_with_broken_last_lane_nan = !cfg!(any(
-                        target_arch = "arm", target_arch = "aarch64"
+                        target_arch = "arm", target_arch = "aarch64",
+                        target_arch = "powerpc64",
                     ));
 
                     // The vector is initialized to `-3.`s: [-3, -3, -3, -3]
