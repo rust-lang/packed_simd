@@ -34,10 +34,10 @@ mod swap_bytes;
 crate mod into_bits;
 
 macro_rules! impl_i {
-    ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident |
-     $test_tt:tt | $($elem_ids:ident),* | From: $($from_vec_ty:ident),*
-     | $(#[$doc:meta])*) => {
-        impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $test_tt
+    ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident 
+     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),* 
+     | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
+        impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_scalar_arithmetic!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -53,12 +53,14 @@ macro_rules! impl_i {
         impl_ops_vector_neg!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_int_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_reduction_integer_arithmetic!(
-            [$elem_ty; $elem_n]: $tuple_id | $test_tt
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
         );
-        impl_reduction_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_reduction_min_max!(
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
+        );
         impl_reduction_bitwise!(
-            [$elem_ty; $elem_n]: $tuple_id | $test_tt | $elem_ty
-                | (|x|{ x }) | (!(0 as $elem_ty), 0)
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
+            | (|x|{ x as $elem_ty }) | (!(0 as $elem_ty), 0)
         );
         impl_fmt_debug!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_fmt_lower_hex!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -89,9 +91,9 @@ macro_rules! impl_i {
 
 macro_rules! impl_u {
     ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident
-     | $test_tt:tt | $($elem_ids:ident),* | From: $($from_vec_ty:ident),*
-     | $(#[$doc:meta])*) => {
-        impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $test_tt
+     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),* 
+     | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
+        impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_scalar_arithmetic!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -106,12 +108,14 @@ macro_rules! impl_u {
         impl_ops_vector_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_int_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_reduction_integer_arithmetic!(
-            [$elem_ty; $elem_n]: $tuple_id | $test_tt
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
         );
-        impl_reduction_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_reduction_min_max!(
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
+        );
         impl_reduction_bitwise!(
-            [$elem_ty; $elem_n]: $tuple_id | $test_tt | $elem_ty |
-            (|x|{ x }) | (!(0 as $elem_ty), 0)
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
+            | (|x|{ x as $elem_ty }) | (!(0 as $elem_ty), 0)
         );
         impl_fmt_debug!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_fmt_lower_hex!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -145,9 +149,9 @@ macro_rules! impl_u {
 
 macro_rules! impl_f {
     ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident
-     | $test_tt:tt | $($elem_ids:ident),* | From: $($from_vec_ty:ident),*
-     | $(#[$doc:meta])*) => {
-        impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $test_tt
+     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),* 
+     | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
+        impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                           | $($elem_ids),* | $(#[$doc])*);
         impl_ops_vector_arithmetic!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_scalar_arithmetic!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -157,7 +161,8 @@ macro_rules! impl_f {
         );
         impl_reduction_float_arithmetic!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_reduction_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt
+        impl_reduction_min_max!(
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
         );
         impl_fmt_debug!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_from_array!([$elem_ty; $elem_n]: $tuple_id | $test_tt | (1., 1.));
@@ -196,8 +201,8 @@ macro_rules! impl_m {
      | $test_tt:tt | $($elem_ids:ident),* | From: $($from_vec_ty:ident),*
      | $(#[$doc:meta])*) => {
         impl_minimal_mask!(
-            [$elem_ty; $elem_n]: $tuple_id | $test_tt
-                | $ielem_ty | $($elem_ids),* | $(#[$doc])*
+            [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
+            | $($elem_ids),* | $(#[$doc])*
         );
         impl_ops_vector_mask_bitwise!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (true, false)
@@ -206,7 +211,7 @@ macro_rules! impl_m {
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (true, false)
         );
         impl_reduction_bitwise!(
-            [bool; $elem_n]: $tuple_id | $test_tt | $ielem_ty
+            [bool; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                 | (|x|{ x != 0 }) | (true, false)
         );
         impl_reduction_mask!([$elem_ty; $elem_n]: $tuple_id | $test_tt);

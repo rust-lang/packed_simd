@@ -118,6 +118,7 @@ impl_swap_bytes!(
     u32x2,
     i32x2, /*u64x1, i64x1,*/
 );
+
 impl_swap_bytes!(
     v128: u8x16,
     i8x16,
@@ -155,3 +156,25 @@ impl_swap_bytes!(
     u128x4,
     i128x4,
 );
+
+cfg_if! {
+    if #[cfg(target_pointer_width = "8")] {
+        impl_swap_bytes!(v16: isizex2, usizex2,);
+        impl_swap_bytes!(v32: isizex4, usizex4,);
+        impl_swap_bytes!(v64: isizex8, usizex8,);
+    } else if #[cfg(target_pointer_width = "16")] {
+        impl_swap_bytes!(v32: isizex2, usizex2,);
+        impl_swap_bytes!(v64: isizex4, usizex4,);
+        impl_swap_bytes!(v128: isizex8, usizex8,);
+    } else if #[cfg(target_pointer_width = "32")] {
+        impl_swap_bytes!(v64: isizex2, usizex2,);
+        impl_swap_bytes!(v128: isizex4, usizex4,);
+        impl_swap_bytes!(v256: isizex8, usizex8,);
+    } else if #[cfg(target_pointer_width = "64")] {
+        impl_swap_bytes!(v128: isizex2, usizex2,);
+        impl_swap_bytes!(v256: isizex4, usizex4,);
+        impl_swap_bytes!(v512: isizex8, usizex8,);
+    } else {
+        compile_error!("unsupported target_pointer_width");
+    }
+}

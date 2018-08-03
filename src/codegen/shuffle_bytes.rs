@@ -271,6 +271,10 @@ impl_shuffle_bytes!(u64x2);
 impl_shuffle_bytes!(u64x4);
 impl_shuffle_bytes!(u64x8);
 
+impl_shuffle_bytes!(usizex2);
+impl_shuffle_bytes!(usizex4);
+impl_shuffle_bytes!(usizex8);
+
 impl_shuffle_bytes!(u128x1);
 impl_shuffle_bytes!(u128x2);
 impl_shuffle_bytes!(u128x4);

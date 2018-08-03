@@ -1,7 +1,8 @@
 //! Implements portable horizontal vector min/max reductions.
 
 macro_rules! impl_reduction_min_max {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident 
+     | $ielem_ty:ident | $test_tt:tt) => {
         impl $id {
             /// Largest vector element value.
             #[inline]
@@ -10,7 +11,8 @@ macro_rules! impl_reduction_min_max {
                               target_arch = "powerpc64",)))]
                 {
                     use llvm::simd_reduce_max;
-                    unsafe { simd_reduce_max(self.0) }
+                    let v: $ielem_ty = unsafe { simd_reduce_max(self.0) };
+                    v as $elem_ty
                 }
                 #[cfg(any(target_arch = "aarch64", target_arch = "arm",
                           target_arch = "powerpc64",))]
@@ -43,7 +45,8 @@ macro_rules! impl_reduction_min_max {
                 )]
                 {
                     use llvm::simd_reduce_min;
-                    unsafe { simd_reduce_min(self.0) }
+                    let v: $ielem_ty = unsafe { simd_reduce_min(self.0) };
+                    v as $elem_ty
                 }
                 #[cfg(
                     any(

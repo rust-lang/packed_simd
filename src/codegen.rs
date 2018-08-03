@@ -31,6 +31,8 @@ macro_rules! impl_simd_array {
     }
 }
 
+crate mod pointer_sized_int;
+
 crate mod v16;
 crate use self::v16::*;
 
@@ -48,3 +50,6 @@ crate use self::v256::*;
 
 crate mod v512;
 crate use self::v512::*;
+
+crate mod vSize;
+crate use self::vSize::*;

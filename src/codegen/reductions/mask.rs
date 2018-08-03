@@ -609,26 +609,34 @@ macro_rules! impl_mask_all_any {
 
 use crate::*;
 
-impl_mask_all_any!(m128x4);
-impl_mask_all_any!(m64x8);
-impl_mask_all_any!(m32x16);
-impl_mask_all_any!(m16x32);
-impl_mask_all_any!(m8x64);
-
 impl_mask_all_any!(m8x2);
 impl_mask_all_any!(m8x4);
 impl_mask_all_any!(m8x8);
 impl_mask_all_any!(m8x16);
 impl_mask_all_any!(m8x32);
+impl_mask_all_any!(m8x64);
+
 impl_mask_all_any!(m16x2);
 impl_mask_all_any!(m16x4);
 impl_mask_all_any!(m16x8);
 impl_mask_all_any!(m16x16);
+impl_mask_all_any!(m16x32);
+
 impl_mask_all_any!(m32x2);
 impl_mask_all_any!(m32x4);
 impl_mask_all_any!(m32x8);
-// impl_mask_all_any!(m64x1); // FIXME: 64-bit single element vector
+impl_mask_all_any!(m32x16);
+
+// FIXME: 64-bit single element vector
+// impl_mask_all_any!(m64x1);
 impl_mask_all_any!(m64x2);
 impl_mask_all_any!(m64x4);
+impl_mask_all_any!(m64x8);
+
 impl_mask_all_any!(m128x1);
 impl_mask_all_any!(m128x2);
+impl_mask_all_any!(m128x4);
+
+impl_mask_all_any!(msizex2);
+impl_mask_all_any!(msizex4);
+impl_mask_all_any!(msizex8);
