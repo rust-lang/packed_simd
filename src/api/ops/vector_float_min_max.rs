@@ -1,7 +1,7 @@
 //! Vertical (lane-wise) vector `min` and `max` for floating-point vectors.
 
 macro_rules! impl_ops_vector_float_min_max {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Minimum of two vectors.
             ///
@@ -23,43 +23,45 @@ macro_rules! impl_ops_vector_float_min_max {
                 unsafe { Simd(simd_fmax(self.0, x.0)) }
             }
         }
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _ops_vector_min_max] {
-                use super::*;
-                #[test]
-                fn min_max() {
-                    let n = $elem_ty::NAN;
-                    let o = $id::splat(1. as $elem_ty);
-                    let t = $id::splat(2. as $elem_ty);
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _ops_vector_min_max] {
+                    use super::*;
+                    #[test]
+                    fn min_max() {
+                        let n = $elem_ty::NAN;
+                        let o = $id::splat(1. as $elem_ty);
+                        let t = $id::splat(2. as $elem_ty);
 
-                    let mut m = o; // [1., 2., 1., 2., ...]
-                    let mut on = o;
-                    for i in 0..$id::lanes() {
-                        if i % 2 == 0 {
-                            m = m.replace(i, 2. as $elem_ty);
-                            on = on.replace(i, n);
+                        let mut m = o; // [1., 2., 1., 2., ...]
+                        let mut on = o;
+                        for i in 0..$id::lanes() {
+                            if i % 2 == 0 {
+                                m = m.replace(i, 2. as $elem_ty);
+                                on = on.replace(i, n);
+                            }
                         }
+
+                        assert_eq!(o.min(t), o);
+                        assert_eq!(t.min(o), o);
+                        assert_eq!(m.min(o), o);
+                        assert_eq!(o.min(m), o);
+                        assert_eq!(m.min(t), m);
+                        assert_eq!(t.min(m), m);
+
+                        assert_eq!(o.max(t), t);
+                        assert_eq!(t.max(o), t);
+                        assert_eq!(m.max(o), m);
+                        assert_eq!(o.max(m), m);
+                        assert_eq!(m.max(t), t);
+                        assert_eq!(t.max(m), t);
+
+                        assert_eq!(on.min(o), o);
+                        assert_eq!(o.min(on), o);
+                        assert_eq!(on.max(o), o);
+                        assert_eq!(o.max(on), o);
                     }
-
-                    assert_eq!(o.min(t), o);
-                    assert_eq!(t.min(o), o);
-                    assert_eq!(m.min(o), o);
-                    assert_eq!(o.min(m), o);
-                    assert_eq!(m.min(t), m);
-                    assert_eq!(t.min(m), m);
-
-                    assert_eq!(o.max(t), t);
-                    assert_eq!(t.max(o), t);
-                    assert_eq!(m.max(o), m);
-                    assert_eq!(o.max(m), m);
-                    assert_eq!(m.max(t), t);
-                    assert_eq!(t.max(m), t);
-
-                    assert_eq!(on.min(o), o);
-                    assert_eq!(o.min(on), o);
-                    assert_eq!(on.max(o), o);
-                    assert_eq!(o.max(on), o);
                 }
             }
         }

@@ -41,6 +41,14 @@ cargo_test() {
     fi
 }
 
+cargo_test_impl() {
+    ORIGINAL_RUSTFLAGS=${RUSTFLAGS}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v16  --cfg test_v32" cargo_test ${1}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v64  --cfg test_v128" cargo_test ${1}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v256 --cfg test_v512" cargo_test ${1}
+    RUSTFLAGS=${ORIGINAL_RUSTFLAGS}
+}
+
 case ${TARGET} in
     x86_64-apple-ios)
         # Note: this case must go before the catch-all "x86*" case below
@@ -48,43 +56,43 @@ case ${TARGET} in
         rustc ./ci/deploy_and_run_on_ios_simulator.rs -o $HOME/runtest
         export CARGO_TARGET_X86_64_APPLE_IOS_RUNNER=$HOME/runtest
 
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
         ;;
     i386-apple-ios)
         export RUSTFLAGS=-Clink-arg=-mios-simulator-version-min=7.0
         rustc ./ci/deploy_and_run_on_ios_simulator.rs -o $HOME/runtest
         export CARGO_TARGET_I386_APPLE_IOS_RUNNER=$HOME/runtest
 
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
         ;;
     i586*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     i686*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
 
         if [[ ${TARGET} != *"apple"* ]]; then
             # Travis-CI apple build bots do not appear to support AVX2
             export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-            cargo_test "--release --features=into_bits"
+            cargo_test_impl "--release --features=into_bits"
         fi
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
@@ -95,79 +103,79 @@ case ${TARGET} in
             exit 1
         fi
 
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
 
         if [[ ${TARGET} != *"apple"* ]]; then
             # Travis-CI apple build bots do not appear to support AVX2
             export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-            cargo_test "--release --features=into_bits"
+            cargo_test_impl "--release --features=into_bits"
         fi
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     armv7*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test "--release --features=into_bits"
-        cargo_test "--release --features=into_bits,coresimd"
+        cargo_test_impl "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits,coresimd"
         ;;
     arm*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+v7,+neon"
-        cargo_test "--release --features=into_bits"
-        cargo_test "--release --features=into_bits,coresimd"
+        cargo_test_impl "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits,coresimd"
         ;;
     aarch64*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test "--release --features=into_bits"
-        cargo_test "--release --features=into_bits,coresimd"
+        cargo_test_impl "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits,coresimd"
         ;;
     mips64*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         # FIXME: this doesn't compile succesfully
         # https://github.com/rust-lang-nursery/packed_simd/issues/18
         #
         # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r6"
-        # cargo_test "--release --features=into_bits"
+        # cargo_test_impl "--release --features=into_bits"
         ;;
     powerpc-*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
         ;;
     powerpc64-*)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
 
         ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
 
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
         export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+vsx"
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl "--release --features=into_bits"
 
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     *)
-        cargo_test
-        cargo_test "--release --features=into_bits"
+        cargo_test_impl
+        cargo_test_impl "--release --features=into_bits"
         ;;
 esac
 

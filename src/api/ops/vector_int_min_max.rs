@@ -1,7 +1,7 @@
 //! Vertical (lane-wise) vector `min` and `max` for integer vectors.
 
 macro_rules! impl_ops_vector_int_min_max {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Minimum of two vectors.
             ///
@@ -21,7 +21,7 @@ macro_rules! impl_ops_vector_int_min_max {
                 self.gt(x).select(self, x)
             }
         }
-        #[cfg(test)]
+        test_if!{$test_tt:
         interpolate_idents! {
             mod [$id _ops_vector_min_max] {
                 use super::*;
@@ -51,6 +51,7 @@ macro_rules! impl_ops_vector_int_min_max {
                     assert_eq!(t.max(m), t);
                 }
             }
+        }
         }
     };
 }

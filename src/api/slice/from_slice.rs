@@ -1,7 +1,7 @@
 //! Implements methods to read a vector type from a slice.
 
 macro_rules! impl_slice_from_slice {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Instantiates a new vector with the values of the `slice`.
             ///
@@ -70,98 +70,100 @@ macro_rules! impl_slice_from_slice {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _slice_from_slice] {
-                use super::*;
-                use iter::Iterator;
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _slice_from_slice] {
+                    use super::*;
+                    use iter::Iterator;
 
-                #[test]
-                fn from_slice_unaligned() {
-                    let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
-                    unaligned[0] = 0 as $elem_ty;
-                    let vec = $id::from_slice_unaligned(&unaligned[1..]);
-                    for (index, &b) in unaligned.iter().enumerate() {
-                        if index == 0 {
-                            assert_eq!(b, 0 as $elem_ty);
-                        } else {
-                            assert_eq!(b, vec.extract(index - 1));
-                        }
-                    }
-                }
-
-                #[test]
-                #[should_panic]
-                fn from_slice_unaligned_fail() {
-                    let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
-                    unaligned[0] = 0 as $elem_ty;
-                    let _vec = $id::from_slice_unaligned(&unaligned[2..]);
-                }
-
-                union A {
-                    data: [$elem_ty; 2 * $id::lanes()],
-                    _vec: $id,
-                }
-
-                #[test]
-                fn from_slice_aligned() {
-                    let mut aligned = A {
-                        data: [0 as $elem_ty; 2 * $id::lanes()],
-                    };
-                    for i in $id::lanes()..(2 * $id::lanes()) {
-                        unsafe {
-                            aligned.data[[i]] = 42 as $elem_ty;
+                    #[test]
+                    fn from_slice_unaligned() {
+                        let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
+                        unaligned[0] = 0 as $elem_ty;
+                        let vec = $id::from_slice_unaligned(&unaligned[1..]);
+                        for (index, &b) in unaligned.iter().enumerate() {
+                            if index == 0 {
+                                assert_eq!(b, 0 as $elem_ty);
+                            } else {
+                                assert_eq!(b, vec.extract(index - 1));
+                            }
                         }
                     }
 
-                    let vec =
-                        unsafe { $id::from_slice_aligned(&aligned.data[$id::lanes()..]) };
-                    for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
-                        if index < $id::lanes() {
-                            assert_eq!(b, 0 as $elem_ty);
-                        } else {
-                            assert_eq!(b, vec.extract(index - $id::lanes()));
+                    #[test]
+                    #[should_panic]
+                    fn from_slice_unaligned_fail() {
+                        let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
+                        unaligned[0] = 0 as $elem_ty;
+                        let _vec = $id::from_slice_unaligned(&unaligned[2..]);
+                    }
+
+                    union A {
+                        data: [$elem_ty; 2 * $id::lanes()],
+                        _vec: $id,
+                    }
+
+                    #[test]
+                    fn from_slice_aligned() {
+                        let mut aligned = A {
+                            data: [0 as $elem_ty; 2 * $id::lanes()],
+                        };
+                        for i in $id::lanes()..(2 * $id::lanes()) {
+                            unsafe {
+                                aligned.data[[i]] = 42 as $elem_ty;
+                            }
+                        }
+
+                        let vec =
+                            unsafe { $id::from_slice_aligned(&aligned.data[$id::lanes()..]) };
+                        for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
+                            if index < $id::lanes() {
+                                assert_eq!(b, 0 as $elem_ty);
+                            } else {
+                                assert_eq!(b, vec.extract(index - $id::lanes()));
+                            }
                         }
                     }
-                }
 
-                #[test]
-                #[should_panic]
-                fn from_slice_aligned_fail_lanes() {
-                    let aligned = A {
-                        data: [0 as $elem_ty; 2 * $id::lanes()],
-                    };
-                    let _vec = unsafe {
-                        $id::from_slice_aligned(&aligned.data[2 * $id::lanes()..])
-                    };
-                }
-
-                #[test]
-                #[should_panic]
-                fn from_slice_aligned_fail_align() {
-                    unsafe {
+                    #[test]
+                    #[should_panic]
+                    fn from_slice_aligned_fail_lanes() {
                         let aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
+                        let _vec = unsafe {
+                            $id::from_slice_aligned(&aligned.data[2 * $id::lanes()..])
+                        };
+                    }
 
-                        // get a pointer to the front of data
-                        let ptr: *const $elem_ty = aligned.data.as_ptr() as *const $elem_ty;
-                        // offset pointer by one element
-                        let ptr = ptr.wrapping_add(1);
+                    #[test]
+                    #[should_panic]
+                    fn from_slice_aligned_fail_align() {
+                        unsafe {
+                            let aligned = A {
+                                data: [0 as $elem_ty; 2 * $id::lanes()],
+                            };
 
-                        if ptr.align_offset(mem::align_of::<$id>()) == 0 {
-                            // the pointer is properly aligned, so from_slice_aligned
-                            // won't fail here (e.g. this can happen for i128x1). So
-                            // we panic to make the "should_fail" test pass:
-                            panic!("ok");
+                            // get a pointer to the front of data
+                            let ptr: *const $elem_ty = aligned.data.as_ptr() as *const $elem_ty;
+                            // offset pointer by one element
+                            let ptr = ptr.wrapping_add(1);
+
+                            if ptr.align_offset(mem::align_of::<$id>()) == 0 {
+                                // the pointer is properly aligned, so from_slice_aligned
+                                // won't fail here (e.g. this can happen for i128x1). So
+                                // we panic to make the "should_fail" test pass:
+                                panic!("ok");
+                            }
+
+                            // create a slice - this is safe, because the elements
+                            // of the slice exist, are properly initialized, and properly aligned:
+                            let s: &[[$elem_ty]] = slice::from_raw_parts(ptr, $id::lanes());
+                            // this should always panic because the slice alignment does not match
+                            // the alignment requirements for the vector type:
+                            let _vec = $id::from_slice_aligned(s);
                         }
-
-                        // create a slice - this is safe, because the elements
-                        // of the slice exist, are properly initialized, and properly aligned:
-                        let s: &[[$elem_ty]] = slice::from_raw_parts(ptr, $id::lanes());
-                        // this should always panic because the slice alignment does not match
-                        // the alignment requirements for the vector type:
-                        let _vec = $id::from_slice_aligned(s);
                     }
                 }
             }

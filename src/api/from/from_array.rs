@@ -1,7 +1,7 @@
 //! Implements `From<[T; N]>` and `Into<[T; N]>` for vector types.
 
 macro_rules! impl_from_array {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt
      | ($non_default_array:expr, $non_default_vec:expr)) => {
         impl From<[$elem_ty; $elem_count]> for $id {
             #[inline]
@@ -53,50 +53,52 @@ macro_rules! impl_from_array {
         }
         */
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _from] {
-                use super::*;
-                #[test]
-                fn array() {
-                    let vec: $id = Default::default();
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _from] {
+                    use super::*;
+                    #[test]
+                    fn array() {
+                        let vec: $id = Default::default();
 
-                    // FIXME: Workaround for arrays with more than 32 elements.
-                    //
-                    // Safe because we never take a reference to any uninitialized element.
-                    union W {
-                        array: [$elem_ty; $elem_count],
-                        other: ()
-                    }
-                    let mut array = W { other: () };
-                    for i in 0..$elem_count {
-                        let default: $elem_ty = Default::default();
-                        // note: array.other is the active member and initialized
-                        // so we can take a reference to it:
-                        let p = unsafe { &mut array.other as *mut () as *mut $elem_ty };
-                        // note: default is a valid bit-pattern for $elem_ty:
-                        unsafe { ::ptr::write(p.wrapping_add(i), default) };
-                    }
-                    // note: the array variant of the union is properly initialized:
-                    let mut array = unsafe { array.array };
+                        // FIXME: Workaround for arrays with more than 32 elements.
+                        //
+                        // Safe because we never take a reference to any uninitialized element.
+                        union W {
+                            array: [$elem_ty; $elem_count],
+                            other: ()
+                        }
+                        let mut array = W { other: () };
+                        for i in 0..$elem_count {
+                            let default: $elem_ty = Default::default();
+                            // note: array.other is the active member and initialized
+                            // so we can take a reference to it:
+                            let p = unsafe { &mut array.other as *mut () as *mut $elem_ty };
+                            // note: default is a valid bit-pattern for $elem_ty:
+                            unsafe { ::ptr::write(p.wrapping_add(i), default) };
+                        }
+                        // note: the array variant of the union is properly initialized:
+                        let mut array = unsafe { array.array };
 
-                    array[0] = $non_default_array;
-                    let vec = vec.replace(0, $non_default_vec);
+                        array[0] = $non_default_array;
+                        let vec = vec.replace(0, $non_default_vec);
 
-                    let vec_from_array = $id::from(array);
-                    assert_eq!(vec_from_array, vec);
-                    let array_from_vec = <[$elem_ty; $elem_count]>::from(vec);
-                    // FIXME: Workaround for arrays with more than 32 elements.
-                    for i in 0..$elem_count {
-                        assert_eq!(array_from_vec[[i]], array[[i]]);
-                    }
+                        let vec_from_array = $id::from(array);
+                        assert_eq!(vec_from_array, vec);
+                        let array_from_vec = <[$elem_ty; $elem_count]>::from(vec);
+                        // FIXME: Workaround for arrays with more than 32 elements.
+                        for i in 0..$elem_count {
+                            assert_eq!(array_from_vec[[i]], array[[i]]);
+                        }
 
-                    let vec_from_into_array: $id = array.into();
-                    assert_eq!(vec_from_into_array, vec);
-                    let array_from_into_vec: [$elem_ty; $elem_count] = vec.into();
-                    // FIXME: Workaround for arrays with more than 32 elements.
-                    for i in 0..$elem_count {
-                        assert_eq!(array_from_into_vec[[i]], array[[i]]);
+                        let vec_from_into_array: $id = array.into();
+                        assert_eq!(vec_from_into_array, vec);
+                        let array_from_into_vec: [$elem_ty; $elem_count] = vec.into();
+                        // FIXME: Workaround for arrays with more than 32 elements.
+                        for i in 0..$elem_count {
+                            assert_eq!(array_from_into_vec[[i]], array[[i]]);
+                        }
                     }
                 }
             }

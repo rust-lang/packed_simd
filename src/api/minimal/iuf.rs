@@ -1,7 +1,7 @@
 //! Minimal API of signed integer, unsigned integer, and floating-point vectors.
 
 macro_rules! impl_minimal_iuf {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident |
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt |
      $($elem_name:ident),+ |
      $(#[$doc:meta])*) => {
 
@@ -91,55 +91,59 @@ macro_rules! impl_minimal_iuf {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _minimal] {
-                use super::*;
-                #[test]
-                fn minimal() {
-                    // lanes:
-                    assert_eq!($elem_count, $id::lanes());
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _minimal] {
+                    use super::*;
+                    #[test]
+                    fn minimal() {
+                        // lanes:
+                        assert_eq!($elem_count, $id::lanes());
 
-                    // splat and extract / extract_unchecked:
-                    const VAL: $elem_ty = 7 as $elem_ty;
-                    const VEC: $id = $id::splat(VAL);
-                    for i in 0..$id::lanes() {
-                        assert_eq!(VAL, VEC.extract(i));
-                        assert_eq!(VAL, unsafe { VEC.extract_unchecked(i) });
-                    }
+                        // splat and extract / extract_unchecked:
+                        const VAL: $elem_ty = 7 as $elem_ty;
+                        const VEC: $id = $id::splat(VAL);
+                        for i in 0..$id::lanes() {
+                            assert_eq!(VAL, VEC.extract(i));
+                            assert_eq!(VAL, unsafe { VEC.extract_unchecked(i) });
+                        }
 
-                    // replace / replace_unchecked
-                    let new_vec = VEC.replace(0, 42 as $elem_ty);
-                    for i in 0..$id::lanes() {
-                        if i == 0 {
-                            assert_eq!(42 as $elem_ty, new_vec.extract(i));
-                        } else {
-                            assert_eq!(VAL, new_vec.extract(i));
+                        // replace / replace_unchecked
+                        let new_vec = VEC.replace(0, 42 as $elem_ty);
+                        for i in 0..$id::lanes() {
+                            if i == 0 {
+                                assert_eq!(42 as $elem_ty, new_vec.extract(i));
+                            } else {
+                                assert_eq!(VAL, new_vec.extract(i));
+                            }
+                        }
+                        let new_vec = unsafe {
+                            VEC.replace_unchecked(0, 42 as $elem_ty)
+                        };
+                        for i in 0..$id::lanes() {
+                            if i == 0 {
+                                assert_eq!(42 as $elem_ty, new_vec.extract(i));
+                            } else {
+                                assert_eq!(VAL, new_vec.extract(i));
+                            }
                         }
                     }
-                    let new_vec = unsafe { VEC.replace_unchecked(0, 42 as $elem_ty) };
-                    for i in 0..$id::lanes() {
-                        if i == 0 {
-                            assert_eq!(42 as $elem_ty, new_vec.extract(i));
-                        } else {
-                            assert_eq!(VAL, new_vec.extract(i));
-                        }
-                    }
-                }
 
-                #[test]
-                #[should_panic]
-                fn extract_panic_oob() {
-                    const VAL: $elem_ty = 7 as $elem_ty;
-                    const VEC: $id = $id::splat(VAL);
-                    let _ = VEC.extract($id::lanes());
-                }
-                #[test]
-                #[should_panic]
-                fn replace_panic_oob() {
-                    const VAL: $elem_ty = 7 as $elem_ty;
-                    const VEC: $id = $id::splat(VAL);
-                    let _ = VEC.replace($id::lanes(), 42 as $elem_ty);
+                    #[test]
+                    #[should_panic]
+                    fn extract_panic_oob() {
+                        const VAL: $elem_ty = 7 as $elem_ty;
+                        const VEC: $id = $id::splat(VAL);
+                        let _ = VEC.extract($id::lanes());
+                    }
+                    #[test]
+                    #[should_panic]
+                    fn replace_panic_oob() {
+                        const VAL: $elem_ty = 7 as $elem_ty;
+                        const VEC: $id = $id::splat(VAL);
+                        let _ = VEC.replace($id::lanes(), 42 as $elem_ty);
+                    }
                 }
             }
         }

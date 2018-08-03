@@ -4,7 +4,7 @@
 macro_rules! impl_reduction_bitwise {
     (
         [$elem_ty:ident; $elem_count:expr]:
-        $id:ident |
+        $id:ident | $test_tt:tt |
         $ielem_ty:ident |
         ($convert:expr) |
         ($true:expr, $false:expr)
@@ -83,65 +83,67 @@ macro_rules! impl_reduction_bitwise {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _reduction_bitwise] {
-                use super::*;
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _reduction_bitwise] {
+                    use super::*;
 
-                #[test]
-                fn and() {
-                    let v = $id::splat($false);
-                    assert_eq!(v.and(), $false);
-                    let v = $id::splat($true);
-                    assert_eq!(v.and(), $true);
-                    let v = $id::splat($false);
-                    let v = v.replace(0, $true);
-                    if $id::lanes() > 1 {
+                    #[test]
+                    fn and() {
+                        let v = $id::splat($false);
                         assert_eq!(v.and(), $false);
-                    } else {
+                        let v = $id::splat($true);
                         assert_eq!(v.and(), $true);
-                    }
-                    let v = $id::splat($true);
-                    let v = v.replace(0, $false);
-                    assert_eq!(v.and(), $false);
+                        let v = $id::splat($false);
+                        let v = v.replace(0, $true);
+                        if $id::lanes() > 1 {
+                            assert_eq!(v.and(), $false);
+                        } else {
+                            assert_eq!(v.and(), $true);
+                        }
+                        let v = $id::splat($true);
+                        let v = v.replace(0, $false);
+                        assert_eq!(v.and(), $false);
 
-                }
-                #[test]
-                fn or() {
-                    let v = $id::splat($false);
-                    assert_eq!(v.or(), $false);
-                    let v = $id::splat($true);
-                    assert_eq!(v.or(), $true);
-                    let v = $id::splat($false);
-                    let v = v.replace(0, $true);
-                    assert_eq!(v.or(), $true);
-                    let v = $id::splat($true);
-                    let v = v.replace(0, $false);
-                    if $id::lanes() > 1 {
-                        assert_eq!(v.or(), $true);
-                    } else {
+                    }
+                    #[test]
+                    fn or() {
+                        let v = $id::splat($false);
                         assert_eq!(v.or(), $false);
+                        let v = $id::splat($true);
+                        assert_eq!(v.or(), $true);
+                        let v = $id::splat($false);
+                        let v = v.replace(0, $true);
+                        assert_eq!(v.or(), $true);
+                        let v = $id::splat($true);
+                        let v = v.replace(0, $false);
+                        if $id::lanes() > 1 {
+                            assert_eq!(v.or(), $true);
+                        } else {
+                            assert_eq!(v.or(), $false);
+                        }
                     }
-                }
-                #[test]
-                fn xor() {
-                    let v = $id::splat($false);
-                    assert_eq!(v.xor(), $false);
-                    let v = $id::splat($true);
-                    if $id::lanes() > 1 {
+                    #[test]
+                    fn xor() {
+                        let v = $id::splat($false);
                         assert_eq!(v.xor(), $false);
-                    } else {
+                        let v = $id::splat($true);
+                        if $id::lanes() > 1 {
+                            assert_eq!(v.xor(), $false);
+                        } else {
+                            assert_eq!(v.xor(), $true);
+                        }
+                        let v = $id::splat($false);
+                        let v = v.replace(0, $true);
                         assert_eq!(v.xor(), $true);
-                    }
-                    let v = $id::splat($false);
-                    let v = v.replace(0, $true);
-                    assert_eq!(v.xor(), $true);
-                    let v = $id::splat($true);
-                    let v = v.replace(0, $false);
-                    if $id::lanes() > 1 {
-                        assert_eq!(v.xor(), $true);
-                    } else {
-                        assert_eq!(v.xor(), $false);
+                        let v = $id::splat($true);
+                        let v = v.replace(0, $false);
+                        if $id::lanes() > 1 {
+                            assert_eq!(v.xor(), $true);
+                        } else {
+                            assert_eq!(v.xor(), $false);
+                        }
                     }
                 }
             }

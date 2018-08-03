@@ -1,7 +1,7 @@
 //! Minimal API of mask vectors.
 
 macro_rules! impl_minimal_mask {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident |
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt | $ielem_ty:ident |
      $($elem_name:ident),+ |
      $(#[$doc:meta])*) => {
 
@@ -97,53 +97,55 @@ macro_rules! impl_minimal_mask {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _minimal] {
-                use super::*;
-                #[test]
-                fn minimal() {
-                    // TODO: test new
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _minimal] {
+                    use super::*;
+                    #[test]
+                    fn minimal() {
+                        // TODO: test new
 
-                    // lanes:
-                    assert_eq!($elem_count, $id::lanes());
+                        // lanes:
+                        assert_eq!($elem_count, $id::lanes());
 
-                    // splat and extract / extract_unchecked:
-                    let vec = $id::splat(true);
-                    for i in 0..$id::lanes() {
-                        assert_eq!(true, vec.extract(i));
-                        assert_eq!(true, unsafe { vec.extract_unchecked(i) });
-                    }
+                        // splat and extract / extract_unchecked:
+                        let vec = $id::splat(true);
+                        for i in 0..$id::lanes() {
+                            assert_eq!(true, vec.extract(i));
+                            assert_eq!(true, unsafe { vec.extract_unchecked(i) });
+                        }
 
-                    // replace / replace_unchecked
-                    let new_vec = vec.replace(0, false);
-                    for i in 0..$id::lanes() {
-                        if i == 0 {
-                            assert_eq!(false, new_vec.extract(i));
-                        } else {
-                            assert_eq!(true, new_vec.extract(i));
+                        // replace / replace_unchecked
+                        let new_vec = vec.replace(0, false);
+                        for i in 0..$id::lanes() {
+                            if i == 0 {
+                                assert_eq!(false, new_vec.extract(i));
+                            } else {
+                                assert_eq!(true, new_vec.extract(i));
+                            }
+                        }
+                        let new_vec = unsafe { vec.replace_unchecked(0, false) };
+                        for i in 0..$id::lanes() {
+                            if i == 0 {
+                                assert_eq!(false, new_vec.extract(i));
+                            } else {
+                                assert_eq!(true, new_vec.extract(i));
+                            }
                         }
                     }
-                    let new_vec = unsafe { vec.replace_unchecked(0, false) };
-                    for i in 0..$id::lanes() {
-                        if i == 0 {
-                            assert_eq!(false, new_vec.extract(i));
-                        } else {
-                            assert_eq!(true, new_vec.extract(i));
-                        }
+                    #[test]
+                    #[should_panic]
+                    fn extract_panic_oob() {
+                        let vec = $id::splat(false);
+                        let _ = vec.extract($id::lanes());
                     }
-                }
-                #[test]
-                #[should_panic]
-                fn extract_panic_oob() {
-                    let vec = $id::splat(false);
-                    let _ = vec.extract($id::lanes());
-                }
-                #[test]
-                #[should_panic]
-                fn replace_panic_oob() {
-                    let vec = $id::splat(false);
-                    let _ = vec.replace($id::lanes(), true);
+                    #[test]
+                    #[should_panic]
+                    fn replace_panic_oob() {
+                        let vec = $id::splat(false);
+                        let _ = vec.replace($id::lanes(), true);
+                    }
                 }
             }
         }

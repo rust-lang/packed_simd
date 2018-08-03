@@ -2,7 +2,7 @@
 
 /// Implements mask select method
 macro_rules! impl_select {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Selects elements of `a` and `b` using mask.
             ///
@@ -19,7 +19,7 @@ macro_rules! impl_select {
             }
         }
 
-        test_select!(bool, $id, $id, (false, true));
+        test_select!(bool, $id, $id, (false, true) | $test_tt);
     };
 }
 
@@ -27,42 +27,45 @@ macro_rules! test_select {
     (
         $elem_ty:ident,
         $mask_ty:ident,
-        $vec_ty:ident,($small:expr, $large:expr)
+        $vec_ty:ident,($small:expr, $large:expr) |
+        $test_tt:tt
     ) => {
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$vec_ty _select] {
-                use super::*;
+        test_if! {
+            $test_tt:
+            interpolate_idents! {
+                mod [$vec_ty _select] {
+                    use super::*;
 
-                #[test]
-                fn select() {
-                    let o = $small as $elem_ty;
-                    let t = $large as $elem_ty;
+                    #[test]
+                    fn select() {
+                        let o = $small as $elem_ty;
+                        let t = $large as $elem_ty;
 
-                    let a = $vec_ty::splat(o);
-                    let b = $vec_ty::splat(t);
-                    let m = a.lt(b);
-                    assert_eq!(m.select(a, b), a);
+                        let a = $vec_ty::splat(o);
+                        let b = $vec_ty::splat(t);
+                        let m = a.lt(b);
+                        assert_eq!(m.select(a, b), a);
 
-                    let m = b.lt(a);
-                    assert_eq!(m.select(b, a), a);
+                        let m = b.lt(a);
+                        assert_eq!(m.select(b, a), a);
 
-                    let mut c = a;
-                    let mut d = b;
-                    let mut m_e = $mask_ty::splat(false);
-                    for i in 0..$vec_ty::lanes() {
-                        if i % 2 == 0 {
-                            let c_tmp = c.extract(i);
-                            c = c.replace(i, d.extract(i));
-                            d = d.replace(i, c_tmp);
-                        } else {
-                            m_e = m_e.replace(i, true);
+                        let mut c = a;
+                        let mut d = b;
+                        let mut m_e = $mask_ty::splat(false);
+                        for i in 0..$vec_ty::lanes() {
+                            if i % 2 == 0 {
+                                let c_tmp = c.extract(i);
+                                c = c.replace(i, d.extract(i));
+                                d = d.replace(i, c_tmp);
+                            } else {
+                                m_e = m_e.replace(i, true);
+                            }
                         }
-                    }
 
-                    let m = c.lt(d);
-                    assert_eq!(m_e, m);
-                    assert_eq!(m.select(c, d), a);
+                        let m = c.lt(d);
+                        assert_eq!(m_e, m);
+                        assert_eq!(m.select(c, d), a);
+                    }
                 }
             }
         }

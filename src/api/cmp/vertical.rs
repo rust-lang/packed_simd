@@ -5,7 +5,7 @@ macro_rules! impl_cmp_vertical {
         [$elem_ty:ident; $elem_count:expr]:
         $id:ident,
         $mask_ty:ident,
-        $is_mask:expr,($true:expr, $false:expr)
+        $is_mask:expr,($true:expr, $false:expr) | $test_tt:tt
     ) => {
         impl $id {
             /// Lane-wise equality comparison.
@@ -66,45 +66,47 @@ macro_rules! impl_cmp_vertical {
                 }
             }
         }
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _cmp_vertical] {
-                use super::*;
-                #[test]
-                fn cmp() {
-                    let a = $id::splat($false);
-                    let b = $id::splat($true);
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _cmp_vertical] {
+                    use super::*;
+                    #[test]
+                    fn cmp() {
+                        let a = $id::splat($false);
+                        let b = $id::splat($true);
 
-                    let r = a.lt(b);
-                    let e = $mask_ty::splat(true);
-                    assert!(r == e);
-                    let r = a.le(b);
-                    assert!(r == e);
+                        let r = a.lt(b);
+                        let e = $mask_ty::splat(true);
+                        assert!(r == e);
+                        let r = a.le(b);
+                        assert!(r == e);
 
-                    let e = $mask_ty::splat(false);
-                    let r = a.gt(b);
-                    assert!(r == e);
-                    let r = a.ge(b);
-                    assert!(r == e);
-                    let r = a.eq(b);
-                    assert!(r == e);
+                        let e = $mask_ty::splat(false);
+                        let r = a.gt(b);
+                        assert!(r == e);
+                        let r = a.ge(b);
+                        assert!(r == e);
+                        let r = a.eq(b);
+                        assert!(r == e);
 
-                    let mut a = a;
-                    let mut b = b;
-                    let mut e = e;
-                    for i in 0..$id::lanes() {
-                        if i % 2 == 0 {
-                            a = a.replace(i, $false);
-                            b = b.replace(i, $true);
-                            e = e.replace(i, true);
-                        } else {
-                            a = a.replace(i, $true);
-                            b = b.replace(i, $false);
-                            e = e.replace(i, false);
+                        let mut a = a;
+                        let mut b = b;
+                        let mut e = e;
+                        for i in 0..$id::lanes() {
+                            if i % 2 == 0 {
+                                a = a.replace(i, $false);
+                                b = b.replace(i, $true);
+                                e = e.replace(i, true);
+                            } else {
+                                a = a.replace(i, $true);
+                                b = b.replace(i, $false);
+                                e = e.replace(i, false);
+                            }
                         }
+                        let r = a.lt(b);
+                        assert!(r == e);
                     }
-                    let r = a.lt(b);
-                    assert!(r == e);
                 }
             }
         }

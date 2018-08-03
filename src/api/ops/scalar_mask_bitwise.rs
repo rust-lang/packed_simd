@@ -3,7 +3,7 @@
 macro_rules! impl_ops_scalar_mask_bitwise {
     (
         [$elem_ty:ident; $elem_count:expr]:
-        $id:ident |
+        $id:ident | $test_tt:tt |
         ($true:expr, $false:expr)
     ) => {
         impl ::ops::BitXor<bool> for $id {
@@ -70,66 +70,68 @@ macro_rules! impl_ops_scalar_mask_bitwise {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _ops_scalar_mask_bitwise] {
-                use super::*;
-                #[test]
-                fn ops_scalar_mask_bitwise() {
-                    let ti = true;
-                    let fi = false;
-                    let t = $id::splat(ti);
-                    let f = $id::splat(fi);
-                    assert!(t != f);
-                    assert!(!(t == f));
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _ops_scalar_mask_bitwise] {
+                    use super::*;
+                    #[test]
+                    fn ops_scalar_mask_bitwise() {
+                        let ti = true;
+                        let fi = false;
+                        let t = $id::splat(ti);
+                        let f = $id::splat(fi);
+                        assert!(t != f);
+                        assert!(!(t == f));
 
-                    // BitAnd:
-                    assert_eq!(ti & f, f);
-                    assert_eq!(t & fi, f);
-                    assert_eq!(fi & t, f);
-                    assert_eq!(f & ti, f);
-                    assert_eq!(ti & t, t);
-                    assert_eq!(t & ti, t);
-                    assert_eq!(fi & f, f);
-                    assert_eq!(f & fi, f);
+                        // BitAnd:
+                        assert_eq!(ti & f, f);
+                        assert_eq!(t & fi, f);
+                        assert_eq!(fi & t, f);
+                        assert_eq!(f & ti, f);
+                        assert_eq!(ti & t, t);
+                        assert_eq!(t & ti, t);
+                        assert_eq!(fi & f, f);
+                        assert_eq!(f & fi, f);
 
-                    // BitOr:
-                    assert_eq!(ti | f, t);
-                    assert_eq!(t | fi, t);
-                    assert_eq!(fi | t, t);
-                    assert_eq!(f | ti, t);
-                    assert_eq!(ti | t, t);
-                    assert_eq!(t | ti, t);
-                    assert_eq!(fi | f, f);
-                    assert_eq!(f | fi, f);
+                        // BitOr:
+                        assert_eq!(ti | f, t);
+                        assert_eq!(t | fi, t);
+                        assert_eq!(fi | t, t);
+                        assert_eq!(f | ti, t);
+                        assert_eq!(ti | t, t);
+                        assert_eq!(t | ti, t);
+                        assert_eq!(fi | f, f);
+                        assert_eq!(f | fi, f);
 
-                    // BitXOR:
-                    assert_eq!(ti ^ f, t);
-                    assert_eq!(t ^ fi, t);
-                    assert_eq!(fi ^ t, t);
-                    assert_eq!(f ^ ti, t);
-                    assert_eq!(ti ^ t, f);
-                    assert_eq!(t ^ ti, f);
-                    assert_eq!(fi ^ f, f);
-                    assert_eq!(f ^ fi, f);
+                        // BitXOR:
+                        assert_eq!(ti ^ f, t);
+                        assert_eq!(t ^ fi, t);
+                        assert_eq!(fi ^ t, t);
+                        assert_eq!(f ^ ti, t);
+                        assert_eq!(ti ^ t, f);
+                        assert_eq!(t ^ ti, f);
+                        assert_eq!(fi ^ f, f);
+                        assert_eq!(f ^ fi, f);
 
-                    {
-                        // AndAssign:
-                        let mut v = f;
-                        v &= ti;
-                        assert_eq!(v, f);
-                    }
-                    {
-                        // OrAssign:
-                        let mut v = f;
-                        v |= ti;
-                        assert_eq!(v, t);
-                    }
-                    {
-                        // XORAssign:
-                        let mut v = f;
-                        v ^= ti;
-                        assert_eq!(v, t);
+                        {
+                            // AndAssign:
+                            let mut v = f;
+                            v &= ti;
+                            assert_eq!(v, f);
+                        }
+                        {
+                            // OrAssign:
+                            let mut v = f;
+                            v |= ti;
+                            assert_eq!(v, t);
+                        }
+                        {
+                            // XORAssign:
+                            let mut v = f;
+                            v ^= ti;
+                            assert_eq!(v, t);
+                        }
                     }
                 }
             }

@@ -1,7 +1,7 @@
 //! Implements portable horizontal float vector arithmetic reductions.
 
 macro_rules! impl_reduction_float_arithmetic {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Horizontal sum of the vector elements.
             ///
@@ -58,200 +58,202 @@ macro_rules! impl_reduction_float_arithmetic {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _reduction_float_arith] {
-                use super::*;
-                fn alternating(x: usize) -> $id {
-                    let mut v = $id::splat(1 as $elem_ty);
-                    for i in 0..$id::lanes() {
-                        if i % x == 0 {
-                            v = v.replace(i, 2 as $elem_ty);
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _reduction_float_arith] {
+                    use super::*;
+                    fn alternating(x: usize) -> $id {
+                        let mut v = $id::splat(1 as $elem_ty);
+                        for i in 0..$id::lanes() {
+                            if i % x == 0 {
+                                v = v.replace(i, 2 as $elem_ty);
+                            }
                         }
+                        v
                     }
-                    v
-                }
 
-                #[test]
-                fn sum() {
-                    let v = $id::splat(0 as $elem_ty);
-                    assert_eq!(v.sum(), 0 as $elem_ty);
-                    let v = $id::splat(1 as $elem_ty);
-                    assert_eq!(v.sum(), $id::lanes() as $elem_ty);
-                    let v = alternating(2);
-                    assert_eq!(v.sum(), ($id::lanes() / 2 + $id::lanes()) as $elem_ty);
-                }
-                #[test]
-                fn product() {
-                    let v = $id::splat(0 as $elem_ty);
-                    assert_eq!(v.product(), 0 as $elem_ty);
-                    let v = $id::splat(1 as $elem_ty);
-                    assert_eq!(v.product(), 1 as $elem_ty);
-                    let f = match $id::lanes() {
-                        64 => 16,
-                        32 => 8,
-                        16 => 4,
-                        _ => 2,
-                    };
-                    let v = alternating(f);
-                    assert_eq!(
-                        v.product(),
-                        (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
-                    );
-                }
-
-                #[test]
-                #[allow(unreachable_code)]
-                fn sum_nan() {
-                    // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
-                    // https://github.com/rust-lang-nursery/stdsimd/issues/409
-                    return;
-
-                    let n0 = $elem_ty::NAN;
-                    let v0 = $id::splat(-3.0);
-                    for i in 0..$id::lanes() {
-                        let mut v = v0.replace(i, n0);
-                        // If the vector contains a NaN the result is NaN:
-                        assert!(
-                            v.sum().is_nan(),
-                            "nan at {} => {} | {:?}",
-                            i,
-                            v.sum(),
-                            v
-                        );
-                        for j in 0..i {
-                            v = v.replace(j, n0);
-                            assert!(v.sum().is_nan());
-                        }
+                    #[test]
+                    fn sum() {
+                        let v = $id::splat(0 as $elem_ty);
+                        assert_eq!(v.sum(), 0 as $elem_ty);
+                        let v = $id::splat(1 as $elem_ty);
+                        assert_eq!(v.sum(), $id::lanes() as $elem_ty);
+                        let v = alternating(2);
+                        assert_eq!(v.sum(), ($id::lanes() / 2 + $id::lanes()) as $elem_ty);
                     }
-                    let v = $id::splat(n0);
-                    assert!(v.sum().is_nan(), "all nans | {:?}", v);
-                }
-
-                #[test]
-                #[allow(unreachable_code)]
-                fn product_nan() {
-                    // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
-                    // https://github.com/rust-lang-nursery/stdsimd/issues/409
-                    return;
-
-                    let n0 = $elem_ty::NAN;
-                    let v0 = $id::splat(-3.0);
-                    for i in 0..$id::lanes() {
-                        let mut v = v0.replace(i, n0);
-                        // If the vector contains a NaN the result is NaN:
-                        assert!(
-                            v.product().is_nan(),
-                            "nan at {} => {} | {:?}",
-                            i,
+                    #[test]
+                    fn product() {
+                        let v = $id::splat(0 as $elem_ty);
+                        assert_eq!(v.product(), 0 as $elem_ty);
+                        let v = $id::splat(1 as $elem_ty);
+                        assert_eq!(v.product(), 1 as $elem_ty);
+                        let f = match $id::lanes() {
+                            64 => 16,
+                            32 => 8,
+                            16 => 4,
+                            _ => 2,
+                        };
+                        let v = alternating(f);
+                        assert_eq!(
                             v.product(),
-                            v
+                            (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
                         );
-                        for j in 0..i {
-                            v = v.replace(j, n0);
-                            assert!(v.product().is_nan());
+                    }
+
+                    #[test]
+                    #[allow(unreachable_code)]
+                    fn sum_nan() {
+                        // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
+                        // https://github.com/rust-lang-nursery/packed_simd/issues/6
+                        return;
+
+                        let n0 = $elem_ty::NAN;
+                        let v0 = $id::splat(-3.0);
+                        for i in 0..$id::lanes() {
+                            let mut v = v0.replace(i, n0);
+                            // If the vector contains a NaN the result is NaN:
+                            assert!(
+                                v.sum().is_nan(),
+                                "nan at {} => {} | {:?}",
+                                i,
+                                v.sum(),
+                                v
+                            );
+                            for j in 0..i {
+                                v = v.replace(j, n0);
+                                assert!(v.sum().is_nan());
+                            }
                         }
+                        let v = $id::splat(n0);
+                        assert!(v.sum().is_nan(), "all nans | {:?}", v);
                     }
-                    let v = $id::splat(n0);
-                    assert!(v.product().is_nan(), "all nans | {:?}", v);
-                }
 
-                #[test]
-                #[allow(unused, dead_code)]
-                fn sum_roundoff() {
-                    // Performs a tree-reduction
-                    fn tree_reduce_sum(a: &[[$elem_ty]]) -> $elem_ty {
-                        assert!(!a.is_empty());
-                        if a.len() == 1 {
-                            a[0]
-                        } else if a.len() == 2 {
-                            a[0] + a[1]
-                        } else {
-                            let mid = a.len() / 2;
-                            let (left, right) = a.split_at(mid);
-                            tree_reduce_sum(left) + tree_reduce_sum(right)
+                    #[test]
+                    #[allow(unreachable_code)]
+                    fn product_nan() {
+                        // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
+                        // https://github.com/rust-lang-nursery/packed_simd/issues/6
+                        return;
+
+                        let n0 = $elem_ty::NAN;
+                        let v0 = $id::splat(-3.0);
+                        for i in 0..$id::lanes() {
+                            let mut v = v0.replace(i, n0);
+                            // If the vector contains a NaN the result is NaN:
+                            assert!(
+                                v.product().is_nan(),
+                                "nan at {} => {} | {:?}",
+                                i,
+                                v.product(),
+                                v
+                            );
+                            for j in 0..i {
+                                v = v.replace(j, n0);
+                                assert!(v.product().is_nan());
+                            }
                         }
+                        let v = $id::splat(n0);
+                        assert!(v.product().is_nan(), "all nans | {:?}", v);
                     }
 
-                    let mut start = $elem_ty::EPSILON;
-                    let mut scalar_reduction = 0. as $elem_ty;
-
-                    let mut v = $id::splat(0. as $elem_ty);
-                    for i in 0..$id::lanes() {
-                        let c = if i % 2 == 0 { 1e3 } else { -1. };
-                        start *= 3.14 * c;
-                        scalar_reduction += start;
-                        v = v.replace(i, start);
-                    }
-                    let simd_reduction = v.sum();
-
-                    let mut a = [0. as $elem_ty; $id::lanes()];
-                    v.write_to_slice_unaligned(&mut a);
-                    let tree_reduction = tree_reduce_sum(&a);
-
-                    // tolerate 1 ULP difference:
-                    assert!(
-                        if simd_reduction.to_bits() > tree_reduction.to_bits() {
-                            simd_reduction.to_bits() - tree_reduction.to_bits() < 2
-                        } else {
-                            tree_reduction.to_bits() - simd_reduction.to_bits() < 2
-                        },
-                        "vector: {:?} | simd_reduction: {:?} | \
-                         tree_reduction: {} | scalar_reduction: {}",
-                        v,
-                        simd_reduction,
-                        tree_reduction,
-                        scalar_reduction
-                    );
-                }
-
-                #[test]
-                #[allow(unused, dead_code)]
-                fn product_roundoff() {
-                    // Performs a tree-reduction
-                    fn tree_reduce_product(a: &[[$elem_ty]]) -> $elem_ty {
-                        assert!(!a.is_empty());
-                        if a.len() == 1 {
-                            a[0]
-                        } else if a.len() == 2 {
-                            a[0] * a[1]
-                        } else {
-                            let mid = a.len() / 2;
-                            let (left, right) = a.split_at(mid);
-                            tree_reduce_product(left) * tree_reduce_product(right)
+                    #[test]
+                    #[allow(unused, dead_code)]
+                    fn sum_roundoff() {
+                        // Performs a tree-reduction
+                        fn tree_reduce_sum(a: &[[$elem_ty]]) -> $elem_ty {
+                            assert!(!a.is_empty());
+                            if a.len() == 1 {
+                                a[0]
+                            } else if a.len() == 2 {
+                                a[0] + a[1]
+                            } else {
+                                let mid = a.len() / 2;
+                                let (left, right) = a.split_at(mid);
+                                tree_reduce_sum(left) + tree_reduce_sum(right)
+                            }
                         }
+
+                        let mut start = $elem_ty::EPSILON;
+                        let mut scalar_reduction = 0. as $elem_ty;
+
+                        let mut v = $id::splat(0. as $elem_ty);
+                        for i in 0..$id::lanes() {
+                            let c = if i % 2 == 0 { 1e3 } else { -1. };
+                            start *= 3.14 * c;
+                            scalar_reduction += start;
+                            v = v.replace(i, start);
+                        }
+                        let simd_reduction = v.sum();
+
+                        let mut a = [0. as $elem_ty; $id::lanes()];
+                        v.write_to_slice_unaligned(&mut a);
+                        let tree_reduction = tree_reduce_sum(&a);
+
+                        // tolerate 1 ULP difference:
+                        assert!(
+                            if simd_reduction.to_bits() > tree_reduction.to_bits() {
+                                simd_reduction.to_bits() - tree_reduction.to_bits() < 2
+                            } else {
+                                tree_reduction.to_bits() - simd_reduction.to_bits() < 2
+                            },
+                            "vector: {:?} | simd_reduction: {:?} | \
+                             tree_reduction: {} | scalar_reduction: {}",
+                            v,
+                            simd_reduction,
+                            tree_reduction,
+                            scalar_reduction
+                        );
                     }
 
-                    let mut start = $elem_ty::EPSILON;
-                    let mut scalar_reduction = 1. as $elem_ty;
+                    #[test]
+                    #[allow(unused, dead_code)]
+                    fn product_roundoff() {
+                        // Performs a tree-reduction
+                        fn tree_reduce_product(a: &[[$elem_ty]]) -> $elem_ty {
+                            assert!(!a.is_empty());
+                            if a.len() == 1 {
+                                a[0]
+                            } else if a.len() == 2 {
+                                a[0] * a[1]
+                            } else {
+                                let mid = a.len() / 2;
+                                let (left, right) = a.split_at(mid);
+                                tree_reduce_product(left) * tree_reduce_product(right)
+                            }
+                        }
 
-                    let mut v = $id::splat(0. as $elem_ty);
-                    for i in 0..$id::lanes() {
-                        let c = if i % 2 == 0 { 1e3 } else { -1. };
-                        start *= 3.14 * c;
-                        scalar_reduction *= start;
-                        v = v.replace(i, start);
+                        let mut start = $elem_ty::EPSILON;
+                        let mut scalar_reduction = 1. as $elem_ty;
+
+                        let mut v = $id::splat(0. as $elem_ty);
+                        for i in 0..$id::lanes() {
+                            let c = if i % 2 == 0 { 1e3 } else { -1. };
+                            start *= 3.14 * c;
+                            scalar_reduction *= start;
+                            v = v.replace(i, start);
+                        }
+                        let simd_reduction = v.product();
+
+                        let mut a = [0. as $elem_ty; $id::lanes()];
+                        v.write_to_slice_unaligned(&mut a);
+                        let tree_reduction = tree_reduce_product(&a);
+
+                        // tolerate 1 ULP difference:
+                        assert!(
+                            if simd_reduction.to_bits() > tree_reduction.to_bits() {
+                                simd_reduction.to_bits() - tree_reduction.to_bits() < 2
+                            } else {
+                                tree_reduction.to_bits() - simd_reduction.to_bits() < 2
+                            },
+                            "vector: {:?} | simd_reduction: {:?} | \
+                             tree_reduction: {} | scalar_reduction: {}",
+                            v,
+                            simd_reduction,
+                            tree_reduction,
+                            scalar_reduction
+                        );
                     }
-                    let simd_reduction = v.product();
-
-                    let mut a = [0. as $elem_ty; $id::lanes()];
-                    v.write_to_slice_unaligned(&mut a);
-                    let tree_reduction = tree_reduce_product(&a);
-
-                    // tolerate 1 ULP difference:
-                    assert!(
-                        if simd_reduction.to_bits() > tree_reduction.to_bits() {
-                            simd_reduction.to_bits() - tree_reduction.to_bits() < 2
-                        } else {
-                            tree_reduction.to_bits() - simd_reduction.to_bits() < 2
-                        },
-                        "vector: {:?} | simd_reduction: {:?} | \
-                         tree_reduction: {} | scalar_reduction: {}",
-                        v,
-                        simd_reduction,
-                        tree_reduction,
-                        scalar_reduction
-                    );
                 }
             }
         }

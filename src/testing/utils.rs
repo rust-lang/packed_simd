@@ -1,4 +1,6 @@
-//! Test utilities
+//! Testing utilities
+
+#![allow(dead_code)]
 
 use crate::{cmp::PartialOrd, fmt::Debug, PartiallyOrdered};
 

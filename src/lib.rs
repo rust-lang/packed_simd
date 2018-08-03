@@ -251,12 +251,12 @@ use core::{
 };
 
 #[macro_use]
+mod testing;
+
+#[macro_use]
 mod api;
 mod codegen;
 mod sealed;
-
-#[cfg(test)]
-mod test_utils;
 
 /// Packed SIMD vector type.
 ///
