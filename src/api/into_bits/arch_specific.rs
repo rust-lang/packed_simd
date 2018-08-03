@@ -59,12 +59,20 @@ macro_rules! impl_arch {
 // FIXME: arm/aarch float16x4_t missing
 impl_arch!(
     [x86["x86"]: __m64], [x86_64["x86_64"]: __m64],
-    [arm["arm"]: int8x8_t, uint8x8_t, poly8x8_t, int16x4_t, uint16x4_t,
-     poly16x4_t, int32x2_t, uint32x2_t, float32x2_t, int64x1_t,
-     uint64x1_t],
     [aarch64["aarch64"]: int8x8_t, uint8x8_t, poly8x8_t, int16x4_t, uint16x4_t,
      poly16x4_t, int32x2_t, uint32x2_t, float32x2_t, int64x1_t, uint64x1_t,
      float64x1_t] |
+    from: i8x8, u8x8, m8x8, i16x4, u16x4, m16x4, i32x2, u32x2, f32x2, m32x2 |
+    into: i8x8, u8x8, i16x4, u16x4, i32x2, u32x2, f32x2
+);
+
+// FIXME: arm vector types require v7+neon and a re-compiled std library
+#[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
+          feature = "coresimd"))]
+impl_arch!(
+    [arm["arm"]: int8x8_t, uint8x8_t, poly8x8_t, int16x4_t, uint16x4_t,
+     poly16x4_t, int32x2_t, uint32x2_t, float32x2_t, int64x1_t,
+     uint64x1_t] |
     from: i8x8, u8x8, m8x8, i16x4, u16x4, m16x4, i32x2, u32x2, f32x2, m32x2 |
     into: i8x8, u8x8, i16x4, u16x4, i32x2, u32x2, f32x2
 );
@@ -83,8 +91,6 @@ impl_arch!(
 impl_arch!(
     [x86["x86"]: __m128, __m128i, __m128d],
     [x86_64["x86_64"]:  __m128, __m128i, __m128d],
-    [arm["arm"]: int8x16_t, uint8x16_t, poly8x16_t, int16x8_t, uint16x8_t,
-     poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t, uint64x2_t],
     [aarch64["aarch64"]: int8x16_t, uint8x16_t, poly8x16_t, int16x8_t,
      uint16x8_t, poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t,
      uint64x2_t, float64x2_t],
@@ -95,6 +101,18 @@ impl_arch!(
      vector_signed_short, vector_unsigned_short, vector_signed_int,
      vector_unsigned_int,  vector_float, vector_signed_long,
      vector_unsigned_long, vector_double] |
+    from: i8x16, u8x16, m8x16, i16x8, u16x8, m16x8, i32x4, u32x4, f32x4, m32x4,
+    i64x2, u64x2, f64x2, m64x2, i128x1, u128x1, m128x1 |
+    into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4, i64x2, u64x2, f64x2,
+    i128x1, u128x1
+);
+
+// FIXME: arm vector types require v7+neon and a re-compiled std library
+#[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
+          feature = "coresimd"))]
+impl_arch!(
+    [arm["arm"]: int8x16_t, uint8x16_t, poly8x16_t, int16x8_t, uint16x8_t,
+     poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t, uint64x2_t] |
     from: i8x16, u8x16, m8x16, i16x8, u16x8, m16x8, i32x4, u32x4, f32x4, m32x4,
     i64x2, u64x2, f64x2, m64x2, i128x1, u128x1, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4, i64x2, u64x2, f64x2,
