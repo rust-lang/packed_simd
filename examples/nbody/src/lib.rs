@@ -17,13 +17,5 @@ pub fn run(n: usize, alg: usize) -> (f64, f64) {
 }
 
 #[cfg(test)]
-#[cfg(not(debug_assertions))]
-const RESULTS: &[(usize, &str, &str)] = &[
-    (1_000_usize, "-0.169075164", "-0.169087605"),
-    (50_000_000_usize, "-0.169075164", "-0.169059907"),
-];
-
-#[cfg(test)]
-#[cfg(debug_assertions)]
 const RESULTS: &[(usize, &str, &str)] =
     &[(1_000_usize, "-0.169075164", "-0.169087605")];

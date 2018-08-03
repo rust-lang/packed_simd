@@ -60,11 +60,6 @@ case ${TARGET} in
         cargo_test "--release --features=into_bits"
         ;;
     i586*)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -78,11 +73,6 @@ case ${TARGET} in
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     i686*)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -122,11 +112,6 @@ case ${TARGET} in
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     armv7*)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -135,11 +120,6 @@ case ${TARGET} in
         cargo_test "--release --features=into_bits,coresimd"
         ;;
     arm*)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -148,11 +128,6 @@ case ${TARGET} in
         cargo_test "--release --features=into_bits,coresimd"
         ;;
     aarch64*)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -191,14 +166,8 @@ case ${TARGET} in
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     *)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
         cargo_test
         cargo_test "--release --features=into_bits"
-
         ;;
 esac
 
