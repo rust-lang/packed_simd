@@ -88,16 +88,29 @@ impl_arch!(
 // FIXME: ppc64 vector_bool_long_long missing
 // FIXME: ppc64 vector_signed___int128 missing
 // FIXME: ppc64 vector_unsigned___int128 missing
+#[cfg(any(
+    // FIXME: arm vector types require v7+neon and a re-compiled std library
+    not(target_arch = "arm"),
+    all(target_feature = "v7", target_feature = "neon",
+        feature = "coresimd")
+))]
+#[cfg(any(
+    // FIXME: powerpc vector types require altivec and a re-compiled std library
+    not(target_arch = "powerpc"),
+    all(target_feature = "altivec", feature = "coresimd"),
+))]
 impl_arch!(
     [x86["x86"]: __m128, __m128i, __m128d],
     [x86_64["x86_64"]:  __m128, __m128i, __m128d],
+    [arm["arm"]: int8x16_t, uint8x16_t, poly8x16_t, int16x8_t, uint16x8_t,
+     poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t, uint64x2_t],
     [aarch64["aarch64"]: int8x16_t, uint8x16_t, poly8x16_t, int16x8_t,
      uint16x8_t, poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t,
      uint64x2_t, float64x2_t],
     [powerpc["powerpc"]: vector_signed_char, vector_unsigned_char,
      vector_signed_short, vector_unsigned_short, vector_signed_int,
      vector_unsigned_int, vector_float],
-    [powerpc["powerpc64"]: vector_signed_char, vector_unsigned_char,
+    [powerpc64["powerpc64"]: vector_signed_char, vector_unsigned_char,
      vector_signed_short, vector_unsigned_short, vector_signed_int,
      vector_unsigned_int,  vector_float, vector_signed_long,
      vector_unsigned_long, vector_double] |
@@ -107,21 +120,14 @@ impl_arch!(
     i128x1, u128x1
 );
 
-// FIXME: arm vector types require v7+neon and a re-compiled std library
-#[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
-          feature = "coresimd"))]
-impl_arch!(
-    [arm["arm"]: int8x16_t, uint8x16_t, poly8x16_t, int16x8_t, uint16x8_t,
-     poly16x8_t, int32x4_t, uint32x4_t, float32x4_t, int64x2_t, uint64x2_t] |
-    from: i8x16, u8x16, m8x16, i16x8, u16x8, m16x8, i32x4, u32x4, f32x4, m32x4,
-    i64x2, u64x2, f64x2, m64x2, i128x1, u128x1, m128x1 |
-    into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4, i64x2, u64x2, f64x2,
-    i128x1, u128x1
-);
-
+#[cfg(any(
+    // FIXME: powerpc vector types require altivec and a re-compiled std library
+    not(target_arch = "powerpc"),
+    all(target_feature = "altivec", feature = "coresimd"),
+))]
 impl_arch!(
     [powerpc["powerpc"]: vector_bool_char],
-    [powerpc["powerpc64"]: vector_bool_char] |
+    [powerpc64["powerpc64"]: vector_bool_char] |
     from: m8x16, m16x8, m32x4, m64x2, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
     i64x2, u64x2, f64x2, i128x1, u128x1,
@@ -129,9 +135,14 @@ impl_arch!(
     m8x16
 );
 
+#[cfg(any(
+    // FIXME: powerpc vector types require altivec and a re-compiled std library
+    not(target_arch = "powerpc"),
+    all(target_feature = "altivec", feature = "coresimd"),
+))]
 impl_arch!(
     [powerpc["powerpc"]: vector_bool_short],
-    [powerpc["powerpc64"]: vector_bool_short] |
+    [powerpc64["powerpc64"]: vector_bool_short] |
     from: m16x8, m32x4, m64x2, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
     i64x2, u64x2, f64x2, i128x1, u128x1,
@@ -139,9 +150,14 @@ impl_arch!(
     m8x16, m16x8
 );
 
+#[cfg(any(
+    // FIXME: powerpc vector types require altivec and a re-compiled std library
+    not(target_arch = "powerpc"),
+    all(target_feature = "altivec", feature = "coresimd"),
+))]
 impl_arch!(
     [powerpc["powerpc"]: vector_bool_int],
-    [powerpc["powerpc64"]: vector_bool_int] |
+    [powerpc64["powerpc64"]: vector_bool_int] |
     from: m32x4, m64x2, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
     i64x2, u64x2, f64x2, i128x1, u128x1,
@@ -150,7 +166,7 @@ impl_arch!(
 );
 
 impl_arch!(
-    [powerpc["powerpc64"]: vector_bool_long] |
+    [powerpc64["powerpc64"]: vector_bool_long] |
     from: m64x2, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4,
     i64x2, u64x2, f64x2, i128x1, u128x1,

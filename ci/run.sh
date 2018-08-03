@@ -122,6 +122,11 @@ case ${TARGET} in
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     armv7*)
+        if [[ ${TARGET} == *"ios"* ]]; then
+            echo "ERROR: ${TARGET} must run in the iOS simulator"
+            exit 1
+        fi
+
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -130,6 +135,11 @@ case ${TARGET} in
         cargo_test "--release --features=into_bits,coresimd"
         ;;
     arm*)
+        if [[ ${TARGET} == *"ios"* ]]; then
+            echo "ERROR: ${TARGET} must run in the iOS simulator"
+            exit 1
+        fi
+
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -138,6 +148,11 @@ case ${TARGET} in
         cargo_test "--release --features=into_bits,coresimd"
         ;;
     aarch64*)
+        if [[ ${TARGET} == *"ios"* ]]; then
+            echo "ERROR: ${TARGET} must run in the iOS simulator"
+            exit 1
+        fi
+
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -176,6 +191,11 @@ case ${TARGET} in
         export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
         ;;
     *)
+        if [[ ${TARGET} == *"ios"* ]]; then
+            echo "ERROR: ${TARGET} must run in the iOS simulator"
+            exit 1
+        fi
+
         cargo_test
         cargo_test "--release --features=into_bits"
 
@@ -186,7 +206,6 @@ esac
 # Need to copy them to the target directory for the Cargo.lock to be
 # properly written.
 mkdir target || true
-
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/55
 # All examples fail to build for `armv7-apple-ios`.
@@ -217,5 +236,3 @@ cp -r examples/aobench target/aobench
 cargo_test "--manifest-path=target/aobench/Cargo.toml"
 cargo_test "--release --manifest-path=target/aobench/Cargo.toml --no-default-features"
 cargo_test "--release --manifest-path=target/aobench/Cargo.toml --features=256bit"
-
-
