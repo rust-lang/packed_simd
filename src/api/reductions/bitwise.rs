@@ -4,8 +4,7 @@
 macro_rules! impl_reduction_bitwise {
     (
         [$elem_ty:ident; $elem_count:expr]:
-        $id:ident | $test_tt:tt |
-        $ielem_ty:ident |
+        $id:ident | $ielem_ty:ident | $test_tt:tt |
         ($convert:expr) |
         ($true:expr, $false:expr)
     ) => {

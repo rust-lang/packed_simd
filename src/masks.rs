@@ -121,3 +121,5 @@ impl_mask_ty!(m64: i64 | /// 64-bit wide mask.
 );
 impl_mask_ty!(m128: i128 | /// 128-bit wide mask.
 );
+impl_mask_ty!(msize: isize | /// isize-wide mask.
+);

@@ -221,6 +221,36 @@ impl Shuffle<[u32; 8]> for m64 {
     type Output = crate::codegen::m64x8;
 }
 
+impl Shuffle<[u32; 2]> for isize {
+    type Output = crate::codegen::isizex2;
+}
+impl Shuffle<[u32; 4]> for isize {
+    type Output = crate::codegen::isizex4;
+}
+impl Shuffle<[u32; 8]> for isize {
+    type Output = crate::codegen::isizex8;
+}
+
+impl Shuffle<[u32; 2]> for usize {
+    type Output = crate::codegen::usizex2;
+}
+impl Shuffle<[u32; 4]> for usize {
+    type Output = crate::codegen::usizex4;
+}
+impl Shuffle<[u32; 8]> for usize {
+    type Output = crate::codegen::usizex8;
+}
+
+impl Shuffle<[u32; 2]> for msize {
+    type Output = crate::codegen::msizex2;
+}
+impl Shuffle<[u32; 4]> for msize {
+    type Output = crate::codegen::msizex4;
+}
+impl Shuffle<[u32; 8]> for msize {
+    type Output = crate::codegen::msizex8;
+}
+
 impl Shuffle<[u32; 1]> for i128 {
     type Output = crate::codegen::i128x1;
 }

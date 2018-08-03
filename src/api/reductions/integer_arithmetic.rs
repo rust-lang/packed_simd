@@ -1,7 +1,8 @@
 //! Implements portable horizontal integer vector arithmetic reductions.
 
 macro_rules! impl_reduction_integer_arithmetic {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident | $test_tt:tt) => {
+
         impl $id {
             /// Horizontal wrapping sum of the vector elements.
             ///
@@ -17,7 +18,10 @@ macro_rules! impl_reduction_integer_arithmetic {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_add_ordered;
-                    unsafe { simd_reduce_add_ordered(self.0, 0 as $elem_ty) }
+                    let v: $ielem_ty = unsafe {
+                        simd_reduce_add_ordered(self.0, 0 as $ielem_ty)
+                    };
+                    v as $elem_ty
                 }
                 #[cfg(target_arch = "aarch64")]
                 {
@@ -45,7 +49,10 @@ macro_rules! impl_reduction_integer_arithmetic {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use llvm::simd_reduce_mul_ordered;
-                    unsafe { simd_reduce_mul_ordered(self.0, 1 as $elem_ty) }
+                    let v: $ielem_ty = unsafe {
+                        simd_reduce_mul_ordered(self.0, 1 as $ielem_ty)
+                    };
+                    v as $elem_ty
                 }
                 #[cfg(target_arch = "aarch64")]
                 {

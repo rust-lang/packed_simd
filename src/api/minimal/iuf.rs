@@ -1,7 +1,8 @@
 //! Minimal API of signed integer, unsigned integer, and floating-point vectors.
 
 macro_rules! impl_minimal_iuf {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt |
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident | $test_tt:tt |
+
      $($elem_name:ident),+ |
      $(#[$doc:meta])*) => {
 
@@ -20,7 +21,7 @@ macro_rules! impl_minimal_iuf {
             #[inline]
             #[cfg_attr(feature = "cargo-clippy", allow(too_many_arguments))]
             pub const fn new($($elem_name: $elem_ty),*) -> Self {
-                Simd(codegen::$id($($elem_name),*))
+                Simd(codegen::$id($($elem_name as $ielem_ty),*))
             }
 
             /// Returns the number of vector lanes.
@@ -36,7 +37,7 @@ macro_rules! impl_minimal_iuf {
                 Simd(codegen::$id($({
                     #[allow(non_camel_case_types, dead_code)]
                     struct $elem_name;
-                    value
+                    value as $ielem_ty
                 }),*))
             }
 
@@ -59,7 +60,8 @@ macro_rules! impl_minimal_iuf {
             #[inline]
             pub unsafe fn extract_unchecked(self, index: usize) -> $elem_ty {
                 use llvm::simd_extract;
-                simd_extract(self.0, index as u32)
+                let e: $ielem_ty = simd_extract(self.0, index as u32);
+                e as $elem_ty
             }
 
             /// Returns a new vector where the value at `index` is replaced by `new_value`.
@@ -87,7 +89,7 @@ macro_rules! impl_minimal_iuf {
                 new_value: $elem_ty,
             ) -> Self {
                 use llvm::simd_insert;
-                Simd(simd_insert(self.0, index as u32, new_value))
+                Simd(simd_insert(self.0, index as u32, new_value as $ielem_ty))
             }
         }
 
