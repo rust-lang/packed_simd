@@ -2,7 +2,7 @@
 #![allow(unused)]
 
 macro_rules! impl_ops_scalar_rotates {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Shifts the bits of each lane to the left by the specified amount in
             /// the corresponding lane of `n`, wrapping the truncated bits to
@@ -35,6 +35,8 @@ macro_rules! impl_ops_scalar_rotates {
     };
 }
 
+// FIXME: never used
+// https://github.com/rust-lang-nursery/packed_simd/issues/63
 #[cfg(test)]
 macro_rules! test_scalar_rotate_ops {
     ($id:ident, $elem_ty:ident) => {

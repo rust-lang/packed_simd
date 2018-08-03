@@ -1,7 +1,7 @@
 //! Implements `From` and `Into` for vector types.
 
 macro_rules! impl_from_vector {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $source:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt | $source:ident) => {
         impl From<$source> for $id {
             #[inline]
             fn from(source: $source) -> Self {
@@ -30,21 +30,23 @@ macro_rules! impl_from_vector {
                         }
                         */
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _from_ $source] {
-                use super::*;
-                #[test]
-                fn from() {
-                    assert_eq!($id::lanes(), $source::lanes());
-                    let source: $source = Default::default();
-                    let vec: $id = Default::default();
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _from_ $source] {
+                    use super::*;
+                    #[test]
+                    fn from() {
+                        assert_eq!($id::lanes(), $source::lanes());
+                        let source: $source = Default::default();
+                        let vec: $id = Default::default();
 
-                    let e = $id::from(source);
-                    assert_eq!(e, vec);
+                        let e = $id::from(source);
+                        assert_eq!(e, vec);
 
-                    let e: $id = source.into();
-                    assert_eq!(e, vec);
+                        let e: $id = source.into();
+                        assert_eq!(e, vec);
+                    }
                 }
             }
         }
@@ -52,9 +54,9 @@ macro_rules! impl_from_vector {
 }
 
 macro_rules! impl_from_vectors {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $($source:ident),*) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt | $($source:ident),*) => {
         $(
-            impl_from_vector!([$elem_ty; $elem_count]: $id | $source);
+            impl_from_vector!([$elem_ty; $elem_count]: $id | $test_tt | $source);
         )*
     }
 }

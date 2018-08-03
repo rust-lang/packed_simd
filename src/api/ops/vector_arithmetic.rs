@@ -1,7 +1,7 @@
 //! Vertical (lane-wise) vector-vector arithmetic operations.
 
 macro_rules! impl_ops_vector_arithmetic {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl ::ops::Add for $id {
             type Output = Self;
             #[inline]
@@ -82,62 +82,64 @@ macro_rules! impl_ops_vector_arithmetic {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _ops_vector_arith] {
-                use super::*;
-                #[test]
-                fn ops_vector_arithmetic() {
-                    let z = $id::splat(0 as $elem_ty);
-                    let o = $id::splat(1 as $elem_ty);
-                    let t = $id::splat(2 as $elem_ty);
-                    let f = $id::splat(4 as $elem_ty);
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _ops_vector_arith] {
+                    use super::*;
+                    #[test]
+                    fn ops_vector_arithmetic() {
+                        let z = $id::splat(0 as $elem_ty);
+                        let o = $id::splat(1 as $elem_ty);
+                        let t = $id::splat(2 as $elem_ty);
+                        let f = $id::splat(4 as $elem_ty);
 
-                    // add
-                    assert_eq!(z + z, z);
-                    assert_eq!(o + z, o);
-                    assert_eq!(t + z, t);
-                    assert_eq!(t + t, f);
-                    // sub
-                    assert_eq!(z - z, z);
-                    assert_eq!(o - z, o);
-                    assert_eq!(t - z, t);
-                    assert_eq!(f - t, t);
-                    assert_eq!(f - o - o, t);
-                    // mul
-                    assert_eq!(z * z, z);
-                    assert_eq!(z * o, z);
-                    assert_eq!(z * t, z);
-                    assert_eq!(o * t, t);
-                    assert_eq!(t * t, f);
-                    // div
-                    assert_eq!(z / o, z);
-                    assert_eq!(t / o, t);
-                    assert_eq!(f / o, f);
-                    assert_eq!(t / t, o);
-                    assert_eq!(f / t, t);
-                    // rem
-                    assert_eq!(o % o, z);
-                    assert_eq!(f % t, z);
+                        // add
+                        assert_eq!(z + z, z);
+                        assert_eq!(o + z, o);
+                        assert_eq!(t + z, t);
+                        assert_eq!(t + t, f);
+                        // sub
+                        assert_eq!(z - z, z);
+                        assert_eq!(o - z, o);
+                        assert_eq!(t - z, t);
+                        assert_eq!(f - t, t);
+                        assert_eq!(f - o - o, t);
+                        // mul
+                        assert_eq!(z * z, z);
+                        assert_eq!(z * o, z);
+                        assert_eq!(z * t, z);
+                        assert_eq!(o * t, t);
+                        assert_eq!(t * t, f);
+                        // div
+                        assert_eq!(z / o, z);
+                        assert_eq!(t / o, t);
+                        assert_eq!(f / o, f);
+                        assert_eq!(t / t, o);
+                        assert_eq!(f / t, t);
+                        // rem
+                        assert_eq!(o % o, z);
+                        assert_eq!(f % t, z);
 
-                    {
-                        let mut v = z;
-                        assert_eq!(v, z);
-                        v += o; // add_assign
-                        assert_eq!(v, o);
-                        v -= o; // sub_assign
-                        assert_eq!(v, z);
-                        v = t;
-                        v *= o; // mul_assign
-                        assert_eq!(v, t);
-                        v *= t;
-                        assert_eq!(v, f);
-                        v /= o; // div_assign
-                        assert_eq!(v, f);
-                        v /= t;
-                        assert_eq!(v, t);
-                        v %= t; // rem_assign
-                        assert_eq!(v, z);
+                        {
+                            let mut v = z;
+                            assert_eq!(v, z);
+                            v += o; // add_assign
+                            assert_eq!(v, o);
+                            v -= o; // sub_assign
+                            assert_eq!(v, z);
+                            v = t;
+                            v *= o; // mul_assign
+                            assert_eq!(v, t);
+                            v *= t;
+                            assert_eq!(v, f);
+                            v /= o; // div_assign
+                            assert_eq!(v, f);
+                            v /= t;
+                            assert_eq!(v, t);
+                            v %= t; // rem_assign
+                            assert_eq!(v, z);
+                        }
                     }
                 }
             }

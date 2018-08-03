@@ -1,7 +1,7 @@
 //! Implements methods to write a vector type to a slice.
 
 macro_rules! impl_slice_write_to_slice {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Writes the values of the vector to the `slice`.
             ///
@@ -73,97 +73,98 @@ macro_rules! impl_slice_write_to_slice {
         }
 
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _slice_write_to_slice] {
-                use super::*;
-                use iter::Iterator;
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _slice_write_to_slice] {
+                    use super::*;
+                    use iter::Iterator;
 
-                #[test]
-                fn write_to_slice_unaligned() {
-                    let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
-                    let vec = $id::splat(42 as $elem_ty);
-                    vec.write_to_slice_unaligned(&mut unaligned[1..]);
-                    for (index, &b) in unaligned.iter().enumerate() {
-                        if index == 0 {
-                            assert_eq!(b, 0 as $elem_ty);
-                        } else {
-                            assert_eq!(b, vec.extract(index - 1));
+                    #[test]
+                    fn write_to_slice_unaligned() {
+                        let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
+                        let vec = $id::splat(42 as $elem_ty);
+                        vec.write_to_slice_unaligned(&mut unaligned[1..]);
+                        for (index, &b) in unaligned.iter().enumerate() {
+                            if index == 0 {
+                                assert_eq!(b, 0 as $elem_ty);
+                            } else {
+                                assert_eq!(b, vec.extract(index - 1));
+                            }
                         }
                     }
-                }
 
-                #[test]
-                #[should_panic]
-                fn write_to_slice_unaligned_fail() {
-                    let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
-                    let vec = $id::splat(42 as $elem_ty);
-                    vec.write_to_slice_unaligned(&mut unaligned[2..]);
-                }
-
-                                union A {
-                    data: [$elem_ty; 2 * $id::lanes()],
-                    _vec: $id,
-                }
-
-                #[test]
-                fn write_to_slice_aligned() {
-                    let mut aligned = A {
-                        data: [0 as $elem_ty; 2 * $id::lanes()],
-                    };
-                    let vec = $id::splat(42 as $elem_ty);
-                    unsafe { vec.write_to_slice_aligned(&mut aligned.data[$id::lanes()..]) };
-                    for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
-                        if index < $id::lanes() {
-                            assert_eq!(b, 0 as $elem_ty);
-                        } else {
-                            assert_eq!(b, vec.extract(index - $id::lanes()));
-                        }
+                    #[test]
+                    #[should_panic]
+                    fn write_to_slice_unaligned_fail() {
+                        let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
+                        let vec = $id::splat(42 as $elem_ty);
+                        vec.write_to_slice_unaligned(&mut unaligned[2..]);
                     }
-                }
 
-                #[test]
-                #[should_panic]
-                fn write_to_slice_aligned_fail_lanes() {
-                    let mut aligned = A {
-                        data: [0 as $elem_ty; 2 * $id::lanes()],
-                    };
-                    let vec = $id::splat(42 as $elem_ty);
-                    unsafe {
-                        vec.write_to_slice_aligned(&mut aligned.data[2 * $id::lanes()..])
-                    };
-                }
+                    union A {
+                        data: [$elem_ty; 2 * $id::lanes()],
+                        _vec: $id,
+                    }
 
-                #[test]
-                #[should_panic]
-                fn write_to_slice_aligned_fail_align() {
-                    unsafe {
+                    #[test]
+                    fn write_to_slice_aligned() {
                         let mut aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
-
-                        // get a pointer to the front of data
-                        let ptr: *mut $elem_ty = aligned.data.as_mut_ptr() as *mut $elem_ty;
-                        // offset pointer by one element
-                        let ptr = ptr.wrapping_add(1);
-
-                        if ptr.align_offset(mem::align_of::<$id>()) == 0 {
-                            // the pointer is properly aligned, so write_to_slice_aligned
-                            // won't fail here (e.g. this can happen for i128x1). So
-                            // we panic to make the "should_fail" test pass:
-                            panic!("ok");
-                        }
-
-                        // create a slice - this is safe, because the elements
-                        // of the slice exist, are properly initialized, and properly aligned:
-                        let s: &mut [[$elem_ty]] = slice::from_raw_parts_mut(ptr, $id::lanes());
-                        // this should always panic because the slice alignment does not match
-                        // the alignment requirements for the vector type:
                         let vec = $id::splat(42 as $elem_ty);
-                        vec.write_to_slice_aligned(s);
+                        unsafe { vec.write_to_slice_aligned(&mut aligned.data[$id::lanes()..]) };
+                        for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
+                            if index < $id::lanes() {
+                                assert_eq!(b, 0 as $elem_ty);
+                            } else {
+                                assert_eq!(b, vec.extract(index - $id::lanes()));
+                            }
+                        }
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn write_to_slice_aligned_fail_lanes() {
+                        let mut aligned = A {
+                            data: [0 as $elem_ty; 2 * $id::lanes()],
+                        };
+                        let vec = $id::splat(42 as $elem_ty);
+                        unsafe {
+                            vec.write_to_slice_aligned(&mut aligned.data[2 * $id::lanes()..])
+                        };
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn write_to_slice_aligned_fail_align() {
+                        unsafe {
+                            let mut aligned = A {
+                                data: [0 as $elem_ty; 2 * $id::lanes()],
+                            };
+
+                            // get a pointer to the front of data
+                            let ptr: *mut $elem_ty = aligned.data.as_mut_ptr() as *mut $elem_ty;
+                            // offset pointer by one element
+                            let ptr = ptr.wrapping_add(1);
+
+                            if ptr.align_offset(mem::align_of::<$id>()) == 0 {
+                                // the pointer is properly aligned, so write_to_slice_aligned
+                                // won't fail here (e.g. this can happen for i128x1). So
+                                // we panic to make the "should_fail" test pass:
+                                panic!("ok");
+                            }
+
+                            // create a slice - this is safe, because the elements
+                            // of the slice exist, are properly initialized, and properly aligned:
+                            let s: &mut [[$elem_ty]] = slice::from_raw_parts_mut(ptr, $id::lanes());
+                            // this should always panic because the slice alignment does not match
+                            // the alignment requirements for the vector type:
+                            let vec = $id::splat(42 as $elem_ty);
+                            vec.write_to_slice_aligned(s);
+                        }
                     }
                 }
-
             }
         }
     };

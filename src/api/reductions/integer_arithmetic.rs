@@ -1,7 +1,7 @@
 //! Implements portable horizontal integer vector arithmetic reductions.
 
 macro_rules! impl_reduction_integer_arithmetic {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Horizontal wrapping sum of the vector elements.
             ///
@@ -60,94 +60,96 @@ macro_rules! impl_reduction_integer_arithmetic {
             }
         }
 
-        #[cfg(test)]
-        interpolate_idents! {
-            mod [$id _reduction_int_arith] {
-                use super::*;
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _reduction_int_arith] {
+                    use super::*;
 
-                fn alternating(x: usize) -> $id {
-                    let mut v = $id::splat(1 as $elem_ty);
-                    for i in 0..$id::lanes() {
-                        if i % x == 0 {
-                            v = v.replace(i, 2 as $elem_ty);
+                    fn alternating(x: usize) -> $id {
+                        let mut v = $id::splat(1 as $elem_ty);
+                        for i in 0..$id::lanes() {
+                            if i % x == 0 {
+                                v = v.replace(i, 2 as $elem_ty);
+                            }
+                        }
+                        v
+                    }
+
+                    #[test]
+                    fn wrapping_sum() {
+                        let v = $id::splat(0 as $elem_ty);
+                        assert_eq!(v.wrapping_sum(), 0 as $elem_ty);
+                        let v = $id::splat(1 as $elem_ty);
+                        assert_eq!(v.wrapping_sum(), $id::lanes() as $elem_ty);
+                        let v = alternating(2);
+                        if $id::lanes() > 1 {
+                            assert_eq!(
+                                v.wrapping_sum(),
+                                ($id::lanes() / 2 + $id::lanes()) as $elem_ty
+                            );
+                        } else {
+                            assert_eq!(
+                                v.wrapping_sum(),
+                                2 as $elem_ty
+                            );
                         }
                     }
-                    v
-                }
+                    #[test]
+                    fn wrapping_sum_overflow() {
+                        let start = $elem_ty::max_value()
+                            - ($id::lanes() as $elem_ty / 2);
 
-                #[test]
-                fn wrapping_sum() {
-                    let v = $id::splat(0 as $elem_ty);
-                    assert_eq!(v.wrapping_sum(), 0 as $elem_ty);
-                    let v = $id::splat(1 as $elem_ty);
-                    assert_eq!(v.wrapping_sum(), $id::lanes() as $elem_ty);
-                    let v = alternating(2);
-                    if $id::lanes() > 1 {
-                        assert_eq!(
-                            v.wrapping_sum(),
-                            ($id::lanes() / 2 + $id::lanes()) as $elem_ty
-                        );
-                    } else {
-                        assert_eq!(
-                            v.wrapping_sum(),
-                            2 as $elem_ty
-                        );
+                        let v = $id::splat(start as $elem_ty);
+                        let vwrapping_sum = v.wrapping_sum();
+
+                        let mut wrapping_sum = start;
+                        for _ in 1..$id::lanes() {
+                            wrapping_sum = wrapping_sum.wrapping_add(start);
+                        }
+                        assert_eq!(wrapping_sum, vwrapping_sum, "v = {:?}", v);
                     }
-                }
-                #[test]
-                fn wrapping_sum_overflow() {
-                    let start = $elem_ty::max_value()
-                        - ($id::lanes() as $elem_ty / 2);
 
-                    let v = $id::splat(start as $elem_ty);
-                    let vwrapping_sum = v.wrapping_sum();
-
-                    let mut wrapping_sum = start;
-                    for _ in 1..$id::lanes() {
-                        wrapping_sum = wrapping_sum.wrapping_add(start);
+                    #[test]
+                    fn wrapping_product() {
+                        let v = $id::splat(0 as $elem_ty);
+                        assert_eq!(v.wrapping_product(), 0 as $elem_ty);
+                        let v = $id::splat(1 as $elem_ty);
+                        assert_eq!(v.wrapping_product(), 1 as $elem_ty);
+                        let f = match $id::lanes() {
+                            64 => 16,
+                            32 => 8,
+                            16 => 4,
+                            _ => 2,
+                        };
+                        let v = alternating(f);
+                        if $id::lanes() > 1 {
+                            assert_eq!(
+                                v.wrapping_product(),
+                                (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
+                            );
+                        } else {
+                            assert_eq!(
+                                v.wrapping_product(),
+                                2 as $elem_ty
+                            );
+                        }
                     }
-                    assert_eq!(wrapping_sum, vwrapping_sum, "v = {:?}", v);
-                }
 
-                #[test]
-                fn wrapping_product() {
-                    let v = $id::splat(0 as $elem_ty);
-                    assert_eq!(v.wrapping_product(), 0 as $elem_ty);
-                    let v = $id::splat(1 as $elem_ty);
-                    assert_eq!(v.wrapping_product(), 1 as $elem_ty);
-                    let f = match $id::lanes() {
-                        64 => 16,
-                        32 => 8,
-                        16 => 4,
-                        _ => 2,
-                    };
-                    let v = alternating(f);
-                    if $id::lanes() > 1 {
-                        assert_eq!(
-                            v.wrapping_product(),
-                            (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
-                        );
-                    } else {
-                        assert_eq!(
-                            v.wrapping_product(),
-                            2 as $elem_ty
-                        );
+                    #[test]
+                    fn wrapping_product_overflow() {
+                        let start = $elem_ty::max_value()
+                            - ($id::lanes() as $elem_ty / 2);
+
+                        let v = $id::splat(start as $elem_ty);
+                        let vmul = v.wrapping_product();
+
+                        let mut mul = start;
+                        for _ in 1..$id::lanes() {
+                            mul = mul.wrapping_mul(start);
+                        }
+                        assert_eq!(mul, vmul, "v = {:?}", v);
                     }
-                }
-
-                #[test]
-                fn wrapping_product_overflow() {
-                    let start = $elem_ty::max_value()
-                        - ($id::lanes() as $elem_ty / 2);
-
-                    let v = $id::splat(start as $elem_ty);
-                    let vmul = v.wrapping_product();
-
-                    let mut mul = start;
-                    for _ in 1..$id::lanes() {
-                        mul = mul.wrapping_mul(start);
-                    }
-                    assert_eq!(mul, vmul, "v = {:?}", v);
                 }
             }
         }
