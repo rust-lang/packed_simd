@@ -135,6 +135,7 @@ case ${TARGET} in
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+v7,+neon"
         cargo_test "--release --features=into_bits"
+        cargo_test "--release --features=into_bits,coresimd"
         ;;
     aarch64*)
         cargo_test
