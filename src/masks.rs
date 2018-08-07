@@ -6,6 +6,8 @@ macro_rules! impl_mask_ty {
         #[derive(Copy, Clone)]
         pub struct $id($elem_ty);
 
+        impl crate::sealed::Mask for $id {}
+
         impl $id {
             /// Instantiate a mask with `value`
             #[inline]
