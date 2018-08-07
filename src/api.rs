@@ -18,6 +18,8 @@ mod minimal;
 #[macro_use]
 mod ops;
 #[macro_use]
+mod ptr;
+#[macro_use]
 mod reductions;
 #[macro_use]
 mod select;
@@ -34,8 +36,8 @@ mod swap_bytes;
 crate mod into_bits;
 
 macro_rules! impl_i {
-    ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident 
-     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),* 
+    ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident
+     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                           | $($elem_ids),* | $(#[$doc])*);
@@ -241,3 +243,38 @@ macro_rules! impl_m {
         test_cmp_partial_ord_mask!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
     }
 }
+
+macro_rules! impl_const_p {
+    ([$elem_ty:ty; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident,
+     $usize_ty:ident, $isize_ty:ident
+     | $test_tt:tt | $($elem_ids:ident),*
+     | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
+        #[cfg(test)]
+        macro_rules! ref_ {
+            ($anything:tt) => { & $anything };
+        }
+
+        impl_minimal_p!([$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty |
+                        ref_ | $test_tt | $($elem_ids),*
+                        | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*);
+        impl_ptr_read!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
+    }
+}
+
+macro_rules! impl_mut_p {
+    ([$elem_ty:ty; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident,
+     $usize_ty:ident, $isize_ty:ident
+     | $test_tt:tt | $($elem_ids:ident),*
+     | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
+        #[cfg(test)]
+        macro_rules! ref_mut_ {
+            ($anything:tt) => { &mut $anything };
+        }
+        impl_minimal_p!([$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty |
+                        ref_mut_ | $test_tt | $($elem_ids),*
+                        | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*);
+        impl_ptr_read!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
+        impl_ptr_write!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
+    }
+}
+

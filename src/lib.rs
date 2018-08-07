@@ -223,7 +223,7 @@
     feature = "cargo-clippy",
     deny(missing_inline_in_public_items)
 )]
-#![deny(warnings)]
+// FIXME #![deny(warnings)]
 #![no_std]
 
 #[macro_use]
@@ -310,6 +310,9 @@ pub use self::v512::*;
 
 mod vSize;
 pub use self::vSize::*;
+
+mod vPtr;
+pub use self::vPtr::*;
 
 pub use self::api::cast::*;
 

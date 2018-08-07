@@ -33,3 +33,7 @@ pub trait Simd {
     /// The type: `[u32; Self::N]`.
     type LanesType;
 }
+
+/// This trait is implemented by all mask types
+#[doc(hidden)]
+pub trait Mask {}

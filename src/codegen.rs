@@ -53,3 +53,6 @@ crate use self::v512::*;
 
 crate mod vSize;
 crate use self::vSize::*;
+
+crate mod vPtr;
+crate use self::vPtr::*;
