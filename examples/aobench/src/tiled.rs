@@ -1,57 +1,68 @@
 //! SIMD serial aobench
 
 use ambient_occlusion;
-use geometry::{Ray, V3D};
-use intersection::{Intersect, Isect};
+use geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
+use intersection::{Intersect, IsectxN};
 use scene::Scene;
 
 #[inline(always)]
 fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
     let (w, h) = img.size();
+    assert_eq!(w % f32xN::lanes(), 0);
     let image = &mut img.fdata;
     let ns = nsubsamples;
     let inv_ns = 1. / (ns as f32);
+    let ptr = pf32xN::splat(image.as_mut_ptr());
     for y in 0..h {
-        for x in 0..w {
-            let offset = 3 * (y * w + x);
+        let yf = f32xN::splat(y as f32);
+        for x in (0..w).step_by(f32xN::lanes()) {
+            let xf = f32xN::incr(x as f32, 1.);
+            let offset = usizexN::splat(3 * (y * w + x));
+            let r_ptr = unsafe { ptr.add(offset + usizexN::incr(0, 3)) };
+            let g_ptr = unsafe { ptr.add(offset + usizexN::incr(1, 3)) };
+            let b_ptr = unsafe { ptr.add(offset + usizexN::incr(2, 3)) };
+
             for u in 0..ns {
                 for v in 0..ns {
                     let du = (u as f32) * inv_ns;
                     let dv = (v as f32) * inv_ns;
+                    let (hf, wf) = (h as f32, w as f32);
 
-                    let (x, y, h, w) =
-                        (x as f32, y as f32, h as f32, w as f32);
-
-                    let dir = V3D {
-                        x: (x + du - (w / 2.)) / (w / 2.) * w / h,
-                        y: -(y + dv - (h / 2.)) / (h / 2.),
-                        z: -1.,
+                    let dir = V3DxN {
+                        x: (xf + f32xN::splat(du - (wf / 2.)))
+                            / f32xN::splat((wf / 2.) * hf / wf),
+                        y: -(yf + f32xN::splat(dv - (hf / 2.)))
+                            / f32xN::splat(hf / 2.),
+                        z: f32xN::splat(-1.),
                     };
                     let dir = dir.normalized();
 
-                    let ray = Ray {
-                        origin: V3D::default(),
+                    let ray = RayxN {
+                        origin: V3DxN::new(),
                         dir,
                     };
 
-                    let mut isect = Isect::default();
+                    let mut isect = IsectxN::new();
                     for s in scene.spheres() {
                         isect = ray.intersect(s, isect);
                     }
                     isect = ray.intersect(scene.plane(), isect);
 
-                    let ret = if isect.hit {
-                        ambient_occlusion::vector(scene, &isect)
-                    } else {
-                        0.
-                    };
-                    let ret = ret * inv_ns * inv_ns;
+                    if isect.hit.any() {
+                        let ret =
+                            ambient_occlusion::vector_tiled(scene, &isect)
+                                * f32xN::splat(inv_ns * inv_ns);
 
-                    // Update image for AO for this ray
-                    // (already normalized)
-                    image[offset + 0] += ret;
-                    image[offset + 1] += ret;
-                    image[offset + 2] += ret;
+                        unsafe {
+                            let img_r = r_ptr.read(isect.hit, f32xN::splat(0.));
+                            let img_g = g_ptr.read(isect.hit, f32xN::splat(0.));
+                            let img_b = b_ptr.read(isect.hit, f32xN::splat(0.));
+
+                            r_ptr.write(isect.hit, img_r + ret);
+                            g_ptr.write(isect.hit, img_g + ret);
+                            b_ptr.write(isect.hit, img_b + ret);
+                        }
+                    }
                 }
             }
         }

@@ -30,57 +30,41 @@ struct Opt {
     output: Option<PathBuf>,
 }
 
+const ALGORITHMS: &[&'static str] = &[
+    "scalar", "scalar_par", "vector", "vector_par", "tiled", "tiled_par"
+];
+
 fn main() {
     let opt = Opt::from_args();
     let mut scene = aobench_lib::scene::Random::default();
     let mut img = Image::new(opt.width, opt.height);
 
-    let d = match opt.algo.as_str() {
-        "scalar" => {
-            let d =
-                time::Duration::span(|| scalar::ao(&mut scene, 2, &mut img));
-            let image_path = opt
-                .output
-                .unwrap_or_else(|| PathBuf::from("image_scalar.png"));
-            img.write_png(&image_path, false)
-                .expect("failed to write image");
-            d
+    let algorithm_name = opt.algo.as_str();
+
+    if let Some(algorithm) = ALGORITHMS.iter().find(|&&a| a == algorithm_name) {
+        let d = time::Duration::span(|| match *algorithm {
+            "scalar" => scalar::ao(&mut scene, 2, &mut img),
+            "scalar_par" => scalar_parallel::ao(&mut scene, 2, &mut img),
+            "vector" => vector::ao(&mut scene, 2, &mut img),
+            "vector_par" => vector_parallel::ao(&mut scene, 2, &mut img),
+            "tiled" => tiled::ao(&mut scene, 2, &mut img),
+            "tiled_par" => tiled_parallel::ao(&mut scene, 2, &mut img),
+            _ => unreachable!(),
+        });
+        let image_path =
+            opt.output.unwrap_or_else(|| PathBuf::from(format!("image_{}.png", algorithm)));
+        img.write_png(&image_path, false)
+            .expect("failed to write image");
+
+        println!("time: {} ms", d.num_milliseconds());
+    } else {
+        let mut error = format!(
+            "unknown algorithm: \"{}\"\nAvailable algorithms:",
+            algorithm_name
+        );
+        for a in ALGORITHMS {
+            error.push_str(&format!("\n- {}", a));
         }
-        "scalar_par" => {
-            let d = time::Duration::span(|| {
-                scalar_parallel::ao(&mut scene, 2, &mut img)
-            });
-            let image_path = opt
-                .output
-                .unwrap_or_else(|| PathBuf::from("image_scalar_par.png"));
-            img.write_png(&image_path, false)
-                .expect("failed to write image");
-            d
-        }
-        "vector" => {
-            let d =
-                time::Duration::span(|| vector::ao(&mut scene, 2, &mut img));
-            let image_path = opt
-                .output
-                .unwrap_or_else(|| PathBuf::from("image_vector.png"));
-            img.write_png(&image_path, false)
-                .expect("failed to write image");
-            d
-        }
-        "vector_par" => {
-            let d = time::Duration::span(|| {
-                vector_parallel::ao(&mut scene, 2, &mut img)
-            });
-            let image_path = opt
-                .output
-                .unwrap_or_else(|| PathBuf::from("image_vector_par.png"));
-            img.write_png(&image_path, false)
-                .expect("failed to write image");
-            d
-        }
-        v => {
-            panic!("unknown algorithm: {}", v);
-        }
-    };
-    println!("time: {} ms", d.num_milliseconds());
+        panic!(error);
+    }
 }

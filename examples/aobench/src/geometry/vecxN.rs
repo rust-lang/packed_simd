@@ -108,6 +108,30 @@ impl Mul<V3DxN> for f32xN {
     }
 }
 
+impl Mul<V3DxN> for [V3DxN; 3] {
+    type Output = V3DxN;
+    #[inline(always)]
+    fn mul(self, o: V3DxN) -> Self::Output {
+        V3DxN {
+            x: o.dot(V3DxN {
+                x: self[0].x,
+                y: self[1].x,
+                z: self[2].x,
+            }),
+            y: o.dot(V3DxN {
+                x: self[0].y,
+                y: self[1].y,
+                z: self[2].y,
+            }),
+            z: o.dot(V3DxN {
+                x: self[0].z,
+                y: self[1].z,
+                z: self[2].z,
+            }),
+        }
+    }
+}
+
 impl Sub<V3D> for V3DxN {
     type Output = Self;
     #[inline(always)]
@@ -192,29 +216,3 @@ impl Mul<V3DxN> for M3x3 {
         }
     }
 }
-
-/*
-
-impl Mul<f32> for V3D {
-    type Output = Self;
-    #[inline(always)]
-    fn mul(self, o: f32) -> Self::Output {
-        V3D {
-            x: self.x * o,
-            y: self.y * o,
-            z: self.z * o,
-        }
-    }
-}
-
-impl Mul<V3D> for f32 {
-    type Output = V3D;
-    #[inline(always)]
-    fn mul(self, o: V3D) -> Self::Output {
-        o * self
-    }
-}
-
-
-
-*/

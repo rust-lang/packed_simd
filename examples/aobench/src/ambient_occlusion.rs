@@ -18,7 +18,7 @@ pub fn scalar<S: Scene>(scene: &mut S, isect: &Isect) -> f32 {
     let nphi: usize = S::NAO_SAMPLES;
     for _i in 0..ntheta {
         for _j in 0..nphi {
-            let theta = scene.rand();
+            let theta = scene.rand().sqrt();
             let phi = 2. * PI * scene.rand();
 
             let n = V3D {
@@ -63,6 +63,7 @@ pub fn vector<S: Scene>(scene: &mut S, isect: &Isect) -> f32 {
     for _i in 0..ntheta {
         for _j in (0..nphi).step_by(f32xN::lanes()) {
             let (theta, phi) = scene.rand_f32xN();
+            let theta = theta.sqrt();
             let phi = f32xN::splat(2. * PI) * phi;
 
             let n = V3DxN {
@@ -84,6 +85,44 @@ pub fn vector<S: Scene>(scene: &mut S, isect: &Isect) -> f32 {
     }
 
     1. - occlusion.sum() / (ntheta * nphi) as f32
+}
+
+/// Vectorized ambient occlusion algorithm using ray packets
+#[inline(always)]
+pub fn vector_tiled<S: Scene>(scene: &mut S, isect: &IsectxN) -> f32xN {
+    let mut occlusion = f32xN::splat(0.0);
+
+    let basis = isect.n.ortho_basis();
+    let eps = f32xN::splat(0.0001);
+    let origin = isect.p + eps * isect.n;
+
+    let ntheta: usize = S::NAO_SAMPLES;
+    let nphi: usize = S::NAO_SAMPLES;
+    for _i in 0..ntheta {
+        for _j in 0..nphi {
+            let (theta, phi) = scene.rand_f32xN();
+            let theta = theta.sqrt();
+            let phi = (2. * PI) * phi;
+
+            let n = V3DxN {
+                x: phi.cos() * theta,
+                y: phi.sin() * theta,
+                z: (1.0 - theta * theta).sqrt(),
+            };
+            let dir = basis * n;
+            let ray = RayxN { origin, dir };
+
+            let mut occ_isect = IsectxN::new();
+            for s in scene.spheres() {
+                occ_isect = ray.intersect(s, occ_isect);
+            }
+            occ_isect = ray.intersect(scene.plane(), occ_isect);
+
+            occlusion += occ_isect.hit.sel(f32xN::splat(1.), f32xN::splat(0.));
+        }
+    }
+
+    f32xN::splat(1.) - occlusion / (ntheta * nphi) as f32
 }
 
 #[cfg(test)]

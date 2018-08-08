@@ -126,7 +126,7 @@ pub mod vector {
 
     thread_local!(
         static THREAD_RNG_KEY: Rc<UnsafeCell<RngT>> = {
-            Rc::new(UnsafeCell::new(RngT::from_seed(<u32xN as IncrV>::incr(1))))
+            Rc::new(UnsafeCell::new(RngT::from_seed(<u32xN as IncrV>::incr(0, 1))))
         }
     );
 
