@@ -91,6 +91,14 @@ there are correctness bugs open in the issue tracker.
 [**] it is currently not easily possible to run these platforms on CI.
 
 
+# Machine code verification
+
+The
+[`verify/`](https://github.com/rust-lang-nursery/packed_simd/tree/master/verify)
+crate tests disassembles the portable packed vector APIs at run-time and
+compares the generated machine code against the desired one to make sure that
+this crate remains efficient.
+
 # License
 
 This project is licensed under either of
