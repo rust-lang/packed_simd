@@ -93,7 +93,7 @@ macro_rules! impl_i {
 
 macro_rules! impl_u {
     ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident
-     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),* 
+     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                           | $($elem_ids),* | $(#[$doc])*);
@@ -151,7 +151,7 @@ macro_rules! impl_u {
 
 macro_rules! impl_f {
     ([$elem_ty:ident; $elem_n:expr]: $tuple_id:ident, $mask_ty:ident
-     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),* 
+     | $ielem_ty:ident | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
         impl_minimal_iuf!([$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
                           | $($elem_ids),* | $(#[$doc])*);
@@ -268,4 +268,3 @@ macro_rules! impl_mut_p {
         impl_ptr_write!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
     }
 }
-

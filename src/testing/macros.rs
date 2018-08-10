@@ -29,10 +29,14 @@ macro_rules! test_if {
 
 #[cfg(test)]
 macro_rules! ref_ {
-    ($anything:tt) => { & $anything };
+    ($anything:tt) => {
+        &$anything
+    };
 }
 
 #[cfg(test)]
 macro_rules! ref_mut_ {
-    ($anything:tt) => { &mut $anything };
+    ($anything:tt) => {
+        &mut $anything
+    };
 }

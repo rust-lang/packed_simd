@@ -1,7 +1,7 @@
 //! Implements portable horizontal vector min/max reductions.
 
 macro_rules! impl_reduction_min_max {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident 
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident
      | $ielem_ty:ident | $test_tt:tt) => {
         impl $id {
             /// Largest vector element value.
