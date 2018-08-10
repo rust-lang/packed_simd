@@ -38,6 +38,12 @@ macro_rules! impl_ops_vector_rotates {
             interpolate_idents! {
                 mod [$id _ops_vector_rotate] {
                     use super::*;
+                    // FIXME:
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/75
+                    #[cfg(not(any(
+                        target_arch = "s390x",
+                        target_arch = "sparc64",
+                    )))]
                     #[test]
                     fn rotate_ops() {
                         let z = $id::splat(0 as $elem_ty);
