@@ -32,10 +32,10 @@ macro_rules! impl_shuffle_bytes {
                             v
                         };
 
-                        assert_eq!(increasing.shuffle_bytes(increasing), increasing);
-                        assert_eq!(decreasing.shuffle_bytes(increasing), decreasing);
-                        assert_eq!(increasing.shuffle_bytes(decreasing), decreasing);
-                        assert_eq!(decreasing.shuffle_bytes(decreasing), increasing);
+                        assert_eq!(increasing.shuffle_bytes(increasing), increasing, "(i,i)=>i");
+                        assert_eq!(decreasing.shuffle_bytes(increasing), decreasing, "(d,i)=>d");
+                        assert_eq!(increasing.shuffle_bytes(decreasing), decreasing, "(i,d)=>d");
+                        assert_eq!(decreasing.shuffle_bytes(decreasing), increasing, "(d,d)=>i");
 
                         for i in 0..$id::lanes() {
                             assert_eq!(increasing.shuffle_bytes($id::splat(i as $elem_ty)),

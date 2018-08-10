@@ -246,8 +246,8 @@ extern crate arrayvec;
 
 #[allow(unused_imports)]
 use core::{
-    cmp, default, f32, f64, fmt, hash, hint, intrinsics, iter, marker, mem,
-    ops, ptr, slice,
+    /* arch (handled above), */ cmp, default, f32, f64, fmt, hash, hint,
+    intrinsics, iter, marker, mem, ops, ptr, slice,
 };
 
 #[macro_use]

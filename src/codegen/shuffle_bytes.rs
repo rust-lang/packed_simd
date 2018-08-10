@@ -26,32 +26,27 @@ macro_rules! impl_fallback {
 macro_rules! impl_shuffle_bytes {
     (u8x8) => {
         cfg_if! {
-            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"), target_feature = "ssse3"))] {
+            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
+                         target_feature = "ssse3"))] {
                 impl ShuffleBytes for u8x8 {
                     #[inline]
                     fn shuffle_bytes(self, indices: Self) -> Self {
                         #[cfg(target_arch = "x86")]
-                        use arch::x86::_mm_shuffle_epi8;
+                        use arch::x86::_mm_shuffle_pi8;
                         #[cfg(target_arch = "x86_64")]
-                        use arch::x86_64::_mm_shuffle_epi8;
-
-                        union U {
-                            j: u8x16,
-                            s: (u8x8, u8x8),
-                        }
+                        use arch::x86_64::_mm_shuffle_pi8;
 
                         unsafe {
-                            let j = U { s: (self, mem::zeroed()) }.j;
-                            let i = U { s: (indices, mem::zeroed()) }.j;
-
-                            let r: u8x16 = mem::transmute(_mm_shuffle_epi8(mem::transmute(j), mem::transmute(i)));
-                            U { j: r }.s.0
+                            mem::transmute(_mm_shuffle_pi8(
+                                mem::transmute(self.0), mem::transmute(indices.0))
+                            )
                         }
                     }
                 }
             } else if #[cfg(all(any(
                     all(target_aarch = "aarch64", target_feature = "neon"),
-                    all(target_aarch = "arm", target_feature = "v7", target_feature = "neon")),
+                    all(target_aarch = "arm", target_feature = "v7",
+                        target_feature = "neon")),
                 feature = "coresimd")
             )] {
                 impl ShuffleBytes for u8x8 {
@@ -67,7 +62,8 @@ macro_rules! impl_shuffle_bytes {
                         // run on CPUs that have it enabled.
                         unsafe {
                             Simd(mem::transmute(
-                                vtbl1_u8(mem::transmute(self.0), mem::transmute(indices.0))
+                                vtbl1_u8(mem::transmute(self.0),
+                                         mem::transmute(indices.0))
                             ))
                         }
                     }
@@ -79,7 +75,8 @@ macro_rules! impl_shuffle_bytes {
     };
     (u8x16) => {
         cfg_if! {
-            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"), target_feature = "ssse3"))] {
+            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
+                         target_feature = "ssse3"))] {
                 impl ShuffleBytes for u8x16 {
                     #[inline]
                     fn shuffle_bytes(self, indices: Self) -> Self {
@@ -92,12 +89,14 @@ macro_rules! impl_shuffle_bytes {
                         // run on CPUs that have it enabled.
                         unsafe {
                             Simd(mem::transmute(
-                                _mm_shuffle_epi8(mem::transmute(self.0), mem::transmute(indices))
+                                _mm_shuffle_epi8(mem::transmute(self.0),
+                                                 mem::transmute(indices))
                             ))
                         }
                     }
                 }
-            } else if #[cfg(all(target_aarch = "aarch64", target_feature = "neon", feature = "coresimd"))] {
+            } else if #[cfg(all(target_aarch = "aarch64", target_feature = "neon",
+                                feature = "coresimd"))] {
                 impl ShuffleBytes for u8x16 {
                     #[inline]
                     fn shuffle_bytes(self, indices: Self) -> Self {
@@ -108,12 +107,14 @@ macro_rules! impl_shuffle_bytes {
                         // run on CPUs that have it enabled.
                         unsafe {
                             Simd(mem::transmute(
-                                vqtbl1q_u8(mem::transmute(self.0), mem::transmute(indices.0))
+                                vqtbl1q_u8(mem::transmute(self.0),
+                                           mem::transmute(indices.0))
                             ))
                         }
                     }
                 }
-            } else if #[cfg(all(target_aarch = "arm", target_feature = "v7", target_feature = "neon", feature = "coresimd"))] {
+            } else if #[cfg(all(target_aarch = "arm", target_feature = "v7",
+                                target_feature = "neon", feature = "coresimd"))] {
                 impl ShuffleBytes for u8x16 {
                     #[inline]
                     fn shuffle_bytes(self, indices: Self) -> Self {
@@ -149,7 +150,8 @@ macro_rules! impl_shuffle_bytes {
             #[inline]
             fn shuffle_bytes(self, indices: Self) -> Self {
                 let indices: u8x8 = (indices * 2).cast();
-                let indices: u8x16 = shuffle!(indices, [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7]);
+                let indices: u8x16 = shuffle!(indices, [0, 0, 1, 1, 2, 2, 3, 3,
+                                                        4, 4, 5, 5, 6, 6, 7, 7]);
                 let v = u8x16::new(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
                 let indices = indices + v;
                 unsafe {
@@ -160,32 +162,84 @@ macro_rules! impl_shuffle_bytes {
         }
     };
     (u32x4) => {
-        impl ShuffleBytes for u32x4 {
-            #[inline]
-            fn shuffle_bytes(self, indices: Self) -> Self {
-                let indices: u8x4 = (indices * 4).cast();
-                let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]);
-                let v = u8x16::new(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3);
-                let indices = indices + v;
-                unsafe {
-                    let s: u8x16 = mem::transmute(self);
-                    mem::transmute(s.shuffle_bytes(indices))
+        cfg_if! {
+            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
+                         target_feature = "avx"))] {
+                impl ShuffleBytes for u32x4 {
+                    #[inline]
+                    fn shuffle_bytes(self, indices: Self) -> Self {
+                        #[cfg(target_arch = "x86")]
+                        use arch::x86::{_mm_permutevar_ps};
+                        #[cfg(target_arch = "x86_64")]
+                        use arch::x86_64::{_mm_permutevar_ps};
+
+                        unsafe {
+                            mem::transmute(_mm_permutevar_ps(
+                                mem::transmute(self.0), mem::transmute(indices.0))
+                            )
+                        }
+                    }
+                }
+            } else {
+                impl ShuffleBytes for u32x4 {
+                    #[inline]
+                    fn shuffle_bytes(self, indices: Self) -> Self {
+                        let indices: u8x4 = (indices * 4).cast();
+                        let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 1, 1, 1, 1,
+                                                                2, 2, 2, 2, 3, 3, 3, 3]);
+                        let v = u8x16::new(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3);
+                        let indices = indices + v;
+                        unsafe {
+                            let s: u8x16 = mem::transmute(self);
+                            mem::transmute(s.shuffle_bytes(indices))
+                        }
+                    }
                 }
             }
         }
     };
     (u64x2) => {
-        impl ShuffleBytes for u64x2 {
-            #[inline]
-            fn shuffle_bytes(self, indices: Self) -> Self {
-                let indices: u8x2 = (indices * 8).cast();
-                let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]);
-                let v = u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7);
-                let indices = indices + v;
-                unsafe {
-                    let s: u8x16 = mem::transmute(self);
-                    mem::transmute(s.shuffle_bytes(indices))
+        cfg_if! {
+            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
+                         target_feature = "avx"))] {
+                impl ShuffleBytes for u64x2 {
+                    #[inline]
+                    fn shuffle_bytes(self, indices: Self) -> Self {
+                        #[cfg(target_arch = "x86")]
+                        use arch::x86::{_mm_permutevar_pd};
+                        #[cfg(target_arch = "x86_64")]
+                        use arch::x86_64::{_mm_permutevar_pd};
+
+                        unsafe {
+                            mem::transmute(_mm_permutevar_pd(
+                                mem::transmute(self), mem::transmute(indices))
+                            )
+                        }
+                    }
                 }
+            } else {
+                impl ShuffleBytes for u64x2 {
+                    #[inline]
+                    fn shuffle_bytes(self, indices: Self) -> Self {
+                        let indices: u8x2 = (indices * 8).cast();
+                        let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 0, 0, 0, 0,
+                                                                1, 1, 1, 1, 1, 1, 1, 1]);
+                        let v = u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7);
+                        let indices = indices + v;
+                        unsafe {
+                            let s: u8x16 = mem::transmute(self);
+                            mem::transmute(s.shuffle_bytes(indices))
+                        }
+                    }
+                }
+            }
+        }
+    };
+    (u128x1) => {
+        impl ShuffleBytes for u128x1 {
+            #[inline]
+            fn shuffle_bytes(self, _indices: Self) -> Self {
+                self
             }
         }
     };
