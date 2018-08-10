@@ -571,6 +571,114 @@ macro_rules! impl_minimal_p {
             }
         }
 
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _slice_from_slice] {
+                    use super::*;
+                    use iter::Iterator;
+
+                    #[test]
+                    fn from_slice_unaligned() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+
+                        let mut unaligned = [non_null; $id::<i32>::lanes() + 1];
+                        unaligned[0] = null;
+                        let vec = $id::<i32>::from_slice_unaligned(&unaligned[1..]);
+                        for (index, &b) in unaligned.iter().enumerate() {
+                            if index == 0 {
+                                assert_eq!(b, null);
+                            } else {
+                                assert_eq!(b, non_null);
+                                assert_eq!(b, vec.extract(index - 1));
+                            }
+                        }
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn from_slice_unaligned_fail() {
+                        let (_null, non_null) = ptr_vals!($id<i32>);
+                        let unaligned = [non_null; $id::<i32>::lanes() + 1];
+                        // the slice is not large enough => panic
+                        let _vec = $id::<i32>::from_slice_unaligned(&unaligned[2..]); 
+                    }
+
+                    union A {
+                        data: [<$id<i32> as sealed::Simd>::Element; 2 * $id::<i32>::lanes()],
+                        _vec: $id<i32>,
+                    }
+
+                    #[test]
+                    fn from_slice_aligned() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+                        let mut aligned = A {
+                            data: [null; 2 * $id::<i32>::lanes()],
+                        };
+                        for i in $id::<i32>::lanes()..(2 * $id::<i32>::lanes()) {
+                            unsafe {
+                                aligned.data[[i]] = non_null;
+                            }
+                        }
+
+                        let vec =
+                            unsafe { $id::<i32>::from_slice_aligned(&aligned.data[$id::<i32>::lanes()..]) };
+                        for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
+                            if index < $id::<i32>::lanes() {
+                                assert_eq!(b, null);
+                            } else {
+                                assert_eq!(b, non_null);
+                                assert_eq!(b, vec.extract(index - $id::<i32>::lanes()));
+                            }
+                        }
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn from_slice_aligned_fail_lanes() {
+                        let (_null, non_null) = ptr_vals!($id<i32>);
+                        let aligned = A {
+                            data: [non_null; 2 * $id::<i32>::lanes()],
+                        };
+                        // the slice is not large enough => panic
+                        let _vec = unsafe {
+                            $id::<i32>::from_slice_aligned(&aligned.data[2 * $id::<i32>::lanes()..])
+                        };
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn from_slice_aligned_fail_align() {
+                        unsafe {
+                            let (null, _non_null) = ptr_vals!($id<i32>);
+                            let aligned = A {
+                                data: [null; 2 * $id::<i32>::lanes()],
+                            };
+
+                            // get a pointer to the front of data
+                            let ptr = aligned.data.as_ptr();
+                            // offset pointer by one element
+                            let ptr = ptr.wrapping_add(1);
+
+                            if ptr.align_offset(mem::align_of::<$id<i32>>()) == 0 {
+                                // the pointer is properly aligned, so from_slice_aligned
+                                // won't fail here (e.g. this can happen for i128x1). So
+                                // we panic to make the "should_fail" test pass:
+                                panic!("ok");
+                            }
+
+                            // create a slice - this is safe, because the elements
+                            // of the slice exist, are properly initialized, and properly aligned:
+                            let s = slice::from_raw_parts(ptr, $id::<i32>::lanes());
+                            // this should always panic because the slice alignment does not match
+                            // the alignment requirements for the vector type:
+                            let _vec = $id::<i32>::from_slice_aligned(s);
+                        }
+                    }
+                }
+            }
+        }
+
         impl<T> $id<T> {
             /// Writes the values of the vector to the `slice`.
             ///
@@ -641,6 +749,109 @@ macro_rules! impl_minimal_p {
             }
         }
 
+        test_if!{
+            $test_tt:
+            interpolate_idents! {
+                mod [$id _slice_write_to_slice] {
+                    use super::*;
+                    use iter::Iterator;
+
+                    #[test]
+                    fn write_to_slice_unaligned() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+                        let mut unaligned = [null; $id::<i32>::lanes() + 1];
+                        let vec = $id::<i32>::splat(non_null);
+                        vec.write_to_slice_unaligned(&mut unaligned[1..]);
+                        for (index, &b) in unaligned.iter().enumerate() {
+                            if index == 0 {
+                                assert_eq!(b, null);
+                            } else {
+                                assert_eq!(b, non_null);
+                                assert_eq!(b, vec.extract(index - 1));
+                            }
+                        }
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn write_to_slice_unaligned_fail() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+                        let mut unaligned = [null; $id::<i32>::lanes() + 1];
+                        let vec = $id::<i32>::splat(non_null);
+                        // the slice is not large enough => panic
+                        vec.write_to_slice_unaligned(&mut unaligned[2..]);
+                    }
+
+                    union A {
+                        data: [<$id<i32> as sealed::Simd>::Element; 2 * $id::<i32>::lanes()],
+                        _vec: $id<i32>,
+                    }
+
+                    #[test]
+                    fn write_to_slice_aligned() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+                        let mut aligned = A {
+                            data: [null; 2 * $id::<i32>::lanes()],
+                        };
+                        let vec = $id::<i32>::splat(non_null);
+                        unsafe { vec.write_to_slice_aligned(&mut aligned.data[$id::<i32>::lanes()..]) };
+                        for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
+                            if index < $id::<i32>::lanes() {
+                                assert_eq!(b, null);
+                            } else {
+                                assert_eq!(b, non_null);
+                                assert_eq!(b, vec.extract(index - $id::<i32>::lanes()));
+                            }
+                        }
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn write_to_slice_aligned_fail_lanes() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+                        let mut aligned = A {
+                            data: [null; 2 * $id::<i32>::lanes()],
+                        };
+                        let vec = $id::<i32>::splat(non_null);
+                        // the slice is not large enough => panic
+                        unsafe {
+                            vec.write_to_slice_aligned(&mut aligned.data[2 * $id::<i32>::lanes()..])
+                        };
+                    }
+
+                    #[test]
+                    #[should_panic]
+                    fn write_to_slice_aligned_fail_align() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+                        unsafe {
+                            let mut aligned = A {
+                                data: [null; 2 * $id::<i32>::lanes()],
+                            };
+
+                            // get a pointer to the front of data
+                            let ptr = aligned.data.as_mut_ptr();
+                            // offset pointer by one element
+                            let ptr = ptr.wrapping_add(1);
+
+                            if ptr.align_offset(mem::align_of::<$id<i32>>()) == 0 {
+                                // the pointer is properly aligned, so write_to_slice_aligned
+                                // won't fail here (e.g. this can happen for i128x1). So
+                                // we panic to make the "should_fail" test pass:
+                                panic!("ok");
+                            }
+
+                            // create a slice - this is safe, because the elements
+                            // of the slice exist, are properly initialized, and properly aligned:
+                            let s = slice::from_raw_parts_mut(ptr, $id::<i32>::lanes());
+                            // this should always panic because the slice alignment does not match
+                            // the alignment requirements for the vector type:
+                            let vec = $id::<i32>::splat(non_null);
+                            vec.write_to_slice_aligned(s);
+                        }
+                    }
+                }
+            }
+        }
 
         impl<T> ::hash::Hash for $id<T> {
             #[inline]
@@ -936,7 +1147,5 @@ macro_rules! impl_minimal_p {
                 self.wrapping_offset(-1 * x)
             }
         }
-
-
     };
 }

@@ -117,3 +117,19 @@ pub fn test_cmp<T>(
         }
     }
 }
+
+// Returns a tuple containing two distinct pointer values of the same type as
+// the element type of the Simd vector `$id`.
+macro_rules! ptr_vals {
+    ($id:ty) => {
+        // expands to an expression
+        #[allow(unused_unsafe)]
+        unsafe {
+            // all bits cleared
+            let mut clear: <$id as sealed::Simd>::Element = mem::zeroed();
+            // all bits set
+            let mut set: <$id as sealed::Simd>::Element = mem::transmute(-1_isize);
+            (clear, set)
+        }
+    }
+}
