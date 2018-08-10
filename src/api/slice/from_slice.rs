@@ -15,7 +15,7 @@ macro_rules! impl_slice_from_slice {
                     assert!(slice.len() >= $elem_count);
                     let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
                     assert!(
-                        target_ptr.align_offset(::mem::align_of::<Self>())
+                        target_ptr.align_offset(mem::align_of::<Self>())
                             == 0
                     );
                     Self::from_slice_aligned_unchecked(slice)
