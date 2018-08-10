@@ -1,6 +1,6 @@
 //! Vectors with pointer-sized elements
 
-use crate::codegen::pointer_sized_int::{isize_, usize_ };
+use crate::codegen::pointer_sized_int::{isize_, usize_};
 use crate::*;
 
 impl_i!([isize; 2]: isizex2, msizex2 | isize_ | test_v128 |

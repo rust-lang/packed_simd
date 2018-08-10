@@ -1,7 +1,7 @@
 //! Minimal API of mask vectors.
 
 macro_rules! impl_minimal_mask {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident 
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident
     | $test_tt:tt | $($elem_name:ident),+ | $(#[$doc:meta])*) => {
         $(#[$doc])*
         pub type $id = Simd<[$elem_ty; $elem_count]>;

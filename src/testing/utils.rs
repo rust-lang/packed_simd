@@ -128,8 +128,9 @@ macro_rules! ptr_vals {
             // all bits cleared
             let mut clear: <$id as sealed::Simd>::Element = mem::zeroed();
             // all bits set
-            let mut set: <$id as sealed::Simd>::Element = mem::transmute(-1_isize);
+            let mut set: <$id as sealed::Simd>::Element =
+                mem::transmute(-1_isize);
             (clear, set)
         }
-    }
+    };
 }

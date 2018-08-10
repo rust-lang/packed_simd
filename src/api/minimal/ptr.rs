@@ -489,7 +489,7 @@ macro_rules! impl_minimal_p {
                         // FIXME: there is no impl of From<$id<T>> for [$elem_ty; N]
                         // let a0 = From::from(vec);
                         // assert_eq!(a0, array);
-                        #[allow(unused_assignments)] 
+                        #[allow(unused_assignments)]
                         let mut a1 = array;
                         a1 = vec.into();
                         assert_eq!(a1, array);
@@ -601,7 +601,7 @@ macro_rules! impl_minimal_p {
                         let (_null, non_null) = ptr_vals!($id<i32>);
                         let unaligned = [non_null; $id::<i32>::lanes() + 1];
                         // the slice is not large enough => panic
-                        let _vec = $id::<i32>::from_slice_unaligned(&unaligned[2..]); 
+                        let _vec = $id::<i32>::from_slice_unaligned(&unaligned[2..]);
                     }
 
                     union A {

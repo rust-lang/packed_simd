@@ -36,7 +36,7 @@ macro_rules! impl_fmt_debug_tests {
                 }
             }
         }
-    }
+    };
 }
 
 macro_rules! impl_fmt_debug {

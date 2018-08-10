@@ -87,9 +87,9 @@ macro_rules! impl_ptr_read {
 macro_rules! impl_ptr_write {
     ([$elem_ty:ty; $elem_count:expr]: $id:ident, $mask_ty:ident | $test_tt:tt) => {
         impl<T> $id<T>
-            where [T; $elem_count]: sealed::SimdArray,
+        where
+            [T; $elem_count]: sealed::SimdArray,
         {
-
             /// Writes selected vector elements to memory.
             ///
             /// Writes the lanes of `values` for which the mask is `true` to
@@ -106,12 +106,15 @@ macro_rules! impl_ptr_write {
             /// This method is unsafe because it dereferences raw pointers. The
             /// pointers must be aligned to `mem::align_of::<T>()`.
             #[inline]
-            pub unsafe fn write<M>(self, mask: Simd<[M; $elem_count]>,
-                           value: Simd<[T; $elem_count]>)
-                where M: sealed::Mask,
-                      [M; $elem_count]: sealed::SimdArray,
+            pub unsafe fn write<M>(
+                self,
+                mask: Simd<[M; $elem_count]>,
+                value: Simd<[T; $elem_count]>,
+            ) where
+                M: sealed::Mask,
+                [M; $elem_count]: sealed::SimdArray,
             {
-                use crate::codegen::llvm::{simd_scatter};
+                use crate::codegen::llvm::simd_scatter;
                 simd_scatter(value.0, self.0, mask.0)
             }
         }
@@ -172,5 +175,5 @@ macro_rules! impl_ptr_write {
                 }
             }
         }
-    }
+    };
 }
