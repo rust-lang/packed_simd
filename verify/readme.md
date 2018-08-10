@@ -1,5 +1,22 @@
 # Machine code verification
 
+## Quick start
+
+To run the verification tests run:
+
+```
+cargo test --release
+```
+
+on this crate, eventually passing the required target features via `RUSTFLAGS`.
+For example, `RUSTFLAGS="-C target-feature=+avx2"`.
+
+This crate only contains tests, and the tests only run in `--release` mode.
+Therefore, building this crate with anything different from `cargo test
+--release` does not make much sense.
+
+## How it works
+
 This crates verifies the machine code generated for some of the portable packed
 vector APIs by disassembling the API at run-time and comparing the machine code
 generated against the desired one for a particular target and target features.
