@@ -126,51 +126,63 @@ macro_rules! impl_ptr_write {
                     use super::*;
                     #[test]
                     fn write() {
-                        let mut v = [0_i32; $elem_count];
+                        // fourty_two = [42, 42, 42, ...]
+                        let fourty_two = Simd::<[i32; $elem_count]>::splat(42_i32);
+
+                        // This test will write to this array
+                        let mut arr = [0_i32; $elem_count];
                         for i in 0..$elem_count {
-                            v[[i]] = i as i32;
+                            arr[[i]] = i as i32;
                         }
+                        // arr = [0, 1, 2, ...]
 
                         let mut ptr = $id::<i32>::null();
-
                         for i in 0..$elem_count {
                             ptr = ptr.replace(i, unsafe {
-                                ::mem::transmute(&v[[i]] as *const i32)
+                                ::mem::transmute(arr.as_ptr().add(i))
                             });
                         }
+                        // ptr = [&arr[0], &arr[1], ...]
 
-                        // all mask elements are true:
-                        let mask = $mask_ty::splat(true);
-                        let def = Simd::<[i32; $elem_count]>::splat(42_i32);
-                        let backup = v;
-                        unsafe { ptr.write(mask, def) };
-                        assert_eq!(v, [42_i32; $elem_count]);
-
-                        v = backup;
-
-                        let mut mask = mask;
-                        for i in 0..$elem_count {
-                            if i % 2 != 0 {
-                                mask = mask.replace(i, false);
-                            }
+                        // write `fourty_two` to all elements of `v`
+                        {
+                            let backup = arr;
+                            unsafe { ptr.write($mask_ty::splat(true), fourty_two) };
+                            assert_eq!(arr, [42_i32; $elem_count]);
+                            arr = backup;  // arr = [0, 1, 2, ...]
                         }
 
-                        // even mask elements are true, odd ones are false:
-                        let mut e = v;
-                        for i in 0..$elem_count {
-                            if i % 2 == 0 {
-                                e[[i]] = 42;
+                        // write 42 to even elements of arr:
+                        {
+                            // set odd elements of the mask to false
+                            let mut mask = $mask_ty::splat(true);
+                            for i in 0..$elem_count {
+                                if i % 2 != 0 {
+                                    mask = mask.replace(i, false);
+                                }
                             }
+                            // mask = [true, false, true, false, ...]
+
+                            // expected result r = [42, 1, 42, 3, 42, 5, ...]
+                            let mut r = arr;
+                            for i in 0..$elem_count {
+                                if i % 2 == 0 {
+                                    r[[i]] = 42;
+                                }
+                            }
+
+                            let backup = arr;
+                            unsafe { ptr.write(mask, fourty_two) };
+                            assert_eq!(arr, r);
+                            arr = backup;  // arr = [0, 1, 2, 3, ...]
                         }
-                        unsafe { ptr.write(mask, def) };
-                        assert_eq!(v, e);
-                        v = backup;
 
-
-                        // all mask elements are false:
-                        let mask = $mask_ty::splat(false);
-                        unsafe { ptr.write(mask, def) };
-                        assert_eq!(v, backup);
+                        // write 42 to no elements of arr
+                        {
+                            let backup = arr;
+                            unsafe { ptr.write($mask_ty::splat(false), fourty_two) };
+                            assert_eq!(arr, backup);
+                        }
                     }
                 }
             }
