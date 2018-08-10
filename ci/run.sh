@@ -27,6 +27,10 @@ if [[ ${TARGET} == "x86_64-apple-ios" ]] || [[ ${TARGET} == "i386-apple-ios" ]];
     export CARGO_TARGET_I386_APPLE_IOS_RUNNER=$HOME/runtest
 fi
 
+# The source directory is read-only. Need to copy internal crates to the target
+# directory for their Cargo.lock to be properly written.
+mkdir target || true
+
 rustc --version
 cargo --version
 echo "TARGET=${TARGET}"
@@ -61,10 +65,11 @@ cargo_test_impl() {
 cargo_test_impl
 cargo_test_impl --release --features=into_bits,coresimd
 
-# Examples - the source directory is read-only.
-# Need to copy them to the target directory for the Cargo.lock to be
-# properly written.
-mkdir target || true
+# Verify code generation
+if [[ "${NOVERIFY}" != "1" ]]; then
+    cp -r verify target/verify
+    cargo_test "--release --manifest-path=target/verify/Cargo.toml"
+fi
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/55
 # All examples fail to build for `armv7-apple-ios`.
