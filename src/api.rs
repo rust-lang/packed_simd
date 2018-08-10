@@ -49,7 +49,7 @@ macro_rules! impl_i {
         );
         impl_ops_vector_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_scalar_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_ops_scalar_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_ops_vector_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_neg!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_int_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_reduction_integer_arithmetic!(
@@ -103,7 +103,7 @@ macro_rules! impl_u {
         );
         impl_ops_vector_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_scalar_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_ops_scalar_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_ops_vector_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_int_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_reduction_integer_arithmetic!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt
