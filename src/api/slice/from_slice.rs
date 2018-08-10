@@ -86,6 +86,7 @@ macro_rules! impl_slice_from_slice {
                             if index == 0 {
                                 assert_eq!(b, 0 as $elem_ty);
                             } else {
+                                assert_eq!(b, 42 as $elem_ty);
                                 assert_eq!(b, vec.extract(index - 1));
                             }
                         }
@@ -96,6 +97,7 @@ macro_rules! impl_slice_from_slice {
                     fn from_slice_unaligned_fail() {
                         let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
                         unaligned[0] = 0 as $elem_ty;
+                        // the slice is not large enough => panic
                         let _vec = $id::from_slice_unaligned(&unaligned[2..]);
                     }
 
@@ -121,6 +123,7 @@ macro_rules! impl_slice_from_slice {
                             if index < $id::lanes() {
                                 assert_eq!(b, 0 as $elem_ty);
                             } else {
+                                assert_eq!(b, 42 as $elem_ty);
                                 assert_eq!(b, vec.extract(index - $id::lanes()));
                             }
                         }

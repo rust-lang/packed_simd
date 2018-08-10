@@ -89,6 +89,7 @@ macro_rules! impl_slice_write_to_slice {
                             if index == 0 {
                                 assert_eq!(b, 0 as $elem_ty);
                             } else {
+                                assert_eq!(b, 42 as $elem_ty);
                                 assert_eq!(b, vec.extract(index - 1));
                             }
                         }
@@ -118,6 +119,7 @@ macro_rules! impl_slice_write_to_slice {
                             if index < $id::lanes() {
                                 assert_eq!(b, 0 as $elem_ty);
                             } else {
+                                assert_eq!(b, 42 as $elem_ty);
                                 assert_eq!(b, vec.extract(index - $id::lanes()));
                             }
                         }

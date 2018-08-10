@@ -249,11 +249,6 @@ macro_rules! impl_const_p {
      $usize_ty:ident, $isize_ty:ident
      | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
-        #[cfg(test)]
-        macro_rules! ref_ {
-            ($anything:tt) => { & $anything };
-        }
-
         impl_minimal_p!([$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty |
                         ref_ | $test_tt | $($elem_ids),*
                         | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*);
@@ -266,10 +261,6 @@ macro_rules! impl_mut_p {
      $usize_ty:ident, $isize_ty:ident
      | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
-        #[cfg(test)]
-        macro_rules! ref_mut_ {
-            ($anything:tt) => { &mut $anything };
-        }
         impl_minimal_p!([$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty |
                         ref_mut_ | $test_tt | $($elem_ids),*
                         | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*);
