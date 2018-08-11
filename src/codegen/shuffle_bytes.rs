@@ -209,7 +209,10 @@ macro_rules! impl_shuffle_bytes {
                         use arch::x86::{_mm_permutevar_pd};
                         #[cfg(target_arch = "x86_64")]
                         use arch::x86_64::{_mm_permutevar_pd};
-
+                        // _mm_permutevar_pd uses the _second_ bit of each
+                        // element to perform the selection, that is: 0b00 => 0,
+                        // 0b10 => 1:
+                        let indices = indices << 1;
                         unsafe {
                             mem::transmute(_mm_permutevar_pd(
                                 mem::transmute(self), mem::transmute(indices))
