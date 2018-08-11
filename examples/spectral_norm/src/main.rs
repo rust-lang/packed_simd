@@ -1,9 +1,11 @@
+#![deny(warnings)]
+
 extern crate spectral_norm_lib;
 use spectral_norm_lib::*;
 
 fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let answer = spectral_norm(n, alg);
-    write!(o, "{:.9}\n", answer).unwrap();
+    writeln!(o, "{:.9}", answer).unwrap();
 }
 
 fn main() {

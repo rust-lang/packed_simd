@@ -2,7 +2,10 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
 #![deny(warnings)]
-
+#![cfg_attr(
+    feature = "cargo-clippy",
+    allow(similar_names, excessive_precision)
+)]
 extern crate packed_simd;
 
 pub mod scalar;

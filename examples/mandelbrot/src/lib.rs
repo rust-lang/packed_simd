@@ -2,6 +2,16 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
 
+#![deny(warnings)]
+#![cfg_attr(
+    feature = "cargo-clippy",
+    allow(
+        cast_precision_loss,
+        cast_sign_loss,
+        cast_possible_truncation
+    )
+)]
+
 extern crate packed_simd;
 use std::io;
 
@@ -37,7 +47,7 @@ impl Mandelbrot {
                 vec![0_u8; width / 8]
             }
         };
-        Mandelbrot {
+        Self {
             width,
             height,
             left: -1.5,

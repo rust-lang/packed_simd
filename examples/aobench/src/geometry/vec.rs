@@ -9,19 +9,21 @@ pub struct V3D {
     pub z: f32,
 }
 
-pub type M3x3 = [V3D; 3];
-
-impl V3D {
+impl Default for V3D {
     #[inline(always)]
     #[must_use]
-    pub fn new() -> Self {
+    fn default() -> Self {
         Self {
             x: 0.,
             y: 0.,
             z: 0.,
         }
     }
+}
 
+pub type M3x3 = [V3D; 3];
+
+impl V3D {
     #[inline(always)]
     #[must_use]
     pub fn cross(self, o: Self) -> Self {
@@ -40,7 +42,7 @@ impl V3D {
     #[must_use]
     pub fn ortho_basis(self) -> M3x3 {
         let n = self;
-        let mut basis = [V3D::new(), V3D::new(), n];
+        let mut basis = [Self::default(), Self::default(), n];
 
         if n.x < 0.6 && n.x > -0.6 {
             basis[1].x = 1.0;
@@ -62,7 +64,7 @@ impl Add for V3D {
     type Output = Self;
     #[inline(always)]
     fn add(self, o: Self) -> Self::Output {
-        V3D {
+        Self {
             x: self.x + o.x,
             y: self.y + o.y,
             z: self.z + o.z,
@@ -74,7 +76,7 @@ impl Sub for V3D {
     type Output = Self;
     #[inline(always)]
     fn sub(self, o: Self) -> Self::Output {
-        V3D {
+        Self {
             x: self.x - o.x,
             y: self.y - o.y,
             z: self.z - o.z,
@@ -85,7 +87,7 @@ impl Sub for V3D {
 impl Mul for V3D {
     type Output = Self;
     fn mul(self, o: Self) -> Self::Output {
-        V3D {
+        Self {
             x: self.x * o.x,
             y: self.y * o.y,
             z: self.z * o.z,
@@ -97,7 +99,7 @@ impl Mul<f32> for V3D {
     type Output = Self;
     #[inline(always)]
     fn mul(self, o: f32) -> Self::Output {
-        V3D {
+        Self {
             x: self.x * o,
             y: self.y * o,
             z: self.z * o,
@@ -146,7 +148,7 @@ pub trait Dot<O> {
 impl Dot<V3D> for V3D {
     type Output = f32;
     #[inline(always)]
-    fn dot(self, o: V3D) -> Self::Output {
+    fn dot(self, o: Self) -> Self::Output {
         self.x * o.x + self.y * o.y + self.z * o.z
     }
 }

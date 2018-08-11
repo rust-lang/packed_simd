@@ -11,16 +11,19 @@ pub struct V3DxN {
     pub z: f32xN,
 }
 
-impl V3DxN {
+impl Default for V3DxN {
     #[inline(always)]
     #[must_use]
-    pub fn new() -> Self {
+    fn default() -> Self {
         Self {
             x: f32xN::splat(0.),
             y: f32xN::splat(0.),
             z: f32xN::splat(0.),
         }
     }
+}
+
+impl V3DxN {
     #[inline(always)]
     #[must_use]
     pub fn normalized(self) -> Self {
@@ -37,9 +40,9 @@ impl V3DxN {
 
     #[must_use]
     #[inline(always)]
-    pub fn ortho_basis(self) -> [V3DxN; 3] {
+    pub fn ortho_basis(self) -> [Self; 3] {
         let n = self;
-        let mut basis = [V3DxN::new(), V3DxN::new(), n];
+        let mut basis = [Self::default(), Self::default(), n];
 
         let max = f32xN::splat(0.6);
         let min = f32xN::splat(-0.6);
@@ -73,7 +76,7 @@ impl Add for V3DxN {
     type Output = Self;
     #[inline(always)]
     fn add(self, o: Self) -> Self::Output {
-        V3DxN {
+        Self {
             x: self.x + o.x,
             y: self.y + o.y,
             z: self.z + o.z,
@@ -85,7 +88,7 @@ impl Mul for V3DxN {
     type Output = Self;
     #[inline(always)]
     fn mul(self, o: Self) -> Self::Output {
-        V3DxN {
+        Self {
             x: self.x * o.x,
             y: self.y * o.y,
             z: self.z * o.z,
@@ -109,7 +112,7 @@ impl Sub<V3D> for V3DxN {
     type Output = Self;
     #[inline(always)]
     fn sub(self, o: V3D) -> Self::Output {
-        V3DxN {
+        Self {
             x: self.x - f32xN::splat(o.x),
             y: self.y - f32xN::splat(o.y),
             z: self.z - f32xN::splat(o.z),
@@ -120,7 +123,7 @@ impl Sub<V3D> for V3DxN {
 impl Dot<V3DxN> for V3DxN {
     type Output = f32xN;
     #[inline(always)]
-    fn dot(self, o: V3DxN) -> Self::Output {
+    fn dot(self, o: Self) -> Self::Output {
         self.x * o.x + self.y * o.y + self.z * o.z
     }
 }

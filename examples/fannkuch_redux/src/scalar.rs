@@ -38,22 +38,22 @@ struct Perm {
 }
 
 impl Perm {
-    fn new(n: u32) -> Perm {
+    fn new(n: u32) -> Self {
         let mut fact = [1; 16];
         for i in 1..n as usize + 1 {
             fact[i] = fact[i - 1] * i as u32;
         }
-        Perm {
+        Self {
             cnt: [0; 16],
-            fact: fact,
-            n: n,
+            fact,
+            n,
             permcount: 0,
             perm: P { p: [0; 16] },
         }
     }
 
     fn get(&mut self, mut idx: i32) -> P {
-        let mut pp = [0u8; 16];
+        let mut pp = [0_u8; 16];
         self.permcount = idx as u32;
         for (i, place) in self.perm.p.iter_mut().enumerate() {
             *place = i as i32 + 1;
@@ -71,11 +71,11 @@ impl Perm {
 
             let d = d as usize;
             for j in 0..i + 1 {
-                self.perm.p[j] = if j + d <= i {
+                self.perm.p[j] = i32::from(if j + d <= i {
                     pp[j + d]
                 } else {
                     pp[j + d - i - 1]
-                } as i32;
+                });
             }
         }
 
@@ -141,7 +141,7 @@ pub fn fannkuch_redux(n: usize) -> (i32, i32) {
 
     let mut checksum = 0;
     let mut maxflips = 0;
-    for fut in futures.into_iter() {
+    for fut in futures {
         let (cs, mf) = fut.join().unwrap();
         checksum += cs;
         maxflips = cmp::max(maxflips, mf);

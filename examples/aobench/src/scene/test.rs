@@ -12,9 +12,8 @@ pub struct Test {
     rand_step: Wrapping<usize>,
 }
 
-impl Scene for Test {
-    const NAO_SAMPLES: usize = 8;
-    fn new() -> Self {
+impl Default for Test {
+    fn default() -> Self {
         let plane = Plane {
             p: V3D {
                 x: 0.,
@@ -66,6 +65,10 @@ impl Scene for Test {
             rand_step,
         }
     }
+}
+
+impl Scene for Test {
+    const NAO_SAMPLES: usize = 8;
     fn rand(&mut self) -> f32 {
         let v = self.rands[self.rand_step.0];
         self.rand_step += Wrapping(1);

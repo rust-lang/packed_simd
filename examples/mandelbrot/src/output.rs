@@ -7,14 +7,13 @@ pub enum Format {
     PBM,
     PPM,
 }
-use self::Format::*;
 
 pub type FormatFn = fn(&mut [u8], usize, u32) -> ();
 
-/// Portable PixMap format
+/// Portable pixmap format
 pub mod ppm {
     use super::*;
-    const COLOURS: &'static [(f32, f32, f32)] = &[
+    const COLOURS: &[(f32, f32, f32)] = &[
         (0.0, 7.0, 100.0),
         (32.0, 107.0, 203.0),
         (237.0, 255.0, 255.0),
@@ -24,7 +23,7 @@ pub mod ppm {
     const SCALE: f32 = 12.0;
 
     pub fn write_header<O: io::Write>(o: &mut O, width: usize, height: usize) {
-        write!(o, "P6\n{} {} 255\n", width, height).unwrap();
+        writeln!(o, "P6\n{} {} 255", width, height).unwrap();
     }
 
     pub fn output(line: &mut [u8], index: usize, val: u32) {
@@ -58,20 +57,20 @@ pub mod ppm {
 pub mod pbm {
     use super::*;
     pub fn write_header<O: io::Write>(o: &mut O, width: usize, height: usize) {
-        write!(o, "P4\n{} {}\n", width, height).unwrap();
+        writeln!(o, "P4\n{} {}", width, height).unwrap();
     }
 
     pub fn output(out: &mut [u8], index: usize, val: u32) {
-        let byte_index = index / 8;
-        let bit_index = index % 8;
-        debug_assert_eq!(byte_index * 8 + bit_index, index);
-
         fn set_bit(byte: u8, index: usize) -> u8 {
             byte | (1 << index as u8)
         }
         fn clear_bit(byte: u8, index: usize) -> u8 {
             byte & !(1 << index as u8)
         }
+
+        let byte_index = index / 8;
+        let bit_index = index % 8;
+        debug_assert_eq!(byte_index * 8 + bit_index, index);
 
         let mut byte = out[byte_index];
         if val == LIMIT {
@@ -90,14 +89,14 @@ pub fn write_header<O: io::Write>(
     format: Format,
 ) {
     match format {
-        PPM => ppm::write_header(o, width, height),
-        PBM => pbm::write_header(o, width, height),
+        Format::PPM => ppm::write_header(o, width, height),
+        Format::PBM => pbm::write_header(o, width, height),
     }
 }
 
 pub fn get_format_fn(format: Format) -> FormatFn {
     match format {
-        PPM => ppm::output,
-        PBM => pbm::output,
+        Format::PPM => ppm::output,
+        Format::PBM => pbm::output,
     }
 }

@@ -8,7 +8,7 @@ pub fn mandelbrot(c_x: f64x4, c_y: f64x4, max_iter: u32) -> u32x4 {
     let mut y = c_y;
 
     let mut count = u64x4::splat(0);
-    let max_iter = u64x4::splat(max_iter as u64);
+    let max_iter = u64x4::splat(u64::from(max_iter));
 
     loop {
         let mask = count.ge(max_iter);
@@ -65,6 +65,6 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
                 out_fn(&mut m.line, j + k, ret.extract(k));
             }
         }
-        o.write(&m.line).unwrap();
+        o.write_all(&m.line).unwrap();
     }
 }

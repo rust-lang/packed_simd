@@ -1,6 +1,8 @@
 //! aobench: Ambient Occlusion Renderer benchmark.
 //!
-//! Based on: https://code.google.com/archive/p/aobench/
+//! Based on [aobench](https://code.google.com/archive/p/aobench/) by Syoyo
+//! Fujita.
+#![deny(warnings)]
 
 #[macro_use]
 extern crate structopt;
@@ -30,15 +32,16 @@ struct Opt {
 
 fn main() {
     let opt = Opt::from_args();
-    let mut scene = aobench_lib::scene::Random::new();
+    let mut scene = aobench_lib::scene::Random::default();
     let mut img = Image::new(opt.width, opt.height);
 
     let d = match opt.algo.as_str() {
         "scalar" => {
             let d =
                 time::Duration::span(|| scalar::ao(&mut scene, 2, &mut img));
-            let image_path =
-                opt.output.unwrap_or(PathBuf::from("image_scalar.png"));
+            let image_path = opt
+                .output
+                .unwrap_or_else(|| PathBuf::from("image_scalar.png"));
             img.write_png(&image_path, false)
                 .expect("failed to write image");
             d
@@ -47,8 +50,9 @@ fn main() {
             let d = time::Duration::span(|| {
                 scalar_parallel::ao(&mut scene, 2, &mut img)
             });
-            let image_path =
-                opt.output.unwrap_or(PathBuf::from("image_scalar_par.png"));
+            let image_path = opt
+                .output
+                .unwrap_or_else(|| PathBuf::from("image_scalar_par.png"));
             img.write_png(&image_path, false)
                 .expect("failed to write image");
             d
@@ -56,8 +60,9 @@ fn main() {
         "vector" => {
             let d =
                 time::Duration::span(|| vector::ao(&mut scene, 2, &mut img));
-            let image_path =
-                opt.output.unwrap_or(PathBuf::from("image_vector.png"));
+            let image_path = opt
+                .output
+                .unwrap_or_else(|| PathBuf::from("image_vector.png"));
             img.write_png(&image_path, false)
                 .expect("failed to write image");
             d
@@ -66,8 +71,9 @@ fn main() {
             let d = time::Duration::span(|| {
                 vector_parallel::ao(&mut scene, 2, &mut img)
             });
-            let image_path =
-                opt.output.unwrap_or(PathBuf::from("image_vector_par.png"));
+            let image_path = opt
+                .output
+                .unwrap_or_else(|| PathBuf::from("image_vector_par.png"));
             img.write_png(&image_path, false)
                 .expect("failed to write image");
             d

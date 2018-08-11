@@ -29,7 +29,7 @@ pub fn scalar<S: Scene>(scene: &mut S, isect: &Isect) -> f32 {
             let dir = basis * n;
             let ray = Ray { origin, dir };
 
-            let mut occ_isect = Isect::new();
+            let mut occ_isect = Isect::default();
             for s in scene.spheres() {
                 occ_isect = ray.intersect(s, occ_isect);
             }
@@ -73,7 +73,7 @@ pub fn vector<S: Scene>(scene: &mut S, isect: &Isect) -> f32 {
             let dir = basis * n;
             let ray = RayxN { origin, dir };
 
-            let mut occ_isect = IsectxN::new();
+            let mut occ_isect = IsectxN::default();
             for s in scene.spheres() {
                 occ_isect = ray.intersect(s, occ_isect);
             }
@@ -93,18 +93,18 @@ mod tests {
 
     #[test]
     fn sanity_hit() {
-        let scene = ::scene::Test::new();
+        let scene = ::scene::Test::default();
         let mut scene_scalar = scene.clone();
         let mut scene_vector = scene.clone();
         let ray = Ray {
-            origin: V3D::new(),
+            origin: V3D::default(),
             dir: V3D {
                 x: -0.2,
                 y: -0.2,
                 z: -0.2,
             },
         };
-        let mut isect = Isect::new();
+        let mut isect = Isect::default();
 
         for s in scene.spheres() {
             isect = ray.intersect(s, isect);
@@ -120,19 +120,19 @@ mod tests {
 
     #[test]
     fn sanity_miss() {
-        let scene = ::scene::Test::new();
+        let scene = ::scene::Test::default();
         let mut scene_scalar = scene.clone();
         let mut scene_vector = scene.clone();
 
         let ray = Ray {
-            origin: V3D::new(),
+            origin: V3D::default(),
             dir: V3D {
                 x: 0.2,
                 y: 0.2,
                 z: 0.2,
             },
         };
-        let mut isect = Isect::new();
+        let mut isect = Isect::default();
 
         for s in scene.spheres() {
             isect = ray.intersect(s, isect);
