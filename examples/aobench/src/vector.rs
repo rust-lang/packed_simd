@@ -27,11 +27,11 @@ fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
                     let dir = dir.normalized();
 
                     let ray = Ray {
-                        origin: V3D::new(),
+                        origin: V3D::default(),
                         dir,
                     };
 
-                    let mut isect = Isect::new();
+                    let mut isect = Isect::default();
                     for s in scene.spheres() {
                         isect = ray.intersect(s, isect);
                     }

@@ -12,7 +12,7 @@ impl Intersect<Plane> for Ray {
         let d = -plane.p.dot(plane.n);
         let v = ray.dir.dot(plane.n);
 
-        if v.abs() < 1.0e-17 {
+        if v.abs() < 1e-17 {
             return isect;
         }
 
@@ -40,14 +40,14 @@ impl Intersect<Plane> for RayxN {
 
         let old_isect = isect;
 
-        let m = v.abs().ge(f32xN::splat(1.0e-17));
+        let m = v.abs().ge(f32xN::splat(1e-17));
         if m.any() {
             let t = m.sel(-(ray.origin.dot(plane.n) + d) / v, isect.t);
             let m = m & t.gt(f32xN::splat(0.)) & t.lt(isect.t);
 
             if m.any() {
                 isect.t = m.sel(t, isect.t);
-                isect.hit = m | isect.hit;
+                isect.hit |= m;
                 isect.p = m.sel(ray.origin + t * ray.dir, isect.p);
                 isect.n = m.sel(plane.n, isect.n);
             }

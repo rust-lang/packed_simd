@@ -9,9 +9,8 @@ pub struct Random {
     pub spheres: [Sphere; 3],
 }
 
-impl Scene for Random {
-    const NAO_SAMPLES: usize = 8;
-    fn new() -> Self {
+impl Default for Random {
+    fn default() -> Self {
         let plane = Plane {
             p: V3D {
                 x: 0.,
@@ -52,6 +51,10 @@ impl Scene for Random {
         ];
         Self { plane, spheres }
     }
+}
+
+impl Scene for Random {
+    const NAO_SAMPLES: usize = 8;
     fn rand(&mut self) -> f32 {
         ::random::scalar::thread_rng().gen()
     }

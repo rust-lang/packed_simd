@@ -1,9 +1,11 @@
+#![deny(warnings)]
+
 extern crate fannkuch_redux_lib;
 use fannkuch_redux_lib::*;
 
 fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let (checksum, maxflips) = fannkuch_redux(n, alg);
-    write!(o, "{}\nPfannkuchen({}) = {}\n", checksum, n, maxflips).unwrap();
+    writeln!(o, "{}\nPfannkuchen({}) = {}", checksum, n, maxflips).unwrap();
 }
 
 fn main() {

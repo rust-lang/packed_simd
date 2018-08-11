@@ -1,6 +1,8 @@
 //! The mandelbrot benchmark from the [benchmarks game][bg].
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
+#![deny(warnings)]
+#![cfg_attr(feature = "cargo-clippy", allow(similar_names))]
 extern crate mandelbrot_lib;
 use mandelbrot_lib::*;
 use std::{env, io, io::Write};
@@ -9,21 +11,20 @@ enum Algorithm {
     Scalar,
     Simd,
 }
-use self::Algorithm::*;
 
 fn run<O: Write>(
     mut o: O,
     width: usize,
     height: usize,
-    alg: Algorithm,
+    alg: &Algorithm,
     format: Format,
 ) {
     let mut m = Mandelbrot::new(width, height, format);
     m.write_header(&mut o);
 
-    match alg {
-        Scalar => scalar::output(&mut o, &mut m, LIMIT),
-        Simd => simd::output(&mut o, &mut m, LIMIT),
+    match *alg {
+        Algorithm::Scalar => scalar::output(&mut o, &mut m, LIMIT),
+        Algorithm::Simd => simd::output(&mut o, &mut m, LIMIT),
     }
 }
 
@@ -42,12 +43,12 @@ fn main() {
 
     let alg = if let Some(v) = args.next() {
         match v.parse().unwrap() {
-            0 => Scalar,
-            1 => Simd,
+            0 => Algorithm::Scalar,
+            1 => Algorithm::Simd,
             v => panic!("unknown algorithm value: {}", v),
         }
     } else {
-        Simd
+        Algorithm::Simd
     };
 
     let fmt = if let Some(f) = args.next() {
@@ -60,7 +61,7 @@ fn main() {
         output::Format::PBM
     };
 
-    run(io::stdout(), width, height, alg, fmt);
+    run(io::stdout(), width, height, &alg, fmt);
 }
 
 #[cfg(test)]
@@ -73,7 +74,13 @@ mod tests {
     fn verify_output_scalar() {
         let mut out: Vec<u8> = Vec::new();
 
-        run(&mut out, WIDTH, HEIGHT, Scalar, output::Format::PBM);
+        run(
+            &mut out,
+            WIDTH,
+            HEIGHT,
+            &Algorithm::Scalar,
+            output::Format::PBM,
+        );
 
         assert_eq!(out.len(), OUTPUT.len());
         if out != OUTPUT {
@@ -90,7 +97,13 @@ mod tests {
     fn verify_output_simd() {
         let mut out: Vec<u8> = Vec::new();
 
-        run(&mut out, WIDTH, HEIGHT, Simd, output::Format::PBM);
+        run(
+            &mut out,
+            WIDTH,
+            HEIGHT,
+            &Algorithm::Simd,
+            output::Format::PBM,
+        );
 
         assert_eq!(out.len(), OUTPUT.len());
         if out != OUTPUT {

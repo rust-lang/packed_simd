@@ -51,7 +51,7 @@ impl Intersect<Sphere> for RayxN {
 
             if m.any() {
                 isect.t = m.sel(t, isect.t);
-                isect.hit = m | isect.hit;
+                isect.hit |= m;
                 isect.p = m.sel(ray.origin + t * ray.dir, isect.p);
                 isect.n =
                     m.sel((isect.p - sphere.center).normalized(), isect.n);

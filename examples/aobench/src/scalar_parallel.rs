@@ -16,7 +16,7 @@ pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut ::Image) {
         let image = unsafe {
             ::std::slice::from_raw_parts_mut(image_ptr as *mut f32, image_len)
         };
-        let mut scene = S::new();
+        let mut scene = S::default();
         for x in 0..w {
             let offset = 3 * (y * w + x);
             for u in 0..ns {
@@ -33,11 +33,11 @@ pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut ::Image) {
                     let dir = dir.normalized();
 
                     let ray = Ray {
-                        origin: V3D::new(),
+                        origin: V3D::default(),
                         dir,
                     };
 
-                    let mut isect = Isect::new();
+                    let mut isect = Isect::default();
                     for s in scene.spheres() {
                         isect = ray.intersect(s, isect);
                     }

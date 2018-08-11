@@ -13,9 +13,9 @@ struct State {
     checksum: i32,
 }
 
-impl State {
-    fn new() -> State {
-        State {
+impl Default for State {
+    fn default() -> Self {
+        Self {
             s: [0; 16],
             flip_masks: [u8x16::splat(0); 16],
             rotate_masks: [u8x16::splat(0); 16],
@@ -25,6 +25,9 @@ impl State {
             checksum: 0,
         }
     }
+}
+
+impl State {
     fn rotate_sisd(&mut self, n: usize) {
         let c = self.s[0];
         for i in 1..(n + 1) {
@@ -35,8 +38,8 @@ impl State {
     fn popmasks(&mut self) {
         let mut mask = [0_u8; 16];
         for i in 0..16 {
-            for j in 0..16 {
-                mask[j] = j as u8;
+            for (j, m) in mask.iter_mut().enumerate() {
+                *m = j as u8;
             }
 
             for x in 0..(i + 1) / 2 {
@@ -45,8 +48,8 @@ impl State {
 
             self.flip_masks[i] = u8x16::from_slice_unaligned(&mask);
 
-            for j in 0..16 {
-                self.s[j] = j as u8;
+            for (j, s) in self.s.iter_mut().enumerate() {
+                *s = j as u8;
             }
             self.rotate_sisd(i);
             self.rotate_masks[i] = self.load_s();
@@ -93,16 +96,16 @@ impl State {
                 i = 1;
                 self.odd = !self.odd;
                 if self.s[0] != 0 {
-                    if self.s[self.s[0] as usize] != 0 {
+                    if self.s[self.s[0] as usize] == 0 {
+                        if self.maxflips == 0 {
+                            self.maxflips = 1
+                        }
+                        self.checksum += if self.odd == 0 { 1 } else { -1 };
+                    } else {
                         perms[perm_max].perm = self.load_s();
                         perms[perm_max].start = self.s[0];
                         perms[perm_max].odd = self.odd;
                         perm_max += 1;
-                    } else {
-                        if self.maxflips == 0 {
-                            self.maxflips = 1
-                        }
-                        self.checksum += if self.odd != 0 { -1 } else { 1 };
                     }
                 }
             }
@@ -149,8 +152,8 @@ impl State {
                 if f2 > self.maxflips {
                     self.maxflips = f2
                 }
-                self.checksum += if pk.odd != 0 { -f1 } else { f1 };
-                self.checksum += if pk1.odd != 0 { -f2 } else { f2 };
+                self.checksum += if pk.odd == 0 { f1 } else { -f1 };
+                self.checksum += if pk1.odd == 0 { f2 } else { -f2 };
 
                 k += 2;
             }
@@ -168,7 +171,7 @@ impl State {
                 if f > self.maxflips {
                     self.maxflips = f
                 }
-                self.checksum += if pk.odd != 0 { -f } else { f };
+                self.checksum += if pk.odd == 0 { f } else { -f };
                 k += 1
             }
             perm_max = 0;
@@ -177,7 +180,7 @@ impl State {
 }
 
 pub fn fannkuch_redux(n: usize) -> (i32, i32) {
-    let mut state = State::new();
+    let mut state = State::default();
     state.popmasks();
 
     for i in 0..n {

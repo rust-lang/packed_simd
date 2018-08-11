@@ -11,13 +11,14 @@ pub struct Isect {
     pub hit: bool,
 }
 
-impl Isect {
-    pub fn new() -> Self {
+impl Default for Isect {
+    #[inline]
+    fn default() -> Self {
         Self {
-            t: 1.0e+17,
+            t: 1e17,
             hit: false,
-            p: V3D::new(),
-            n: V3D::new(),
+            p: V3D::default(),
+            n: V3D::default(),
         }
     }
 }

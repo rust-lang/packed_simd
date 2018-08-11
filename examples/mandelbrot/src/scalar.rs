@@ -32,6 +32,6 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
             let val = scalar::mandelbrot(x, y, limit);
             out_fn(&mut m.line, j, val);
         }
-        o.write(&m.line).unwrap();
+        o.write_all(&m.line).unwrap();
     }
 }

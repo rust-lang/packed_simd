@@ -38,7 +38,7 @@ fn mult_AtAv(v: &[f64], out: &mut [f64], tmp: &mut [f64]) {
 }
 
 fn mult_Av(v: &[f64], out: &mut [f64]) {
-    mult(v, out, 0, |i, j| A(i, j));
+    mult(v, out, 0, A);
 }
 
 fn mult_Atv(v: &[f64], out: &mut [f64]) {
