@@ -23,10 +23,10 @@ macro_rules! impl_fmt_binary {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _fmt_binary] {
+                pub mod [$id _fmt_binary] {
                     use super::*;
-                    #[test]
-                    fn binary() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn binary() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 

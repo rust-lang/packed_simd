@@ -29,10 +29,10 @@ Most of the examples come with both a scalar and a vectorized implementation.
   vector type as those of another vector type safely by just using the
   `.into_bits()` method.
   
-* `coresimd` (default: disabled): when targeting architectures that could use
-  `core::arch` features that are not yet available on nightly, or that would
-  require `core` to be recompiled with these features enabled, `packed_simd` will 
-  use `coresimd` re-compiled with the appropriate features instead.
+* `coresimd` (default: disabled): enable this feature to recompile `core::arch`
+  for the target-features enabled. `packed_simd` includes optimizations for some
+  target feature combinations that are enabled by this feature. Note, however, 
+  that this is an unstable dependency, that rustc might break at any time.
   
 * `sleef-sys` (default: disabled - `x86_64` only): internally uses the SLEEF
   short-vector math library when profitable. SLEEF is licensed under the Boost
@@ -71,6 +71,8 @@ the full testsuite passes on the target.
 | `i686-pc-windows-msvc`            | ✓         | ✓       |
 | `x86_64-pc-windows-gnu`           | ✗          | ✗        |
 | `i686-pc-windows-gnu`             | ✗          | ✗        |
+| **WebAssembly targets:**          | **build** | **run** |
+| `wasm32-unknown-unknown`          | ✓         | ✓      |
 | **Android targets:**              | **build** | **run** |
 | `x86_64-linux-android`            | ✓         | ✓       |
 | `arm-linux-androideabi`           | ✓         | ✓       |
@@ -86,8 +88,6 @@ the full testsuite passes on the target.
 | `x86_64-unknown-netbsd`           | ✗         | ✗**     |
 | **Solaris targets:**              | **build** | **run** |
 | `x86_64-sun-solaris`              | ✗         | ✗**     |
-| **WASM targets:**                 | **build** | **run** |
-| `wasm32-unknown-unknown`          | ✓         | ✗**     |
 
 [*] most of the test suite passes correctly on these platform but
 there are correctness bugs open in the issue tracker.

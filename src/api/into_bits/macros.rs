@@ -12,10 +12,10 @@ macro_rules! impl_from_bits_ {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _from_bits_ $from_ty] {
+                pub mod [$id _from_bits_ $from_ty] {
                     use super::*;
-                    #[test]
-                    fn test() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn test() {
                         use ::{ptr::{read_unaligned}, mem::{size_of, zeroed}};
                         use ::IntoBits;
                         assert_eq!(size_of::<$id>(),

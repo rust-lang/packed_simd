@@ -28,10 +28,10 @@ macro_rules! impl_math_float_sin {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _math_sin] {
+                pub mod [$id _math_sin] {
                     use super::*;
-                    #[test]
-                    fn sin() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn sin() {
                         use $elem_ty::consts::PI;
                         let z = $id::splat(0 as $elem_ty);
                         let p = $id::splat(PI as $elem_ty);

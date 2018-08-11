@@ -1,9 +1,17 @@
+#![cfg_attr(target_arch = "wasm32", feature(use_extern_macros))]
+
 extern crate packed_simd;
+
+#[cfg(target_arch = "wasm32")]
+extern crate wasm_bindgen_test;
+
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen_test::*;
 
 use packed_simd::*;
 use std::{mem, slice};
 
-#[test]
+#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_indexing() {
     let v = i32x4::new(0, 1, 2, 3);
     assert_eq!(v.extract(0), 0);
@@ -12,7 +20,7 @@ fn endian_indexing() {
     assert_eq!(v.extract(3), 3);
 }
 
-#[test]
+#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_bitcasts() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let x = i8x16::new(
@@ -28,7 +36,7 @@ fn endian_bitcasts() {
     assert_eq!(t, e);
 }
 
-#[test]
+#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_casts() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let x = i8x16::new(
@@ -44,7 +52,7 @@ fn endian_casts() {
     assert_eq!(t, e);
 }
 
-#[test]
+#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_load_and_stores() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let x = i8x16::new(
@@ -69,7 +77,7 @@ fn endian_load_and_stores() {
     assert_eq!(z, x);
 }
 
-#[test]
+#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_array_union() {
     union A {
         data: [f32; 4],
@@ -138,7 +146,7 @@ fn endian_array_union() {
     assert_eq!(x, e);
 }
 
-#[test]
+#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_tuple_access() {
     type F32x4T = (f32, f32, f32, f32);
     union A {

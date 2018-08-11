@@ -23,10 +23,10 @@ macro_rules! impl_fmt_lower_hex {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _fmt_lower_hex] {
+                pub mod [$id _fmt_lower_hex] {
                     use super::*;
-                    #[test]
-                    fn lower_hex() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn lower_hex() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 

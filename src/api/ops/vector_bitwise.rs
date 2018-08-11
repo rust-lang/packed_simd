@@ -59,10 +59,10 @@ macro_rules! impl_ops_vector_bitwise {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _ops_vector_bitwise] {
+                pub mod [$id _ops_vector_bitwise] {
                     use super::*;
-                    #[test]
-                    fn ops_vector_bitwise() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn ops_vector_bitwise() {
 
                         let z = $id::splat(0 as $elem_ty);
                         let o = $id::splat(1 as $elem_ty);

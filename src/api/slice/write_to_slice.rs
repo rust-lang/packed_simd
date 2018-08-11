@@ -76,12 +76,12 @@ macro_rules! impl_slice_write_to_slice {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _slice_write_to_slice] {
+                pub mod [$id _slice_write_to_slice] {
                     use super::*;
                     use iter::Iterator;
 
-                    #[test]
-                    fn write_to_slice_unaligned() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn write_to_slice_unaligned() {
                         let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
                         let vec = $id::splat(42 as $elem_ty);
                         vec.write_to_slice_unaligned(&mut unaligned[1..]);
@@ -95,9 +95,9 @@ macro_rules! impl_slice_write_to_slice {
                         }
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn write_to_slice_unaligned_fail() {
+                    pub fn write_to_slice_unaligned_fail() {
                         let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
                         let vec = $id::splat(42 as $elem_ty);
                         vec.write_to_slice_unaligned(&mut unaligned[2..]);
@@ -108,8 +108,8 @@ macro_rules! impl_slice_write_to_slice {
                         _vec: $id,
                     }
 
-                    #[test]
-                    fn write_to_slice_aligned() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn write_to_slice_aligned() {
                         let mut aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
@@ -125,9 +125,9 @@ macro_rules! impl_slice_write_to_slice {
                         }
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn write_to_slice_aligned_fail_lanes() {
+                    pub fn write_to_slice_aligned_fail_lanes() {
                         let mut aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
@@ -137,9 +137,9 @@ macro_rules! impl_slice_write_to_slice {
                         };
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn write_to_slice_aligned_fail_align() {
+                    pub fn write_to_slice_aligned_fail_align() {
                         unsafe {
                             let mut aligned = A {
                                 data: [0 as $elem_ty; 2 * $id::lanes()],

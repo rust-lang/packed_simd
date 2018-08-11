@@ -98,10 +98,10 @@ macro_rules! impl_minimal_mask {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _minimal] {
+                pub mod [$id _minimal] {
                     use super::*;
-                    #[test]
-                    fn minimal() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn minimal() {
                         // TODO: test new
 
                         // lanes:
@@ -132,15 +132,15 @@ macro_rules! impl_minimal_mask {
                             }
                         }
                     }
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn extract_panic_oob() {
+                    pub fn extract_panic_oob() {
                         let vec = $id::splat(false);
                         let _ = vec.extract($id::lanes());
                     }
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn replace_panic_oob() {
+                    pub fn replace_panic_oob() {
                         let vec = $id::splat(false);
                         let _ = vec.replace($id::lanes(), true);
                     }

@@ -68,10 +68,10 @@ macro_rules! impl_reduction_min_max {
         }
         test_if!{$test_tt:
         interpolate_idents! {
-            mod [$id _reduction_min_max] {
+            pub mod [$id _reduction_min_max] {
                 use super::*;
-                #[test]
-                fn max_element() {
+                #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                pub fn max_element() {
                     let v = $id::splat(0 as $elem_ty);
                     assert_eq!(v.max_element(), 0 as $elem_ty);
                     if $id::lanes() > 1 {
@@ -82,8 +82,8 @@ macro_rules! impl_reduction_min_max {
                     assert_eq!(v.max_element(), 2 as $elem_ty);
                 }
 
-                #[test]
-                fn min_element() {
+                #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                pub fn min_element() {
                     let v = $id::splat(0 as $elem_ty);
                     assert_eq!(v.min_element(), 0 as $elem_ty);
                     if $id::lanes() > 1 {
@@ -114,10 +114,10 @@ macro_rules! test_reduction_float_min_max {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _reduction_min_max_nan] {
+                pub mod [$id _reduction_min_max_nan] {
                     use super::*;
-                    #[test]
-                    fn min_element_test() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn min_element_test() {
                         let n = $elem_ty::NAN;
 
                         assert_eq!(n.min(-3.), -3.);
@@ -220,8 +220,8 @@ macro_rules! test_reduction_float_min_max {
                                 $id::splat(n), $id::splat(n).min_element(),
                                 $id::splat(n).min_element().is_nan());
                     }
-                    #[test]
-                    fn max_element_test() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn max_element_test() {
                         let n = $elem_ty::NAN;
 
                         assert_eq!(n.max(-3.), -3.);
