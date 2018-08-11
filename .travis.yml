@@ -19,7 +19,7 @@ matrix:
       name: "x86_64-unknown-linux-gnu"
       install: true
     - env: TARGET=x86_64-unknown-linux-gnu-emulated
-      name: "Intel SDE 8.16.0"
+      name: "Intel Software Development Emulator"
       install: true
     - env: TARGET=arm-unknown-linux-gnueabi
       name: "arm-unknown-linux-gnueabi"
