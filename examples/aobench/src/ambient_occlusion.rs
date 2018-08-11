@@ -1,6 +1,6 @@
 //! Ambient Occlusion implementations
 
-use geometry::{f32xN, Ray, RayxN, Selectable, V3D, V3DxN};
+use geometry::{f32xN, Ray, RayxN, Selectable, V3DxN, V3D};
 use intersection::{Intersect, Isect, IsectxN};
 use scene::Scene;
 use std::f32::consts::PI;
