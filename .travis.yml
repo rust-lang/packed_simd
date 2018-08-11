@@ -7,28 +7,65 @@ matrix:
   include:
     # Android:
     - env: TARGET=x86_64-linux-android
-      name: "x86_64-unknown-linux-android"
+      name: "x86_64-unknown-linux-android + SSE2"
     - env: TARGET=arm-linux-androideabi
       name: "arm-linux-androideabi"
+    - env: TARGET=arm-linux-androideabi RUSTFLAGS="-C target-feature=+v7,+neon"
+      name: "arm-linux-androideabi + NEON"
+    - env: TARGET=aarch64-linux-android
+      name: "aarch64-unknown-linux-android"
+    - env: TARGET=aarch64-linux-android RUSTFLAGS="-C target-feature=+neon"
+      name: "aarch64-unknown-linux-android + NEON"
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
-      name: "i586-unknown-linux-gnu"
+      name: "i586-unknown-linux-gnu + SSE2"
+    - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
+      name: "i586-unknown-linux-gnu + SSE4.2"
+    - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
+      name: "i586-unknown-linux-gnu + AVX2"
     - env: TARGET=i686-unknown-linux-gnu
-      name: "i686-unknown-linux-gnu"
+      name: "i686-unknown-linux-gnu + SSE2"
+    - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
+      name: "i686-unknown-linux-gnu + SSE4.2"
+    - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
+      name: "i686-unknown-linux-gnu + AVX2"
     - env: TARGET=x86_64-unknown-linux-gnu
-      name: "x86_64-unknown-linux-gnu"
+      name: "x86_64-unknown-linux-gnu + SSE2"
+      install: true
+    - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
+      name: "x86_64-unknown-linux-gnu + SSE4.2"
+      install: true
+    - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
+      name: "x86_64-unknown-linux-gnu + AVX2"
       install: true
     - env: TARGET=x86_64-unknown-linux-gnu-emulated
-      name: "Intel Software Development Emulator"
+      name: "Intel SDE + SSE2"
+      install: true
+    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+sse4.2"
+      name: "Intel SDE + SSE4.2"
+      install: true
+    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx2"
+      name: "Intel SDE + AVX2"
+      install: true
+    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx-512"
+      name: "Intel SDE + AVX-512"
       install: true
     - env: TARGET=arm-unknown-linux-gnueabi
       name: "arm-unknown-linux-gnueabi"
+    - env: TARGET=arm-unknown-linux-gnueabi RUSTFLAGS="-C target-feature=+v7,+neon"
+      name: "arm-unknown-linux-gnueabi + NEON"
     - env: TARGET=arm-unknown-linux-gnueabihf
       name: "arm-unknown-linux-gnueabihf"
+    - env: TARGET=arm-unknown-linux-gnueabihf RUSTFLAGS="-C target-feature=+v7,+neon"
+      name: "arm-unknown-linux-gnueabihf + NEON"
     - env: TARGET=armv7-unknown-linux-gnueabihf
       name: "armv7-unknown-linux-gnueabihf"
+    - env: TARGET=armv7-unknown-linux-gnueabihf RUSTFLAGS="-C target-feature=+neon"
+      name: "armv7-unknown-linux-gnueabihf + NEON"
     - env: TARGET=aarch64-unknown-linux-gnu
       name: "aarch64-unknown-linux-gnu"
+    - env: TARGET=aarch64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+neon"
+      name: "aarch64-unknown-linux-gnu + NEON"
     - env: TARGET=mips-unknown-linux-gnu
       name: "mips-unknown-linux-gnu"
     - env: TARGET=mipsel-unknown-linux-musl
@@ -37,12 +74,18 @@ matrix:
       name: "mips64-unknown-linux-gnuabi64"
     - env: TARGET=mips64el-unknown-linux-gnuabi64
       name: "mips64el-unknown-linux-gnuabi64"
+      # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/18
+      # env: TARGET=mips64el-unknown-linux-gnuabi64 RUSTFLAGS="-C target-feature=+msa -C target-cpu=mips64r6"
     - env: TARGET=powerpc-unknown-linux-gnu
       name: "powerpc-unknown-linux-gnu"
     - env: TARGET=powerpc64-unknown-linux-gnu
       name: "powerpc64-unknown-linux-gnu"
     - env: TARGET=powerpc64le-unknown-linux-gnu
       name: "powerpc64le-unknown-linux-gnu"
+    - env: TARGET=powerpc64le-unknown-linux-gnu RUSTFLAGS="-C target-feature=+altivec"
+      name: "powerpc64le-unknown-linux-gnu + ALTIVEC"
+    - env: TARGET=powerpc64le-unknown-linux-gnu RUSTFLAGS="-C target-feature=+vsx"
+      name: "powerpc64le-unknown-linux-gnu + VSX"
     - env: TARGET=s390x-unknown-linux-gnu
       name: "s390x-unknown-linux-gnu"
     - env: TARGET=sparc64-unknown-linux-gnu
@@ -50,12 +93,23 @@ matrix:
     # MacOSX:
     - os: osx
       env: TARGET=i686-apple-darwin
-      name: "i686-apple-darwin"
+      name: "i686-apple-darwin + SSE2"
+      script: ci/run.sh
+      osx_image: xcode9.4
+    - os: osx
+      env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+sse4.2"
+      name: "i686-apple-darwin + SSE4.2"
       script: ci/run.sh
       osx_image: xcode9.4
     - os: osx
       env: TARGET=x86_64-apple-darwin
-      name: "x86_64-apple-darwin"
+      name: "x86_64-apple-darwin + SSE2"
+      install: true
+      script: ci/run.sh
+      osx_image: xcode9.4
+    - os: osx
+      env: TARGET=x86_64-apple-darwin RUSTFLAGS="-C target-feature=+sse4.2"
+      name: "x86_64-apple-darwin + SSE4.2"
       install: true
       script: ci/run.sh
       osx_image: xcode9.4
@@ -77,7 +131,7 @@ matrix:
       osx_image: xcode9.4
     - os: osx
       env: TARGET=x86_64-apple-ios
-      name: "x86_64-apple-ios"
+      name: "x86_64-apple-ios + SSE2"
       script: ci/run.sh
       osx_image: xcode9.4
     - os: osx
@@ -114,6 +168,8 @@ matrix:
     - env: TARGET=powerpc-unknown-linux-gnu
     - env: TARGET=powerpc64-unknown-linux-gnu
     - env: TARGET=powerpc64le-unknown-linux-gnu
+    - env: TARGET=powerpc64le-unknown-linux-gnu RUSTFLAGS="-C target-feature=+altivec"
+    - env: TARGET=powerpc64le-unknown-linux-gnu RUSTFLAGS="-C target-feature=+vsx"
     #- env: TARGET=i686-unknown-freebsd NORUN=1
     #- env: TARGET=x86_64-unknown-freebsd NORUN=1
     #- env: TARGET=x86_64-unknown-netbsd NORUN=1
@@ -121,7 +177,9 @@ matrix:
 
     # FIXME: TBD
     - env: TARGET=arm-linux-androideabi
+    - env: TARGET=arm-linux-androideabi RUSTFLAGS="-C target-feature=+v7,+neon"
     - env: TARGET=aarch64-linux-android
+    - env: TARGET=aarch64-linux-android RUSTFLAGS="-C target-feature=+neon"
 
     # FIXME: iOS
     # https://github.com/rust-lang-nursery/packed_simd/issues/26
@@ -132,7 +190,7 @@ install:
   - rustup target add $TARGET
 script:
   - cargo generate-lockfile
-  - travis_wait 60 ci/run-docker.sh $TARGET $FEATURES
+  - travis_wait 40 ci/run-docker.sh $TARGET $FEATURES
 
 env:
   global:

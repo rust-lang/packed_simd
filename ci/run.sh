@@ -20,8 +20,16 @@ if [[ "${NORUN}" == "1" ]]; then
     export CARGO_SUBCMD=build
 fi
 
-echo "TARGET=${TARGET}"
+if [[ ${TARGET} == "x86_64-apple-ios" ]] || [[ ${TARGET} == "i386-apple-ios" ]]; then
+    export RUSTFLAGS="${RUSTFLAGS} -Clink-arg=-mios-simulator-version-min=7.0"
+    rustc ./ci/deploy_and_run_on_ios_simulator.rs -o $HOME/runtest
+    export CARGO_TARGET_X86_64_APPLE_IOS_RUNNER=$HOME/runtest
+    export CARGO_TARGET_I386_APPLE_IOS_RUNNER=$HOME/runtest
+fi
+
 rustc --version
+cargo --version
+echo "TARGET=${TARGET}"
 echo "RUSTFLAGS=${RUSTFLAGS}"
 echo "FEATURES=${FEATURES}"
 echo "NORUN=${NORUN}"
@@ -49,135 +57,8 @@ cargo_test_impl() {
     RUSTFLAGS=${ORIGINAL_RUSTFLAGS}
 }
 
-case ${TARGET} in
-    x86_64-apple-ios)
-        # Note: this case must go before the catch-all "x86*" case below
-        export RUSTFLAGS=-Clink-arg=-mios-simulator-version-min=7.0
-        rustc ./ci/deploy_and_run_on_ios_simulator.rs -o $HOME/runtest
-        export CARGO_TARGET_X86_64_APPLE_IOS_RUNNER=$HOME/runtest
-
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-        ;;
-    i386-apple-ios)
-        export RUSTFLAGS=-Clink-arg=-mios-simulator-version-min=7.0
-        rustc ./ci/deploy_and_run_on_ios_simulator.rs -o $HOME/runtest
-        export CARGO_TARGET_I386_APPLE_IOS_RUNNER=$HOME/runtest
-
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-        ;;
-    i586*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
-
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test_impl "--release --features=into_bits"
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-        cargo_test_impl "--release --features=into_bits"
-
-        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
-        ;;
-    i686*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
-
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test_impl "--release --features=into_bits"
-
-        if [[ ${TARGET} != *"apple"* ]]; then
-            # Travis-CI apple build bots do not appear to support AVX2
-            export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-            cargo_test_impl "--release --features=into_bits"
-        fi
-
-        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
-        ;;
-    x86*)
-        if [[ ${TARGET} == *"ios"* ]]; then
-            echo "ERROR: ${TARGET} must run in the iOS simulator"
-            exit 1
-        fi
-
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
-
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+sse4.2"
-        cargo_test_impl "--release --features=into_bits"
-
-        if [[ ${TARGET} != *"apple"* ]]; then
-            # Travis-CI apple build bots do not appear to support AVX2
-            export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+avx2"
-            cargo_test_impl "--release --features=into_bits"
-        fi
-
-        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
-        ;;
-    armv7*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test_impl "--release --features=into_bits"
-        cargo_test_impl "--release --features=into_bits,coresimd"
-        ;;
-    arm*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+v7,+neon"
-        cargo_test_impl "--release --features=into_bits"
-        cargo_test_impl "--release --features=into_bits,coresimd"
-        ;;
-    aarch64*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
-        cargo_test_impl "--release --features=into_bits"
-        cargo_test_impl "--release --features=into_bits,coresimd"
-        ;;
-    mips64*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        # FIXME: this doesn't compile succesfully
-        # https://github.com/rust-lang-nursery/packed_simd/issues/18
-        #
-        # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa -C target-cpu=mips64r6"
-        # cargo_test_impl "--release --features=into_bits"
-        ;;
-    powerpc-*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test_impl "--release --features=into_bits"
-        ;;
-    powerpc64-*)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-
-        ORIGINAL_RUSFTFLAGS=${RUSTFLAGS}
-
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+altivec"
-        cargo_test_impl "--release --features=into_bits"
-        export RUSTFLAGS="${ORIGINAL_RUSTFLAGS} -C target-feature=+vsx"
-        cargo_test_impl "--release --features=into_bits"
-
-        export RUSTFLAGS=${ORIGINAL_RUSFTFLAGS}
-        ;;
-    *)
-        cargo_test_impl
-        cargo_test_impl "--release --features=into_bits"
-        ;;
-esac
+cargo_test_impl
+cargo_test_impl "--release --features=into_bits,coresimd"
 
 # Examples - the source directory is read-only.
 # Need to copy them to the target directory for the Cargo.lock to be
