@@ -61,7 +61,7 @@ macro_rules! impl_reduction_float_arithmetic {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _reduction_float_arith] {
+                pub mod [$id _reduction_float_arith] {
                     use super::*;
                     fn alternating(x: usize) -> $id {
                         let mut v = $id::splat(1 as $elem_ty);
@@ -73,8 +73,8 @@ macro_rules! impl_reduction_float_arithmetic {
                         v
                     }
 
-                    #[test]
-                    fn sum() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn sum() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.sum(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
@@ -82,8 +82,8 @@ macro_rules! impl_reduction_float_arithmetic {
                         let v = alternating(2);
                         assert_eq!(v.sum(), ($id::lanes() / 2 + $id::lanes()) as $elem_ty);
                     }
-                    #[test]
-                    fn product() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn product() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.product(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
@@ -101,9 +101,9 @@ macro_rules! impl_reduction_float_arithmetic {
                         );
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
-                    fn sum_nan() {
+                    pub fn sum_nan() {
                         // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
                         return;
@@ -129,9 +129,9 @@ macro_rules! impl_reduction_float_arithmetic {
                         assert!(v.sum().is_nan(), "all nans | {:?}", v);
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
-                    fn product_nan() {
+                    pub fn product_nan() {
                         // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
                         return;
@@ -157,9 +157,9 @@ macro_rules! impl_reduction_float_arithmetic {
                         assert!(v.product().is_nan(), "all nans | {:?}", v);
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unused, dead_code)]
-                    fn sum_roundoff() {
+                    pub fn sum_roundoff() {
                         // Performs a tree-reduction
                         fn tree_reduce_sum(a: &[[$elem_ty]]) -> $elem_ty {
                             assert!(!a.is_empty());
@@ -206,9 +206,9 @@ macro_rules! impl_reduction_float_arithmetic {
                         );
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unused, dead_code)]
-                    fn product_roundoff() {
+                    pub fn product_roundoff() {
                         // Performs a tree-reduction
                         fn tree_reduce_product(a: &[[$elem_ty]]) -> $elem_ty {
                             assert!(!a.is_empty());

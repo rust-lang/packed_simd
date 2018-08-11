@@ -5,10 +5,10 @@ macro_rules! impl_fmt_debug_tests {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _fmt_debug] {
+                pub mod [$id _fmt_debug] {
                     use super::*;
-                    #[test]
-                    fn debug() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn debug() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 

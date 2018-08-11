@@ -23,10 +23,10 @@ macro_rules! impl_fmt_octal {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _fmt_octal] {
+                pub mod [$id _fmt_octal] {
                     use super::*;
-                    #[test]
-                    fn octal_hex() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn octal_hex() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 

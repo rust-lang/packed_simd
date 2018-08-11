@@ -85,11 +85,11 @@ macro_rules! impl_reduction_bitwise {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _reduction_bitwise] {
+                pub mod [$id _reduction_bitwise] {
                     use super::*;
 
-                    #[test]
-                    fn and() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn and() {
                         let v = $id::splat($false);
                         assert_eq!(v.and(), $false);
                         let v = $id::splat($true);
@@ -106,8 +106,8 @@ macro_rules! impl_reduction_bitwise {
                         assert_eq!(v.and(), $false);
 
                     }
-                    #[test]
-                    fn or() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn or() {
                         let v = $id::splat($false);
                         assert_eq!(v.or(), $false);
                         let v = $id::splat($true);
@@ -123,8 +123,8 @@ macro_rules! impl_reduction_bitwise {
                             assert_eq!(v.or(), $false);
                         }
                     }
-                    #[test]
-                    fn xor() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn xor() {
                         let v = $id::splat($false);
                         assert_eq!(v.xor(), $false);
                         let v = $id::splat($true);

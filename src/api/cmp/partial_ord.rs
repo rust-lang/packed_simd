@@ -68,10 +68,10 @@ macro_rules! test_cmp_partial_ord_int {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _cmp_PartialOrd] {
+                pub mod [$id _cmp_PartialOrd] {
                     use super::*;
-                    #[test]
-                    fn partial_ord() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn partial_ord() {
                         use ::testing::utils::{test_cmp};
                         // constant values
                         let a = $id::splat(0);
@@ -155,10 +155,10 @@ macro_rules! test_cmp_partial_ord_mask {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _cmp_PartialOrd] {
+                pub mod [$id _cmp_PartialOrd] {
                     use super::*;
-                    #[test]
-                    fn partial_ord() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn partial_ord() {
                         use ::testing::utils::{test_cmp};
                         // constant values
                         let a = $id::splat(false);

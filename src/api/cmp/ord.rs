@@ -27,10 +27,10 @@ macro_rules! impl_cmp_ord {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _cmp_ord] {
+                pub mod [$id _cmp_ord] {
                     use super::*;
-                    #[test]
-                    fn eq() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn eq() {
                         fn foo<E: ::cmp::Ord>(_: E) {}
                         let a = $id::splat($false);
                         foo(a.partial_ord());

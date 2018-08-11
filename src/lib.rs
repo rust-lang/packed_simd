@@ -244,6 +244,12 @@ cfg_if! {
 #[cfg(test)]
 extern crate arrayvec;
 
+#[cfg(all(target_arch = "wasm32", test))]
+extern crate wasm_bindgen_test;
+
+#[cfg(all(target_arch = "wasm32", test))]
+use wasm_bindgen_test::*;
+
 #[allow(unused_imports)]
 use core::{
     /* arch (handled above), */ cmp, default, f32, f64, fmt, hash, hint,

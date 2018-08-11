@@ -13,9 +13,9 @@ macro_rules! impl_permute_dyn {
         test_if! {
             $test_tt:
             interpolate_idents! {
-                mod [$id _permute_dyn] {
+                pub mod [$id _permute_dyn] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn permute_dyn() {
                         let increasing = {
                             let mut v = $id::splat(0);

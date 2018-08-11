@@ -37,10 +37,10 @@ macro_rules! impl_cmp_partial_eq {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _cmp_PartialEq] {
+                pub mod [$id _cmp_PartialEq] {
                     use super::*;
-                    #[test]
-                    fn partial_eq() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn partial_eq() {
                         let a = $id::splat($false);
                         let b = $id::splat($true);
 

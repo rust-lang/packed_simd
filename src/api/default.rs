@@ -12,10 +12,10 @@ macro_rules! impl_default {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _default] {
+                pub mod [$id _default] {
                     use super::*;
-                    #[test]
-                    fn default() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn default() {
                         let a = $id::default();
                         for i in 0..$id::lanes() {
                             assert_eq!(a.extract(i), $elem_ty::default());

@@ -115,10 +115,10 @@ macro_rules! impl_ops_scalar_arithmetic {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _ops_scalar_arith] {
+                pub mod [$id _ops_scalar_arith] {
                     use super::*;
-                    #[test]
-                    fn ops_scalar_arithmetic() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn ops_scalar_arithmetic() {
                         let zi = 0 as $elem_ty;
                         let oi = 1 as $elem_ty;
                         let ti = 2 as $elem_ty;

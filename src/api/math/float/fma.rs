@@ -14,10 +14,10 @@ macro_rules! impl_math_float_fma {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _math_fma] {
+                pub mod [$id _math_fma] {
                     use super::*;
-                    #[test]
-                    fn fma() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn fma() {
                         let z = $id::splat(0 as $elem_ty);
                         let o = $id::splat(1 as $elem_ty);
                         let t = $id::splat(2 as $elem_ty);

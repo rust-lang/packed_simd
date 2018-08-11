@@ -73,12 +73,12 @@ macro_rules! impl_slice_from_slice {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _slice_from_slice] {
+                pub mod [$id _slice_from_slice] {
                     use super::*;
                     use iter::Iterator;
 
-                    #[test]
-                    fn from_slice_unaligned() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn from_slice_unaligned() {
                         let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
                         unaligned[0] = 0 as $elem_ty;
                         let vec = $id::from_slice_unaligned(&unaligned[1..]);
@@ -92,9 +92,9 @@ macro_rules! impl_slice_from_slice {
                         }
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn from_slice_unaligned_fail() {
+                    pub fn from_slice_unaligned_fail() {
                         let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
                         unaligned[0] = 0 as $elem_ty;
                         // the slice is not large enough => panic
@@ -106,8 +106,8 @@ macro_rules! impl_slice_from_slice {
                         _vec: $id,
                     }
 
-                    #[test]
-                    fn from_slice_aligned() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn from_slice_aligned() {
                         let mut aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
@@ -129,9 +129,9 @@ macro_rules! impl_slice_from_slice {
                         }
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn from_slice_aligned_fail_lanes() {
+                    pub fn from_slice_aligned_fail_lanes() {
                         let aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
@@ -140,9 +140,9 @@ macro_rules! impl_slice_from_slice {
                         };
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[should_panic]
-                    fn from_slice_aligned_fail_align() {
+                    pub fn from_slice_aligned_fail_align() {
                         unsafe {
                             let aligned = A {
                                 data: [0 as $elem_ty; 2 * $id::lanes()],

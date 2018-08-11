@@ -69,10 +69,10 @@ macro_rules! impl_cmp_vertical {
         test_if!{
             $test_tt:
             interpolate_idents! {
-                mod [$id _cmp_vertical] {
+                pub mod [$id _cmp_vertical] {
                     use super::*;
-                    #[test]
-                    fn cmp() {
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    pub fn cmp() {
                         let a = $id::splat($false);
                         let b = $id::splat($true);
 
