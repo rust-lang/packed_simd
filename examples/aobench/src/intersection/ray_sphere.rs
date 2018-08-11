@@ -91,7 +91,7 @@ mod tests {
         };
 
         let ray_hit = Ray {
-            origin: V3D::new(),
+            origin: V3D::default(),
             dir: V3D {
                 x: 0.01,
                 y: 0.01,
@@ -99,7 +99,7 @@ mod tests {
             },
         };
         let ray_miss = Ray {
-            origin: V3D::new(),
+            origin: V3D::default(),
             dir: V3D {
                 x: 0.,
                 y: 0.,
@@ -107,9 +107,9 @@ mod tests {
             },
         };
 
-        let isect_hit = ray_hit.intersect(&sphere, Isect::new());
+        let isect_hit = ray_hit.intersect(&sphere, Isect::default());
         assert!(isect_hit.hit);
-        let isect_miss = ray_miss.intersect(&sphere, Isect::new());
+        let isect_miss = ray_miss.intersect(&sphere, Isect::default());
         assert!(!isect_miss.hit);
 
         // hit, miss, hit, miss
@@ -119,7 +119,7 @@ mod tests {
         let z_val = f32xN::new(-1., 1., -1., 1.);
 
         let rays = RayxN {
-            origin: V3DxN::new(),
+            origin: V3DxN::default(),
             dir: V3DxN {
                 x: f32xN::splat(0.01),
                 y: f32xN::splat(0.01),
@@ -127,7 +127,7 @@ mod tests {
             },
         };
 
-        let isectxN = rays.intersect(&sphere, IsectxN::new());
+        let isectxN = rays.intersect(&sphere, IsectxN::default());
 
         #[cfg(feature = "256bit")]
         let expected =
