@@ -1,11 +1,11 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 rm -rf target/doc
 mkdir -p target/doc
 
-cargo doc
+cargo doc --features=into_bits
 
 # If we're on travis, not a PR, and on the right branch, publish!
 if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then
