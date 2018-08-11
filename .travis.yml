@@ -102,14 +102,7 @@ matrix:
       install: true
       before_script:
       - rustup component add rustfmt-preview
-      script:
-      - cargo fmt --all -- --check
-      - |
-        for dir in examples/*/
-        do
-            dir=${dir%*/}
-            cd ${dir%*/} && cargo fmt --all -- --check && cd -
-        done
+      script: ci/check_fmt.sh
     - name: "clippy"
       install: true
       before_script:

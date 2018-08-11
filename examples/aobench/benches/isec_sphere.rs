@@ -8,7 +8,7 @@ extern crate criterion;
 
 use aobench_lib::*;
 use criterion::*;
-use geometry::{f32xN, Ray, RayxN, Sphere, V3D, V3DxN};
+use geometry::{f32xN, Ray, RayxN, Sphere, V3DxN, V3D};
 use intersection::{Intersect, Isect, IsectxN};
 
 fn hit_scalar(c: &mut Criterion) {

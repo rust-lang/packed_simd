@@ -77,7 +77,7 @@ impl Intersect<Sphere> for RayxN {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use geometry::{m32xN, V3D, V3DxN};
+    use geometry::{m32xN, V3DxN, V3D};
 
     #[test]
     fn sanity() {
