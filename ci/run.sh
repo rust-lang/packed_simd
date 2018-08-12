@@ -41,7 +41,7 @@ echo "RUST_BACKTRACE=${RUST_BACKTRACE}"
 echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
-    cmd="cargo ${CARGO_SUBCMD} --verbose --target=${TARGET} ${1}"
+    cmd="cargo ${CARGO_SUBCMD} --verbose --target=${TARGET} ${@}"
     mkdir target || true
     ${cmd} 2>&1 | tee > target/output
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
@@ -52,15 +52,15 @@ cargo_test() {
 
 cargo_test_impl() {
     ORIGINAL_RUSTFLAGS=${RUSTFLAGS}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v16  --cfg test_v32" cargo_test ${1}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v64  --cfg test_v128" cargo_test ${1}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v256 --cfg test_v512" cargo_test ${1}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v16  --cfg test_v32" cargo_test ${@}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v64  --cfg test_v128" cargo_test ${@}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v256 --cfg test_v512" cargo_test ${@}
     RUSTFLAGS=${ORIGINAL_RUSTFLAGS}
 }
 
 cargo_test_impl
-cargo_test_impl "--release --features=into_bits"
-cargo_test_impl "--release --features=into_bits,coresimd"
+cargo_test_impl --release --features=into_bits
+cargo_test_impl --release --features=into_bits,coresimd
 
 # Examples - the source directory is read-only.
 # Need to copy them to the target directory for the Cargo.lock to be
@@ -74,25 +74,25 @@ if [[ ${TARGET} == "armv7-apple-ios" ]]; then
 fi
 
 cp -r examples/nbody target/nbody
-cargo_test "--manifest-path=target/nbody/Cargo.toml"
-cargo_test "--release --manifest-path=target/nbody/Cargo.toml"
+cargo_test --manifest-path=target/nbody/Cargo.toml
+cargo_test --manifest-path=target/nbody/Cargo.toml --release
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/56
 if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
     cp -r examples/mandelbrot target/mandelbrot
-    cargo_test "--manifest-path=target/mandelbrot/Cargo.toml"
-    cargo_test "--release --manifest-path=target/mandelbrot/Cargo.toml"
+    cargo_test --manifest-path=target/mandelbrot/Cargo.toml
+    cargo_test --manifest-path=target/mandelbrot/Cargo.toml --release
 fi
 
 cp -r examples/spectral_norm target/spectral_norm
-cargo_test "--manifest-path=target/spectral_norm/Cargo.toml"
-cargo_test "--release --manifest-path=target/spectral_norm/Cargo.toml"
+cargo_test --manifest-path=target/spectral_norm/Cargo.toml
+cargo_test --manifest-path=target/spectral_norm/Cargo.toml --release
 
 cp -r examples/fannkuch_redux target/fannkuch_redux
-cargo_test "--manifest-path=target/fannkuch_redux/Cargo.toml"
-cargo_test "--release --manifest-path=target/fannkuch_redux/Cargo.toml"
+cargo_test --manifest-path=target/fannkuch_redux/Cargo.toml
+cargo_test --manifest-path=target/fannkuch_redux/Cargo.toml --release
 
 cp -r examples/aobench target/aobench
-cargo_test "--manifest-path=target/aobench/Cargo.toml"
-cargo_test "--release --manifest-path=target/aobench/Cargo.toml --no-default-features"
-cargo_test "--release --manifest-path=target/aobench/Cargo.toml --features=256bit"
+cargo_test --manifest-path=target/aobench/Cargo.toml
+cargo_test --manifest-path=target/aobench/Cargo.toml --release --no-default-features
+cargo_test --manifest-path=target/aobench/Cargo.toml --release --features=256bit
