@@ -57,13 +57,13 @@ cargo_test() {
 cargo_test_impl() {
     cargo_test  ${@}
     if [[ "${NORUN}" == "" ]]; then
-        cargo_test --manifest-path=target/vTest/Cargo.toml --features=test_v16,test_v32 ${@}
-        cargo_test --manifest-path=target/vTest/Cargo.toml --features=test_v64,test_v128 ${@}
-        cargo_test --manifest-path=target/vTest/Cargo.toml --features=test_v256,test_v512 ${@}
+        cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v16,test_v32 ${@}
+        cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v64,test_v128 ${@}
+        cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v256,test_v512 ${@}
     fi
 }
 
-cp -r crate/vTest target/vTest
+cp -r crates/vTests target/vTests
 
 cargo_test_impl
 cargo_test_impl --release --features=into_bits,coresimd
