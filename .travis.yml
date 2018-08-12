@@ -141,12 +141,12 @@ matrix:
       env: TARGET=i386-apple-ios
       name: "i386-apple-ios"
       script: ci/run.sh
-      osx_image: xcode9.4
+      osx_image: xcode9.2
     - os: osx
       env: TARGET=x86_64-apple-ios
       name: "x86_64-apple-ios + SSE2"
       script: ci/run.sh
-      osx_image: xcode9.4
+      osx_image: xcode9.2
     - os: osx
       env: TARGET=armv7-apple-ios NORUN=1
       name: "armv7-apple-ios [BUILD only]"
