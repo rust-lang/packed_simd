@@ -55,9 +55,12 @@ cargo_test() {
 }
 
 cargo_test_impl() {
-    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v16,test_v32 ${@}
-    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v64,test_v128 ${@}
-    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v256,test_v512 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v16 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v32 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v64 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v128 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v256 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v512 ${@}
 }
 
 cp -r crates/vTests target/vTests
