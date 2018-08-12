@@ -63,7 +63,7 @@ cargo_test_impl() {
     fi
 }
 
-cp -r crates/vTest target/vTest
+cp -r crate/vTest target/vTest
 
 cargo_test_impl
 cargo_test_impl --release --features=into_bits,coresimd
