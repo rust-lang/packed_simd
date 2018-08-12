@@ -59,7 +59,6 @@ cargo_test_impl() {
 }
 
 cargo_test_impl
-cargo_test_impl --release --features=into_bits
 cargo_test_impl --release --features=into_bits,coresimd
 
 # Examples - the source directory is read-only.
@@ -74,25 +73,20 @@ if [[ ${TARGET} == "armv7-apple-ios" ]]; then
 fi
 
 cp -r examples/nbody target/nbody
-cargo_test --manifest-path=target/nbody/Cargo.toml
 cargo_test --manifest-path=target/nbody/Cargo.toml --release
 
 # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/56
 if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
     cp -r examples/mandelbrot target/mandelbrot
-    cargo_test --manifest-path=target/mandelbrot/Cargo.toml
     cargo_test --manifest-path=target/mandelbrot/Cargo.toml --release
 fi
 
 cp -r examples/spectral_norm target/spectral_norm
-cargo_test --manifest-path=target/spectral_norm/Cargo.toml
 cargo_test --manifest-path=target/spectral_norm/Cargo.toml --release
 
 cp -r examples/fannkuch_redux target/fannkuch_redux
-cargo_test --manifest-path=target/fannkuch_redux/Cargo.toml
 cargo_test --manifest-path=target/fannkuch_redux/Cargo.toml --release
 
 cp -r examples/aobench target/aobench
-cargo_test --manifest-path=target/aobench/Cargo.toml
 cargo_test --manifest-path=target/aobench/Cargo.toml --release --no-default-features
 cargo_test --manifest-path=target/aobench/Cargo.toml --release --features=256bit
