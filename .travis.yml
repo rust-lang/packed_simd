@@ -186,8 +186,7 @@ matrix:
     - env: TARGET=i386-apple-ios
     - env: TARGET=x86_64-apple-ios
 
-install:
-  - rustup target add $TARGET
+install: travis_retry rustup target add $TARGET
 script:
   - cargo generate-lockfile
   - travis_wait 40 ci/run-docker.sh $TARGET $FEATURES
