@@ -55,12 +55,9 @@ cargo_test() {
 }
 
 cargo_test_impl() {
-    cargo_test  ${@}
-    if [[ "${NORUN}" == "" ]]; then
-        cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v16,test_v32 ${@}
-        cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v64,test_v128 ${@}
-        cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v256,test_v512 ${@}
-    fi
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v16,test_v32 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v64,test_v128 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v256,test_v512 ${@}
 }
 
 cp -r crates/vTests target/vTests
