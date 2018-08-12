@@ -4,7 +4,7 @@ macro_rules! impl_minimal_iuf {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt |
      $($elem_name:ident),+ |
      $(#[$doc:meta])*) => {
-
+        impl_!{
         $(#[$doc])*
         pub type $id = Simd<[$elem_ty; $elem_count]>;
 
@@ -90,7 +90,7 @@ macro_rules! impl_minimal_iuf {
                 Simd(simd_insert(self.0, index as u32, new_value))
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

@@ -2,6 +2,7 @@
 
 macro_rules! impl_hash {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{ 
         impl ::hash::Hash for $id {
             #[inline]
             fn hash<H: ::hash::Hasher>(&self, state: &mut H) {
@@ -13,6 +14,7 @@ macro_rules! impl_hash {
                     A { vec: *self }.data.hash(state)
                 }
             }
+        }
         }
 
         test_if! {

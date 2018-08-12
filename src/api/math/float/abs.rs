@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_abs {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Absolute value.
             #[inline]
@@ -9,6 +10,7 @@ macro_rules! impl_math_float_abs {
                 use crate::codegen::math::float::abs::Abs;
                 Abs::abs(self)
             }
+        }
         }
 
         test_if!{

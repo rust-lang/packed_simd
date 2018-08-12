@@ -2,6 +2,7 @@
 
 macro_rules! impl_ops_scalar_arithmetic {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl ::ops::Add<$elem_ty> for $id {
             type Output = Self;
             #[inline]
@@ -111,7 +112,7 @@ macro_rules! impl_ops_scalar_arithmetic {
                 *self = *self % other;
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

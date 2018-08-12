@@ -2,6 +2,7 @@
 
 macro_rules! impl_reduction_min_max {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Largest vector element value.
             #[inline]
@@ -65,6 +66,7 @@ macro_rules! impl_reduction_min_max {
                     x
                 }
             }
+        }
         }
         test_if!{$test_tt:
         interpolate_idents! {

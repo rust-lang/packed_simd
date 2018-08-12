@@ -7,6 +7,7 @@ macro_rules! impl_cmp_vertical {
         $mask_ty:ident,
         $is_mask:expr,($true:expr, $false:expr) | $test_tt:tt
     ) => {
+        impl_!{
         impl $id {
             /// Lane-wise equality comparison.
             #[inline]
@@ -65,6 +66,7 @@ macro_rules! impl_cmp_vertical {
                     Simd(unsafe { simd_ge(self.0, other.0) })
                 }
             }
+        }
         }
         test_if!{
             $test_tt:

@@ -2,6 +2,7 @@
 
 macro_rules! impl_ops_vector_arithmetic {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl ::ops::Add for $id {
             type Output = Self;
             #[inline]
@@ -81,7 +82,7 @@ macro_rules! impl_ops_vector_arithmetic {
                 *self = *self % other;
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

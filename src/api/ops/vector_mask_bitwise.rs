@@ -6,6 +6,7 @@ macro_rules! impl_ops_vector_mask_bitwise {
         $id:ident | $test_tt:tt |
         ($true:expr, $false:expr)
     ) => {
+        impl_!{
         impl ::ops::Not for $id {
             type Output = Self;
             #[inline]
@@ -55,7 +56,7 @@ macro_rules! impl_ops_vector_mask_bitwise {
                 *self = *self ^ other;
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

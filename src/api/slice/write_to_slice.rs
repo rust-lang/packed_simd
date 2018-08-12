@@ -2,6 +2,7 @@
 
 macro_rules! impl_slice_write_to_slice {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Writes the values of the vector to the `slice`.
             ///
@@ -71,7 +72,7 @@ macro_rules! impl_slice_write_to_slice {
                 );
             }
         }
-
+        }
 
         test_if!{
             $test_tt:

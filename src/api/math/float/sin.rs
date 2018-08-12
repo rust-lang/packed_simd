@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_sin {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Sine.
             #[inline]
@@ -9,6 +10,7 @@ macro_rules! impl_math_float_sin {
                 use crate::codegen::math::float::sin::Sin;
                 Sin::sin(self)
             }
+        }
         }
 
         test_if!{

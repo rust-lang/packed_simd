@@ -3,6 +3,7 @@
 macro_rules! impl_from_array {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt
      | ($non_default_array:expr, $non_default_vec:expr)) => {
+        impl_!{
         impl From<[$elem_ty; $elem_count]> for $id {
             #[inline]
             fn from(array: [$elem_ty; $elem_count]) -> Self {
@@ -23,6 +24,7 @@ macro_rules! impl_from_array {
                 }
                 unsafe { U { vec }.array }
             }
+        }
         }
 
         // FIXME: `Into::into` is not inline, but due to

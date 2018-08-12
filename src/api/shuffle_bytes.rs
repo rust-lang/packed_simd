@@ -2,12 +2,14 @@
 
 macro_rules! impl_shuffle_bytes {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Shuffles the bytes of the vector according to `indices`.
             #[inline]
             pub fn shuffle_bytes(self, indices: Self) -> Self {
                 codegen::shuffle_bytes::ShuffleBytes::shuffle_bytes(self, indices)
             }
+        }
         }
 
         test_if! {

@@ -2,6 +2,8 @@
 
 macro_rules! impl_swap_bytes {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+
+        impl_! {
         impl $id {
             /// Reverses the byte order of the vector.
             #[inline]
@@ -40,6 +42,7 @@ macro_rules! impl_swap_bytes {
                     self.swap_bytes()
                 }
             }
+        }
         }
 
         test_if! {

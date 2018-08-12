@@ -3,6 +3,7 @@
 /// Implements mask select method
 macro_rules! impl_select {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Selects elements of `a` and `b` using mask.
             ///
@@ -17,6 +18,7 @@ macro_rules! impl_select {
                 use llvm::simd_select;
                 Simd(unsafe { simd_select(self.0, a.0, b.0) })
             }
+        }
         }
 
         test_select!(bool, $id, $id, (false, true) | $test_tt);

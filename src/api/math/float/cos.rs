@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_cos {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Cosine.
             #[inline]
@@ -9,6 +10,7 @@ macro_rules! impl_math_float_cos {
                 use crate::codegen::math::float::cos::Cos;
                 Cos::cos(self)
             }
+        }
         }
 
         test_if!{

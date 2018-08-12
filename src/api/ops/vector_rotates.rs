@@ -3,6 +3,7 @@
 
 macro_rules! impl_ops_vector_rotates {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Shifts the bits of each lane to the left by the specified amount in
             /// the corresponding lane of `n`, wrapping the truncated bits to
@@ -31,6 +32,7 @@ macro_rules! impl_ops_vector_rotates {
                 let n = n % LANE_WIDTH;
                 (self >> n) | (self << ((LANE_WIDTH - n) % LANE_WIDTH))
             }
+        }
         }
 
         test_if!{

@@ -2,6 +2,7 @@
 
 macro_rules! impl_fmt_lower_hex {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl ::fmt::LowerHex for $id {
             #[cfg_attr(feature = "cargo-clippy",
                        allow(missing_inline_in_public_items))]
@@ -17,6 +18,7 @@ macro_rules! impl_fmt_lower_hex {
                 }
                 write!(f, ")")
             }
+        }
         }
         test_if!{
             $test_tt:

@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_rsqrte {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Reciprocal square-root estimate: `~= 1. / self.sqrt()`.
             ///
@@ -13,6 +14,7 @@ macro_rules! impl_math_float_rsqrte {
                     $id::splat(1.) / Simd(simd_fsqrt(self.0))
                 }
             }
+        }
         }
 
         test_if!{

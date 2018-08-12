@@ -3,6 +3,8 @@
 // FIXME: comprehensive tests
 // https://github.com/rust-lang-nursery/packed_simd/issues/20
 
+impl_!{
+
 /// Shuffles vector elements.
 ///
 /// This macro returns a new vector that contains a shuffle of the elements in
@@ -186,4 +188,6 @@ macro_rules! shuffle {
             v => shuffle!(v, v, [$($l),*])
         }
     }
+}
+
 }

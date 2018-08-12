@@ -2,6 +2,7 @@
 
 macro_rules! impl_reduction_integer_arithmetic {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Horizontal wrapping sum of the vector elements.
             ///
@@ -59,7 +60,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                 }
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

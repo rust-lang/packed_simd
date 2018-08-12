@@ -2,6 +2,7 @@
 
 macro_rules! impl_ops_vector_shifts {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl ::ops::Shl<$id> for $id {
             type Output = Self;
             #[inline]
@@ -29,6 +30,7 @@ macro_rules! impl_ops_vector_shifts {
             fn shr_assign(&mut self, other: Self) {
                 *self = *self >> other;
             }
+        }
         }
         test_if!{
             $test_tt:

@@ -9,6 +9,7 @@ macro_rules! impl_reduction_bitwise {
         ($convert:expr) |
         ($true:expr, $false:expr)
     ) => {
+        impl_!{
         impl $id {
             /// Lane-wise bitwise `and` of the vector elements.
             ///
@@ -82,7 +83,7 @@ macro_rules! impl_reduction_bitwise {
                 }
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

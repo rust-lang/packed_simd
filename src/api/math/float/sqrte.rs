@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_sqrte {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Square-root estimate.
             ///
@@ -11,6 +12,7 @@ macro_rules! impl_math_float_sqrte {
                 use llvm::simd_fsqrt;
                 Simd(unsafe { simd_fsqrt(self.0) })
             }
+        }
         }
 
         test_if!{
