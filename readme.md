@@ -4,7 +4,6 @@
 
 > This aims to be a 100% conforming implementation of the RFC2366 for stabilization.
 
-
 # Documentation
 
 * [`master` branch][master_docs]
@@ -66,8 +65,8 @@ the full testsuite passes on the target.
 | **Windows targets:**              | **build** | **run** |
 | `x86_64-pc-windows-msvc`          | ✓         | ✓       |
 | `i686-pc-windows-msvc`            | ✓         | ✓       |
-| `x86_64-pc-windows-gnu`           | ✓         | ✓       |
-| `i686-pc-windows-gnu`             | ✓         | ✓       |
+| `x86_64-pc-windows-gnu`           | ✗          | ✗        |
+| `i686-pc-windows-gnu`             | ✗          | ✗        |
 | **Android targets:**              | **build** | **run** |
 | `x86_64-linux-android`            | ✓         | ✓       |
 | `arm-linux-androideabi`           | ✓         | ✓       |
@@ -111,8 +110,8 @@ dual licensed as above, without any additional terms or conditions.
 
 [travis]: https://travis-ci.org/rust-lang-nursery/packed_simd
 [Travis-CI Status]: https://travis-ci.org/rust-lang-nursery/packed_simd.svg?branch=master
-[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd-j9hcp/branch/master
-[Appveyor Status]: https://ci.appveyor.com/api/projects/status/6blrl5jd44idkt9i?svg=true
+[appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd
+[Appveyor Status]: https://ci.appveyor.com/api/projects/status/hd7v9dvr442hgdix?svg=true
 [Latest Version]: https://img.shields.io/crates/v/packed_simd.svg
 [crates.io]: https://crates.io/crates/packed_simd
 [docs]: https://docs.rs/packed_simd/badge.svg
