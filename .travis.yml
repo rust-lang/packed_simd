@@ -101,6 +101,12 @@ matrix:
       name: "i686-apple-darwin + SSE4.2"
       script: ci/run.sh
       osx_image: xcode9.4
+      # Travis-CI OSX build bots do not support AVX2:
+    - os: osx
+      env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+avx"
+      name: "i686-apple-darwin + AVX"
+      script: ci/run.sh
+      osx_image: xcode9.4
     - os: osx
       env: TARGET=x86_64-apple-darwin
       name: "x86_64-apple-darwin + SSE2"
@@ -110,6 +116,13 @@ matrix:
     - os: osx
       env: TARGET=x86_64-apple-darwin RUSTFLAGS="-C target-feature=+sse4.2"
       name: "x86_64-apple-darwin + SSE4.2"
+      install: true
+      script: ci/run.sh
+      osx_image: xcode9.4
+      # Travis-CI OSX build bots do not support AVX2:
+    - os: osx
+      env: TARGET=x86_64-apple-darwin RUSTFLAGS="-C target-feature=+avx"
+      name: "x86_64-apple-darwin + AVX"
       install: true
       script: ci/run.sh
       osx_image: xcode9.4

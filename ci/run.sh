@@ -58,6 +58,7 @@ cargo_test_impl() {
 }
 
 cargo_test_impl
+cargo_test_impl "--release --features=into_bits"
 cargo_test_impl "--release --features=into_bits,coresimd"
 
 # Examples - the source directory is read-only.
