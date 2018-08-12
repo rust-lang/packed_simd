@@ -1,0 +1,25 @@
+[package]
+name = "packed_simd_vTests"
+version = "0.1.0"
+authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+
+[lib]
+name = "packed_simd_vTests"
+path = "../../src/lib.rs"
+
+[dev-dependencies]
+cfg-if = "^0.1"
+packed_simd = { path = "../.." }
+interpolate_idents = "^0.2"
+arrayvec = { version = "^0.4", default-features = false }
+
+[features]
+default = [ "disable_impls" ]
+disable_impls = []
+test_v16 = []
+test_v32 = []
+test_v64 = []
+test_v128 = []
+test_v256 = []
+test_v512 = []
+test_none = []

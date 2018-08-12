@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_fma {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Fused multiply add: `self * y + z`
             #[inline]
@@ -9,6 +10,7 @@ macro_rules! impl_math_float_fma {
                 use crate::codegen::math::float::fma::Fma;
                 Fma::fma(self, y, z)
             }
+        }
         }
 
         test_if!{

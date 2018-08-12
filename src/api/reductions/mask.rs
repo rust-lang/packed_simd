@@ -2,6 +2,7 @@
 
 macro_rules! impl_reduction_mask {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Are `all` vector lanes `true`?
             #[inline]
@@ -19,7 +20,7 @@ macro_rules! impl_reduction_mask {
                 !self.any()
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

@@ -2,6 +2,7 @@
 
 macro_rules! impl_ops_vector_int_min_max {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Minimum of two vectors.
             ///
@@ -20,6 +21,7 @@ macro_rules! impl_ops_vector_int_min_max {
             pub fn max(self, x: Self) -> Self {
                 self.gt(x).select(self, x)
             }
+        }
         }
         test_if!{$test_tt:
         interpolate_idents! {

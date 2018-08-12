@@ -24,6 +24,7 @@
 //! are applied to each vector lane in isolation of the others:
 //!
 //! ```
+//! # extern crate packed_simd;
 //! # use packed_simd::*;
 //! let a = i32x4::new(1, 2, 3, 4);
 //! let b = i32x4::new(5, 6, 7, 8);
@@ -34,6 +35,7 @@
 //! whose result depends on all elements of a single vector type:
 //!
 //! ```
+//! # extern crate packed_simd;
 //! # use packed_simd::*;
 //! # let a = i32x4::new(1, 2, 3, 4);
 //! assert_eq!(a.wrapping_sum(), 10);
@@ -46,6 +48,7 @@
 //! and performing a single horizontal operation at the end:
 //!
 //! ```
+//! # extern crate packed_simd;
 //! # use packed_simd::*;
 //! fn reduce(x: &[i32]) -> i32 {
 //!     assert!(x.len() % 4 == 0);
@@ -76,6 +79,7 @@
 //! ## Basic operations
 //!
 //! ```
+//! # extern crate packed_simd;
 //! # use packed_simd::*;
 //! // Sets all elements to `0`:
 //! let a = i32x4::splat(0);
@@ -104,6 +108,7 @@
 //! to be performed:
 //!
 //! ```
+//! # extern crate packed_simd;
 //! # use packed_simd::*;
 //! let a = i32x4::new(1, 1, 2, 2);
 //!
@@ -137,6 +142,7 @@
 //! All vertical comparison operations returns masks:
 //!
 //! ```
+//! # extern crate packed_simd;
 //! # use packed_simd::*;
 //! let a = i32x4::new(1, 1, 3, 3);
 //! let b = i32x4::new(2, 2, 0, 0);
@@ -205,7 +211,8 @@
     core_intrinsics,
     stmt_expr_attributes,
     align_offset,
-    mmx_target_feature
+    mmx_target_feature,
+    rustc_private,
 )]
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]
@@ -226,12 +233,17 @@
 #![deny(warnings)]
 #![no_std]
 
+#[cfg(all(test, feature = "disable_impls", not(feature = "test_none")))]
+extern crate packed_simd;
+#[cfg(all(test, feature = "disable_impls", not(feature = "test_none")))]
+use packed_simd::*;
+
 #[macro_use]
 extern crate cfg_if;
 
 cfg_if! {
-    if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
-                 feature = "coresimd"))] {
+    if #[cfg(all(target_arch = "arm", target_feature = "v7",
+                 target_feature = "neon", feature = "coresimd"))] {
         extern crate coresimd;
         #[allow(unused_imports)]
         use coresimd::arch;
@@ -255,71 +267,67 @@ mod testing;
 
 #[macro_use]
 mod api;
-mod codegen;
-mod sealed;
-
-/// Packed SIMD vector type.
-///
-/// # Examples
-///
-/// ```
-/// # use packed_simd::Simd;
-/// let v = Simd::<[i32; 4]>::new(0, 1, 2, 3);
-/// assert_eq!(v.extract(2), 2);
-/// ```
-#[repr(transparent)]
-#[derive(Copy, Clone)]
-pub struct Simd<A: sealed::SimdArray>(
-    // FIXME: this type should be private,
-    // but it currently must be public for the
-    // `shuffle!` macro to work: it needs to
-    // access the internal `repr(simd)` type
-    // to call the shuffle intrinsics.
-    #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
-);
-
-/// Wrapper over `T` implementing `PartialOrd` and/or `Ord`.
-#[repr(transparent)]
-#[derive(Copy, Clone, Debug)]
-#[cfg_attr(
-    feature = "cargo-clippy",
-    allow(missing_inline_in_public_items)
-)]
-pub struct PartiallyOrdered<T>(T);
-
-mod masks;
-pub use self::masks::*;
 
 mod v16;
-pub use self::v16::*;
-
 mod v32;
-pub use self::v32::*;
-
 mod v64;
-pub use self::v64::*;
-
 mod v128;
-pub use self::v128::*;
-
 mod v256;
-pub use self::v256::*;
-
 mod v512;
-pub use self::v512::*;
 
-pub use self::api::cast::*;
+impl_! {
+    mod codegen;
+    mod sealed;
 
-#[cfg(feature = "into_bits")]
-pub use self::api::into_bits::*;
+    /// Packed SIMD vector type.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use packed_simd::Simd;
+    /// let v = Simd::<[i32; 4]>::new(0, 1, 2, 3);
+    /// assert_eq!(v.extract(2), 2);
+    /// ```
+    #[repr(transparent)]
+    #[derive(Copy, Clone)]
+    pub struct Simd<A: sealed::SimdArray>(
+        // FIXME: this type should be private,
+        // but it currently must be public for the
+        // `shuffle!` macro to work: it needs to
+        // access the internal `repr(simd)` type
+        // to call the shuffle intrinsics.
+        #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
+    );
 
-// Re-export the shuffle intrinsics required by the `shuffle!` macro.
-#[doc(hidden)]
-pub use self::codegen::llvm::{
-    __shuffle_vector16, __shuffle_vector2, __shuffle_vector32,
-    __shuffle_vector4, __shuffle_vector64, __shuffle_vector8,
-};
+    /// Wrapper over `T` implementing `PartialOrd` and/or `Ord`.
+    #[repr(transparent)]
+    #[derive(Copy, Clone, Debug)]
+    #[cfg_attr(
+        feature = "cargo-clippy",
+        allow(missing_inline_in_public_items)
+    )]
+    pub struct PartiallyOrdered<T>(T);
 
-crate mod llvm {
-    crate use codegen::llvm::*;
+    mod masks;
+    pub use self::masks::*;
+
+    pub use self::v16::*;
+    pub use self::v32::*;
+    pub use self::v64::*;
+    pub use self::v128::*;
+    pub use self::v256::*;
+    pub use self::v512::*;
+    pub use self::api::cast::*;
+    #[cfg(feature = "into_bits")]
+    pub use self::api::into_bits::*;
+
+    // Re-export the shuffle intrinsics required by the `shuffle!` macro.
+    #[doc(hidden)]
+    pub use self::codegen::llvm::{
+        __shuffle_vector16, __shuffle_vector2, __shuffle_vector32,
+        __shuffle_vector4, __shuffle_vector64, __shuffle_vector8,
+    };
+    crate mod llvm { // FIXME: change paths to use codegen::llvm:: everywhere
+        crate use codegen::llvm::*;
+    }
 }

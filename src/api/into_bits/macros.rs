@@ -2,11 +2,13 @@
 
 macro_rules! impl_from_bits_ {
     ($id:ident[$test_tt:tt]: $from_ty:ident) => {
+        impl_!{
         impl crate::api::into_bits::FromBits<$from_ty> for $id {
             #[inline]
             fn from_bits(x: $from_ty) -> Self {
                 unsafe { ::mem::transmute(x) }
             }
+        }
         }
 
         test_if!{

@@ -2,6 +2,7 @@
 
 macro_rules! impl_slice_from_slice {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_! {
         impl $id {
             /// Instantiates a new vector with the values of the `slice`.
             ///
@@ -68,6 +69,7 @@ macro_rules! impl_slice_from_slice {
                 );
                 x
             }
+        }
         }
 
         test_if!{

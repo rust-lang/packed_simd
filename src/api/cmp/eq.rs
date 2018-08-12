@@ -6,8 +6,10 @@ macro_rules! impl_cmp_eq {
         $id:ident | $test_tt:tt |
         ($true:expr, $false:expr)
     ) => {
-        impl ::cmp::Eq for $id {}
-        impl ::cmp::Eq for PartiallyOrdered<$id> {}
+        impl_!{
+            impl ::cmp::Eq for $id {}
+            impl ::cmp::Eq for PartiallyOrdered<$id> {}
+        }
 
         test_if!{
             $test_tt:

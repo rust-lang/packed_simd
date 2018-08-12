@@ -55,19 +55,22 @@ cargo_test() {
 }
 
 cargo_test_impl() {
-    ORIGINAL_RUSTFLAGS=${RUSTFLAGS}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v16  --cfg test_v32" cargo_test ${@}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v64  --cfg test_v128" cargo_test ${@}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v256 --cfg test_v512" cargo_test ${@}
-    RUSTFLAGS=${ORIGINAL_RUSTFLAGS}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v16 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v32 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v64 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v128 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v256 ${@}
+    cargo_test --manifest-path=target/vTests/Cargo.toml --features=test_v512 ${@}
 }
+
+cp -r crates/vTests target/vTests
 
 cargo_test_impl
 cargo_test_impl --release --features=into_bits,coresimd
 
 # Verify code generation
 if [[ "${NOVERIFY}" != "1" ]]; then
-    cp -r verify/verify target/verify
+    cp -r crates/verify target/verify
     cargo_test --release --manifest-path=target/verify/Cargo.toml
 fi
 

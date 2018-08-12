@@ -2,11 +2,13 @@
 
 macro_rules! impl_default {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl ::default::Default for $id {
             #[inline]
             fn default() -> Self {
                 Self::splat($elem_ty::default())
             }
+        }
         }
 
         test_if!{

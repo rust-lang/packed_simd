@@ -6,6 +6,7 @@ macro_rules! impl_ops_scalar_mask_bitwise {
         $id:ident | $test_tt:tt |
         ($true:expr, $false:expr)
     ) => {
+        impl_!{
         impl ::ops::BitXor<bool> for $id {
             type Output = Self;
             #[inline]
@@ -69,7 +70,7 @@ macro_rules! impl_ops_scalar_mask_bitwise {
                 *self = *self ^ other;
             }
         }
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

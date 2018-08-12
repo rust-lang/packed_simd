@@ -93,7 +93,7 @@ impl_arch!(
      float64x1_t] |
     from: i8x8, u8x8, m8x8, i16x4, u16x4, m16x4, i32x2, u32x2, f32x2, m32x2 |
     into: i8x8, u8x8, i16x4, u16x4, i32x2, u32x2, f32x2 |
-    test: test_v64
+    test: "test_v64"
 );
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ impl_arch!(
     i64x2, u64x2, f64x2, m64x2, i128x1, u128x1, m128x1 |
     into: i8x16, u8x16, i16x8, u16x8, i32x4, u32x4, f32x4, i64x2, u64x2, f64x2,
     i128x1, u128x1 |
-    test: test_v128
+    test: "test_v128"
 );
 
 impl_arch!(
@@ -137,7 +137,7 @@ impl_arch!(
     i64x2, u64x2, f64x2, i128x1, u128x1,
     // Masks:
     m8x16 |
-    test: test_v128
+    test: "test_v128"
 );
 
 impl_arch!(
@@ -148,7 +148,7 @@ impl_arch!(
     i64x2, u64x2, f64x2, i128x1, u128x1,
     // Masks:
     m8x16, m16x8 |
-    test: test_v128
+    test: "test_v128"
 );
 
 impl_arch!(
@@ -159,7 +159,7 @@ impl_arch!(
     i64x2, u64x2, f64x2, i128x1, u128x1,
     // Masks:
     m8x16, m16x8, m32x4 |
-    test: test_v128
+    test: "test_v128"
 );
 
 impl_arch!(
@@ -169,7 +169,7 @@ impl_arch!(
     i64x2, u64x2, f64x2, i128x1, u128x1,
     // Masks:
     m8x16, m16x8, m32x4, m64x2 |
-    test: test_v128
+    test: "test_v128"
 );
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -183,7 +183,7 @@ impl_arch!(
     i64x4, u64x4, f64x4, m64x4, i128x2, u128x2, m128x2 |
     into: i8x32, u8x32, i16x16, u16x16, i32x8, u32x8, f32x8,
     i64x4, u64x4, f64x4, i128x2, u128x2 |
-    test: test_v256
+    test: "test_v256"
 );
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -2,12 +2,14 @@
 
 macro_rules! impl_math_float_sqrt {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             #[inline]
             pub fn sqrt(self) -> Self {
                 use crate::codegen::math::float::sqrt::Sqrt;
                 Sqrt::sqrt(self)
             }
+        }
         }
 
         test_if!{

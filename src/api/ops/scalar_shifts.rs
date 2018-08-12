@@ -2,6 +2,7 @@
 
 macro_rules! impl_ops_scalar_shifts {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl ::ops::Shl<u32> for $id {
             type Output = Self;
             #[inline]
@@ -28,6 +29,7 @@ macro_rules! impl_ops_scalar_shifts {
             fn shr_assign(&mut self, other: u32) {
                 *self = *self >> other;
             }
+        }
         }
         test_if!{
             $test_tt:

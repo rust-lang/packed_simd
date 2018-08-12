@@ -2,6 +2,7 @@
 
 macro_rules! impl_math_float_recpre {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Reciprocal estimate: `~= 1. / self`.
             ///
@@ -10,6 +11,7 @@ macro_rules! impl_math_float_recpre {
             pub fn recpre(self) -> Self {
                 $id::splat(1.) / self
             }
+        }
         }
 
         test_if!{

@@ -2,6 +2,7 @@
 
 macro_rules! impl_from_cast_ {
     ($id:ident[$test_tt:tt]: $from_ty:ident) => {
+        impl_!{
         impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
             fn from_cast(x: $from_ty) -> Self {
@@ -9,6 +10,7 @@ macro_rules! impl_from_cast_ {
                 debug_assert_eq!($from_ty::lanes(), $id::lanes());
                 Simd(unsafe { simd_cast(x.0) })
             }
+        }
         }
 
         test_if!{
@@ -36,6 +38,7 @@ macro_rules! impl_from_cast {
 
 macro_rules! impl_from_cast_mask_ {
     ($id:ident[$test_tt:tt]: $from_ty:ident) => {
+        impl_!{
         impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
             fn from_cast(x: $from_ty) -> Self {
@@ -43,6 +46,7 @@ macro_rules! impl_from_cast_mask_ {
                 x.ne($from_ty::default())
                     .select($id::splat(true), $id::splat(false))
             }
+        }
         }
 
         test_if!{

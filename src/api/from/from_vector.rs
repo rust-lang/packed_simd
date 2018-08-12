@@ -2,6 +2,7 @@
 
 macro_rules! impl_from_vector {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt | $source:ident) => {
+        impl_!{
         impl From<$source> for $id {
             #[inline]
             fn from(source: $source) -> Self {
@@ -29,7 +30,7 @@ macro_rules! impl_from_vector {
                             }
                         }
                         */
-
+        }
         test_if!{
             $test_tt:
             interpolate_idents! {

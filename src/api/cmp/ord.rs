@@ -6,20 +6,22 @@ macro_rules! impl_cmp_ord {
         $id:ident | $test_tt:tt |
         ($true:expr, $false:expr)
     ) => {
-        impl $id {
-            /// Returns a wrapper that implements `Ord`.
-            #[inline]
-            pub fn ord(&self) -> PartiallyOrdered<$id> {
-                PartiallyOrdered(*self)
+        impl_!{
+            impl $id {
+                /// Returns a wrapper that implements `Ord`.
+                #[inline]
+                pub fn ord(&self) -> PartiallyOrdered<$id> {
+                    PartiallyOrdered(*self)
+                }
             }
-        }
 
-        impl ::cmp::Ord for PartiallyOrdered<$id> {
-            #[inline]
-            fn cmp(&self, other: &Self) -> ::cmp::Ordering {
-                match self.partial_cmp(other) {
-                    Some(x) => x,
-                    None => unsafe { ::hint::unreachable_unchecked() },
+            impl ::cmp::Ord for PartiallyOrdered<$id> {
+                #[inline]
+                fn cmp(&self, other: &Self) -> ::cmp::Ordering {
+                    match self.partial_cmp(other) {
+                        Some(x) => x,
+                        None => unsafe { ::hint::unreachable_unchecked() },
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@
 
 macro_rules! impl_ops_vector_float_min_max {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
+        impl_!{
         impl $id {
             /// Minimum of two vectors.
             ///
@@ -22,6 +23,7 @@ macro_rules! impl_ops_vector_float_min_max {
                 use codegen::llvm::simd_fmax;
                 unsafe { Simd(simd_fmax(self.0, x.0)) }
             }
+        }
         }
         test_if!{
             $test_tt:
