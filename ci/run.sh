@@ -67,7 +67,7 @@ cargo_test_impl --release --features=into_bits,coresimd
 
 # Verify code generation
 if [[ "${NOVERIFY}" != "1" ]]; then
-    cp -r verify target/verify
+    cp -r verify/verify target/verify
     cargo_test --release --manifest-path=target/verify/Cargo.toml
 fi
 
