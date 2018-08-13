@@ -1,4 +1,7 @@
-//! Vertical floating-point `abs`
+//! Vertical floating-point `fabs`
+#![allow(unused)]
+
+// FIXME 64-bit fabsgle elem vectors misfabsg
 
 use crate::*;
 
@@ -6,74 +9,108 @@ crate trait Abs {
     fn abs(self) -> Self;
 }
 
-cfg_if! {
-    if #[cfg(target_arch = "s390x")] {
-        trait ScalarAbs {
-            fn scalar_abs(self) -> Self;
-        }
-        impl ScalarAbs for f32 {
-            fn scalar_abs(self) -> Self {
-                unsafe { intrinsics::fabsf32(self) }
-            }
-        }
-        impl ScalarAbs for f64 {
-            fn scalar_abs(self) -> Self {
-                unsafe { intrinsics::fabsf64(self) }
-            }
-        }
-    } else {
-        #[allow(improper_ctypes)]
-        extern "C" {
-            #[link_name = "llvm.fabs.v2f32"]
-            fn abs_v2f32(x: f32x2) -> f32x2;
-            #[link_name = "llvm.fabs.v4f32"]
-            fn abs_v4f32(x: f32x4) -> f32x4;
-            #[link_name = "llvm.fabs.v8f32"]
-            fn abs_v8f32(x: f32x8) -> f32x8;
-            #[link_name = "llvm.fabs.v16f32"]
-            fn abs_v16f32(x: f32x16) -> f32x16;
-            /* FIXME 64-bit single elem vectors
-            #[link_name = "llvm.fabs.v1f64"]
-            fn abs_v1f64(x: f64x1) -> f64x1;
-            */
-            #[link_name = "llvm.fabs.v2f64"]
-            fn abs_v2f64(x: f64x2) -> f64x2;
-            #[link_name = "llvm.fabs.v4f64"]
-            fn abs_v4f64(x: f64x4) -> f64x4;
-            #[link_name = "llvm.fabs.v8f64"]
-            fn abs_v8f64(x: f64x8) -> f64x8;
-        }
-    }
+#[allow(improper_ctypes)]
+extern "C" {
+    #[link_name = "llvm.fabs.v2f32"]
+    fn fabs_v2f32(x: f32x2) -> f32x2;
+    #[link_name = "llvm.fabs.v4f32"]
+    fn fabs_v4f32(x: f32x4) -> f32x4;
+    #[link_name = "llvm.fabs.v8f32"]
+    fn fabs_v8f32(x: f32x8) -> f32x8;
+    #[link_name = "llvm.fabs.v16f32"]
+    fn fabs_v16f32(x: f32x16) -> f32x16;
+    /* FIXME 64-bit fabsgle elem vectors
+    #[link_name = "llvm.fabs.v1f64"]
+    fn fabs_v1f64(x: f64x1) -> f64x1;
+     */
+    #[link_name = "llvm.fabs.v2f64"]
+    fn fabs_v2f64(x: f64x2) -> f64x2;
+    #[link_name = "llvm.fabs.v4f64"]
+    fn fabs_v4f64(x: f64x4) -> f64x4;
+    #[link_name = "llvm.fabs.v8f64"]
+    fn fabs_v8f64(x: f64x8) -> f64x8;
+
+    #[link_name = "llvm.fabs.f32"]
+    fn fabs_f32(x: f32) -> f32;
+    #[link_name = "llvm.fabs.f64"]
+    fn fabs_f64(x: f64) -> f64;
 }
 
-macro_rules! impl_fabs {
-    ($id:ident : $fn:ident) => {
-        impl Abs for $id {
+macro_rules! impl_vfabs {
+    ($vid:ident: $llvm_fn:ident) => {
+        impl Abs for $vid {
             #[inline]
             fn abs(self) -> Self {
-                #[cfg(not(target_arch = "s390x"))]
-                {
-                    unsafe { $fn(self) }
-                }
-                #[cfg(target_arch = "s390x")]
-                {
-                    // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/14
-                    let mut v = $id::splat(0.);
-                    for i in 0..$id::lanes() {
-                        v = v.replace(i, self.extract(i).scalar_abs())
+                unsafe { mem::transmute($llvm_fn(mem::transmute(self))) }
+            }
+        }
+    };
+}
+
+macro_rules! impl_sfabs {
+    ($vid:ident => [$sid:ident; $scount:expr]: $llvm_fn:ident) => {
+        impl Abs for $vid {
+            #[inline]
+            fn abs(self) -> Self {
+                unsafe {
+                    let mut scalars: [$sid; $scount] = mem::transmute(self);
+                    for i in &mut scalars {
+                        *i = $llvm_fn(*i);
                     }
-                    v
+                    mem::transmute(scalars)
                 }
             }
         }
     };
 }
 
-impl_fabs!(f32x2: abs_v2f32);
-impl_fabs!(f32x4: abs_v4f32);
-impl_fabs!(f32x8: abs_v8f32);
-impl_fabs!(f32x16: abs_v16f32);
-// impl_fabs!(f64x1: abs_v1f64); // FIXME 64-bit single elem vectors
-impl_fabs!(f64x2: abs_v2f64);
-impl_fabs!(f64x4: abs_v4f64);
-impl_fabs!(f64x8: abs_v8f64);
+cfg_if! {
+    if #[cfg(target_arch = "s390x")] {
+        // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/14
+        impl_sfabs!(f32x2 => [f32; 2]: fabs_f32);
+        impl_sfabs!(f32x4 => [f32; 4]: fabs_f32);
+        impl_sfabs!(f32x8 => [f32; 8]: fabs_f32);
+        impl_sfabs!(f32x16 => [f32; 16]: fabs_f32);
+
+        impl_sfabs!(f64x2 => [f64; 2]: fabs_f64);
+        impl_sfabs!(f64x4 => [f64; 4]: fabs_f64);
+        impl_sfabs!(f64x8 => [f64; 8]: fabs_f64);
+    } else if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
+        use ::sleef_sys::*;
+        impl_sfabs!(f32x2 => [f32; 2]: fabs_f32);
+        impl_vfabs!(f32x16: fabs_v16f32);
+        impl_vfabs!(f64x8: fabs_v8f64);
+        cfg_if! {
+            if #[cfg(target_feature = "avx2")] {
+                impl_vfabs!(f32x4: Sleef_fabsf4_avx2128);
+                impl_vfabs!(f32x8: Sleef_fabsf8_avx2);
+                impl_vfabs!(f64x2: Sleef_fabsd2_avx2128);
+                impl_vfabs!(f64x4: Sleef_fabsd4_avx2);
+            } else if #[cfg(target_feature = "avx")] {
+                impl_vfabs!(f32x4: Sleef_fabsf4_sse4);
+                impl_vfabs!(f32x8: Sleef_fabsf8_avx);
+                impl_vfabs!(f64x2: Sleef_fabsd2_sse4);
+                impl_vfabs!(f64x4: Sleef_fabsd4_avx);
+            } else if #[cfg(target_feature = "sse4.2")] {
+                impl_vfabs!(f32x4: Sleef_fabsf4_sse4);
+                impl_vfabs!(f32x8: fabs_v8f32);
+                impl_vfabs!(f64x2: Sleef_fabsd2_sse4);
+                impl_vfabs!(f64x4: fabs_v4f64);
+            } else {
+                impl_vfabs!(f32x4: fabs_v4f32);
+                impl_vfabs!(f32x8: fabs_v8f32);
+                impl_vfabs!(f64x2: fabs_v2f64);
+                impl_vfabs!(f64x4: fabs_v4f64);
+            }
+        }
+    } else {
+        impl_sfabs!(f32x2 => [f32; 2]: fabs_f32);
+        impl_vfabs!(f32x4: fabs_v4f32);
+        impl_vfabs!(f32x8: fabs_v8f32);
+        impl_vfabs!(f32x16: fabs_v16f32);
+
+        impl_vfabs!(f64x2: fabs_v2f64);
+        impl_vfabs!(f64x4: fabs_v4f64);
+        impl_vfabs!(f64x8: fabs_v8f64);
+    }
+}

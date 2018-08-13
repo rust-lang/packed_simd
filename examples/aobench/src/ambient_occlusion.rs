@@ -63,12 +63,12 @@ pub fn vector<S: Scene>(scene: &mut S, isect: &Isect) -> f32 {
     for _i in 0..ntheta {
         for _j in (0..nphi).step_by(f32xN::lanes()) {
             let (theta, phi) = scene.rand_f32xN();
-            let theta = theta.sqrt();
-            let phi = f32xN::splat(2. * PI) * phi;
+            let theta = theta.sqrte();
+            let (sin, cos) = (2. * phi).sin_cos_pi();
 
             let n = V3DxN {
-                x: phi.cos() * theta,
-                y: phi.sin() * theta,
+                x: cos * theta,
+                y: sin * theta,
                 z: (f32xN::splat(1.0) - theta * theta).sqrt(),
             };
             let dir = basis * n;
@@ -101,12 +101,12 @@ pub fn vector_tiled<S: Scene>(scene: &mut S, isect: &IsectxN) -> f32xN {
     for _i in 0..ntheta {
         for _j in 0..nphi {
             let (theta, phi) = scene.rand_f32xN();
-            let theta = theta.sqrt();
-            let phi = (2. * PI) * phi;
+            let theta = theta.sqrte();
+            let (sin, cos) = (2. * phi).sin_cos_pi();
 
             let n = V3DxN {
-                x: phi.cos() * theta,
-                y: phi.sin() * theta,
+                x: cos * theta,
+                y: sin * theta,
                 z: (1.0 - theta * theta).sqrt(),
             };
             let dir = basis * n;

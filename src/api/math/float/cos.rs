@@ -9,6 +9,13 @@ macro_rules! impl_math_float_cos {
                 use crate::codegen::math::float::cos::Cos;
                 Cos::cos(self)
             }
+
+            /// Cosine of `self * PI`.
+            #[inline]
+            pub fn cos_pi(self) -> Self {
+                use crate::codegen::math::float::cos_pi::CosPi;
+                CosPi::cos_pi(self)
+            }
         }
 
         test_if!{

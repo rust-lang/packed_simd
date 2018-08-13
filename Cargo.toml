@@ -29,12 +29,16 @@ arrayvec = { version = "^0.4", default-features = false }
 # This works around that by fetching coresimd from the nursery directly,
 # and recompiling it with neon.
 [target.'cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))'.dependencies.coresimd]
-git = "http://github.com/rust-lang-nursery/stdsimd.git"
+git = "https://github.com/rust-lang-nursery/stdsimd.git"
 optional = true
 
 # FIXME: table lookup aarch64 intrinsics are not in nightly yet
 [target.'cfg(all(target_arch = "aarch64", target_feature = "neon"))'.dependencies.coresimd]
-git = "http://github.com/rust-lang-nursery/stdsimd.git"
+git = "https://github.com/rust-lang-nursery/stdsimd.git"
+optional = true
+
+[target.'cfg(all(target_arch = "x86_64", target_feature = "sse2"))'.dependencies.sleef-sys]
+version = "^0.1"
 optional = true
 
 [features]
