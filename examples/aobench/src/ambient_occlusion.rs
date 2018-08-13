@@ -112,7 +112,7 @@ pub fn vector_tiled<S: Scene>(scene: &mut S, isect: &IsectxN) -> f32xN {
             let dir = basis * n;
             let ray = RayxN { origin, dir };
 
-            let mut occ_isect = IsectxN::new();
+            let mut occ_isect = IsectxN::default();
             for s in scene.spheres() {
                 occ_isect = ray.intersect(s, occ_isect);
             }

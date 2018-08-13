@@ -17,7 +17,7 @@ pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut ::Image) {
         .enumerate()
         .for_each(|(y, image)| {
             assert!(image.len() == 3 * w);
-            let mut scene = S::new();
+            let mut scene = S::default();
             let yf = f32xN::splat(y as f32);
             let ptr: pf32xN = unsafe { ::std::mem::transmute(ptr) };
             for x in (0..w).step_by(f32xN::lanes()) {
@@ -43,25 +43,28 @@ pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut ::Image) {
                         let dir = dir.normalized();
 
                         let ray = RayxN {
-                            origin: V3DxN::new(),
+                            origin: V3DxN::default(),
                             dir,
                         };
 
-                        let mut isect = IsectxN::new();
+                        let mut isect = IsectxN::default();
                         for s in scene.spheres() {
                             isect = ray.intersect(s, isect);
                         }
                         isect = ray.intersect(scene.plane(), isect);
 
                         if isect.hit.any() {
-                            let ret =
-                                ambient_occlusion::vector_tiled(&mut scene, &isect)
-                                * f32xN::splat(inv_ns * inv_ns);
+                            let ret = ambient_occlusion::vector_tiled(
+                                &mut scene, &isect,
+                            ) * f32xN::splat(inv_ns * inv_ns);
 
                             unsafe {
-                                let img_r = r_ptr.read(isect.hit, f32xN::splat(0.));
-                                let img_g = g_ptr.read(isect.hit, f32xN::splat(0.));
-                                let img_b = b_ptr.read(isect.hit, f32xN::splat(0.));
+                                let img_r =
+                                    r_ptr.read(isect.hit, f32xN::splat(0.));
+                                let img_g =
+                                    g_ptr.read(isect.hit, f32xN::splat(0.));
+                                let img_b =
+                                    b_ptr.read(isect.hit, f32xN::splat(0.));
 
                                 r_ptr.write(isect.hit, img_r + ret);
                                 g_ptr.write(isect.hit, img_g + ret);

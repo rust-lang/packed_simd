@@ -38,11 +38,11 @@ fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
                     let dir = dir.normalized();
 
                     let ray = RayxN {
-                        origin: V3DxN::new(),
+                        origin: V3DxN::default(),
                         dir,
                     };
 
-                    let mut isect = IsectxN::new();
+                    let mut isect = IsectxN::default();
                     for s in scene.spheres() {
                         isect = ray.intersect(s, isect);
                     }
@@ -54,9 +54,12 @@ fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
                                 * f32xN::splat(inv_ns * inv_ns);
 
                         unsafe {
-                            let img_r = r_ptr.read(isect.hit, f32xN::splat(0.));
-                            let img_g = g_ptr.read(isect.hit, f32xN::splat(0.));
-                            let img_b = b_ptr.read(isect.hit, f32xN::splat(0.));
+                            let img_r =
+                                r_ptr.read(isect.hit, f32xN::splat(0.));
+                            let img_g =
+                                g_ptr.read(isect.hit, f32xN::splat(0.));
+                            let img_b =
+                                b_ptr.read(isect.hit, f32xN::splat(0.));
 
                             r_ptr.write(isect.hit, img_r + ret);
                             g_ptr.write(isect.hit, img_g + ret);

@@ -13,7 +13,8 @@
         inline_always,
         cast_possible_truncation,
         cast_sign_loss,
-        identity_op
+        identity_op,
+        erasing_op
     )
 )]
 
@@ -33,10 +34,10 @@ pub mod scene;
 
 pub mod scalar;
 pub mod scalar_parallel;
-pub mod vector;
-pub mod vector_parallel;
 pub mod tiled;
 pub mod tiled_parallel;
+pub mod vector;
+pub mod vector_parallel;
 
 pub use self::image::Image;
 pub use self::scene::Scene;

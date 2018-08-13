@@ -30,8 +30,13 @@ struct Opt {
     output: Option<PathBuf>,
 }
 
-const ALGORITHMS: &[&'static str] = &[
-    "scalar", "scalar_par", "vector", "vector_par", "tiled", "tiled_par"
+const ALGORITHMS: &[&str] = &[
+    "scalar",
+    "scalar_par",
+    "vector",
+    "vector_par",
+    "tiled",
+    "tiled_par",
 ];
 
 fn main() {
@@ -41,7 +46,8 @@ fn main() {
 
     let algorithm_name = opt.algo.as_str();
 
-    if let Some(algorithm) = ALGORITHMS.iter().find(|&&a| a == algorithm_name) {
+    if let Some(algorithm) = ALGORITHMS.iter().find(|&&a| a == algorithm_name)
+    {
         let d = time::Duration::span(|| match *algorithm {
             "scalar" => scalar::ao(&mut scene, 2, &mut img),
             "scalar_par" => scalar_parallel::ao(&mut scene, 2, &mut img),
@@ -51,8 +57,9 @@ fn main() {
             "tiled_par" => tiled_parallel::ao(&mut scene, 2, &mut img),
             _ => unreachable!(),
         });
-        let image_path =
-            opt.output.unwrap_or_else(|| PathBuf::from(format!("image_{}.png", algorithm)));
+        let image_path = opt.output.unwrap_or_else(|| {
+            PathBuf::from(format!("image_{}.png", algorithm))
+        });
         img.write_png(&image_path, false)
             .expect("failed to write image");
 

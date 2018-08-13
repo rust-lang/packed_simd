@@ -29,7 +29,6 @@ pub type m32xN = m32x8;
 #[cfg(feature = "256bit")]
 pub type pf32xN = Simd<[*mut f32; 8]>;
 
-
 #[cfg(not(feature = "256bit"))]
 pub type f32xN = f32x4;
 #[cfg(not(feature = "256bit"))]

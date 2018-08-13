@@ -43,7 +43,7 @@ macro_rules! impl_minimal_p {
             /// Constructs a new instance with each element initialized to `null`.
             #[inline]
             pub const fn null() -> Self {
-                Self::splat(0 as $elem_ty)
+                Self::splat(ptr::null_mut() as $elem_ty)
             }
 
             /// Returns a mask that selects those lanes that contain `null` pointers.
@@ -81,6 +81,7 @@ macro_rules! impl_minimal_p {
             /// If `index >= Self::lanes()`.
             #[inline]
             #[must_use = "replace does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
+            #[cfg_attr(feature = "cargo-clippy", allow(not_unsafe_ptr_arg_deref))]
             pub fn replace(self, index: usize, new_value: $elem_ty) -> Self {
                 assert!(index < $elem_count);
                 unsafe { self.replace_unchecked(index, new_value) }
@@ -560,7 +561,7 @@ macro_rules! impl_minimal_p {
                 use mem::size_of;
                 let target_ptr =
                     slice.get_unchecked(0) as *const $elem_ty as *const u8;
-                let mut x = Self::splat(0 as $elem_ty);
+                let mut x = Self::splat(ptr::null_mut() as $elem_ty);
                 let self_ptr = &mut x as *mut Self as *mut u8;
                 ptr::copy_nonoverlapping(
                     target_ptr,
@@ -1064,6 +1065,7 @@ macro_rules! impl_minimal_p {
             /// are difficult to satisfy. The only advantage of this method is
             /// that it enables more aggressive compiler optimizations.
             #[inline]
+            #[cfg_attr(feature = "cargo-clippy", allow(should_implement_trait))]
             pub unsafe fn add(self, count: $usize_ty) -> Self {
                 self.offset(count.cast())
             }
@@ -1104,6 +1106,7 @@ macro_rules! impl_minimal_p {
             /// difficult to satisfy. The only advantage of this method is that it
             /// enables more aggressive compiler optimizations.
             #[inline]
+            #[cfg_attr(feature = "cargo-clippy", allow(should_implement_trait))]
             pub unsafe fn sub(self, count: $usize_ty) -> Self {
                 let x: $isize_ty = count.cast();
                 // note: - is currently wrapping_neg
