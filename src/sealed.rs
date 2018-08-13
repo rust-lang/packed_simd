@@ -36,4 +36,6 @@ pub trait Simd {
 
 /// This trait is implemented by all mask types
 #[doc(hidden)]
-pub trait Mask { fn test(&self) -> bool; }
+pub trait Mask {
+    fn test(&self) -> bool;
+}
