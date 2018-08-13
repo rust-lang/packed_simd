@@ -27,6 +27,7 @@ criterion = { version = '^0.2', features=['real_blackbox'] }
 [features]
 default = [ "256bit" ]
 256bit = []
+sleef-sys = [ "packed_simd/sleef-sys" ]
 
 [profile.bench]
 opt-level = 3

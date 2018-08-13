@@ -250,6 +250,9 @@ use core::{
     intrinsics, iter, marker, mem, ops, ptr, slice,
 };
 
+#[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))]
+extern crate sleef_sys;
+
 #[macro_use]
 mod testing;
 

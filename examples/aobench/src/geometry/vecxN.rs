@@ -27,7 +27,7 @@ impl V3DxN {
     #[inline(always)]
     #[must_use]
     pub fn normalized(self) -> Self {
-        (1. / self.dot(self).sqrt()) * self
+        (1. / self.dot(self).sqrte()) * self
     }
 
     pub fn get(&self, idx: usize) -> V3D {

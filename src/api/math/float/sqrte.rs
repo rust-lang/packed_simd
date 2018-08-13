@@ -8,8 +8,8 @@ macro_rules! impl_math_float_sqrte {
             /// FIXME: The precision of the estimate is currently unspecified.
             #[inline]
             pub fn sqrte(self) -> Self {
-                use llvm::simd_fsqrt;
-                Simd(unsafe { simd_fsqrt(self.0) })
+                use crate::codegen::math::float::sqrte::Sqrte;
+                Sqrte::sqrte(self)
             }
         }
 

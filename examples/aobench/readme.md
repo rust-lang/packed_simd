@@ -38,9 +38,11 @@ On a dual core AVX1 i5 @1.8 GHz:
 | 800 x 600    | time [ms] <br> Rust | speedup [-] <br> Rust-vs-Rust | time [ms] <br> ISPC 1.9.2 | speedup [-] <br> ISPC-vs-Rust |
 |--------------|---------------------|-------------------------------|---------------------------|-------------------------------|
 | `scalar`     |                6266 |                          1.0x |                      4976 | clang7: 1.3x                  |
-| `vector`     |                2369 |                          2.6x |                      1157 | 2.0x                          |
-| `scalar_par` |                2443 |                          2.5x |                         - | -                             |
-| `vector_par` |                 983 |                          6.4x |                       454 | 2.2x                          |
+| `vector`     |                1535 |                          4.1x |                      1157 | 1.3x                          |
+| `tiled`      |                1382 |                          4.5x |                      1157 | 1.2x                          |
+| `scalar_par` |                2403 |                          2.5x |                         - | -                             |
+| `vector_par` |                 665 |                          9.4x |                       454 | 1.5x                          |
+| `tiled_par`  |                 619 |                         10.1x |                       454 | 1.4x                          |
 
 On a 28 core Xeon E5-2690 v4 @ 2.60GHz:
 
