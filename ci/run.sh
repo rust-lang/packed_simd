@@ -56,9 +56,9 @@ cargo_test() {
 
 cargo_test_impl() {
     ORIGINAL_RUSTFLAGS=${RUSTFLAGS}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v16  --cfg test_v32" cargo_test ${@}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v64  --cfg test_v128" cargo_test ${@}
-    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v256 --cfg test_v512" cargo_test ${@}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v16  --cfg test_v32 --cfg test_v64" cargo_test ${@}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v128 --cfg test_v256" cargo_test ${@}
+    RUSTFLAGS="${ORIGINAL_RUSTFLAGS} --cfg test_v512" cargo_test ${@}
     RUSTFLAGS=${ORIGINAL_RUSTFLAGS}
 }
 
