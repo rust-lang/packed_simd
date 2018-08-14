@@ -18,17 +18,17 @@ macro_rules! impl_from_vector {
         }
 
         // FIXME: `Into::into` is not inline, but due to
-                        // the blanket impl in `std`, which is not
-                        // marked `default`, we cannot override it here with
-                        // specialization.
-                        /*
-                        impl Into<$id> for $source {
-                            #[inline]
-                            fn into(self) -> $id {
-                                unsafe { simd_cast(self) }
-                            }
-                        }
-                        */
+                                        // the blanket impl in `std`, which is not
+                                        // marked `default`, we cannot override it here with
+                                        // specialization.
+                                        /*
+                                        impl Into<$id> for $source {
+                                            #[inline]
+                                            fn into(self) -> $id {
+                                                unsafe { simd_cast(self) }
+                                            }
+                                        }
+                                        */
 
         test_if!{
             $test_tt:

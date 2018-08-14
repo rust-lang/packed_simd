@@ -7,15 +7,21 @@ macro_rules! impl_reduction_min_max {
             /// Largest vector element value.
             #[inline]
             pub fn max_element(self) -> $elem_ty {
-                #[cfg(not(any(target_arch = "aarch64", target_arch = "arm",
-                              target_arch = "powerpc64",)))]
+                #[cfg(not(any(
+                    target_arch = "aarch64",
+                    target_arch = "arm",
+                    target_arch = "powerpc64"
+                )))]
                 {
                     use llvm::simd_reduce_max;
                     let v: $ielem_ty = unsafe { simd_reduce_max(self.0) };
                     v as $elem_ty
                 }
-                #[cfg(any(target_arch = "aarch64", target_arch = "arm",
-                          target_arch = "powerpc64",))]
+                #[cfg(any(
+                    target_arch = "aarch64",
+                    target_arch = "arm",
+                    target_arch = "powerpc64"
+                ))]
                 {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
@@ -30,32 +36,23 @@ macro_rules! impl_reduction_min_max {
             /// Smallest vector element value.
             #[inline]
             pub fn min_element(self) -> $elem_ty {
-                #[cfg(
-                    not(
-                        any(
-                            target_arch = "aarch64",
-                            target_arch = "arm",
-                            all(
-                                target_arch = "x86",
-                                not(target_feature = "sse2")
-                            ),
-                            target_arch = "powerpc64",
-                        )
-                    )
-                )]
+                #[cfg(not(any(
+                    target_arch = "aarch64",
+                    target_arch = "arm",
+                    all(target_arch = "x86", not(target_feature = "sse2")),
+                    target_arch = "powerpc64",
+                ),))]
                 {
                     use llvm::simd_reduce_min;
                     let v: $ielem_ty = unsafe { simd_reduce_min(self.0) };
                     v as $elem_ty
                 }
-                #[cfg(
-                    any(
-                        target_arch = "aarch64",
-                        target_arch = "arm",
-                        all(target_arch = "x86", not(target_feature = "sse2")),
-                        target_arch = "powerpc64",
-                    )
-                )]
+                #[cfg(any(
+                    target_arch = "aarch64",
+                    target_arch = "arm",
+                    all(target_arch = "x86", not(target_feature = "sse2")),
+                    target_arch = "powerpc64",
+                ))]
                 {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
