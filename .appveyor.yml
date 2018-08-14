@@ -1,6 +1,7 @@
 matrix:
   allow_failures:
     # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/72
+    - TARGET: i686-pc-windows-msvc
     - TARGET: i686-pc-windows-gnu
     - TARGET: x86_64-pc-windows-gnu
   fast_finish: true
