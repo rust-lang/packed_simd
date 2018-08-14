@@ -10,9 +10,10 @@ macro_rules! impl_select {
             /// the values of `a`. The remaining lanes contain the values of `b`.
             #[inline]
             pub fn select<T>(self, a: Simd<T>, b: Simd<T>) -> Simd<T>
-                where
+            where
                 T: sealed::SimdArray<
-                NT=<[$elem_ty; $elem_count] as sealed::SimdArray>::NT>
+                    NT = <[$elem_ty; $elem_count] as sealed::SimdArray>::NT,
+                >,
             {
                 use llvm::simd_select;
                 Simd(unsafe { simd_select(self.0, a.0, b.0) })
