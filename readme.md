@@ -29,11 +29,10 @@ Most of the examples come with both a scalar and a vectorized implementation.
   vector type as those of another vector type safely by just using the
   `.into_bits()` method.
   
-* `coresimd` (default: disabled): when targeting `arm` targets with the `v7` and
-  `neon` target features enabled, the `core::arch` component in the standard
-  library has typically been compiled without NEON, which means that for some
-  operations, NEON won't be used. The `coresimd` feature enables NEON support by
-  using `coresimd::arch` compiled with `v7` and `neon` instead of `core::arch`.
+* `coresimd` (default: disabled): when targeting architectures that could use
+  `core::arch` features that are not yet available on nightly, or that would
+  require `core` to be recompiled with these features enabled, `packed_simd` will 
+  use `coresimd` re-compiled with the appropriate features instead.
 
 # Platform support
 
