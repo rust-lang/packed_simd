@@ -27,9 +27,9 @@ pub mod ppm {
     }
 
     pub fn output(line: &mut [u8], index: usize, val: u32) {
-        let b = 3 * index;
-        let e = 3 * (index + 1);
-        let out = &mut line[b..e];
+        let beg = 3 * index;
+        let end = 3 * (index + 1);
+        let out = &mut line[beg..end];
         debug_assert_eq!(out.len(), 3);
         let (r, g, b) = if val == LIMIT {
             (0, 0, 0)

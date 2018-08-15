@@ -132,7 +132,7 @@ pub fn advance(bodies: &mut [Body; N_BODIES], dt: f64) {
         i += 2;
     }
 
-    let mut i = 0;
+    i = 0;
     for j in 0..N_BODIES {
         for k in j + 1..N_BODIES {
             let f = r[i] * mag[i];

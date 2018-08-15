@@ -128,11 +128,11 @@ fn work(mut perm: Perm, n: usize, max: usize) -> (i32, i32) {
 pub fn fannkuch_redux(n: usize) -> (i32, i32) {
     let perm = Perm::new(n as u32);
 
-    let n = 1;
+    let m = 1;
     let mut futures = vec![];
-    let k = perm.max() / n;
+    let k = perm.max() / m;
 
-    for j in (0..).map(|x| x * k).take_while(|&j| j < k * n) {
+    for j in (0..).map(|x| x * k).take_while(|&j| j < k * m) {
         let max = cmp::min(j + k, perm.max());
 
         futures
