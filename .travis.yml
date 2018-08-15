@@ -18,11 +18,9 @@ matrix:
       name: "aarch64-unknown-linux-android + NEON"
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
+      name: "i586-unknown-linux-gnu + SSE"
+    - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse2"
       name: "i586-unknown-linux-gnu + SSE2"
-    - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
-      name: "i586-unknown-linux-gnu + SSE4.2"
-    - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
-      name: "i586-unknown-linux-gnu + AVX2"
     - env: TARGET=i686-unknown-linux-gnu
       name: "i686-unknown-linux-gnu + SSE2"
     - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
