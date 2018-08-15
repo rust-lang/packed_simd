@@ -31,13 +31,13 @@ matrix:
       name: "i686-unknown-linux-gnu + AVX2"
     - env: TARGET=x86_64-unknown-linux-gnu
       name: "x86_64-unknown-linux-gnu + SSE2"
-      install: true
+      install: rustup component add rustfmt-preview
     - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
       name: "x86_64-unknown-linux-gnu + SSE4.2"
-      install: true
+      install: rustup component add rustfmt-preview
     - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
       name: "x86_64-unknown-linux-gnu + AVX2"
-      install: true
+      install: rustup component add rustfmt-preview
     - env: TARGET=x86_64-unknown-linux-gnu-emulated
       name: "Intel SDE + SSE2"
       install: true

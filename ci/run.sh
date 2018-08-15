@@ -64,7 +64,8 @@ cargo_test_impl() {
 
 cargo_test_impl
 
-if [[ "${TARGET}" == *"x86_64"* ]]; then
+if [[ "${TARGET}" == "x86_64-unknown-linux-gnu" ]] || [[ "${TARGET}" == "x86_64-pc-windows-msvc" ]]; then
+    # use sleef on linux and windows x86_64 builds
     cargo_test_impl --release --features=into_bits,coresimd,sleef-sys
 else
     cargo_test_impl --release --features=into_bits,coresimd
