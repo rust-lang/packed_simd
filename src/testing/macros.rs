@@ -28,6 +28,7 @@ macro_rules! test_if {
 }
 
 #[cfg(test)]
+#[allow(unused)]
 macro_rules! ref_ {
     ($anything:tt) => {
         &$anything
@@ -35,6 +36,7 @@ macro_rules! ref_ {
 }
 
 #[cfg(test)]
+#[allow(unused)]
 macro_rules! ref_mut_ {
     ($anything:tt) => {
         &mut $anything

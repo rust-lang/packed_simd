@@ -16,7 +16,7 @@ macro_rules! impl_vsqrt {
         impl Sqrte for $vid {
             #[inline]
             fn sqrte(self) -> Self {
-                unsafe { $llvm_fn(self) }
+                unsafe { mem::transmute($llvm_fn(self.0)) }
             }
         }
     };
