@@ -34,6 +34,7 @@ mkdir target || true
 rustc --version
 cargo --version
 echo "TARGET=${TARGET}"
+echo "HOST=${HOST}"
 echo "RUSTFLAGS=${RUSTFLAGS}"
 echo "NORUN=${NORUN}"
 echo "NOVERIFY=${NOVERIFY}"
