@@ -34,8 +34,10 @@ Most of the examples come with both a scalar and a vectorized implementation.
   require `core` to be recompiled with these features enabled, `packed_simd` will 
   use `coresimd` re-compiled with the appropriate features instead.
   
-* `sleef-sys` (default: disabled - `x86_64` only): internally uses the SLEEF short-vector
-  math library when profitable.
+* `sleef-sys` (default: disabled - `x86_64` only): internally uses the SLEEF
+  short-vector math library when profitable. SLEEF is licensed under the Boost
+  Software License v1.0, an extremely permissive license, and can be statically
+  linked without issues. 
 
 # Platform support
 

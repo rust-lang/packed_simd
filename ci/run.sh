@@ -63,10 +63,11 @@ cargo_test_impl() {
 }
 
 cargo_test_impl
-cargo_test_impl --release --features=into_bits,coresimd
 
 if [[ "${TARGET}" == *"x86_64"* ]]; then
     cargo_test_impl --release --features=into_bits,coresimd,sleef-sys
+else
+    cargo_test_impl --release --features=into_bits,coresimd
 fi
 
 # Verify code generation

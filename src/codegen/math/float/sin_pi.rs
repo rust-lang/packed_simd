@@ -68,6 +68,6 @@ cfg_if! {
 
         impl_def!(f64x2, core::f64::consts::PI);
         impl_def!(f64x4, core::f64::consts::PI);
-        impl_def!(f64x8, , core::f64::consts::PI);
+        impl_def!(f64x8, core::f64::consts::PI);
     }
 }
