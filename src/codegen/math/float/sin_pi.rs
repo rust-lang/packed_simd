@@ -50,14 +50,14 @@ cfg_if! {
                 impl_vsin!(f64x4: Sleef_sinpid4_u05avx);
             } else if #[cfg(target_feature = "sse4.2")] {
                 impl_vsin!(f32x4: Sleef_sinpif4_u05sse4);
-                impl_vsin!(f32x8: sin_v8f32);
+                impl_def!(f32x8, core::f32::consts::PI);
                 impl_vsin!(f64x2: Sleef_sinpid2_u05sse4);
-                impl_vsin!(f64x4: sin_v4f64);
+                impl_def!(f64x4, core::f64::consts::PI);
             } else {
-                impl_vsin!(f32x4: sin_v4f32);
-                impl_vsin!(f32x8: sin_v8f32);
-                impl_vsin!(f64x2: sin_v2f64);
-                impl_vsin!(f64x4: sin_v4f64);
+                impl_def!(f32x4, core::f32::consts::PI);
+                impl_def!(f32x8, core::f32::consts::PI);
+                impl_def!(f64x2, core::f64::consts::PI);
+                impl_def!(f64x4, core::f64::consts::PI);
             }
         }
     } else {
