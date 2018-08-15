@@ -4,7 +4,7 @@
 set -ex
 
 run() {
-    echo "Building docker container for TARGET=${1}"
+    echo "Building docker container for TARGET=${1} RUSTFLAGS=${RUSTFLAGS}"
     docker build -t packed_simd -f ci/docker/$1/Dockerfile ci/
     mkdir -p target
     target=$(echo $1 | sed 's/-emulated//')
@@ -18,6 +18,7 @@ run() {
       --volume `rustc --print sysroot`:/rust:ro \
       --env TARGET=$target \
       --env NORUN \
+      --env RUSTFLAGS \
       --volume `pwd`:/checkout:ro \
       --volume `pwd`/target:/checkout/target \
       --workdir /checkout \
