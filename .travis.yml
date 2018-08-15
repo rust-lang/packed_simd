@@ -6,7 +6,7 @@ matrix:
   fast_finish: true
   include:
     # Android:
-    - env: TARGET=x86_64-linux-android
+    - env: TARGET=x86_64-linux-android NOVERIFY=1
       name: "x86_64-unknown-linux-android + SSE2"
     - env: TARGET=arm-linux-androideabi
       name: "arm-linux-androideabi"
@@ -158,7 +158,6 @@ matrix:
     # WASM:
     - env: TARGET=wasm32-unknown-unknown NORUN=1
       name: "wasm32-unknown-unknown [BUILD only]"
-      script: ci/run.sh
     # TOOLS:
     - name: "Documentation"
       install: true
@@ -198,9 +197,8 @@ matrix:
     - env: TARGET=x86_64-apple-ios
 
 install: travis_retry rustup target add $TARGET
-script:
-  - cargo generate-lockfile
-  - travis_wait 50 ci/run-docker.sh $TARGET $FEATURES
+before_script: cargo generate-lockfile
+script: travis_wait 50 ci/run-docker.sh
 
 env:
   global:
