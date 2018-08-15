@@ -38,7 +38,7 @@ version = "https://github.com/rust-lang-nursery/stdsimd.git"
 optional = true
 
 [target.'cfg(all(target_arch = "x86_64", target_feature = "sse2"))'.dependencies.sleef-sys]
-version = "0.1"
+version = "^0.1"
 optional = true
 
 [features]
