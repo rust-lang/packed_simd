@@ -19,3 +19,7 @@ do
     cargo_clippy
     cd -
 done
+
+cd verify
+cargo_clippy
+cd -

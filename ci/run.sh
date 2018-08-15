@@ -34,9 +34,10 @@ mkdir target || true
 rustc --version
 cargo --version
 echo "TARGET=${TARGET}"
+echo "HOST=${HOST}"
 echo "RUSTFLAGS=${RUSTFLAGS}"
-echo "FEATURES=${FEATURES}"
 echo "NORUN=${NORUN}"
+echo "NOVERIFY=${NOVERIFY}"
 echo "CARGO_SUBCMD=${CARGO_SUBCMD}"
 echo "CARGO_BUILD_JOBS=${CARGO_BUILD_JOBS}"
 echo "CARGO_INCREMENTAL=${CARGO_INCREMENTAL}"

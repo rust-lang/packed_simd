@@ -223,7 +223,7 @@
     feature = "cargo-clippy",
     deny(missing_inline_in_public_items)
 )]
-// FIXME #![deny(warnings)]
+#![deny(warnings)]
 #![no_std]
 
 #[macro_use]

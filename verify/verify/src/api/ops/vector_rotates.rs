@@ -1,4 +1,5 @@
 mod u64x8 {
+    #![allow(unused)]
     use packed_simd::*;
     use stdsimd_test::assert_instr;
 

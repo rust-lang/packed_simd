@@ -120,6 +120,7 @@ pub fn test_cmp<T>(
 
 // Returns a tuple containing two distinct pointer values of the same type as
 // the element type of the Simd vector `$id`.
+#[allow(unused)]
 macro_rules! ptr_vals {
     ($id:ty) => {
         // expands to an expression

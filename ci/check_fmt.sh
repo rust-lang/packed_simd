@@ -19,3 +19,7 @@ do
     cargo_fmt
     cd -
 done
+
+cd verify
+cargo_fmt
+cd -
