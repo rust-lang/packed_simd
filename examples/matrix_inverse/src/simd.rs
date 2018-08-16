@@ -22,62 +22,62 @@ pub fn inv4x4(m: Matrix4x4) -> Option<Matrix4x4> {
     let row3 = shuffle!(row3, tmp1, [1, 3, 5, 7]);
 
     let tmp1: f32x4 = row2 * row3;
-    let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);
+    let tmp1 = permute!(tmp1, [1, 0, 3, 2]);
 
     let minor0 = row1 * tmp1;
     let minor1 = row0 * tmp1;
-    let tmp1 = shuffle!(tmp1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [2, 3, 0, 1]);
     let minor0 = (row1 * tmp1) - minor0;
     let minor1 = (row0 * tmp1) - minor1;
-    let minor1 = shuffle!(minor1, [2, 3, 0, 1]);
+    let minor1 = permute!(minor1, [2, 3, 0, 1]);
 
     let tmp1 = row1 * row2;
-    let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);
+    let tmp1 = permute!(tmp1, [1, 0, 3, 2]);
     let minor0 = (row3 * tmp1) + minor0;
     let minor3 = row0 * tmp1;
-    let tmp1 = shuffle!(tmp1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [2, 3, 0, 1]);
 
     let minor0 = minor0 - row3 * tmp1;
     let minor3 = row0 * tmp1 - minor3;
-    let minor3 = shuffle!(minor3, [2, 3, 0, 1]);
+    let minor3 = permute!(minor3, [2, 3, 0, 1]);
 
-    let tmp1 = row3 * shuffle!(row1, [2, 3, 0, 1]);
-    let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);
-    let row2 = shuffle!(row2, [2, 3, 0, 1]);
+    let tmp1 = row3 * permute!(row1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [1, 0, 3, 2]);
+    let row2 = permute!(row2, [2, 3, 0, 1]);
     let minor0 = row2 * tmp1 + minor0;
     let minor2 = row0 * tmp1;
-    let tmp1 = shuffle!(tmp1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [2, 3, 0, 1]);
     let minor0 = minor0 - row2 * tmp1;
     let minor2 = row0 * tmp1 - minor2;
-    let minor2 = shuffle!(minor2, [2, 3, 0, 1]);
+    let minor2 = permute!(minor2, [2, 3, 0, 1]);
 
     let tmp1 = row0 * row1;
-    let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);
+    let tmp1 = permute!(tmp1, [1, 0, 3, 2]);
     let minor2 = minor2 + row3 * tmp1;
     let minor3 = row2 * tmp1 - minor3;
-    let tmp1 = shuffle!(tmp1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [2, 3, 0, 1]);
     let minor2 = row3 * tmp1 - minor2;
     let minor3 = minor3 - row2 * tmp1;
 
     let tmp1 = row0 * row3;
-    let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);
+    let tmp1 = permute!(tmp1, [1, 0, 3, 2]);
     let minor1 = minor1 - row2 * tmp1;
     let minor2 = row1 * tmp1 + minor2;
-    let tmp1 = shuffle!(tmp1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [2, 3, 0, 1]);
     let minor1 = row2 * tmp1 + minor1;
     let minor2 = minor2 - row1 * tmp1;
 
     let tmp1 = row0 * row2;
-    let tmp1 = shuffle!(tmp1, [1, 0, 3, 2]);
+    let tmp1 = permute!(tmp1, [1, 0, 3, 2]);
     let minor1 = row3 * tmp1 + minor1;
     let minor3 = minor3 - row1 * tmp1;
-    let tmp1 = shuffle!(tmp1, [2, 3, 0, 1]);
+    let tmp1 = permute!(tmp1, [2, 3, 0, 1]);
     let minor1 = minor1 - row3 * tmp1;
     let minor3 = row1 * tmp1 + minor3;
 
     let det = row0 * minor0;
-    let det = shuffle!(det, [2, 3, 0, 1]) + det;
-    let det = shuffle!(det, [1, 0, 3, 2]) + det;
+    let det = permute!(det, [2, 3, 0, 1]) + det;
+    let det = permute!(det, [1, 0, 3, 2]) + det;
 
     if det.sum() == 0. {
         return None;
