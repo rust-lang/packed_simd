@@ -1,7 +1,7 @@
 //! 4x4 matrix inverse
 #![deny(warnings)]
 
-#[macro_use(shuffle)]
+#[macro_use(permute, shuffle)]
 extern crate packed_simd;
 
 pub mod scalar;
