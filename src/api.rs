@@ -18,6 +18,8 @@ mod minimal;
 #[macro_use]
 mod ops;
 #[macro_use]
+mod permute;
+#[macro_use]
 mod ptr;
 #[macro_use]
 mod reductions;

@@ -150,7 +150,7 @@ macro_rules! impl_shuffle_bytes {
             #[inline]
             fn shuffle_bytes(self, indices: Self) -> Self {
                 let indices: u8x8 = (indices * 2).cast();
-                let indices: u8x16 = shuffle!(indices, [0, 0, 1, 1, 2, 2, 3, 3,
+                let indices: u8x16 = permute!(indices, [0, 0, 1, 1, 2, 2, 3, 3,
                                                         4, 4, 5, 5, 6, 6, 7, 7]);
                 let v = u8x16::new(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
                 let indices = indices + v;
@@ -185,7 +185,7 @@ macro_rules! impl_shuffle_bytes {
                     #[inline]
                     fn shuffle_bytes(self, indices: Self) -> Self {
                         let indices: u8x4 = (indices * 4).cast();
-                        let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 1, 1, 1, 1,
+                        let indices: u8x16 = permute!(indices, [0, 0, 0, 0, 1, 1, 1, 1,
                                                                 2, 2, 2, 2, 3, 3, 3, 3]);
                         let v = u8x16::new(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3);
                         let indices = indices + v;
@@ -225,7 +225,7 @@ macro_rules! impl_shuffle_bytes {
                     #[inline]
                     fn shuffle_bytes(self, indices: Self) -> Self {
                         let indices: u8x2 = (indices * 8).cast();
-                        let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 0, 0, 0, 0,
+                        let indices: u8x16 = permute!(indices, [0, 0, 0, 0, 0, 0, 0, 0,
                                                                 1, 1, 1, 1, 1, 1, 1, 1]);
                         let v = u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7);
                         let indices = indices + v;
