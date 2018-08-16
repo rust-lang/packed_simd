@@ -1,22 +1,22 @@
-//! Shuffle bytes with run-time indices
+//! Permute elements of a vector with a dynamic vector of indices.
 
-macro_rules! impl_shuffle_bytes {
+macro_rules! impl_permute_dyn {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
-            /// Shuffles the bytes of the vector according to `indices`.
+            /// Permute vector lanes according to `indices`.
             #[inline]
-            pub fn shuffle_bytes(self, indices: Self) -> Self {
-                codegen::shuffle_bytes::ShuffleBytes::shuffle_bytes(self, indices)
+            pub fn permute_dyn(self, indices: Self) -> Self {
+                codegen::permute_dyn::PermuteDyn::permute_dyn(self, indices)
             }
         }
 
         test_if! {
             $test_tt:
             interpolate_idents! {
-                mod [$id _shuffle_bytes] {
+                mod [$id _permute_dyn] {
                     use super::*;
                     #[test]
-                    fn shuffle_bytes() {
+                    fn permute_dyn() {
                         let increasing = {
                             let mut v = $id::splat(0);
                             for i in 0..$id::lanes() {
@@ -32,20 +32,20 @@ macro_rules! impl_shuffle_bytes {
                             v
                         };
 
-                        assert_eq!(increasing.shuffle_bytes(increasing), increasing, "(i,i)=>i");
-                        assert_eq!(decreasing.shuffle_bytes(increasing), decreasing, "(d,i)=>d");
-                        assert_eq!(increasing.shuffle_bytes(decreasing), decreasing, "(i,d)=>d");
-                        assert_eq!(decreasing.shuffle_bytes(decreasing), increasing, "(d,d)=>i");
+                        assert_eq!(increasing.permute_dyn(increasing), increasing, "(i,i)=>i");
+                        assert_eq!(decreasing.permute_dyn(increasing), decreasing, "(d,i)=>d");
+                        assert_eq!(increasing.permute_dyn(decreasing), decreasing, "(i,d)=>d");
+                        assert_eq!(decreasing.permute_dyn(decreasing), increasing, "(d,d)=>i");
 
                         for i in 0..$id::lanes() {
-                            assert_eq!(increasing.shuffle_bytes($id::splat(i as $elem_ty)),
+                            assert_eq!(increasing.permute_dyn($id::splat(i as $elem_ty)),
                                        $id::splat(increasing.extract(i)));
-                            assert_eq!(decreasing.shuffle_bytes($id::splat(i as $elem_ty)),
+                            assert_eq!(decreasing.permute_dyn($id::splat(i as $elem_ty)),
                                        $id::splat(decreasing.extract(i)));
 
-                            assert_eq!($id::splat(i as $elem_ty).shuffle_bytes(increasing),
+                            assert_eq!($id::splat(i as $elem_ty).permute_dyn(increasing),
                                        $id::splat(i as $elem_ty));
-                            assert_eq!($id::splat(i as $elem_ty).shuffle_bytes(decreasing),
+                            assert_eq!($id::splat(i as $elem_ty).permute_dyn(decreasing),
                                        $id::splat(i as $elem_ty));
                         }
 

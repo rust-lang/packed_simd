@@ -1,17 +1,17 @@
-//! Shuffle bytes with run-time indices
+//! Permute vector lanes with run-time indices.
 
 use *;
 
-crate trait ShuffleBytes {
-    fn shuffle_bytes(self, Self) -> Self;
+crate trait PermuteDyn {
+    fn permute_dyn(self, Self) -> Self;
 }
 
 // Fallback implementation
 macro_rules! impl_fallback {
     ($id:ident) => {
-        impl ShuffleBytes for $id {
+        impl PermuteDyn for $id {
             #[inline]
-            fn shuffle_bytes(self, indices: Self) -> Self {
+            fn permute_dyn(self, indices: Self) -> Self {
                 let mut result = Self::splat(0);
                 for i in 0..$id::lanes() {
                     result = result
@@ -23,14 +23,14 @@ macro_rules! impl_fallback {
     };
 }
 
-macro_rules! impl_shuffle_bytes {
+macro_rules! impl_permute_dyn {
     (u8x8) => {
         cfg_if! {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "ssse3"))] {
-                impl ShuffleBytes for u8x8 {
+                impl PermuteDyn for u8x8 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::_mm_shuffle_pi8;
                         #[cfg(target_arch = "x86_64")]
@@ -49,9 +49,9 @@ macro_rules! impl_shuffle_bytes {
                         target_feature = "neon")),
                 feature = "coresimd")
             )] {
-                impl ShuffleBytes for u8x8 {
+                impl PermuteDyn for u8x8 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         #[cfg(targt_arch = "aarch64")]
                         use arch::aarch64::vtbl1_u8;
                         #[cfg(targt_arch = "arm")]
@@ -77,9 +77,9 @@ macro_rules! impl_shuffle_bytes {
         cfg_if! {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "ssse3"))] {
-                impl ShuffleBytes for u8x16 {
+                impl PermuteDyn for u8x16 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::_mm_shuffle_epi8;
                         #[cfg(target_arch = "x86_64")]
@@ -97,9 +97,9 @@ macro_rules! impl_shuffle_bytes {
                 }
             } else if #[cfg(all(target_aarch = "aarch64", target_feature = "neon",
                                 feature = "coresimd"))] {
-                impl ShuffleBytes for u8x16 {
+                impl PermuteDyn for u8x16 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         use arch::aarch64::vqtbl1q_u8;
 
                         // This is safe because the binary is compiled with
@@ -115,9 +115,9 @@ macro_rules! impl_shuffle_bytes {
                 }
             } else if #[cfg(all(target_aarch = "arm", target_feature = "v7",
                                 target_feature = "neon", feature = "coresimd"))] {
-                impl ShuffleBytes for u8x16 {
+                impl PermuteDyn for u8x16 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         use arch::arm::vtbl2_u8;
 
                         // This is safe because the binary is compiled with
@@ -146,9 +146,9 @@ macro_rules! impl_shuffle_bytes {
         }
     };
     (u16x8) => {
-        impl ShuffleBytes for u16x8 {
+        impl PermuteDyn for u16x8 {
             #[inline]
-            fn shuffle_bytes(self, indices: Self) -> Self {
+            fn permute_dyn(self, indices: Self) -> Self {
                 let indices: u8x8 = (indices * 2).cast();
                 let indices: u8x16 = permute!(indices, [0, 0, 1, 1, 2, 2, 3, 3,
                                                         4, 4, 5, 5, 6, 6, 7, 7]);
@@ -156,7 +156,7 @@ macro_rules! impl_shuffle_bytes {
                 let indices = indices + v;
                 unsafe {
                     let s: u8x16 = mem::transmute(self);
-                    mem::transmute(s.shuffle_bytes(indices))
+                    mem::transmute(s.permute_dyn(indices))
                 }
             }
         }
@@ -165,9 +165,9 @@ macro_rules! impl_shuffle_bytes {
         cfg_if! {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "avx"))] {
-                impl ShuffleBytes for u32x4 {
+                impl PermuteDyn for u32x4 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::{_mm_permutevar_ps};
                         #[cfg(target_arch = "x86_64")]
@@ -181,9 +181,9 @@ macro_rules! impl_shuffle_bytes {
                     }
                 }
             } else {
-                impl ShuffleBytes for u32x4 {
+                impl PermuteDyn for u32x4 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         let indices: u8x4 = (indices * 4).cast();
                         let indices: u8x16 = permute!(indices, [0, 0, 0, 0, 1, 1, 1, 1,
                                                                 2, 2, 2, 2, 3, 3, 3, 3]);
@@ -191,7 +191,7 @@ macro_rules! impl_shuffle_bytes {
                         let indices = indices + v;
                         unsafe {
                             let s: u8x16 = mem::transmute(self);
-                            mem::transmute(s.shuffle_bytes(indices))
+                            mem::transmute(s.permute_dyn(indices))
                         }
                     }
                 }
@@ -202,9 +202,9 @@ macro_rules! impl_shuffle_bytes {
         cfg_if! {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "avx"))] {
-                impl ShuffleBytes for u64x2 {
+                impl PermuteDyn for u64x2 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::{_mm_permutevar_pd};
                         #[cfg(target_arch = "x86_64")]
@@ -221,9 +221,9 @@ macro_rules! impl_shuffle_bytes {
                     }
                 }
             } else {
-                impl ShuffleBytes for u64x2 {
+                impl PermuteDyn for u64x2 {
                     #[inline]
-                    fn shuffle_bytes(self, indices: Self) -> Self {
+                    fn permute_dyn(self, indices: Self) -> Self {
                         let indices: u8x2 = (indices * 8).cast();
                         let indices: u8x16 = permute!(indices, [0, 0, 0, 0, 0, 0, 0, 0,
                                                                 1, 1, 1, 1, 1, 1, 1, 1]);
@@ -231,7 +231,7 @@ macro_rules! impl_shuffle_bytes {
                         let indices = indices + v;
                         unsafe {
                             let s: u8x16 = mem::transmute(self);
-                            mem::transmute(s.shuffle_bytes(indices))
+                            mem::transmute(s.permute_dyn(indices))
                         }
                     }
                 }
@@ -239,9 +239,9 @@ macro_rules! impl_shuffle_bytes {
         }
     };
     (u128x1) => {
-        impl ShuffleBytes for u128x1 {
+        impl PermuteDyn for u128x1 {
             #[inline]
-            fn shuffle_bytes(self, _indices: Self) -> Self {
+            fn permute_dyn(self, _indices: Self) -> Self {
                 self
             }
         }
@@ -249,32 +249,32 @@ macro_rules! impl_shuffle_bytes {
     ($id:ident) => { impl_fallback!($id); }
 }
 
-impl_shuffle_bytes!(u8x2);
-impl_shuffle_bytes!(u8x4);
-impl_shuffle_bytes!(u8x8);
-impl_shuffle_bytes!(u8x16);
-impl_shuffle_bytes!(u8x32);
-impl_shuffle_bytes!(u8x64);
+impl_permute_dyn!(u8x2);
+impl_permute_dyn!(u8x4);
+impl_permute_dyn!(u8x8);
+impl_permute_dyn!(u8x16);
+impl_permute_dyn!(u8x32);
+impl_permute_dyn!(u8x64);
 
-impl_shuffle_bytes!(u16x2);
-impl_shuffle_bytes!(u16x4);
-impl_shuffle_bytes!(u16x8);
-impl_shuffle_bytes!(u16x16);
-impl_shuffle_bytes!(u16x32);
+impl_permute_dyn!(u16x2);
+impl_permute_dyn!(u16x4);
+impl_permute_dyn!(u16x8);
+impl_permute_dyn!(u16x16);
+impl_permute_dyn!(u16x32);
 
-impl_shuffle_bytes!(u32x2);
-impl_shuffle_bytes!(u32x4);
-impl_shuffle_bytes!(u32x8);
-impl_shuffle_bytes!(u32x16);
+impl_permute_dyn!(u32x2);
+impl_permute_dyn!(u32x4);
+impl_permute_dyn!(u32x8);
+impl_permute_dyn!(u32x16);
 
-impl_shuffle_bytes!(u64x2);
-impl_shuffle_bytes!(u64x4);
-impl_shuffle_bytes!(u64x8);
+impl_permute_dyn!(u64x2);
+impl_permute_dyn!(u64x4);
+impl_permute_dyn!(u64x8);
 
-impl_shuffle_bytes!(usizex2);
-impl_shuffle_bytes!(usizex4);
-impl_shuffle_bytes!(usizex8);
+impl_permute_dyn!(usizex2);
+impl_permute_dyn!(usizex4);
+impl_permute_dyn!(usizex8);
 
-impl_shuffle_bytes!(u128x1);
-impl_shuffle_bytes!(u128x2);
-impl_shuffle_bytes!(u128x4);
+impl_permute_dyn!(u128x1);
+impl_permute_dyn!(u128x2);
+impl_permute_dyn!(u128x4);

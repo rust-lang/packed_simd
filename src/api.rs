@@ -28,7 +28,7 @@ mod select;
 #[macro_use]
 mod shuffle;
 #[macro_use]
-mod shuffle_bytes;
+mod permute_dyn;
 #[macro_use]
 mod slice;
 #[macro_use]
@@ -135,7 +135,7 @@ macro_rules! impl_u {
         impl_slice_from_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_swap_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_shuffle_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_permute_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_cmp_partial_eq!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (1, 0)
         );
