@@ -92,7 +92,10 @@ macro_rules! impl_slice_from_slice {
                         }
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
+                    #[test]
                     #[should_panic]
                     pub fn from_slice_unaligned_fail() {
                         let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
@@ -129,7 +132,10 @@ macro_rules! impl_slice_from_slice {
                         }
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
+                    #[test]
                     #[should_panic]
                     pub fn from_slice_aligned_fail_lanes() {
                         let aligned = A {
@@ -140,7 +146,10 @@ macro_rules! impl_slice_from_slice {
                         };
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
+                    #[test]
                     #[should_panic]
                     pub fn from_slice_aligned_fail_align() {
                         unsafe {

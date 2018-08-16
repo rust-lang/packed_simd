@@ -132,13 +132,20 @@ macro_rules! impl_minimal_mask {
                             }
                         }
                     }
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
+                    #[test]
                     #[should_panic]
                     pub fn extract_panic_oob() {
                         let vec = $id::splat(false);
                         let _ = vec.extract($id::lanes());
                     }
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
+                    #[test]
                     #[should_panic]
                     pub fn replace_panic_oob() {
                         let vec = $id::splat(false);
