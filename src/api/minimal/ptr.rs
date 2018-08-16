@@ -110,7 +110,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _minimal] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn minimal() {
                         // lanes:
                         assert_eq!($elem_count, $id::<i32>::lanes());
@@ -156,6 +156,9 @@ macro_rules! impl_minimal_p {
                         }
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn extract_panic_oob() {
@@ -163,6 +166,10 @@ macro_rules! impl_minimal_p {
                         let VEC: $id<i32> = $id::splat(VAL);
                         let _ = VEC.extract($id::<i32>::lanes());
                     }
+
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn replace_panic_oob() {
@@ -197,7 +204,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _fmt_debug] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn debug() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
@@ -240,7 +247,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _default] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn default() {
                         let a = $id::<i32>::default();
                         for i in 0..$id::<i32>::lanes() {
@@ -324,7 +331,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _cmp_vertical] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn cmp() {
                         let a = $id::<i32>::null();
                         let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
@@ -396,7 +403,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _cmp_PartialEq] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn partial_eq() {
                         let a = $id::<i32>::null();
                         let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
@@ -428,7 +435,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _cmp_eq] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn eq() {
                         fn foo<E: ::cmp::Eq>(_: E) {}
                         let a = $id::<i32>::null();
@@ -474,7 +481,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _from] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn array() {
                         let values = [1_i32; $elem_count];
 
@@ -579,7 +586,7 @@ macro_rules! impl_minimal_p {
                     use super::*;
                     use iter::Iterator;
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn from_slice_unaligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
 
@@ -596,6 +603,9 @@ macro_rules! impl_minimal_p {
                         }
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn from_slice_unaligned_fail() {
@@ -610,7 +620,7 @@ macro_rules! impl_minimal_p {
                         _vec: $id<i32>,
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn from_slice_aligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut aligned = A {
@@ -634,6 +644,9 @@ macro_rules! impl_minimal_p {
                         }
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn from_slice_aligned_fail_lanes() {
@@ -647,6 +660,9 @@ macro_rules! impl_minimal_p {
                         };
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn from_slice_aligned_fail_align() {
@@ -757,7 +773,7 @@ macro_rules! impl_minimal_p {
                     use super::*;
                     use iter::Iterator;
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn write_to_slice_unaligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut unaligned = [null; $id::<i32>::lanes() + 1];
@@ -773,6 +789,9 @@ macro_rules! impl_minimal_p {
                         }
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn write_to_slice_unaligned_fail() {
@@ -788,7 +807,7 @@ macro_rules! impl_minimal_p {
                         _vec: $id<i32>,
                     }
 
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn write_to_slice_aligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut aligned = A {
@@ -806,6 +825,9 @@ macro_rules! impl_minimal_p {
                         }
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn write_to_slice_aligned_fail_lanes() {
@@ -820,6 +842,9 @@ macro_rules! impl_minimal_p {
                         };
                     }
 
+                    // FIXME: wasm-bindgen-test does not support #[should_panic]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
                     fn write_to_slice_aligned_fail_align() {
@@ -867,7 +892,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 mod [$id _hash] {
                     use super::*;
-                    #[test]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn hash() {
                         use ::hash::{Hash, Hasher};
                         #[allow(deprecated)]
