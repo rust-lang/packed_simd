@@ -10,7 +10,8 @@ macro_rules! impl_reduction_min_max {
                 #[cfg(not(any(
                     target_arch = "aarch64",
                     target_arch = "arm",
-                    target_arch = "powerpc64"
+                    target_arch = "powerpc64",
+                    target_arch = "wasm32",
                 )))]
                 {
                     use llvm::simd_reduce_max;
@@ -20,11 +21,14 @@ macro_rules! impl_reduction_min_max {
                 #[cfg(any(
                     target_arch = "aarch64",
                     target_arch = "arm",
-                    target_arch = "powerpc64"
+                    target_arch = "powerpc64",
+                    target_arch = "wasm32",
                 ))]
                 {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
+                    // FIXME: broken on WASM32
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/91
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
                         x = x.max(self.extract(i));
@@ -41,7 +45,8 @@ macro_rules! impl_reduction_min_max {
                     target_arch = "arm",
                     all(target_arch = "x86", not(target_feature = "sse2")),
                     target_arch = "powerpc64",
-                )))]
+                    target_arch = "wasm32",
+                ),))]
                 {
                     use llvm::simd_reduce_min;
                     let v: $ielem_ty = unsafe { simd_reduce_min(self.0) };
@@ -52,12 +57,15 @@ macro_rules! impl_reduction_min_max {
                     target_arch = "arm",
                     all(target_arch = "x86", not(target_feature = "sse2")),
                     target_arch = "powerpc64",
+                    target_arch = "wasm32",
                 ))]
                 {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     // FIXME: broken on i586-unknown-linux-gnu
                     // https://github.com/rust-lang-nursery/packed_simd/issues/22
+                    // FIXME: broken on WASM32
+                    // https://github.com/rust-lang-nursery/packed_simd/issues/91
                     let mut x = self.extract(0);
                     for i in 1..$id::lanes() {
                         x = x.min(self.extract(i));
@@ -128,7 +136,7 @@ macro_rules! test_reduction_float_min_max {
                         let target_with_broken_last_lane_nan = !cfg!(any(
                             target_arch = "arm", target_arch = "aarch64",
                             all(target_arch = "x86", not(target_feature = "sse2")),
-                            target_arch = "powerpc64",
+                            target_arch = "powerpc64", target_arch = "wasm32",
                         ));
 
                         // The vector is initialized to `-3.`s: [-3, -3, -3, -3]
@@ -231,7 +239,7 @@ macro_rules! test_reduction_float_min_max {
 
                         let target_with_broken_last_lane_nan = !cfg!(any(
                             target_arch = "arm", target_arch = "aarch64",
-                            target_arch = "powerpc64",
+                            target_arch = "powerpc64", target_arch = "wasm32",
                         ));
 
                         // The vector is initialized to `-3.`s: [-3, -3, -3, -3]
