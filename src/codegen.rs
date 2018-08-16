@@ -2,9 +2,9 @@
 
 crate mod llvm;
 crate mod math;
+crate mod permute_dyn;
 crate mod reductions;
 crate mod shuffle;
-crate mod shuffle_bytes;
 crate mod swap_bytes;
 
 macro_rules! impl_simd_array {
