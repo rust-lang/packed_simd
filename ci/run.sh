@@ -63,7 +63,11 @@ cargo_test_impl() {
     RUSTFLAGS=${ORIGINAL_RUSTFLAGS}
 }
 
-cargo_test_impl
+# Debug run:
+if [[ "${TARGET}" != "wasm32-unknown-unknown" ]]; then
+   # Run wasm32-unknown-unknown in release mode only
+   cargo_test_impl
+fi
 
 if [[ "${TARGET}" == "x86_64-unknown-linux-gnu" ]] || [[ "${TARGET}" == "x86_64-pc-windows-msvc" ]]; then
     # use sleef on linux and windows x86_64 builds
@@ -79,4 +83,3 @@ if [[ "${NOVERIFY}" != "1" ]]; then
 fi
 
 . ci/run_examples.sh
-
