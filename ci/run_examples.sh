@@ -12,6 +12,10 @@ if [[ ${TARGET} == "arm-linux-androidabi" ]] || [[ ${TARGET} == "aarch64-linux-a
     exit 0
 fi
 
+if [[ ${TARGET} == "wasm32-unknown-unknown" ]]; then
+    exit 0
+fi
+
 cp -r examples/aobench target/aobench
 cargo_test --manifest-path=target/aobench/Cargo.toml --release --no-default-features
 cargo_test --manifest-path=target/aobench/Cargo.toml --release --features=256bit
