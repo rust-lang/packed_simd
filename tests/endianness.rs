@@ -9,7 +9,8 @@ use wasm_bindgen_test::*;
 use packed_simd::*;
 use std::{mem, slice};
 
-#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_indexing() {
     let v = i32x4::new(0, 1, 2, 3);
     assert_eq!(v.extract(0), 0);
@@ -18,7 +19,8 @@ fn endian_indexing() {
     assert_eq!(v.extract(3), 3);
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_bitcasts() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let x = i8x16::new(
@@ -34,7 +36,8 @@ fn endian_bitcasts() {
     assert_eq!(t, e);
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_casts() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let x = i8x16::new(
@@ -50,7 +53,8 @@ fn endian_casts() {
     assert_eq!(t, e);
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_load_and_stores() {
     #[cfg_attr(rustfmt, rustfmt_skip)]
     let x = i8x16::new(
@@ -75,7 +79,8 @@ fn endian_load_and_stores() {
     assert_eq!(z, x);
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_array_union() {
     union A {
         data: [f32; 4],
@@ -144,7 +149,8 @@ fn endian_array_union() {
     assert_eq!(x, e);
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+#[cfg_attr(not(target_arch = "wasm32"), test)]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_tuple_access() {
     type F32x4T = (f32, f32, f32, f32);
     union A {
