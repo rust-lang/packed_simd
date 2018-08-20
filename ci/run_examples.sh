@@ -6,6 +6,12 @@ if [[ ${TARGET} == "armv7-apple-ios" ]]; then
     exit 0
 fi
 
+# FIXME: travis exceeds 50 minutes on these targets
+# Skipping the examples is an attempt at preventing travis from timing-out
+if [[ ${TARGET} == "arm-linux-androidabi" ]] || [[ ${TARGET} == "aarch64-linux-androidabi" ]]; then
+    exit 0
+fi
+
 cp -r examples/aobench target/aobench
 cargo_test --manifest-path=target/aobench/Cargo.toml --release --no-default-features
 cargo_test --manifest-path=target/aobench/Cargo.toml --release --features=256bit
