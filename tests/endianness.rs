@@ -1,5 +1,3 @@
-#![cfg_attr(target_arch = "wasm32", feature(use_extern_macros))]
-
 extern crate packed_simd;
 
 #[cfg(target_arch = "wasm32")]
