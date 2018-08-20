@@ -8,7 +8,6 @@ pub mod scalar;
 pub mod simd;
 
 #[derive(Copy, Clone, Debug, PartialEq, PartialOrd)]
-#[repr(align(32))]
 pub struct Matrix4x4([[f32; 4]; 4]);
 
 #[cfg(test)]
