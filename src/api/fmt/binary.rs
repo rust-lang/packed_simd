@@ -26,7 +26,7 @@ macro_rules! impl_fmt_binary {
                 pub mod [$id _fmt_binary] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn binary() {
+                    fn binary() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 

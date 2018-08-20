@@ -125,7 +125,7 @@ macro_rules! test_reduction_float_min_max {
                 pub mod [$id _reduction_min_max_nan] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn min_element_test() {
+                    fn min_element_test() {
                         let n = $elem_ty::NAN;
 
                         assert_eq!(n.min(-3.), -3.);
@@ -229,7 +229,7 @@ macro_rules! test_reduction_float_min_max {
                                 $id::splat(n).min_element().is_nan());
                     }
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn max_element_test() {
+                    fn max_element_test() {
                         let n = $elem_ty::NAN;
 
                         assert_eq!(n.max(-3.), -3.);

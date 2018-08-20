@@ -78,7 +78,7 @@ macro_rules! impl_slice_from_slice {
                     use iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn from_slice_unaligned() {
+                    fn from_slice_unaligned() {
                         let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
                         unaligned[0] = 0 as $elem_ty;
                         let vec = $id::from_slice_unaligned(&unaligned[1..]);
@@ -97,7 +97,7 @@ macro_rules! impl_slice_from_slice {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn from_slice_unaligned_fail() {
+                    fn from_slice_unaligned_fail() {
                         let mut unaligned = [42 as $elem_ty; $id::lanes() + 1];
                         unaligned[0] = 0 as $elem_ty;
                         // the slice is not large enough => panic
@@ -110,7 +110,7 @@ macro_rules! impl_slice_from_slice {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn from_slice_aligned() {
+                    fn from_slice_aligned() {
                         let mut aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
@@ -137,7 +137,7 @@ macro_rules! impl_slice_from_slice {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn from_slice_aligned_fail_lanes() {
+                    fn from_slice_aligned_fail_lanes() {
                         let aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
@@ -151,7 +151,7 @@ macro_rules! impl_slice_from_slice {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn from_slice_aligned_fail_align() {
+                    fn from_slice_aligned_fail_align() {
                         unsafe {
                             let aligned = A {
                                 data: [0 as $elem_ty; 2 * $id::lanes()],

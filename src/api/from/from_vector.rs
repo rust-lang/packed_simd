@@ -36,7 +36,7 @@ macro_rules! impl_from_vector {
                 pub mod [$id _from_ $source] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn from() {
+                    fn from() {
                         assert_eq!($id::lanes(), $source::lanes());
                         let source: $source = Default::default();
                         let vec: $id = Default::default();

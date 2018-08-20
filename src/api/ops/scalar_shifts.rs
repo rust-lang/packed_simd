@@ -37,7 +37,7 @@ macro_rules! impl_ops_scalar_shifts {
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg_attr(any(target_arch = "s390x", target_arch = "sparc64"),
                                allow(unreachable_code, unused_variables))]
-                    pub fn ops_scalar_shifts() {
+                    fn ops_scalar_shifts() {
                         let z = $id::splat(0 as $elem_ty);
                         let o = $id::splat(1 as $elem_ty);
                         let t = $id::splat(2 as $elem_ty);

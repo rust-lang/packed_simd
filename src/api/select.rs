@@ -38,7 +38,7 @@ macro_rules! test_select {
                     use super::*;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn select() {
+                    fn select() {
                         let o = $small as $elem_ty;
                         let t = $large as $elem_ty;
 

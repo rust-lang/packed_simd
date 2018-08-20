@@ -95,12 +95,12 @@ macro_rules! impl_swap_bytes {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn swap_bytes() {
+                    fn swap_bytes() {
                         test_swap!(swap_bytes);
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn to_le() {
+                    fn to_le() {
                         #[cfg(target_endian = "little")]
                         {
                             test_no_swap!(to_le);
@@ -112,7 +112,7 @@ macro_rules! impl_swap_bytes {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn to_be() {
+                    fn to_be() {
                         #[cfg(target_endian = "big")]
                         {
                             test_no_swap!(to_be);

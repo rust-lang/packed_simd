@@ -99,7 +99,7 @@ macro_rules! impl_minimal_iuf {
                 pub mod [$id _minimal] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn minimal() {
+                    fn minimal() {
                         // lanes:
                         assert_eq!($elem_count, $id::lanes());
 
@@ -137,7 +137,7 @@ macro_rules! impl_minimal_iuf {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn extract_panic_oob() {
+                    fn extract_panic_oob() {
                         const VAL: $elem_ty = 7 as $elem_ty;
                         const VEC: $id = $id::splat(VAL);
                         let _ = VEC.extract($id::lanes());
@@ -147,7 +147,7 @@ macro_rules! impl_minimal_iuf {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn replace_panic_oob() {
+                    fn replace_panic_oob() {
                         const VAL: $elem_ty = 7 as $elem_ty;
                         const VEC: $id = $id::splat(VAL);
                         let _ = VEC.replace($id::lanes(), 42 as $elem_ty);

@@ -101,7 +101,7 @@ macro_rules! impl_minimal_mask {
                 pub mod [$id _minimal] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn minimal() {
+                    fn minimal() {
                         // TODO: test new
 
                         // lanes:
@@ -138,7 +138,7 @@ macro_rules! impl_minimal_mask {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn extract_panic_oob() {
+                    fn extract_panic_oob() {
                         let vec = $id::splat(false);
                         let _ = vec.extract($id::lanes());
                     }
@@ -147,7 +147,7 @@ macro_rules! impl_minimal_mask {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn replace_panic_oob() {
+                    fn replace_panic_oob() {
                         let vec = $id::splat(false);
                         let _ = vec.replace($id::lanes(), true);
                     }

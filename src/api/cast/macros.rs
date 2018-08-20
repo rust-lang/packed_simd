@@ -17,7 +17,7 @@ macro_rules! impl_from_cast_ {
                 pub mod [$id _from_cast_ $from_ty] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn test() {
+                    fn test() {
                         assert_eq!($id::lanes(), $from_ty::lanes());
                     }
                 }
@@ -51,7 +51,7 @@ macro_rules! impl_from_cast_mask_ {
                 pub mod [$id _from_cast_ $from_ty] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn test() {
+                    fn test() {
                         assert_eq!($id::lanes(), $from_ty::lanes());
 
                         let x = $from_ty::default();

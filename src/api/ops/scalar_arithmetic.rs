@@ -118,7 +118,7 @@ macro_rules! impl_ops_scalar_arithmetic {
                 pub mod [$id _ops_scalar_arith] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn ops_scalar_arithmetic() {
+                    fn ops_scalar_arithmetic() {
                         let zi = 0 as $elem_ty;
                         let oi = 1 as $elem_ty;
                         let ti = 2 as $elem_ty;

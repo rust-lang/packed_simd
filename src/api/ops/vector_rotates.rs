@@ -47,7 +47,7 @@ macro_rules! impl_ops_vector_rotates {
                 pub mod [$id _ops_vector_rotate] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn rotate_ops() {
+                    fn rotate_ops() {
                         let z = $id::splat(0 as $elem_ty);
                         let o = $id::splat(1 as $elem_ty);
                         let t = $id::splat(2 as $elem_ty);

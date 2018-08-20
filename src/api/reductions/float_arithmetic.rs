@@ -74,7 +74,7 @@ macro_rules! impl_reduction_float_arithmetic {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn sum() {
+                    fn sum() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.sum(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
@@ -83,7 +83,7 @@ macro_rules! impl_reduction_float_arithmetic {
                         assert_eq!(v.sum(), ($id::lanes() / 2 + $id::lanes()) as $elem_ty);
                     }
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn product() {
+                    fn product() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.product(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
@@ -103,7 +103,7 @@ macro_rules! impl_reduction_float_arithmetic {
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
-                    pub fn sum_nan() {
+                    fn sum_nan() {
                         // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
                         return;
@@ -131,7 +131,7 @@ macro_rules! impl_reduction_float_arithmetic {
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
-                    pub fn product_nan() {
+                    fn product_nan() {
                         // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
                         return;
@@ -159,7 +159,7 @@ macro_rules! impl_reduction_float_arithmetic {
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unused, dead_code)]
-                    pub fn sum_roundoff() {
+                    fn sum_roundoff() {
                         // Performs a tree-reduction
                         fn tree_reduce_sum(a: &[[$elem_ty]]) -> $elem_ty {
                             assert!(!a.is_empty());
@@ -208,7 +208,7 @@ macro_rules! impl_reduction_float_arithmetic {
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unused, dead_code)]
-                    pub fn product_roundoff() {
+                    fn product_roundoff() {
                         // Performs a tree-reduction
                         fn tree_reduce_product(a: &[[$elem_ty]]) -> $elem_ty {
                             assert!(!a.is_empty());
