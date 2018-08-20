@@ -15,9 +15,9 @@ macro_rules! impl_slice_write_to_slice {
                     assert!(slice.len() >= $elem_count);
                     let target_ptr =
                         slice.get_unchecked_mut(0) as *mut $elem_ty;
-                    assert!(
-                        target_ptr.align_offset(mem::align_of::<Self>())
-                            == 0
+                    assert_eq!(
+                        target_ptr.align_offset(mem::align_of::<Self>()),
+                        0
                     );
                     self.write_to_slice_aligned_unchecked(slice);
                 }
