@@ -185,9 +185,6 @@ matrix:
     #- env: TARGET=x86_64-unknown-netbsd NORUN=1
     #- env: TARGET=x86_64-sun-solaris NORUN=1
 
-    # Also failing on libc:
-    - env: TARGET=sparc64-unknown-linux-gnu
-
     # FIXME: TBD
     - env: TARGET=arm-linux-androideabi
     - env: TARGET=arm-linux-androideabi RUSTFLAGS="-C target-feature=+v7,+neon"
