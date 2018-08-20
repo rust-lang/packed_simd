@@ -4,7 +4,6 @@
 //! Fujita.
 #![deny(warnings)]
 
-#[macro_use]
 extern crate structopt;
 extern crate aobench_lib;
 extern crate time;
