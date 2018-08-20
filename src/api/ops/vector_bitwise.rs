@@ -62,7 +62,7 @@ macro_rules! impl_ops_vector_bitwise {
                 pub mod [$id _ops_vector_bitwise] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn ops_vector_bitwise() {
+                    fn ops_vector_bitwise() {
 
                         let z = $id::splat(0 as $elem_ty);
                         let o = $id::splat(1 as $elem_ty);

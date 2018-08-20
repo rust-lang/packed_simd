@@ -19,7 +19,7 @@ macro_rules! impl_math_float_sqrte {
                 pub mod [$id _math_sqrte] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn sqrte() {
+                    fn sqrte() {
                         use $elem_ty::consts::SQRT_2;
                         let tol = $id::splat(2.4e-4 as $elem_ty);
 

@@ -17,7 +17,7 @@ macro_rules! impl_math_float_abs {
                 pub mod [$id _math_abs] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn abs() {
+                    fn abs() {
                         let o = $id::splat(1 as $elem_ty);
                         assert_eq!(o, o.abs());
 

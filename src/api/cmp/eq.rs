@@ -15,7 +15,7 @@ macro_rules! impl_cmp_eq {
                 pub mod [$id _cmp_eq] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn eq() {
+                    fn eq() {
                         fn foo<E: ::cmp::Eq>(_: E) {}
                         let a = $id::splat($false);
                         foo(a);

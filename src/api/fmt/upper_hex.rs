@@ -26,7 +26,7 @@ macro_rules! impl_fmt_upper_hex {
                 pub mod [$id _fmt_upper_hex] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn upper_hex() {
+                    fn upper_hex() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 

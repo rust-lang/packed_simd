@@ -111,7 +111,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _minimal] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn minimal() {
+                    fn minimal() {
                         // lanes:
                         assert_eq!($elem_count, $id::<i32>::lanes());
 
@@ -161,7 +161,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn extract_panic_oob() {
+                    fn extract_panic_oob() {
                         let VAL: <$id<i32> as sealed::Simd>::Element = $ref!(7);
                         let VEC: $id<i32> = $id::splat(VAL);
                         let _ = VEC.extract($id::<i32>::lanes());
@@ -172,7 +172,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn replace_panic_oob() {
+                    fn replace_panic_oob() {
                         let VAL: <$id<i32> as sealed::Simd>::Element = $ref!(7);
                         let VAL42: <$id<i32> as sealed::Simd>::Element = $ref!(42);
                         let VEC: $id<i32> = $id::splat(VAL);
@@ -205,7 +205,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _fmt_debug] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn debug() {
+                    fn debug() {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 
@@ -248,7 +248,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _default] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn default() {
+                    fn default() {
                         let a = $id::<i32>::default();
                         for i in 0..$id::<i32>::lanes() {
                             assert_eq!(a.extract(i), unsafe { mem::zeroed() });
@@ -332,7 +332,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _cmp_vertical] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn cmp() {
+                    fn cmp() {
                         let a = $id::<i32>::null();
                         let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
 
@@ -404,7 +404,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _cmp_PartialEq] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn partial_eq() {
+                    fn partial_eq() {
                         let a = $id::<i32>::null();
                         let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
 
@@ -436,7 +436,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _cmp_eq] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn eq() {
+                    fn eq() {
                         fn foo<E: ::cmp::Eq>(_: E) {}
                         let a = $id::<i32>::null();
                         foo(a);
@@ -482,7 +482,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _from] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn array() {
+                    fn array() {
                         let values = [1_i32; $elem_count];
 
                         let mut vec: $id<i32> = Default::default();
@@ -587,7 +587,7 @@ macro_rules! impl_minimal_p {
                     use iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn from_slice_unaligned() {
+                    fn from_slice_unaligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
 
                         let mut unaligned = [non_null; $id::<i32>::lanes() + 1];
@@ -608,7 +608,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn from_slice_unaligned_fail() {
+                    fn from_slice_unaligned_fail() {
                         let (_null, non_null) = ptr_vals!($id<i32>);
                         let unaligned = [non_null; $id::<i32>::lanes() + 1];
                         // the slice is not large enough => panic
@@ -621,7 +621,7 @@ macro_rules! impl_minimal_p {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn from_slice_aligned() {
+                    fn from_slice_aligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut aligned = A {
                             data: [null; 2 * $id::<i32>::lanes()],
@@ -649,7 +649,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn from_slice_aligned_fail_lanes() {
+                    fn from_slice_aligned_fail_lanes() {
                         let (_null, non_null) = ptr_vals!($id<i32>);
                         let aligned = A {
                             data: [non_null; 2 * $id::<i32>::lanes()],
@@ -665,7 +665,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn from_slice_aligned_fail_align() {
+                    fn from_slice_aligned_fail_align() {
                         unsafe {
                             let (null, _non_null) = ptr_vals!($id<i32>);
                             let aligned = A {
@@ -774,7 +774,7 @@ macro_rules! impl_minimal_p {
                     use iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn write_to_slice_unaligned() {
+                    fn write_to_slice_unaligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut unaligned = [null; $id::<i32>::lanes() + 1];
                         let vec = $id::<i32>::splat(non_null);
@@ -794,7 +794,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn write_to_slice_unaligned_fail() {
+                    fn write_to_slice_unaligned_fail() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut unaligned = [null; $id::<i32>::lanes() + 1];
                         let vec = $id::<i32>::splat(non_null);
@@ -808,7 +808,7 @@ macro_rules! impl_minimal_p {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn write_to_slice_aligned() {
+                    fn write_to_slice_aligned() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut aligned = A {
                             data: [null; 2 * $id::<i32>::lanes()],
@@ -830,7 +830,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn write_to_slice_aligned_fail_lanes() {
+                    fn write_to_slice_aligned_fail_lanes() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         let mut aligned = A {
                             data: [null; 2 * $id::<i32>::lanes()],
@@ -847,7 +847,7 @@ macro_rules! impl_minimal_p {
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
-                    pub fn write_to_slice_aligned_fail_align() {
+                    fn write_to_slice_aligned_fail_align() {
                         let (null, non_null) = ptr_vals!($id<i32>);
                         unsafe {
                             let mut aligned = A {
@@ -893,7 +893,7 @@ macro_rules! impl_minimal_p {
                 pub mod [$id _hash] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn hash() {
+                    fn hash() {
                         use ::hash::{Hash, Hasher};
                         #[allow(deprecated)]
                         use ::hash::{SipHasher13};

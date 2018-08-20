@@ -76,7 +76,7 @@ macro_rules! impl_ops_scalar_mask_bitwise {
                 pub mod [$id _ops_scalar_mask_bitwise] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn ops_scalar_mask_bitwise() {
+                    fn ops_scalar_mask_bitwise() {
                         let ti = true;
                         let fi = false;
                         let t = $id::splat(ti);

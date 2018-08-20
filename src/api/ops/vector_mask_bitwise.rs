@@ -62,7 +62,7 @@ macro_rules! impl_ops_vector_mask_bitwise {
                 pub mod [$id _ops_vector_mask_bitwise] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn ops_vector_mask_bitwise() {
+                    fn ops_vector_mask_bitwise() {
                         let t = $id::splat(true);
                         let f = $id::splat(false);
                         assert!(t != f);

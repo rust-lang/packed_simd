@@ -15,7 +15,7 @@ macro_rules! impl_from_bits_ {
                 pub mod [$id _from_bits_ $from_ty] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn test() {
+                    fn test() {
                         use ::{ptr::{read_unaligned}, mem::{size_of, zeroed}};
                         use ::IntoBits;
                         assert_eq!(size_of::<$id>(),

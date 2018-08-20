@@ -73,7 +73,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                 pub mod [$id _reduction_int_arith] {
                     use super::*;
 
-                    pub fn alternating(x: usize) -> $id {
+                    fn alternating(x: usize) -> $id {
                         let mut v = $id::splat(1 as $elem_ty);
                         for i in 0..$id::lanes() {
                             if i % x == 0 {
@@ -84,7 +84,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn wrapping_sum() {
+                    fn wrapping_sum() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.wrapping_sum(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
@@ -103,7 +103,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                         }
                     }
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn wrapping_sum_overflow() {
+                    fn wrapping_sum_overflow() {
                         let start = $elem_ty::max_value()
                             - ($id::lanes() as $elem_ty / 2);
 
@@ -118,7 +118,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn wrapping_product() {
+                    fn wrapping_product() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.wrapping_product(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
@@ -144,7 +144,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                     }
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-                    pub fn wrapping_product_overflow() {
+                    fn wrapping_product_overflow() {
                         let start = $elem_ty::max_value()
                             - ($id::lanes() as $elem_ty / 2);
 
