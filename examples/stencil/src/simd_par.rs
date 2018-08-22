@@ -20,19 +20,16 @@ pub fn x8_par(
     a_even: &mut [f32],
     a_odd: &mut [f32],
 ) {
-    let a_even = a_even.as_mut_ptr() as isize;
-    let a_odd = a_odd.as_mut_ptr() as isize;
+    let a_even_i = a_even.as_mut_ptr() as isize;
+    let a_odd_i = a_odd.as_mut_ptr() as isize;
     for t in t0..t1 {
-        (z0..z1).into_par_iter().for_each(|z| {
-            let (a_even, a_odd) = unsafe {
-                let n = (n_x * n_y * n_z) as usize;
-                let a_even: &mut [f32] =
-                    ::std::slice::from_raw_parts_mut(a_even as *mut f32, n);
-                let a_odd: &mut [f32] =
-                    ::std::slice::from_raw_parts_mut(a_odd as *mut f32, n);
-                (a_even, a_odd)
-            };
-            if t & 1 == 0 {
+        if t & 1 == 0 {
+            let a_even: &[f32] = a_even;
+            (z0..z1).into_par_iter().for_each(|z| {
+                let a_odd = unsafe {
+                    let n = (n_x * n_y * n_z) as usize;
+                    ::std::slice::from_raw_parts_mut(a_odd_i as *mut f32, n)
+                };
                 step_x8(
                     x0,
                     x1,
@@ -48,7 +45,14 @@ pub fn x8_par(
                     a_even,
                     a_odd,
                 );
-            } else {
+            });
+        } else {
+            let a_odd: &[f32] = a_odd;
+            (z0..z1).into_par_iter().for_each(|z| {
+                let a_even = unsafe {
+                    let n = (n_x * n_y * n_z) as usize;
+                    ::std::slice::from_raw_parts_mut(a_even_i as *mut f32, n)
+                };
                 step_x8(
                     x0,
                     x1,
@@ -64,8 +68,8 @@ pub fn x8_par(
                     a_odd,
                     a_even,
                 );
-            }
-        });
+            });
+        }
     }
 }
 
