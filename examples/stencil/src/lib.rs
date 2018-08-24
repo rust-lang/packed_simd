@@ -17,7 +17,6 @@ extern crate rayon;
 
 #[cfg(feature = "ispc")]
 #[macro_use]
-
 extern crate ispc;
 
 #[cfg(feature = "ispc")]
@@ -27,7 +26,6 @@ pub mod simd;
 pub mod simd_par;
 
 #[derive(Clone, PartialEq, Debug)]
-
 pub struct Data {
     a: (Vec<f32>, Vec<f32>),
     vsq: Vec<f32>,
@@ -41,7 +39,9 @@ pub struct Data {
 
 impl Data {
     pub fn default() -> Self {
-        Self::from_bounds(6, 4, 256, 256, 256)
+        // ISPC uses this but it takes too long on travis
+        // Self::from_bounds(6, 4, 128, 128, 128)
+        Self::from_bounds(6, 4, 128, 128, 128)
     }
 
     pub fn from_bounds(
@@ -113,7 +113,6 @@ impl Data {
 }
 
 #[cfg(test)]
-
 fn assert_data_eq(a: &Data, b: &Data) {
     if a == b {
         return;

@@ -37,5 +37,7 @@ cargo_test --manifest-path=target/nbody/Cargo.toml --release
 cp -r examples/spectral_norm target/spectral_norm
 cargo_test --manifest-path=target/spectral_norm/Cargo.toml --release
 
-cp -r examples/stencil target/stencil
-cargo_test --manifest-path=target/stencil/Cargo.toml --release
+if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
+    cp -r examples/stencil target/stencil
+    cargo_test --manifest-path=target/stencil/Cargo.toml --release
+fi
