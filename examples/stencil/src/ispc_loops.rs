@@ -3,21 +3,9 @@
 ispc_module!(stencil);
 
 pub fn serial(
-    t0: i32,
-    t1: i32,
-    x0: i32,
-    x1: i32,
-    y0: i32,
-    y1: i32,
-    z0: i32,
-    z1: i32,
-    n_x: i32,
-    n_y: i32,
-    n_z: i32,
-    coef: &[f32; 4],
-    vsq: &[f32],
-    a_even: &mut [f32],
-    a_odd: &mut [f32],
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
 ) {
     unsafe {
         stencil::loop_stencil_ispc(
@@ -41,21 +29,9 @@ pub fn serial(
 }
 
 pub fn tasks(
-    t0: i32,
-    t1: i32,
-    x0: i32,
-    x1: i32,
-    y0: i32,
-    y1: i32,
-    z0: i32,
-    z1: i32,
-    n_x: i32,
-    n_y: i32,
-    n_z: i32,
-    coef: &[f32; 4],
-    vsq: &[f32],
-    a_even: &mut [f32],
-    a_odd: &mut [f32],
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
 ) {
     unsafe {
         stencil::loop_stencil_ispc_tasks(

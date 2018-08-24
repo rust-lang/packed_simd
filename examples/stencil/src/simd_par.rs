@@ -1,74 +1,42 @@
 //! SIMD+Rayon implementation.
-
-use super::simd::step_x8;
 use rayon::prelude::*;
+use simd::step_x8;
 
 pub fn x8_par(
-    t0: i32,
-    t1: i32,
-    x0: i32,
-    x1: i32,
-    y0: i32,
-    y1: i32,
-    z0: i32,
-    z1: i32,
-    n_x: i32,
-    n_y: i32,
-    n_z: i32,
-    coef: &[f32; 4],
-    vsq: &[f32],
-    a_even: &mut [f32],
-    a_odd: &mut [f32],
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
 ) {
-    let a_even_i = a_even.as_mut_ptr() as isize;
-    let a_odd_i = a_odd.as_mut_ptr() as isize;
+    assert!((z1 - z0) <= n_z);
     for t in t0..t1 {
         if t & 1 == 0 {
-            let a_even: &[f32] = a_even;
-            (z0..z1).into_par_iter().for_each(|z| {
-                let a_odd = unsafe {
-                    let n = (n_x * n_y * n_z) as usize;
-                    ::std::slice::from_raw_parts_mut(a_odd_i as *mut f32, n)
-                };
-                step_x8(
-                    x0,
-                    x1,
-                    y0,
-                    y1,
-                    z,
-                    z + 1,
-                    n_x,
-                    n_y,
-                    n_z,
-                    coef,
-                    vsq,
-                    a_even,
-                    a_odd,
-                );
-            });
+            a_odd
+                .par_chunks_mut((n_x * n_y) as usize)
+                .enumerate()
+                .skip(z0 as usize)
+                .take((z1 - z0) as usize)
+                .for_each(|(z, a_odd)| {
+                    let z = z as i32;
+                    #[rustfmt::skip]
+                    step_x8(
+                        x0, x1, y0, y1, z, z + 1, n_x, n_y, n_z,
+                        coef, vsq, a_even, a_odd,
+                    );
+                });
         } else {
-            let a_odd: &[f32] = a_odd;
-            (z0..z1).into_par_iter().for_each(|z| {
-                let a_even = unsafe {
-                    let n = (n_x * n_y * n_z) as usize;
-                    ::std::slice::from_raw_parts_mut(a_even_i as *mut f32, n)
-                };
-                step_x8(
-                    x0,
-                    x1,
-                    y0,
-                    y1,
-                    z,
-                    z + 1,
-                    n_x,
-                    n_y,
-                    n_z,
-                    coef,
-                    vsq,
-                    a_odd,
-                    a_even,
-                );
-            });
+            a_even
+                .par_chunks_mut((n_x * n_y) as usize)
+                .enumerate()
+                .skip(z0 as usize)
+                .take((z1 - z0) as usize)
+                .for_each(|(z, a_even)| {
+                    let z = z as i32;
+                    #[rustfmt::skip]
+                    step_x8(
+                        x0, x1, y0, y1, z, z + 1, n_x, n_y, n_z,
+                        coef, vsq, a_odd, a_even,
+                    );
+                });
         }
     }
 }

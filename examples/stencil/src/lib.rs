@@ -1,3 +1,4 @@
+#![feature(stmt_expr_attributes)]
 #![deny(warnings)]
 #![cfg_attr(
     feature = "cargo-clippy",
@@ -16,6 +17,7 @@ extern crate rayon;
 
 #[cfg(feature = "ispc")]
 #[macro_use]
+
 extern crate ispc;
 
 #[cfg(feature = "ispc")]
@@ -25,6 +27,7 @@ pub mod simd;
 pub mod simd_par;
 
 #[derive(Clone, PartialEq, Debug)]
+
 pub struct Data {
     a: (Vec<f32>, Vec<f32>),
     vsq: Vec<f32>,
@@ -40,40 +43,22 @@ impl Data {
     pub fn default() -> Self {
         Self::from_bounds(6, 4, 256, 256, 256)
     }
+
     pub fn from_bounds(
-        max_t: i32,
-        width: i32,
-        n_x: i32,
-        n_y: i32,
-        n_z: i32,
+        max_t: i32, width: i32, n_x: i32, n_y: i32, n_z: i32,
     ) -> Self {
+        #[rustfmt::skip]
         Self::new(
-            0,
-            max_t,
-            width,
-            n_x - width,
-            width,
-            n_y - width,
-            width,
-            n_z - width,
-            n_x,
-            n_y,
-            n_z,
+            0, max_t,
+            width, n_x - width, width, n_y - width, width, n_z - width,
+            n_x, n_y, n_z,
         )
     }
+
     /// Initializes data
     pub fn new(
-        t0: i32,
-        t1: i32,
-        x0: i32,
-        x1: i32,
-        y0: i32,
-        y1: i32,
-        z0: i32,
-        z1: i32,
-        n_x: i32,
-        n_y: i32,
-        n_z: i32,
+        t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32,
+        z1: i32, n_x: i32, n_y: i32, n_z: i32,
     ) -> Self {
         let n = (n_x * n_y * n_z) as usize;
         let mut data = Self {
@@ -86,6 +71,7 @@ impl Data {
             y: (y0, y1),
             z: (z0, z1),
         };
+
         data.reinit();
         data
     }
@@ -109,52 +95,29 @@ impl Data {
         }
     }
 
+    #[rustfmt::skip]
     pub fn exec<F>(&mut self, f: F)
     where
-        F: Fn(
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            i32,
-            &[f32; 4],
-            &[f32],
-            &mut [f32],
-            &mut [f32],
-        ) -> (),
+        F: Fn(i32, i32, i32, i32, i32, i32, i32, i32, i32, i32, i32,
+            &[f32; 4], &[f32], &mut [f32], &mut [f32]) -> (),
     {
         f(
-            self.t.0,
-            self.t.1,
-            self.x.0,
-            self.x.1,
-            self.y.0,
-            self.y.1,
-            self.z.0,
-            self.z.1,
-            self.n.0,
-            self.n.1,
-            self.n.2,
-            &self.coeff,
-            &self.vsq,
-            &mut self.a.0,
-            &mut self.a.1,
+            self.t.0, self.t.1,
+            self.x.0, self.x.1,
+            self.y.0, self.y.1,
+            self.z.0, self.z.1,
+            self.n.0, self.n.1, self.n.2,
+            &self.coeff, &self.vsq, &mut self.a.0, &mut self.a.1,
         );
     }
 }
 
 #[cfg(test)]
+
 fn assert_data_eq(a: &Data, b: &Data) {
     if a == b {
         return;
     }
-
     assert_eq!(a.coeff, b.coeff, "coeffs differ");
     assert_eq!(a.n, b.n, "n differ");
     assert_eq!(a.t, b.t, "t differ");
@@ -166,16 +129,19 @@ fn assert_data_eq(a: &Data, b: &Data) {
         for y in 0..a.n.1 {
             for x in 0..a.n.0 {
                 let idx = (x + y * a.n.1 + z * a.n.1 * a.n.0) as usize;
+
                 assert_eq!(
                     a.vsq[idx], b.vsq[idx],
                     "vsq diff at idx = {} ({}, {}, {})",
                     idx, x, y, z
                 );
+
                 assert_eq!(
                     a.a.0[idx], b.a.0[idx],
                     "a.0 diff at idx = {} ({}, {}, {})",
                     idx, x, y, z
                 );
+
                 assert_eq!(
                     a.a.1[idx], b.a.1[idx],
                     "a.1 diff at idx = {} ({}, {}, {})",
