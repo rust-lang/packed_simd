@@ -73,11 +73,7 @@ impl State {
             odd: u16,
         }
 
-        let mut perms = [Perm {
-            perm: u8x16::splat(0),
-            start: 0,
-            odd: 0,
-        }; 60];
+        let mut perms = [Perm { perm: u8x16::splat(0), start: 0, odd: 0 }; 60];
 
         let mut i = 0;
         let mut c = [0_u8; 16];

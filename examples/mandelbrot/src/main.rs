@@ -13,11 +13,7 @@ enum Algorithm {
 }
 
 fn run<O: Write>(
-    mut o: O,
-    width: usize,
-    height: usize,
-    alg: &Algorithm,
-    format: Format,
+    mut o: O, width: usize, height: usize, alg: &Algorithm, format: Format,
 ) {
     let mut m = Mandelbrot::new(width, height, format);
     m.write_header(&mut o);
@@ -35,11 +31,8 @@ fn main() {
     // width height alg fmt
     let width = args.next().unwrap().parse().unwrap();
 
-    let height = if let Some(h) = args.next() {
-        h.parse().unwrap()
-    } else {
-        width
-    };
+    let height =
+        if let Some(h) = args.next() { h.parse().unwrap() } else { width };
 
     let alg = if let Some(v) = args.next() {
         match v.parse().unwrap() {
@@ -74,13 +67,7 @@ mod tests {
     fn verify_output_scalar() {
         let mut out: Vec<u8> = Vec::new();
 
-        run(
-            &mut out,
-            WIDTH,
-            HEIGHT,
-            &Algorithm::Scalar,
-            output::Format::PBM,
-        );
+        run(&mut out, WIDTH, HEIGHT, &Algorithm::Scalar, output::Format::PBM);
 
         assert_eq!(out.len(), OUTPUT.len());
         if out != OUTPUT {
@@ -97,13 +84,7 @@ mod tests {
     fn verify_output_simd() {
         let mut out: Vec<u8> = Vec::new();
 
-        run(
-            &mut out,
-            WIDTH,
-            HEIGHT,
-            &Algorithm::Simd,
-            output::Format::PBM,
-        );
+        run(&mut out, WIDTH, HEIGHT, &Algorithm::Simd, output::Format::PBM);
 
         assert_eq!(out.len(), OUTPUT.len());
         if out != OUTPUT {

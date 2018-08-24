@@ -52,18 +52,13 @@ where
 
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
 pub fn test_cmp<T>(
-    a: PartiallyOrdered<T>,
-    b: PartiallyOrdered<T>,
-    o: Option<::cmp::Ordering>,
+    a: PartiallyOrdered<T>, b: PartiallyOrdered<T>, o: Option<::cmp::Ordering>,
 ) where
     PartiallyOrdered<T>: PartialOrd + Debug,
     T: Debug + crate::sealed::Simd + Copy + Clone,
     <T as crate::sealed::Simd>::Element: Default + Copy + Clone + PartialOrd,
 {
-    assert!(
-        T::LANES <= 64,
-        "array length in these two arrays needs updating"
-    );
+    assert!(T::LANES <= 64, "array length in these two arrays needs updating");
     let mut arr_a: [T::Element; 64] = [Default::default(); 64];
     let mut arr_b: [T::Element; 64] = [Default::default(); 64];
 

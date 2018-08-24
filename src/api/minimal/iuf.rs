@@ -1,4 +1,5 @@
-//! Minimal API of signed integer, unsigned integer, and floating-point vectors.
+//! Minimal API of signed integer, unsigned integer, and floating-point
+//! vectors.
 
 macro_rules! impl_minimal_iuf {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident | $test_tt:tt |

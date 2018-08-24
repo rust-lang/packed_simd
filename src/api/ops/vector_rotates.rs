@@ -4,9 +4,9 @@
 macro_rules! impl_ops_vector_rotates {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
-            /// Shifts the bits of each lane to the left by the specified amount in
-            /// the corresponding lane of `n`, wrapping the truncated bits to
-            /// the end of the resulting integer.
+            /// Shifts the bits of each lane to the left by the specified
+            /// amount in the corresponding lane of `n`, wrapping the
+            /// truncated bits to the end of the resulting integer.
             ///
             /// Note: this is neither the same operation as `<<` nor equivalent
             /// to `slice::rotate_left`.
@@ -19,9 +19,9 @@ macro_rules! impl_ops_vector_rotates {
                 (self << n) | (self >> ((LANE_WIDTH - n) % LANE_WIDTH))
             }
 
-            /// Shifts the bits of each lane to the right by the specified amount in
-            /// the corresponding lane of `n`, wrapping the truncated bits to
-            /// the beginning of the resulting integer.
+            /// Shifts the bits of each lane to the right by the specified
+            /// amount in the corresponding lane of `n`, wrapping the
+            /// truncated bits to the beginning of the resulting integer.
             ///
             /// Note: this is neither the same operation as `<<` nor equivalent
             /// to `slice::rotate_left`.

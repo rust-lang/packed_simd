@@ -116,7 +116,7 @@ impl_swap_bytes!(
     u16x4,
     i16x4,
     u32x2,
-    i32x2, /*u64x1, i64x1,*/
+    i32x2, /* u64x1, i64x1, */
 );
 
 impl_swap_bytes!(

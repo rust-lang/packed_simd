@@ -83,10 +83,7 @@ pub mod pbm {
 }
 
 pub fn write_header<O: io::Write>(
-    o: &mut O,
-    width: usize,
-    height: usize,
-    format: Format,
+    o: &mut O, width: usize, height: usize, format: Format,
 ) {
     match format {
         Format::PPM => ppm::write_header(o, width, height),

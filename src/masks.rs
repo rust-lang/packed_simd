@@ -53,8 +53,7 @@ macro_rules! impl_mask_ty {
         impl PartialOrd<$id> for $id {
             #[inline]
             fn partial_cmp(
-                &self,
-                other: &Self,
+                &self, other: &Self,
             ) -> Option<crate::cmp::Ordering> {
                 use crate::cmp::Ordering;
                 if self == other {
@@ -108,8 +107,7 @@ macro_rules! impl_mask_ty {
             #[inline]
             #[cfg_attr(feature = "cargo-clippy", allow(write_literal))]
             fn fmt(
-                &self,
-                fmtter: &mut crate::fmt::Formatter,
+                &self, fmtter: &mut crate::fmt::Formatter,
             ) -> Result<(), crate::fmt::Error> {
                 write!(fmtter, "{}({})", stringify!($id), self.0 != 0)
             }

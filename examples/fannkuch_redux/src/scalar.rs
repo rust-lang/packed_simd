@@ -43,13 +43,7 @@ impl Perm {
         for i in 1..n as usize + 1 {
             fact[i] = fact[i - 1] * i as u32;
         }
-        Self {
-            cnt: [0; 16],
-            fact,
-            n,
-            permcount: 0,
-            perm: P { p: [0; 16] },
-        }
+        Self { cnt: [0; 16], fact, n, permcount: 0, perm: P { p: [0; 16] } }
     }
 
     fn get(&mut self, mut idx: i32) -> P {

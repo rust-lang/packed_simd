@@ -5,11 +5,7 @@
 #![deny(warnings)]
 #![cfg_attr(
     feature = "cargo-clippy",
-    allow(
-        cast_precision_loss,
-        cast_sign_loss,
-        cast_possible_truncation
-    )
+    allow(cast_precision_loss, cast_sign_loss, cast_possible_truncation)
 )]
 
 extern crate packed_simd;
