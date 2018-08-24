@@ -2,8 +2,8 @@
 //!
 //! Works arround [LLVM bug 36702].
 //!
-//! FIXME: For masks generated from floating-point vectors LLVM6 emits `pmovmskb`
-//! but should emit `movmskps` ([LLVM bug 37087]).
+//! FIXME: For masks generated from floating-point vectors LLVM6 emits
+//! `pmovmskb` but should emit `movmskps` ([LLVM bug 37087]).
 //!
 //! [LLVM bug 36702]: https://bugs.llvm.org/show_bug.cgi?id=36702
 //! [LLVM bug 37087]: https://bugs.llvm.org/show_bug.cgi?id=37087

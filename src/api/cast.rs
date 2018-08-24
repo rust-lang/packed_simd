@@ -3,16 +3,16 @@
 
 /// Numeric cast from `T` to `Self`.
 ///
-/// > Note: This is a temporary workaround until the conversion traits specified
-/// > in [RFC2484] are implemented.
+/// > Note: This is a temporary workaround until the conversion traits
+/// specified > in [RFC2484] are implemented.
 ///
 /// Numeric cast between vectors with the same number of lanes, such that:
 ///
 /// * casting integer vectors whose lane types have the same size (e.g. `i32xN`
 /// -> `u32xN`) is a **no-op**,
 ///
-/// * casting from a larger integer to a smaller integer (e.g. `u32xN` -> `u8xN`)
-/// will **truncate**,
+/// * casting from a larger integer to a smaller integer (e.g. `u32xN` ->
+/// `u8xN`) will **truncate**,
 ///
 /// * casting from a smaller integer to a larger integer
 ///   (e.g. `u8xN` -> `u32xN`) will:
@@ -36,16 +36,16 @@ pub trait FromCast<T>: ::marker::Sized {
 
 /// Numeric cast from `Self` to `T`.
 ///
-/// > Note: This is a temporary workaround until the conversion traits specified
-/// > in [RFC2484] are implemented.
+/// > Note: This is a temporary workaround until the conversion traits
+/// specified > in [RFC2484] are implemented.
 ///
 /// Numeric cast between vectors with the same number of lanes, such that:
 ///
 /// * casting integer vectors whose lane types have the same size (e.g. `i32xN`
 /// -> `u32xN`) is a **no-op**,
 ///
-/// * casting from a larger integer to a smaller integer (e.g. `u32xN` -> `u8xN`)
-/// will **truncate**,
+/// * casting from a larger integer to a smaller integer (e.g. `u32xN` ->
+/// `u8xN`) will **truncate**,
 ///
 /// * casting from a smaller integer to a larger integer
 ///   (e.g. `u8xN` -> `u32xN`) will:

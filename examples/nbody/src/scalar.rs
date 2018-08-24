@@ -18,11 +18,7 @@ const N_BODIES: usize = 5;
 #[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]
 const BODIES: [Body; N_BODIES] = [
     // Sun
-    Body {
-        x: [0., 0., 0.],
-        v: [0., 0., 0.],
-        mass: SOLAR_MASS,
-    },
+    Body { x: [0., 0., 0.], v: [0., 0., 0.], mass: SOLAR_MASS },
     // Jupiter
     Body {
         x: [

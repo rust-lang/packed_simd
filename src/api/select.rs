@@ -7,7 +7,8 @@ macro_rules! impl_select {
             /// Selects elements of `a` and `b` using mask.
             ///
             /// The lanes of the result for which the mask is `true` contain
-            /// the values of `a`. The remaining lanes contain the values of `b`.
+            /// the values of `a`. The remaining lanes contain the values of
+            /// `b`.
             #[inline]
             pub fn select<T>(self, a: Simd<T>, b: Simd<T>) -> Simd<T>
             where

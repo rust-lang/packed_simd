@@ -20,6 +20,6 @@ do
     cd -
 done
 
-cd verify
+cd verify/verify
 cargo_fmt
 cd -

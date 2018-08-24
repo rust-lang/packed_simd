@@ -16,9 +16,9 @@
 //!
 //! ## Introduction
 //!
-//! This crate exports [`Simd<[T; N]>`][`Simd`]: a packed vector of `N` elements of type
-//! `T` as well as many type aliases for this type: for example, [`f32x4`] which
-//! is just an alias for `Simd<[f32; 4]>`.
+//! This crate exports [`Simd<[T; N]>`][`Simd`]: a packed vector of `N`
+//! elements of type `T` as well as many type aliases for this type: for
+//! example, [`f32x4`] which is just an alias for `Simd<[f32; 4]>`.
 //!
 //! The operations on packed vectors are, by default, "vertical", that is, they
 //! are applied to each vector lane in isolation of the others:
@@ -64,7 +64,8 @@
 //!
 //! The vector type aliases are named according to the following scheme:
 //!
-//! > `{element_type}x{number_of_lanes} == Simd<[element_type; number_of_lanes]>`
+//! > `{element_type}x{number_of_lanes} == Simd<[element_type;
+//! number_of_lanes]>`
 //!
 //! where the following element types are supported:
 //!
@@ -122,17 +123,17 @@
 //! resulting vector contains the elements of `a` for those lanes for which the
 //! mask is `true`, and the elements of `b` otherwise.
 //!
-//! The example constructs a mask with the first two lanes set to `true` and the
-//! last two lanes set to `false`. This selects the first two lanes of `a + 1`
-//! and the last two lanes of `a`, producing a vector where the first two lanes
-//! have been incremented by `1`.
+//! The example constructs a mask with the first two lanes set to `true` and
+//! the last two lanes set to `false`. This selects the first two lanes of `a
+//! + 1` and the last two lanes of `a`, producing a vector where the first two
+//! lanes have been incremented by `1`.
 //!
 //! > note: mask `select` can be used on vector types that have the same number
-//! > of lanes as the mask. The example shows this by using [`m16x4`] instead of
-//! > [`m32x4`]. It is _typically_ more performant to use a mask element width equal
-//! > to the element width of the vectors being operated upon. This is, however,
-//! > not true for 512-bit wide vectors when targetting AVX-512, where the most
-//! > efficient masks use only 1-bit per element.
+//! > of lanes as the mask. The example shows this by using [`m16x4`] instead
+//! of > [`m32x4`]. It is _typically_ more performant to use a mask element
+//! width equal > to the element width of the vectors being operated upon.
+//! This is, however, > not true for 512-bit wide vectors when targetting
+//! AVX-512, where the most > efficient masks use only 1-bit per element.
 //!
 //! All vertical comparison operations returns masks:
 //!
@@ -144,7 +145,8 @@
 //! // ge: >= (Greater Eequal; see also lt, le, gt, eq, ne).
 //! let m = a.ge(i32x4::splat(2));
 //!
-//! if m.any() {  // all / any / none allow coherent control flow
+//! if m.any() {
+//!     // all / any / none allow coherent control flow
 //!     let d = m.select(a, b);
 //!     assert_eq!(d, i32x4::new(2, 2, 3, 3));
 //! }
@@ -153,8 +155,8 @@
 //! ## Conversions
 //!
 //! * **lossless widening conversions**: [`From`]/[`Into`] are implemented for
-//!   vectors with the same number of lanes when the conversion is value preserving
-//!   (same as in `std`).
+//!   vectors with the same number of lanes when the conversion is value
+//! preserving   (same as in `std`).
 //!
 //! * **safe bitwise conversions**: The cargo feature `into_bits` provides the
 //!   `IntoBits/FromBits` traits (`x.into_bits()`). These perform safe bitwise
@@ -162,26 +164,28 @@
 //!   patterns of the target type and are also implemented for the
 //!   architecture-specific vector types of `std::arch`. For example, `let x:
 //!   u8x8 = m8x8::splat(true).into_bits();` is provided because all `m8x8` bit
-//!   patterns are valid `u8x8` bit patterns. However, the opposite is not true,
-//!   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
+//!   patterns are valid `u8x8` bit patterns. However, the opposite is not
+//! true,   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
 //!   operation cannot be peformed safely using `x.into_bits()`; one needs to
-//!   use `unsafe { mem::transmute(x) }` for that, making sure that the value in
-//!   the `u8x8` is a valid bit-pattern of `m8x8`.
+//!   use `unsafe { mem::transmute(x) }` for that, making sure that the value
+//! in   the `u8x8` is a valid bit-pattern of `m8x8`.
 //!
-//! * **numeric casts** (`as`): are peformed using [`FromCast`]/[`Cast`] (`x.cast()`), just like `as`:
+//! * **numeric casts** (`as`): are peformed using [`FromCast`]/[`Cast`]
+//! (`x.cast()`), just like `as`:
 //!
-//!   * casting integer vectors whose lane types have the same size (e.g. `i32xN`
-//!     -> `u32xN`) is a **no-op**,
+//!   * casting integer vectors whose lane types have the same size (e.g.
+//! `i32xN`     -> `u32xN`) is a **no-op**,
 //!
-//!   * casting from a larger integer to a smaller integer (e.g. `u32xN` -> `u8xN`)
-//!     will **truncate**,
+//!   * casting from a larger integer to a smaller integer (e.g. `u32xN` ->
+//! `u8xN`)     will **truncate**,
 //!
 //!   * casting from a smaller integer to a larger integer
 //!     (e.g. `u8xN` -> `u32xN`) will:
 //!        * **zero-extend** if the source is unsigned, or
 //!        * **sign-extend** if the source is signed,
 //!
-//!   * casting from a float to an integer will **round the float towards zero**,
+//!   * casting from a float to an integer will **round the float towards
+//! zero**,
 //!
 //!   * casting from an integer to float will produce the floating point
 //!     representation of the integer, **rounding to nearest, ties to even**,
@@ -219,10 +223,7 @@
         cast_precision_loss
     )
 )]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    deny(missing_inline_in_public_items)
-)]
+#![cfg_attr(feature = "cargo-clippy", deny(missing_inline_in_public_items))]
 #![deny(warnings)]
 #![no_std]
 
@@ -290,10 +291,7 @@ pub struct Simd<A: sealed::SimdArray>(
 /// Wrapper over `T` implementing `PartialOrd` and/or `Ord`.
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug)]
-#[cfg_attr(
-    feature = "cargo-clippy",
-    allow(missing_inline_in_public_items)
-)]
+#[cfg_attr(feature = "cargo-clippy", allow(missing_inline_in_public_items))]
 pub struct PartiallyOrdered<T>(T);
 
 mod masks;

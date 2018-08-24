@@ -4,8 +4,8 @@
 //! Fujita.
 #![deny(warnings)]
 
-extern crate structopt;
 extern crate aobench_lib;
+extern crate structopt;
 extern crate time;
 
 use aobench_lib::*;

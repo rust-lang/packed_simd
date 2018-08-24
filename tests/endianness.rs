@@ -86,20 +86,12 @@ fn endian_array_union() {
         data: [f32; 4],
         vec: f32x4,
     }
-    let x: [f32; 4] = unsafe {
-        A {
-            vec: f32x4::new(0., 1., 2., 3.),
-        }.data
-    };
+    let x: [f32; 4] = unsafe { A { vec: f32x4::new(0., 1., 2., 3.) }.data };
     assert_eq!(x[0], 0_f32);
     assert_eq!(x[1], 1_f32);
     assert_eq!(x[2], 2_f32);
     assert_eq!(x[3], 3_f32);
-    let y: f32x4 = unsafe {
-        A {
-            data: [3., 2., 1., 0.],
-        }.vec
-    };
+    let y: f32x4 = unsafe { A { data: [3., 2., 1., 0.] }.vec };
     assert_eq!(y, f32x4::new(3., 2., 1., 0.));
 
     union B {
@@ -157,20 +149,12 @@ fn endian_tuple_access() {
         data: F32x4T,
         vec: f32x4,
     }
-    let x: F32x4T = unsafe {
-        A {
-            vec: f32x4::new(0., 1., 2., 3.),
-        }.data
-    };
+    let x: F32x4T = unsafe { A { vec: f32x4::new(0., 1., 2., 3.) }.data };
     assert_eq!(x.0, 0_f32);
     assert_eq!(x.1, 1_f32);
     assert_eq!(x.2, 2_f32);
     assert_eq!(x.3, 3_f32);
-    let y: f32x4 = unsafe {
-        A {
-            data: (3., 2., 1., 0.),
-        }.vec
-    };
+    let y: f32x4 = unsafe { A { data: (3., 2., 1., 0.) }.vec };
     assert_eq!(y, f32x4::new(3., 2., 1., 0.));
 
     #[cfg_attr(rustfmt, rustfmt_skip)]

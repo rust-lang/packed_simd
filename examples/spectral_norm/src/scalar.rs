@@ -62,10 +62,7 @@ where
 }
 
 fn dot(x: &[f64], y: &[f64]) -> f64 {
-    x.iter()
-        .zip(y)
-        .map(|(&x, &y)| x * y)
-        .fold(0.0, |a, b| a + b)
+    x.iter().zip(y).map(|(&x, &y)| x * y).fold(0.0, |a, b| a + b)
 }
 
 #[cfg(test)]
