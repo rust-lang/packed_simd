@@ -3,36 +3,25 @@ use stencil_lib::*;
 
 extern crate time;
 
+#[rustfmt::skip]
+fn run<F>(name: &str, f: F)
+where
+    F: Fn(i32, i32, i32, i32, i32, i32, i32, i32, i32, i32, i32,
+        &[f32; 4], &[f32], &mut [f32], &mut [f32]) -> (),
+{
+    let mut d = Data::default();
+    let t = time::Duration::span(move || d.exec(f));
+    println!("{}: {} ms", name, t.num_milliseconds());
+}
+
 fn main() {
-    {
-        let mut d = Data::default();
-        let t = time::Duration::span(move || d.exec(scalar::scalar));
-        println!("scalar: {} ms", t.num_milliseconds());
-    }
-
-    {
-        let mut d = Data::default();
-        let t = time::Duration::span(move || d.exec(simd::x8));
-        println!("simd: {} ms", t.num_milliseconds());
-    }
-
-    {
-        let mut d = Data::default();
-        let t = time::Duration::span(move || d.exec(simd_par::x8_par));
-        println!("simd+par: {} ms", t.num_milliseconds());
-    }
+    run("scalar", scalar::scalar);
+    run("simd", simd::x8);
+    run("simd+par", simd_par::x8_par);
 
     #[cfg(feature = "ispc")]
     {
-        {
-            let mut d = Data::default();
-            let t = time::Duration::span(move || d.exec(ispc_loops::serial));
-            println!("ispc: {} ms", t.num_milliseconds());
-        }
-        {
-            let mut d = Data::default();
-            let t = time::Duration::span(move || d.exec(ispc_loops::tasks));
-            println!("ispc+task: {} ms", t.num_milliseconds());
-        }
+        run("ispc", ispc_loops::serial);
+        run("ispc+tasks", ispc_loops::tasks);
     }
 }
