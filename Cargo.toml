@@ -27,7 +27,8 @@ default = []
 into_bits = []
 
 [dev-dependencies]
-interpolate_idents = "0.2"
+#interpolate_idents = "0.2"
+interpolate_idents = { git = "https://github.com/gnzlbg/interpolate_idents", branch = "fix" }
 arrayvec = { version = "^0.4", default-features = false }
 
 [target.'cfg(all(target_arch = "x86_64", target_feature = "sse2"))'.dependencies.sleef-sys]
