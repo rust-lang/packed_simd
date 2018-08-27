@@ -20,6 +20,7 @@ Most of the examples come with both a scalar and a vectorized implementation.
 * [`mandelbrot`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/mandelbrot)
 * [`n-body`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/nbody)
 * [`spectral_norm`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/spectral_norm)
+* [`stencil`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/stencil) (1.7x faster than ISPC)
 * [`vector dot product`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/dot_product)
 
 # Cargo features
