@@ -8,7 +8,8 @@
         cast_sign_loss,
         too_many_arguments,
         cast_possible_wrap,
-        cast_possible_truncation
+        cast_possible_truncation,
+        inline_always
     )
 )]
 
