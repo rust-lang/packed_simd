@@ -18,7 +18,7 @@
 //!
 //! This crate exports [`Simd<[T; N]>`][`Simd`]: a packed vector of `N`
 //! elements of type `T` as well as many type aliases for this type: for
-//! example, [`f32x4`] which is just an alias for `Simd<[f32; 4]>`.
+//! example, [`f32x4`], which is just an alias for `Simd<[f32; 4]>`.
 //!
 //! The operations on packed vectors are, by default, "vertical", that is, they
 //! are applied to each vector lane in isolation of the others:
@@ -30,8 +30,7 @@
 //! assert_eq!(a + b, i32x4::new(6, 8, 10, 12));
 //! ```
 //!
-//! The library also provides many "horizontal" operations, that is, operations
-//! whose result depends on all elements of a single vector type:
+//! Many "horizontal" operations are also provided:
 //!
 //! ```
 //! # use packed_simd::*;
@@ -73,6 +72,7 @@
 //! * `u{element_width}`: unsigned integer
 //! * `f{element_width}`: float
 //! * `m{element_width}`: mask (see below)
+//! * `*{const,mut} T`: `const` and `mut` pointers
 //!
 //! ## Basic operations
 //!
@@ -123,17 +123,17 @@
 //! resulting vector contains the elements of `a` for those lanes for which the
 //! mask is `true`, and the elements of `b` otherwise.
 //!
-//! The example constructs a mask with the first two lanes set to `true` and
-//! the last two lanes set to `false`. This selects the first two lanes of `a
-//! + 1` and the last two lanes of `a`, producing a vector where the first two
-//! lanes have been incremented by `1`.
+//! The example constructs a mask with the first two lanes set to `true` and the
+//! last two lanes set to `false`. This selects the first two lanes of `a + 1`
+//! and the last two lanes of `a`, producing a vector where the first two lanes
+//! have been incremented by `1`.
 //!
 //! > note: mask `select` can be used on vector types that have the same number
 //! > of lanes as the mask. The example shows this by using [`m16x4`] instead
-//! of > [`m32x4`]. It is _typically_ more performant to use a mask element
-//! width equal > to the element width of the vectors being operated upon.
-//! This is, however, > not true for 512-bit wide vectors when targetting
-//! AVX-512, where the most > efficient masks use only 1-bit per element.
+//! > of [`m32x4`]. It is _typically_ more performant to use a mask element
+//! > width equal to the element width of the vectors being operated upon.
+//! > This is, however, not true for 512-bit wide vectors when targetting
+//! > AVX-512, where the most efficient masks use only 1-bit per element.
 //!
 //! All vertical comparison operations returns masks:
 //!

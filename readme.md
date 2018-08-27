@@ -20,7 +20,7 @@ Most of the examples come with both a scalar and a vectorized implementation.
 * [`mandelbrot`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/mandelbrot)
 * [`n-body`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/nbody)
 * [`spectral_norm`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/spectral_norm)
-* [`stencil`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/stencil) (1.7x faster than ISPC)
+* [`stencil`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/stencil)
 * [`vector dot product`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/dot_product)
 
 # Cargo features
@@ -39,6 +39,22 @@ Most of the examples come with both a scalar and a vectorized implementation.
   short-vector math library when profitable. SLEEF is licensed under the Boost
   Software License v1.0, an extremely permissive license, and can be statically
   linked without issues. 
+
+# Performance
+
+The following [ISPC] examples are also part of `packed_simd`'s
+[`examples/`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/)
+directory and allow putting the performance achievable with `packed_simd` into
+perspective. In these examples, `packed_simd`+`rayon` are used to emulate ISPC's
+Single-Program-Multiple-Data (SPMD) programming model, where this combination is:
+
+* `aobench`: ~1.4x slower,
+* `stencil`: ~1.7x faster,
+
+ than [ISPC]. While SPMD is not the intended use case for `packed_simd`, it is
+ possible to combine the library with [`rayon`] to poorly emulate [ISPC]'s SPMD
+ programming model in Rust. Writing performant code is not as straightforward as
+ with [ISPC].
 
 # Platform support
 
