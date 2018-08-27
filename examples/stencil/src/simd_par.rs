@@ -2,7 +2,8 @@
 use rayon::prelude::*;
 use simd::step_x8;
 
-pub fn x8_par(
+#[inline(always)]
+fn x8_par_impl(
     t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
     n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
     a_even: &mut [f32], a_odd: &mut [f32],
@@ -38,6 +39,108 @@ pub fn x8_par(
                     );
                 });
         }
+    }
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[target_feature(enable = "avx2")]
+unsafe fn x8_par_impl_avx2(
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
+) {
+    x8_par_impl(
+        t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z, coef, vsq, a_even,
+        a_odd,
+    )
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[target_feature(enable = "avx")]
+unsafe fn x8_par_impl_avx(
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
+) {
+    x8_par_impl(
+        t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z, coef, vsq, a_even,
+        a_odd,
+    )
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[target_feature(enable = "sse4.2")]
+unsafe fn x8_par_impl_sse42(
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
+) {
+    x8_par_impl(
+        t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z, coef, vsq, a_even,
+        a_odd,
+    )
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[target_feature(enable = "sse2")]
+unsafe fn x8_par_impl_sse2(
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
+) {
+    x8_par_impl(
+        t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z, coef, vsq, a_even,
+        a_odd,
+    )
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+unsafe fn x8_par_impl_def(
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
+) {
+    x8_par_impl(
+        t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z, coef, vsq, a_even,
+        a_odd,
+    )
+}
+
+pub fn x8_par(
+    t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
+    n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
+    a_even: &mut [f32], a_odd: &mut [f32],
+) {
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+    unsafe {
+        if is_x86_feature_detected!("avx2") {
+            #[rustfmt::skip]
+            x8_par_impl_avx2(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
+                             coef, vsq, a_even, a_odd)
+        } else if is_x86_feature_detected!("avx") {
+            #[rustfmt::skip]
+            x8_par_impl_avx(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
+                            coef, vsq, a_even, a_odd)
+        } else if is_x86_feature_detected!("sse4.2") {
+            #[rustfmt::skip]
+            x8_par_impl_sse42(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
+                              coef, vsq, a_even, a_odd)
+        } else if is_x86_feature_detected!("sse2") {
+            #[rustfmt::skip]
+            x8_par_impl_sse2(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
+                             coef, vsq, a_even, a_odd)
+        } else {
+            #[rustfmt::skip]
+            x8_par_impl_def(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
+                            coef, vsq, a_even, a_odd)
+        }
+    }
+
+    #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+    unsafe {
+        #[rustfmt::skip]
+        x8_par_impl_def(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
+                        coef, vsq, a_even, a_odd)
     }
 }
 

@@ -40,7 +40,7 @@ pub struct Data {
 impl Data {
     pub fn default() -> Self {
         // ISPC uses this but it takes too long on travis
-        // Self::from_bounds(6, 4, 128, 128, 128)
+        // Self::from_bounds(6, 4, 256, 256, 256)
         Self::from_bounds(6, 4, 128, 128, 128)
     }
 

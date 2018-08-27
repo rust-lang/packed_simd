@@ -98,7 +98,6 @@ loop_stencil_ispc_tasks(uniform int t0, uniform int t1,
     }
 }
 
-
 export void
 loop_stencil_ispc(uniform int t0, uniform int t1, 
                   uniform int x0, uniform int x1,
