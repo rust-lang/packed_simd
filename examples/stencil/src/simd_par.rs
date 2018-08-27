@@ -94,7 +94,6 @@ unsafe fn x8_par_impl_sse2(
     )
 }
 
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn x8_par_impl_def(
     t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
     n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
