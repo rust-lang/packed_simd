@@ -23,10 +23,10 @@ macro_rules! impl_simd_ptr {
     }
 }
 
-impl_simd_ptr!([*const T; 2]: ptr_const_x2 | T | T, T);
-impl_simd_ptr!([*const T; 4]: ptr_const_x4 | T | T, T, T, T);
-impl_simd_ptr!([*const T; 8]: ptr_const_x8 | T | T, T, T, T, T, T, T, T);
+impl_simd_ptr!([*const T; 2]: cptrx2 | T | T, T);
+impl_simd_ptr!([*const T; 4]: cptrx4 | T | T, T, T, T);
+impl_simd_ptr!([*const T; 8]: cptrx8 | T | T, T, T, T, T, T, T, T);
 
-impl_simd_ptr!([*mut T; 2]: ptr_mut_x2 | T | T, T);
-impl_simd_ptr!([*mut T; 4]: ptr_mut_x4 | T | T, T, T, T);
-impl_simd_ptr!([*mut T; 8]: ptr_mut_x8 | T | T, T, T, T, T, T, T, T);
+impl_simd_ptr!([*mut T; 2]: mptrx2 | T | T, T);
+impl_simd_ptr!([*mut T; 4]: mptrx4 | T | T, T, T, T);
+impl_simd_ptr!([*mut T; 8]: mptrx8 | T | T, T, T, T, T, T, T, T);

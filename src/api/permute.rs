@@ -1,6 +1,6 @@
 //! Implements portable vector permutes with immediate indices.
 
-/// Permute vector elements.
+/// Permutes vector elements.
 ///
 /// This macro returns a new vector that contains a permutation of the elements
 /// in the vector: `permute!(vec, [indices...])`.
