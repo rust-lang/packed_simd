@@ -78,6 +78,9 @@ impl State {
         let mut i = 0;
         let mut c = [0_u8; 16];
         let mut perm_max = 0;
+        // Cache this locally outside the loop, since the compiler
+        // can't optimize accesses to it otherwise.
+        let mut odd = self.odd;
 
         while i < n {
             while i < n && perm_max < 60 {
@@ -90,17 +93,17 @@ impl State {
 
                 c[i] += 1;
                 i = 1;
-                self.odd = !self.odd;
+                odd = !odd;
                 if self.s[0] != 0 {
                     if self.s[self.s[0] as usize] == 0 {
                         if self.maxflips == 0 {
                             self.maxflips = 1
                         }
-                        self.checksum += if self.odd == 0 { 1 } else { -1 };
+                        self.checksum += if odd == 0 { 1 } else { -1 };
                     } else {
                         perms[perm_max].perm = self.load_s();
                         perms[perm_max].start = self.s[0];
-                        perms[perm_max].odd = self.odd;
+                        perms[perm_max].odd = odd;
                         perm_max += 1;
                     }
                 }
