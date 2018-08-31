@@ -2,12 +2,12 @@
 
 #![allow(dead_code)]
 
-use crate::{cmp::PartialOrd, fmt::Debug, PartiallyOrdered};
+use crate::{cmp::PartialOrd, fmt::Debug, LexicographicallyOrdered};
 
 /// Tests PartialOrd for `a` and `b` where `a < b` is true.
-pub fn test_lt<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>)
+pub fn test_lt<T>(a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>)
 where
-    PartiallyOrdered<T>: Debug + PartialOrd,
+    LexicographicallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a < b, "{:?}, {:?}", a, b);
     assert!(b > a, "{:?}, {:?}", a, b);
@@ -29,9 +29,9 @@ where
 }
 
 /// Tests PartialOrd for `a` and `b` where `a <= b` is true.
-pub fn test_le<T>(a: PartiallyOrdered<T>, b: PartiallyOrdered<T>)
+pub fn test_le<T>(a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>)
 where
-    PartiallyOrdered<T>: Debug + PartialOrd,
+    LexicographicallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a <= b, "{:?}, {:?}", a, b);
     assert!(b >= a, "{:?}, {:?}", a, b);
@@ -52,9 +52,9 @@ where
 
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
 pub fn test_cmp<T>(
-    a: PartiallyOrdered<T>, b: PartiallyOrdered<T>, o: Option<::cmp::Ordering>,
+    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>, o: Option<::cmp::Ordering>,
 ) where
-    PartiallyOrdered<T>: PartialOrd + Debug,
+    LexicographicallyOrdered<T>: PartialOrd + Debug,
     T: Debug + crate::sealed::Simd + Copy + Clone,
     <T as crate::sealed::Simd>::Element: Default + Copy + Clone + PartialOrd,
 {
@@ -64,13 +64,13 @@ pub fn test_cmp<T>(
 
     unsafe {
         crate::ptr::write_unaligned(
-            arr_a.as_mut_ptr() as *mut PartiallyOrdered<T>,
+            arr_a.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
             a,
         )
     }
     unsafe {
         crate::ptr::write_unaligned(
-            arr_b.as_mut_ptr() as *mut PartiallyOrdered<T>,
+            arr_b.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
             b,
         )
     }

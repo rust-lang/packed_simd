@@ -385,8 +385,8 @@ macro_rules! impl_minimal_p {
 
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
         #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
-        impl<T> ::cmp::PartialEq<PartiallyOrdered<$id<T>>>
-            for PartiallyOrdered<$id<T>>
+        impl<T> ::cmp::PartialEq<LexicographicallyOrdered<$id<T>>>
+            for LexicographicallyOrdered<$id<T>>
         {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
@@ -428,7 +428,7 @@ macro_rules! impl_minimal_p {
         }
 
         impl<T> ::cmp::Eq for $id<T> {}
-        impl<T> ::cmp::Eq for PartiallyOrdered<$id<T>> {}
+        impl<T> ::cmp::Eq for LexicographicallyOrdered<$id<T>> {}
 
         test_if!{
             $test_tt:
