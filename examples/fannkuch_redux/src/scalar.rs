@@ -12,7 +12,7 @@ fn rotate(x: &mut [i32]) {
 
 fn next_permutation(perm: &mut [i32], count: &mut [i32]) {
     for i in 1..perm.len() {
-        rotate(&mut perm[..i + 1]);
+        rotate(&mut perm[..=i]);
         let count_i = &mut count[i];
         if *count_i >= i as i32 {
             *count_i = 0;
@@ -40,7 +40,7 @@ struct Perm {
 impl Perm {
     fn new(n: u32) -> Self {
         let mut fact = [1; 16];
-        for i in 1..n as usize + 1 {
+        for i in 1..=n as usize {
             fact[i] = fact[i - 1] * i as u32;
         }
         Self { cnt: [0; 16], fact, n, permcount: 0, perm: P { p: [0; 16] } }
@@ -58,13 +58,13 @@ impl Perm {
             self.cnt[i] = d;
             idx %= self.fact[i] as i32;
             for (place, val) in
-                pp.iter_mut().zip(self.perm.p[..(i + 1)].iter())
+                pp.iter_mut().zip(self.perm.p[..=i].iter())
             {
                 *place = (*val) as u8
             }
 
             let d = d as usize;
-            for j in 0..i + 1 {
+            for j in 0..=i {
                 self.perm.p[j] = i32::from(if j + d <= i {
                     pp[j + d]
                 } else {
