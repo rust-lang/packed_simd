@@ -30,7 +30,7 @@ impl Default for State {
 impl State {
     fn rotate_sisd(&mut self, n: usize) {
         let c = self.s[0];
-        for i in 1..(n + 1) {
+        for i in 1..=n {
             self.s[i - 1] = self.s[i];
         }
         self.s[n] = c;
