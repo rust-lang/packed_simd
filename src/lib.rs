@@ -288,11 +288,11 @@ pub struct Simd<A: sealed::SimdArray>(
     #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
 );
 
-/// Wrapper over `T` implementing `PartialOrd` and/or `Ord`.
+/// Wrapper over `T` implementing a lexicoraphical order via the `PartialOrd` and/or `Ord` traits.
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug)]
 #[cfg_attr(feature = "cargo-clippy", allow(missing_inline_in_public_items))]
-pub struct PartiallyOrdered<T>(T);
+pub struct LexicographicallyOrdered<T>(T);
 
 mod masks;
 pub use self::masks::*;

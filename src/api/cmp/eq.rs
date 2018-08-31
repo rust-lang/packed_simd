@@ -7,7 +7,7 @@ macro_rules! impl_cmp_eq {
         ($true:expr, $false:expr)
     ) => {
         impl ::cmp::Eq for $id {}
-        impl ::cmp::Eq for PartiallyOrdered<$id> {}
+        impl ::cmp::Eq for LexicographicallyOrdered<$id> {}
 
         test_if!{
             $test_tt:

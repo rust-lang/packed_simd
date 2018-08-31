@@ -9,12 +9,12 @@ macro_rules! impl_cmp_ord {
         impl $id {
             /// Returns a wrapper that implements `Ord`.
             #[inline]
-            pub fn ord(&self) -> PartiallyOrdered<$id> {
-                PartiallyOrdered(*self)
+            pub fn lex_ord(&self) -> LexicographicallyOrdered<$id> {
+                LexicographicallyOrdered(*self)
             }
         }
 
-        impl ::cmp::Ord for PartiallyOrdered<$id> {
+        impl ::cmp::Ord for LexicographicallyOrdered<$id> {
             #[inline]
             fn cmp(&self, other: &Self) -> ::cmp::Ordering {
                 match self.partial_cmp(other) {
@@ -33,8 +33,8 @@ macro_rules! impl_cmp_ord {
                     fn eq() {
                         fn foo<E: ::cmp::Ord>(_: E) {}
                         let a = $id::splat($false);
-                        foo(a.partial_ord());
-                        foo(a.ord());
+                        foo(a.partial_lex_ord());
+                        foo(a.lex_ord());
                     }
                 }
             }
