@@ -50,6 +50,7 @@ Single-Program-Multiple-Data (SPMD) programming model, where this combination is
 
 * `aobench`: ~1.4x slower,
 * `stencil`: ~1.7x faster,
+* `mandelbrot`: ~1.2x faster,
 
  than [ISPC]. While SPMD is not the intended use case for `packed_simd`, it is
  possible to combine the library with [`rayon`] to poorly emulate [ISPC]'s SPMD

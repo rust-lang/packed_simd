@@ -2,9 +2,15 @@
 name = "mandelbrot"
 version = "0.1.0"
 authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+build = "build.rs"
 
 [dependencies]
 packed_simd = { path = "../.." }
+rayon = "^1.0"
+ispc = { version = "^0.3.6", optional = true }
+
+[build-dependencies]
+ispc = { version = "^0.3.6", optional = true }
 
 [[bin]]
 name = "mandelbrot"
@@ -13,3 +19,6 @@ path = "src/main.rs"
 [lib]
 name = "mandelbrot_lib"
 path = "src/lib.rs"
+
+[features]
+default = []
