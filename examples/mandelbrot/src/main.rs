@@ -10,6 +10,8 @@ use std::{env, io, io::Write};
 enum Algorithm {
     Scalar,
     Simd,
+    ParSimd,
+    Ispc,
 }
 
 fn run<O: Write>(
@@ -21,6 +23,17 @@ fn run<O: Write>(
     match *alg {
         Algorithm::Scalar => scalar::output(&mut o, &mut m, LIMIT),
         Algorithm::Simd => simd::output(&mut o, &mut m, LIMIT),
+        Algorithm::ParSimd => par_simd::output(&mut o, &mut m, LIMIT),
+        Algorithm::Ispc => {
+            #[cfg(feature = "ispc")]
+            {
+                ispc_::output(&mut o, &mut m, LIMIT)
+            }
+            #[cfg(not(feature = "ispc"))]
+            {
+                panic!("binary wasn't compiled with --feature=ispc");
+            }
+        }
     }
 }
 
@@ -38,6 +51,8 @@ fn main() {
         match v.parse().unwrap() {
             0 => Algorithm::Scalar,
             1 => Algorithm::Simd,
+            2 => Algorithm::ParSimd,
+            3 => Algorithm::Ispc,
             v => panic!("unknown algorithm value: {}", v),
         }
     } else {
@@ -85,6 +100,23 @@ mod tests {
         let mut out: Vec<u8> = Vec::new();
 
         run(&mut out, WIDTH, HEIGHT, &Algorithm::Simd, output::Format::PBM);
+
+        assert_eq!(out.len(), OUTPUT.len());
+        if out != OUTPUT {
+            for i in 0..out.len() {
+                assert_eq!(
+                    out[i], OUTPUT[i],
+                    "byte {} differs - is: {:#08b} - should: {:#08b}",
+                    i, out[i], OUTPUT[i]
+                );
+            }
+        }
+    }
+    #[test]
+    fn verify_output_par_simd() {
+        let mut out: Vec<u8> = Vec::new();
+
+        run(&mut out, WIDTH, HEIGHT, &Algorithm::ParSimd, output::Format::PBM);
 
         assert_eq!(out.len(), OUTPUT.len());
         if out != OUTPUT {

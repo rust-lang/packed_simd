@@ -25,13 +25,14 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
     let height_step = m.height_step();
     let width_step = m.width_step();
     let out_fn = m.get_format_fn();
+    let mut line_buffer = m.line_buffer(1);
     for i in 0..m.height {
         let y = m.top + height_step * i as f64;
         for j in 0..m.width {
             let x = m.left + width_step * j as f64;
             let val = scalar::mandelbrot(x, y, limit);
-            out_fn(&mut m.line, j, val);
+            out_fn(&mut line_buffer, j, val);
         }
-        o.write_all(&m.line).unwrap();
+        o.write_all(&line_buffer).unwrap();
     }
 }
