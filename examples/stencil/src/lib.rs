@@ -83,15 +83,17 @@ impl Data {
         for z in 0..self.n.2 {
             for y in 0..self.n.1 {
                 for x in 0..self.n.0 {
-                    self.a.0[offset] = if x < self.n.0 / 2 {
-                        x as f32 / self.n.0 as f32
-                    } else {
-                        y as f32 / self.n.1 as f32
-                    };
-                    self.a.1[offset] = 0.;
-                    self.vsq[offset] = (x * y * z) as f32
-                        / (self.n.0 * self.n.1 * self.n.2) as f32;
-                    offset += 1;
+                    unsafe {
+                        *self.a.0.get_unchecked_mut(offset) = if x < self.n.0 / 2 {
+                            x as f32 / self.n.0 as f32
+                        } else {
+                            y as f32 / self.n.1 as f32
+                        };
+                        *self.a.1.get_unchecked_mut(offset) = 0.;
+                        *self.vsq.get_unchecked_mut(offset) = (x * y * z) as f32
+                            / (self.n.0 * self.n.1 * self.n.2) as f32;
+                        offset += 1;
+                    }
                 }
             }
         }
