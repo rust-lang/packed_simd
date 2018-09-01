@@ -63,7 +63,8 @@ pub fn scalar(
 #[cfg(all(test, feature = "ispc"))]
 mod tests {
     use super::scalar;
-    use {ispc_loops::serial, Data};
+    use ispc_loops::serial;
+    use {assert_data_eq, Data};
 
     #[test]
 
@@ -74,6 +75,6 @@ mod tests {
         let mut data_ispc = Data::default();
         data_ispc.exec(serial);
 
-        assert_eq!(data_scalar, data_ispc);
+        assert_data_eq(&data_scalar, &data_ispc);
     }
 }
