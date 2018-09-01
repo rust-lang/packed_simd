@@ -27,26 +27,38 @@ pub(crate) fn step_x8(
                             )
                         };
                     }
+
                     let cur_0 = a_cur!(0, 0, 0);
                     let mut div: f32x8 = *coef.get_unchecked(0) * cur_0;
 
                     for i in 1..4 {
-                        let i: i32 = i;
-                        div += *coef.get_unchecked(i as usize)
-                            * (a_cur!(i, 0, 0)
+                        let coef = f32x8::splat(*coef.get_unchecked(i));
+
+                        let sum = {
+                            let i = i as i32;
+                            (a_cur!(i, 0, 0)
                                 + a_cur!(-i, 0, 0)
                                 + a_cur!(0, i, 0)
                                 + a_cur!(0, -i, 0)
                                 + a_cur!(0, 0, i)
-                                + a_cur!(0, 0, -i));
+                                + a_cur!(0, 0, -i))
+                        };
+
+                        div = coef.mul_adde(sum, div);
                     }
 
-                    let r =
-                        2. * cur_0 - f32x8::from_slice_unaligned_unchecked(
-                            &a_out.get_unchecked(out_idx as usize..),
-                        ) + f32x8::from_slice_unaligned_unchecked(
-                            &vsq.get_unchecked(index as usize..),
-                        ) * div;
+                    let vsq = f32x8::from_slice_unaligned_unchecked(
+                        vsq.get_unchecked(index as usize..),
+                    );
+
+                    let sum = cur_0.mul_adde(
+                        f32x8::splat(2.),
+                        -f32x8::from_slice_unaligned_unchecked(
+                            a_out.get_unchecked(out_idx as usize..),
+                        ),
+                    );
+
+                    let r = vsq.mul_adde(div, sum);
                     r.write_to_slice_unaligned_unchecked(
                         &mut a_out.get_unchecked_mut(out_idx as usize..),
                     );
@@ -94,7 +106,7 @@ fn x8_impl(
 }
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-#[target_feature(enable = "avx2")]
+#[target_feature(enable = "avx2,fma")]
 unsafe fn x8_impl_avx2(
     t0: i32, t1: i32, x0: i32, x1: i32, y0: i32, y1: i32, z0: i32, z1: i32,
     n_x: i32, n_y: i32, n_z: i32, coef: &[f32; 4], vsq: &[f32],
@@ -158,7 +170,8 @@ pub fn x8(
 ) {
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     unsafe {
-        if is_x86_feature_detected!("avx2") {
+        if is_x86_feature_detected!("avx2") && is_x86_feature_detected!("fma")
+        {
             #[rustfmt::skip]
             x8_impl_avx2(t0, t1, x0, x1, y0, y1, z0, z1, n_x, n_y, n_z,
                          coef, vsq, a_even, a_odd)
