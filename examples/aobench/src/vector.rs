@@ -23,8 +23,8 @@ fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
                         (x as f32, y as f32, h as f32, w as f32);
 
                     let dir = V3D {
-                        x: (x + du - (w / 2.)) / (w / 2.) * w / h,
-                        y: -(y + dv - (h / 2.)) / (h / 2.),
+                        x: (x + du - (w * 0.5)) / (w * 0.5) * w / h,
+                        y: -(y + dv - (h * 0.5)) / (h * 0.5),
                         z: -1.,
                     };
                     let dir = dir.normalized();
@@ -72,7 +72,7 @@ cfg_if! {
             ao_impl(scene, nsubsamples, img);
         }
 
-        #[target_feature(enable = "avx2")]
+        #[target_feature(enable = "avx2,fma")]
         unsafe fn ao_avx2<S: Scene>(scene: &mut S, nsubsamples: usize,
                                     img: &mut ::Image) {
             ao_impl(scene, nsubsamples, img);
@@ -81,7 +81,7 @@ cfg_if! {
         pub fn ao<S: Scene>(scene: &mut S, nsubsamples: usize,
                             img: &mut ::Image) {
             unsafe {
-                if is_x86_feature_detected!("avx2") {
+                if is_x86_feature_detected!("avx2") && is_x86_feature_detected!("fma") {
                     ao_avx2(scene, nsubsamples, img);
                 } else if is_x86_feature_detected!("avx") {
                     ao_avx(scene, nsubsamples, img);

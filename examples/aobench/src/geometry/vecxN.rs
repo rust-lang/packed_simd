@@ -27,7 +27,9 @@ impl V3DxN {
     #[inline(always)]
     #[must_use]
     pub fn normalized(self) -> Self {
-        (1. / self.dot(self).sqrte()) * self
+        let len2 = self.dot(self);
+        let invlen = len2.rsqrte();
+        invlen * self
     }
 
     pub fn get(&self, idx: usize) -> V3D {
@@ -148,7 +150,7 @@ impl Dot<V3DxN> for V3DxN {
     type Output = f32xN;
     #[inline(always)]
     fn dot(self, o: Self) -> Self::Output {
-        self.x * o.x + self.y * o.y + self.z * o.z
+        self.x.mul_adde(o.x, self.y.mul_adde(o.y, self.z * o.z))
     }
 }
 
@@ -156,9 +158,7 @@ impl Dot<V3D> for V3DxN {
     type Output = f32xN;
     #[inline(always)]
     fn dot(self, o: V3D) -> Self::Output {
-        self.x * f32xN::splat(o.x)
-            + self.y * f32xN::splat(o.y)
-            + self.z * f32xN::splat(o.z)
+        self.x.mul_adde(f32xN::splat(o.x), self.y.mul_adde(f32xN::splat(o.y), self.z * o.z))
     }
 }
 
@@ -204,15 +204,27 @@ impl Mul<V3DxN> for M3x3 {
     #[inline(always)]
     fn mul(self, o: V3DxN) -> Self::Output {
         V3DxN {
-            x: o.x * f32xN::splat(self[0].x)
-                + o.y * f32xN::splat(self[1].x)
-                + o.z * f32xN::splat(self[2].x),
-            y: o.x * f32xN::splat(self[0].y)
-                + o.y * f32xN::splat(self[1].y)
-                + o.z * f32xN::splat(self[2].y),
-            z: o.x * f32xN::splat(self[0].z)
-                + o.y * f32xN::splat(self[1].z)
-                + o.z * f32xN::splat(self[2].z),
+            x: o.x.mul_adde(
+                f32xN::splat(self[0].x),
+                o.y.mul_adde(
+                    f32xN::splat(self[1].x),
+                    o.z * f32xN::splat(self[2].x),
+                ),
+            ),
+            y: o.x.mul_adde(
+                f32xN::splat(self[0].y),
+                o.y.mul_adde(
+                    f32xN::splat(self[1].y),
+                    o.z * f32xN::splat(self[2].y),
+                ),
+            ),
+            z: o.x.mul_adde(
+                f32xN::splat(self[0].z),
+                o.y.mul_adde(
+                    f32xN::splat(self[1].z),
+                    o.z * f32xN::splat(self[2].z),
+                ),
+            ),
         }
     }
 }
