@@ -133,22 +133,24 @@ fn assert_data_eq(a: &Data, b: &Data) {
             for x in 0..a.n.0 {
                 let idx = (x + y * a.n.1 + z * a.n.1 * a.n.0) as usize;
 
-                assert_eq!(
-                    a.vsq[idx], b.vsq[idx],
+                const EPSILON: f32 = 1E-4;
+
+                assert!(
+                    (a.vsq[idx] - b.vsq[idx]).abs() < EPSILON,
                     "vsq diff at idx = {} ({}, {}, {})",
-                    idx, x, y, z
+                    idx, x, y, z,
                 );
 
-                assert_eq!(
-                    a.a.0[idx], b.a.0[idx],
+                assert!(
+                    (a.a.0[idx] - b.a.0[idx]).abs() < EPSILON,
                     "a.0 diff at idx = {} ({}, {}, {})",
-                    idx, x, y, z
+                    idx, x, y, z,
                 );
 
-                assert_eq!(
-                    a.a.1[idx], b.a.1[idx],
+                assert!(
+                    (a.a.1[idx] - b.a.1[idx]).abs() < EPSILON,
                     "a.1 diff at idx = {} ({}, {}, {})",
-                    idx, x, y, z
+                    idx, x, y, z,
                 );
             }
         }
