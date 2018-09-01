@@ -184,6 +184,7 @@ macro_rules! impl_f {
         impl_math_float_abs!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_cos!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_fma!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_math_float_fmae!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_recpre!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_rsqrte!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_sin!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
