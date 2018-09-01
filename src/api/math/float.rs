@@ -19,6 +19,9 @@ mod rsqrte;
 mod fma;
 
 #[macro_use]
+mod fmae;
+
+#[macro_use]
 mod sin;
 
 #[macro_use]

@@ -4,12 +4,6 @@ macro_rules! impl_math_float_fma {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl $id {
             /// Fused multiply add: `self * y + z`
-            ///
-            /// Most architectures which have support for FMA
-            /// also have an equivalent version of this function,
-            /// fused multiply subtract (`self * y - z`).
-            /// Simply negating the second parameter of this function
-            /// will make the compiler generate it.
             #[inline]
             pub fn fma(self, y: Self, z: Self) -> Self {
                 use crate::codegen::math::float::fma::Fma;
