@@ -39,8 +39,9 @@ impl Intersect<Sphere> for RayxN {
         let rs = ray.origin - sphere.center;
 
         let b = rs.dot(ray.dir);
-        let c = rs.dot(rs) - sphere.radius * sphere.radius;
-        let d = b * b - c;
+        let radius = f32xN::splat(sphere.radius);
+        let c = radius.mul_adde(-radius, rs.dot(rs));
+        let d = b.mul_adde(b, -c);
 
         let old_isect = isect;
 

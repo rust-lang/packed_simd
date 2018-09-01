@@ -36,7 +36,9 @@ impl V3D {
     #[inline(always)]
     #[must_use]
     pub fn normalized(self) -> Self {
-        self * (1. / self.dot(self).sqrt())
+        let len2 = self.dot(self);
+        let invlen = len2.sqrt().recip();
+        invlen * self
     }
     #[inline(always)]
     #[must_use]
