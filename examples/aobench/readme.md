@@ -22,43 +22,40 @@ Use `RUSTFLAGS` to set the target CPU, for example:
 > RUSTFLAGS="-C target-cpu=native" cargo run --release -- 800 600 --algo ${NAME}
 ```
 
-To build and run the Intel SPMD Program Compiler (ISPC) version:
-
-```
-> cd volta && make
-> ao 800 600
-```
-
-You can download ISPC for free for all major architectures from [the ISPC website](https://ispc.github.io/downloads.html).
-
 ## Results
 
 On a dual core AVX1 i5 @1.8 GHz:
 
-| 800 x 600    | time [ms] <br> Rust | speedup [-] <br> Rust-vs-Rust | time [ms] <br> ISPC 1.9.2 | speedup [-] <br> ISPC-vs-Rust |
-|--------------|---------------------|-------------------------------|---------------------------|-------------------------------|
-| `scalar`     |                6266 |                          1.0x |                      4976 | clang7: 1.3x                  |
-| `vector`     |                1535 |                          4.1x |                      1157 | 1.3x                          |
-| `tiled`      |                1382 |                          4.5x |                      1157 | 1.2x                          |
-| `scalar_par` |                2403 |                          2.5x |                         - | -                             |
-| `vector_par` |                 665 |                          9.4x |                       454 | 1.5x                          |
-| `tiled_par`  |                 619 |                         10.1x |                       454 | 1.4x                          |
+| 800 x 600    | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|--------------|---------------------|-------------------------|
+| `scalar`     | 6266                | 1.0x                    |
+| `vector`     | 1535                | 4.1x                    |
+| `tiled`      | 1382                | 4.5x                    |
+| `scalar_par` | 2403                | 2.5x                    |
+| `vector_par` | 665                 | 9.4x                    |
+| `tiled_par`  | 619                 | 10.1x                   |
+| `ispc`       | 1060                | 5.9x                    |
+| `ispc_tasks` | 491                 | 12.8x                   |
 
 On a 28 core Xeon E5-2690 v4 @ 2.60GHz:
 
-| 800 x 600    | time [ms] <br> Rust | speedup [-] <br> Rust-vs-Rust | time [ms] <br> ISPC 1.9.2 | speedup [-] <br> ISPC-vs-Rust |
-|--------------|---------------------|-------------------------------|---------------------------|-------------------------------|
-| `scalar`     |                3234 |                          1.0x |                      3536 | clang7: 0.9x                  |
-| `vector`     |                1096 |                          3.0x |                       525 | 2.1x                          |
-| `scalar_par` |                 132 |                         24.5x |                         - | -                             |
-| `vector_par` |                  76 |                         42.6x |                        20 | 3.8x                          |
+| 800 x 600    | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|--------------|---------------------|-------------------------|
+| `scalar`     | 3234                | 1.0x                    |
+| `vector`     | 1096                | 3.0x                    |
+| `scalar_par` | 132                 | 24.5x                   |
+| `vector_par` | 76                  | 42.6x                   |
+| `ispc`       | 525                 | 6.2x                    |
+| `ispc_tasks` | 20                  | 161.7x                  |
 
-| 4096 x 4096  | time [ms] <br> Rust | speedup [-] <br> Rust-vs-Rust | time [ms] <br> ISPC 1.9.2 | speedup [-] <br> ISPC-vs-Rust |
-|--------------|---------------------|-------------------------------|---------------------------|-------------------------------|
-| `scalar`     |              116121 |                          1.0x |                    127161 | clang7: 0.9x                  |
-| `vector`     |               40076 |                          2.9x |                     19707 | 2.0x                          |
-| `scalar_par` |                3273 |                         35.5x |                         - | -                             |
-| `vector_par` |                1398 |                         83.1x |                       644 | 2.2x                          |
+| 4096 x 4096  | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|--------------|---------------------|-------------------------|
+| `scalar`     | 116121              | 1.0x                    |
+| `vector`     | 40076               | 2.9x                    |
+| `scalar_par` | 3273                | 35.5x                   |
+| `vector_par` | 1398                | 83.1x                   |
+| `ispc`       | 19707               |  5.9x                   |
+| `ispc_tasks` | 644                 | 180.3x                   |
 
 ## Overview
 
