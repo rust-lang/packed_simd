@@ -8,7 +8,7 @@ CXXFLAGS+=-Iobjs/ -O3 -march=native
 CC=clang
 CCFLAGS+=-Iobjs/ -O3 -march=native
 
-LIBS=-lm $(TASK_LIB) -lstdc++
+LIBS=$(TASK_LIB) -lstdc++ -no-pie
 ISPC=ispc
 ISPC_FLAGS+=-O3
 ISPC_HEADER=objs/$(ISPC_SRC:.ispc=_ispc.h)
