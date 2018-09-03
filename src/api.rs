@@ -18,8 +18,6 @@ mod minimal;
 #[macro_use]
 mod ops;
 #[macro_use]
-mod permute;
-#[macro_use]
 mod ptr;
 #[macro_use]
 mod reductions;
@@ -28,7 +26,7 @@ mod select;
 #[macro_use]
 mod shuffle;
 #[macro_use]
-mod permute_dyn;
+mod shuffle1_dyn;
 #[macro_use]
 mod slice;
 #[macro_use]
@@ -135,7 +133,7 @@ macro_rules! impl_u {
         impl_slice_from_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_swap_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_permute_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_cmp_partial_eq!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (1, 0)
         );

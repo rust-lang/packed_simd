@@ -57,7 +57,7 @@ impl State {
     }
     fn rotate(&mut self, n: usize) {
         self.load_s()
-            .permute_dyn(self.rotate_masks[n])
+            .shuffle1_dyn(self.rotate_masks[n])
             .write_to_slice_unaligned(&mut self.s)
     }
 
@@ -120,9 +120,9 @@ impl State {
 
                 while toterm1 != 0 && toterm2 != 0 {
                     perm1 =
-                        perm1.permute_dyn(self.flip_masks[toterm1 as usize]);
+                        perm1.shuffle1_dyn(self.flip_masks[toterm1 as usize]);
                     perm2 =
-                        perm2.permute_dyn(self.flip_masks[toterm2 as usize]);
+                        perm2.shuffle1_dyn(self.flip_masks[toterm2 as usize]);
                     toterm1 = perm1.extract(0);
                     toterm2 = perm2.extract(0);
 
@@ -131,13 +131,13 @@ impl State {
                 }
                 while toterm1 != 0 {
                     perm1 =
-                        perm1.permute_dyn(self.flip_masks[toterm1 as usize]);
+                        perm1.shuffle1_dyn(self.flip_masks[toterm1 as usize]);
                     toterm1 = perm1.extract(0);
                     f1 += 1;
                 }
                 while toterm2 != 0 {
                     perm2 =
-                        perm2.permute_dyn(self.flip_masks[toterm2 as usize]);
+                        perm2.shuffle1_dyn(self.flip_masks[toterm2 as usize]);
                     toterm2 = perm2.extract(0);
                     f2 += 1;
                 }
@@ -159,7 +159,7 @@ impl State {
                 let mut f = 0;
                 let mut toterm = pk.start;
                 while toterm != 0 {
-                    perm = perm.permute_dyn(self.flip_masks[toterm as usize]);
+                    perm = perm.shuffle1_dyn(self.flip_masks[toterm as usize]);
                     toterm = perm.extract(0);
                     f += 1;
                 }

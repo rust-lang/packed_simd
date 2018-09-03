@@ -2,7 +2,7 @@
 
 crate mod llvm;
 crate mod math;
-crate mod permute_dyn;
+crate mod shuffle1_dyn;
 crate mod reductions;
 crate mod shuffle;
 crate mod swap_bytes;
