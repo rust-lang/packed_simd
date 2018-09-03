@@ -196,9 +196,6 @@ matrix:
     - env: TARGET=i386-apple-ios
     - env: TARGET=x86_64-apple-ios
 
-    # FIXME: should be fixed in the next nightly
-    - env: TARGET=wasm32-unknown-unknown
-
 install: travis_retry rustup target add $TARGET
 before_script: cargo generate-lockfile
 script: travis_wait 50 ci/run-docker.sh
