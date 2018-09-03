@@ -214,16 +214,19 @@
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]
 #![cfg_attr(test, plugin(interpolate_idents))]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
     allow(
-        cast_possible_truncation,
-        cast_lossless,
-        cast_possible_wrap,
-        cast_precision_loss
+        clippy::cast_possible_truncation,
+        clippy::cast_lossless,
+        clippy::cast_possible_wrap,
+        clippy::cast_precision_loss
     )
 )]
-#![cfg_attr(feature = "cargo-clippy", deny(missing_inline_in_public_items))]
+#![cfg_attr(
+    feature = "cargo-clippy", deny(clippy::missing_inline_in_public_items)
+)]
 #![deny(warnings)]
 #![no_std]
 
@@ -288,10 +291,13 @@ pub struct Simd<A: sealed::SimdArray>(
     #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
 );
 
-/// Wrapper over `T` implementing a lexicoraphical order via the `PartialOrd` and/or `Ord` traits.
+/// Wrapper over `T` implementing a lexicoraphical order via the `PartialOrd`
+/// and/or `Ord` traits.
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug)]
-#[cfg_attr(feature = "cargo-clippy", allow(missing_inline_in_public_items))]
+#[cfg_attr(
+    feature = "cargo-clippy", allow(clippy::missing_inline_in_public_items)
+)]
 pub struct LexicographicallyOrdered<T>(T);
 
 mod masks;

@@ -5,8 +5,9 @@
 use crate::{cmp::PartialOrd, fmt::Debug, LexicographicallyOrdered};
 
 /// Tests PartialOrd for `a` and `b` where `a < b` is true.
-pub fn test_lt<T>(a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>)
-where
+pub fn test_lt<T>(
+    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
+) where
     LexicographicallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a < b, "{:?}, {:?}", a, b);
@@ -29,8 +30,9 @@ where
 }
 
 /// Tests PartialOrd for `a` and `b` where `a <= b` is true.
-pub fn test_le<T>(a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>)
-where
+pub fn test_le<T>(
+    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
+) where
     LexicographicallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a <= b, "{:?}, {:?}", a, b);
@@ -52,7 +54,8 @@ where
 
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
 pub fn test_cmp<T>(
-    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>, o: Option<::cmp::Ordering>,
+    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
+    o: Option<::cmp::Ordering>,
 ) where
     LexicographicallyOrdered<T>: PartialOrd + Debug,
     T: Debug + crate::sealed::Simd + Copy + Clone,

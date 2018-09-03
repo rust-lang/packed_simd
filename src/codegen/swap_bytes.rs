@@ -24,7 +24,7 @@ macro_rules! impl_swap_bytes {
         $(
             impl SwapBytes for $id {
                 #[inline]
-                #[cfg_attr(feature = "cargo-clippy", allow(useless_transmute))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::useless_transmute))]
                 fn swap_bytes(self) -> Self {
                     unsafe {
                         let bytes: u8x4 = ::mem::transmute(self);
@@ -39,7 +39,7 @@ macro_rules! impl_swap_bytes {
         $(
             impl SwapBytes for $id {
                 #[inline]
-                #[cfg_attr(feature = "cargo-clippy", allow(useless_transmute))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::useless_transmute))]
                 fn swap_bytes(self) -> Self {
                     unsafe {
                         let bytes: u8x8 = ::mem::transmute(self);
@@ -54,7 +54,7 @@ macro_rules! impl_swap_bytes {
         $(
             impl SwapBytes for $id {
                 #[inline]
-                #[cfg_attr(feature = "cargo-clippy", allow(useless_transmute))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::useless_transmute))]
                 fn swap_bytes(self) -> Self {
                     unsafe {
                         let bytes: u8x16 = ::mem::transmute(self);
@@ -71,7 +71,7 @@ macro_rules! impl_swap_bytes {
         $(
             impl SwapBytes for $id {
                 #[inline]
-                #[cfg_attr(feature = "cargo-clippy", allow(useless_transmute))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::useless_transmute))]
                 fn swap_bytes(self) -> Self {
                     unsafe {
                         let bytes: u8x32 = ::mem::transmute(self);
@@ -89,7 +89,7 @@ macro_rules! impl_swap_bytes {
         $(
             impl SwapBytes for $id {
                 #[inline]
-                #[cfg_attr(feature = "cargo-clippy", allow(useless_transmute))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::useless_transmute))]
                 fn swap_bytes(self) -> Self {
                     unsafe {
                         let bytes: u8x64 = ::mem::transmute(self);

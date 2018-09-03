@@ -1,5 +1,5 @@
 //! Implementation of `FromCast` and `IntoCast`.
-#![cfg_attr(feature = "cargo-clippy", allow(stutter))]
+#![cfg_attr(feature = "cargo-clippy", allow(clippy::stutter))]
 
 /// Numeric cast from `T` to `Self`.
 ///

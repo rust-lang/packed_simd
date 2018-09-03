@@ -1,7 +1,8 @@
 //! Spectral Norm
 #![deny(warnings)]
 #![allow(non_snake_case, non_camel_case_types)]
-#![cfg_attr(feature = "cargo-clippy", allow(cast_precision_loss))]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
+#![cfg_attr(feature = "cargo-clippy", allow(clippy::cast_precision_loss))]
 
 extern crate packed_simd;
 

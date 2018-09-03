@@ -3,9 +3,14 @@
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
 
 #![deny(warnings)]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
-    allow(cast_precision_loss, cast_sign_loss, cast_possible_truncation)
+    allow(
+        clippy::cast_precision_loss,
+        clippy::cast_sign_loss,
+        clippy::cast_possible_truncation
+    )
 )]
 
 extern crate packed_simd;

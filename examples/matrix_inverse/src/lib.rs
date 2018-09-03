@@ -11,7 +11,7 @@ pub mod simd;
 pub struct Matrix4x4([[f32; 4]; 4]);
 
 #[cfg(test)]
-#[cfg_attr(rustfmt, rustfmt_skip)]
+#[rustfmt::skip]
 fn test<F: Fn(Matrix4x4) -> Option<Matrix4x4>>(f: F) {
     let tests: &[(Matrix4x4, Option<Matrix4x4>)] = &[
         // Identity:

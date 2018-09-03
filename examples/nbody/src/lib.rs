@@ -2,8 +2,10 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
 #![deny(warnings)]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
-    feature = "cargo-clippy", allow(similar_names, excessive_precision)
+    feature = "cargo-clippy",
+    allow(clippy::similar_names, clippy::excessive_precision)
 )]
 extern crate packed_simd;
 

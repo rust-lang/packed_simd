@@ -1,5 +1,5 @@
 //! Vertical floating-point math operations.
-#![cfg_attr(feature = "cargo-clippy", allow(useless_transmute))]
+#![cfg_attr(feature = "cargo-clippy", allow(clippy::useless_transmute))]
 
 crate mod abs;
 crate mod cos;

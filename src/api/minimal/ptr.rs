@@ -18,7 +18,7 @@ macro_rules! impl_minimal_p {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(too_many_arguments))]
+            #[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
             pub const fn new($($elem_name: $elem_ty),*) -> Self {
                 Simd(codegen::$id($($elem_name),*))
             }
@@ -81,7 +81,7 @@ macro_rules! impl_minimal_p {
             /// If `index >= Self::lanes()`.
             #[inline]
             #[must_use = "replace does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
-            #[cfg_attr(feature = "cargo-clippy", allow(not_unsafe_ptr_arg_deref))]
+            #[cfg_attr(feature = "cargo-clippy", allow(clippy::not_unsafe_ptr_arg_deref))]
             pub fn replace(self, index: usize, new_value: $elem_ty) -> Self {
                 assert!(index < $elem_count);
                 unsafe { self.replace_unchecked(index, new_value) }
@@ -184,10 +184,10 @@ macro_rules! impl_minimal_p {
 
         impl<T> ::fmt::Debug for $id<T> {
             #[cfg_attr(feature = "cargo-clippy",
-                       allow(missing_inline_in_public_items))]
+                       allow(clippy::missing_inline_in_public_items))]
             fn fmt(&self, f: &mut ::fmt::Formatter) -> ::fmt::Result {
                 // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2891
-                #[cfg_attr(feature = "cargo-clippy", allow(write_literal))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::write_literal))]
                 write!(f, "{}<{}>(", stringify!($id), unsafe { intrinsics::type_name::<T>() })?;
                 for i in 0..$elem_count {
                     if i > 0 {
@@ -371,7 +371,7 @@ macro_rules! impl_minimal_p {
             }
         }
 
-        #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
+        #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
         impl<T> ::cmp::PartialEq<$id<T>> for $id<T> {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
@@ -384,7 +384,7 @@ macro_rules! impl_minimal_p {
         }
 
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
-        #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
+        #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
         impl<T> ::cmp::PartialEq<LexicographicallyOrdered<$id<T>>>
             for LexicographicallyOrdered<$id<T>>
         {
@@ -552,7 +552,7 @@ macro_rules! impl_minimal_p {
             /// to an `align_of::<Self>()` boundary, the behavior is undefined.
             #[inline]
             pub unsafe fn from_slice_aligned_unchecked(slice: &[$elem_ty]) -> Self {
-                #[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
                 *(slice.get_unchecked(0) as *const $elem_ty as *const Self)
             }
 
@@ -741,7 +741,7 @@ macro_rules! impl_minimal_p {
             pub unsafe fn write_to_slice_aligned_unchecked(
                 self, slice: &mut [$elem_ty],
             ) {
-                #[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
                 *(slice.get_unchecked_mut(0) as *mut $elem_ty as *mut Self) =
                     self;
             }
@@ -1090,7 +1090,7 @@ macro_rules! impl_minimal_p {
             /// are difficult to satisfy. The only advantage of this method is
             /// that it enables more aggressive compiler optimizations.
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(should_implement_trait))]
+            #[cfg_attr(feature = "cargo-clippy", allow(clippy::should_implement_trait))]
             pub unsafe fn add(self, count: $usize_ty) -> Self {
                 self.offset(count.cast())
             }
@@ -1131,7 +1131,7 @@ macro_rules! impl_minimal_p {
             /// difficult to satisfy. The only advantage of this method is that it
             /// enables more aggressive compiler optimizations.
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(should_implement_trait))]
+            #[cfg_attr(feature = "cargo-clippy", allow(clippy::should_implement_trait))]
             pub unsafe fn sub(self, count: $usize_ty) -> Self {
                 let x: $isize_ty = count.cast();
                 // note: - is currently wrapping_neg

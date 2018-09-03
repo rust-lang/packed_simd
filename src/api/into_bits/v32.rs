@@ -1,5 +1,5 @@
 //! `FromBits` and `IntoBits` implementations for portable 32-bit wide vectors
-#![cfg_attr(rustfmt, rustfmt_skip)]
+#![rustfmt::skip]
 
 #[allow(unused)]  // wasm_bindgen_test
 use crate::*;

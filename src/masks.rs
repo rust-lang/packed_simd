@@ -36,7 +36,7 @@ macro_rules! impl_mask_ty {
             }
         }
 
-        #[cfg_attr(feature = "cargo-clippy", allow(partialeq_ne_impl))]
+        #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
         impl PartialEq<$id> for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
@@ -105,7 +105,7 @@ macro_rules! impl_mask_ty {
 
         impl crate::fmt::Debug for $id {
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(write_literal))]
+            #[cfg_attr(feature = "cargo-clippy", allow(clippy::write_literal))]
             fn fmt(
                 &self, fmtter: &mut crate::fmt::Formatter,
             ) -> Result<(), crate::fmt::Error> {

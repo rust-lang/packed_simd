@@ -5,7 +5,7 @@
 set -ex
 
 cargo_clippy() {
-    cargo clippy --all -- -D clippy-pedantic
+    cargo clippy --all -- -D clippy::pedantic
 }
 
 # Check src/

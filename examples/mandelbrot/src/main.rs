@@ -2,7 +2,8 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
 #![deny(warnings)]
-#![cfg_attr(feature = "cargo-clippy", allow(similar_names))]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
+#![cfg_attr(feature = "cargo-clippy", allow(clippy::similar_names))]
 extern crate mandelbrot_lib;
 use mandelbrot_lib::*;
 use std::{env, io, io::Write};
