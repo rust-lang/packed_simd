@@ -16,10 +16,10 @@ mod recpre;
 mod rsqrte;
 
 #[macro_use]
-mod fma;
+mod mul_add;
 
 #[macro_use]
-mod fmae;
+mod mul_adde;
 
 #[macro_use]
 mod sin;
