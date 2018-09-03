@@ -91,6 +91,7 @@ pub mod vector {
             RngT(z0, z1, z2, z3)
         }
 
+        #[inline]
         pub fn gen_u32(&mut self) -> u32xN {
             let mut b = ((self.0 << 6) ^ self.0) >> 13;
             self.0 = ((self.0 & u32xN::splat(4_294_967_294)) << 18) ^ b;
@@ -103,6 +104,7 @@ pub mod vector {
             self.0 ^ self.1 ^ self.2 ^ self.3
         }
 
+        #[inline]
         pub fn gen(&mut self) -> f32xN {
             let mut v = self.gen_u32();
             v &= u32xN::splat((1_u32 << 23) - 1);
@@ -119,6 +121,7 @@ pub mod vector {
     }
 
     impl RngH {
+        #[inline]
         pub fn gen(&mut self) -> f32xN {
             unsafe { (*self.rng.get()).gen() }
         }
