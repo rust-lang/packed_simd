@@ -36,6 +36,8 @@ const ALGORITHMS: &[&str] = &[
     "vector_par",
     "tiled",
     "tiled_par",
+    "ispc",
+    "ispc_tasks",
 ];
 
 fn main() {
@@ -54,6 +56,22 @@ fn main() {
             "vector_par" => vector_parallel::ao(&mut scene, 2, &mut img),
             "tiled" => tiled::ao(&mut scene, 2, &mut img),
             "tiled_par" => tiled_parallel::ao(&mut scene, 2, &mut img),
+            "ispc" => {
+                #[cfg(feature = "ispc")] {
+                    ispc_::ao(&mut scene, 2, &mut img)
+                }
+                #[cfg(not(feature = "ispc"))] {
+                    panic!("the `ispc` algorithm requires building with --features=ispc");
+                }
+            },
+            "ispc_tasks" => {
+                #[cfg(feature = "ispc")] {
+                    ispc_::ao_tasks(&mut scene, 2, &mut img)
+                }
+                #[cfg(not(feature = "ispc"))] {
+                    panic!("the `ispc_task` algorithm requires building with --features=ispc");
+                }
+            },
             _ => unreachable!(),
         });
         let image_path = opt.output.unwrap_or_else(|| {

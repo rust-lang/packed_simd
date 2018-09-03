@@ -25,6 +25,9 @@ extern crate failure;
 extern crate packed_simd;
 extern crate png;
 extern crate rayon;
+#[cfg(feature = "ispc")]
+#[macro_use]
+extern crate ispc;
 
 pub mod ambient_occlusion;
 pub mod geometry;
@@ -39,6 +42,8 @@ pub mod tiled;
 pub mod tiled_parallel;
 pub mod vector;
 pub mod vector_parallel;
+#[cfg(feature = "ispc")]
+pub mod ispc_;
 
 pub use self::image::Image;
 pub use self::scene::Scene;
