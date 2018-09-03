@@ -1,14 +1,15 @@
 //! Fannkuch redux
 #![deny(warnings)]
 #![allow(non_snake_case, non_camel_case_types)]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
     allow(
-        similar_names,
-        many_single_char_names,
-        cast_possible_truncation,
-        cast_sign_loss,
-        cast_possible_wrap
+        clippy::similar_names,
+        clippy::many_single_char_names,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss,
+        clippy::cast_possible_wrap
     )
 )]
 extern crate packed_simd;

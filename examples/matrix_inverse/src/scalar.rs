@@ -1,7 +1,5 @@
 //! Scalar implementation
-
-#![cfg_attr(rustfmt, rustfmt_skip)]
-
+#![rustfmt::skip]
 use ::*;
 
 pub fn inv4x4(m: Matrix4x4) -> Option<Matrix4x4> {

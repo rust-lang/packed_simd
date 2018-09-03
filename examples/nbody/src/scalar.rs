@@ -15,7 +15,7 @@ struct Body {
 }
 
 const N_BODIES: usize = 5;
-#[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]
+#[cfg_attr(feature = "cargo-clippy", allow(clippy::unreadable_literal))]
 const BODIES: [Body; N_BODIES] = [
     // Sun
     Body { x: [0., 0., 0.], v: [0., 0., 0.], mass: SOLAR_MASS },
@@ -145,7 +145,7 @@ fn offset_momentum(bodies: &mut [Body; N_BODIES]) {
 
 /// Pop a mutable reference off the head of a slice, mutating the slice to no
 /// longer contain the mutable reference.
-#[cfg_attr(feature = "cargo-clippy", allow(mut_mut))]
+#[cfg_attr(feature = "cargo-clippy", allow(clippy::mut_mut))]
 fn shift_mut_ref<'a, T>(r: &mut &'a mut [T]) -> Option<&'a mut T> {
     if r.is_empty() {
         return None;

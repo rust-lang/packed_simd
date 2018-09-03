@@ -43,7 +43,7 @@ macro_rules! impl_slice_from_slice {
             /// to an `align_of::<Self>()` boundary, the behavior is undefined.
             #[inline]
             pub unsafe fn from_slice_aligned_unchecked(slice: &[$elem_ty]) -> Self {
-                #[cfg_attr(feature = "cargo-clippy", allow(cast_ptr_alignment))]
+                #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
                 *(slice.get_unchecked(0) as *const $elem_ty as *const Self)
             }
 

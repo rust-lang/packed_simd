@@ -1,15 +1,16 @@
 #![feature(stmt_expr_attributes)]
 #![deny(warnings)]
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
     allow(
-        similar_names,
-        cast_precision_loss,
-        cast_sign_loss,
-        too_many_arguments,
-        cast_possible_wrap,
-        cast_possible_truncation,
-        inline_always
+        clippy::similar_names,
+        clippy::cast_precision_loss,
+        clippy::cast_sign_loss,
+        clippy::too_many_arguments,
+        clippy::cast_possible_wrap,
+        clippy::cast_possible_truncation,
+        clippy::inline_always
     )
 )]
 

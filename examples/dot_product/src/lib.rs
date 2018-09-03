@@ -7,7 +7,7 @@ pub mod scalar;
 pub mod simd;
 
 #[cfg(test)]
-#[cfg_attr(rustfmt, rustfmt_skip)]
+#[rustfmt::skip]
 fn test<F: Fn(&[f32], &[f32]) -> f32>(f: F) {
     let tests: &[(&[f32], &[f32], f32)] = &[
         (&[0_f32, 0., 0., 0.], &[0_f32, 0., 0., 0.], 0_f32),
