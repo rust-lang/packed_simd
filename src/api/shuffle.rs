@@ -6,7 +6,8 @@
 /// Shuffles vector elements.
 ///
 /// This macro returns a new vector that contains a shuffle of the elements in
-/// two input vectors: `shuffle!(vec0, vec1, [indices...])`.
+/// one (`shuffle!(vec, [indices...])`) or two (`shuffle!(vec0, vec1,
+/// [indices...])`) input vectors.
 ///
 /// The type of `vec0` and `vec1` must be equal, and the element type of the
 /// resulting vector is the element type of the input vector.
@@ -15,12 +16,15 @@
 /// currently, the largest vector supported by the library has 64 lanes. The
 /// length of the resulting vector equals the number of indices provided.
 ///
-/// The indices must be in range `[0, 2 * N)` where `N` is the number of lanes
-/// of `vec0` and `vec1`. The indices `i` in range `[0, N)` refer to the `i`-th
-/// element of `vec0`, while the indices in range `[N, 2*N)` refer to
-/// the `i - N`-th element of `vec1`.
+/// The indices must be in range `[0, M * N)` where `M` is the number of input
+/// vectors (`1` or `2`) and `N` is the number of lanes of the input vectors.
+/// The indices `i` in range `[0, N)` refer to the `i`-th element of `vec0`,
+/// while the indices in range `[N, 2*N)` refer to the `i - N`-th element of
+/// `vec1`.
 ///
 /// # Examples
+///
+/// Shuffling elements of two vectors:
 ///
 /// ```
 /// # #[macro_use]
@@ -40,6 +44,33 @@
 /// // Or larger:
 /// let r = shuffle!(x, y, [1, 3, 4, 2, 1, 7, 2, 2]);
 /// assert_eq!(r, i32x8::new(2, 4, 5, 3, 2, 8, 3, 3));
+/// // At most 2 * the number of lanes in the input vector.
+/// # }
+/// ```
+///
+/// Shuffling elements of one vector:
+///
+/// ```
+/// # #[macro_use]
+/// # extern crate packed_simd;
+/// # use packed_simd::*;
+/// # fn main() {
+/// // Shuffle allows reordering the elements of a vector:
+/// let x = i32x4::new(1, 2, 3, 4);
+/// let r = shuffle!(x, [2, 1, 3, 0]);
+/// assert_eq!(r, i32x4::new(3, 2, 4, 1));
+///
+/// // The resulting vector can be smaller than the input:
+/// let r = shuffle!(x, [1, 3]);
+/// assert_eq!(r, i32x2::new(2, 4));
+///
+/// // Equal:
+/// let r = shuffle!(x, [1, 3, 2, 0]);
+/// assert_eq!(r, i32x4::new(2, 4, 3, 1));
+///
+/// // Or larger:
+/// let r = shuffle!(x, [1, 3, 2, 2, 1, 3, 2, 2]);
+/// assert_eq!(r, i32x8::new(2, 4, 3, 3, 2, 4, 3, 3));
 /// // At most 2 * the number of lanes in the input vector.
 /// # }
 /// ```
@@ -150,5 +181,10 @@ macro_rules! shuffle {
                 ],
             ))
         }
-    }};
+     }};
+    ($vec:expr, [$($l:expr),*]) => {
+        match $vec {
+            v => shuffle!(v, v, [$($l),*])
+        }
+    };
 }
