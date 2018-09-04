@@ -34,7 +34,7 @@ pub fn mandelbrot(c_x: f64s, c_y: f64s, max_iter: u32) -> u32s {
 
         let xy = x * y;
         x = mask.select(xx - yy + c_x, x);
-        y = mask.select(xy * 2.0 + c_y, y);
+        y = mask.select(xy.mul_adde(f64s::splat(2.0), c_y), y);
     }
     count.cast()
 }

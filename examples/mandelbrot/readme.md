@@ -30,8 +30,7 @@ It takes four arguments in this order:
 ## Performance
 
 ```
-RUSTFLAGS="-C target-cpu=native -C lto=fat -C panic=abort" cargo build --release
-hyperfine '/target/release/mandelbrot 800 800 {algorithm}'
+./benchmark.sh
 ```
 
 | 800 x 800  | time [ms] <br> Rust | speedup [-] |

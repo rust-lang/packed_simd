@@ -158,6 +158,15 @@ matrix:
       name: "aarch64-apple-ios [BUILD only]"
       script: ci/run.sh
       osx_image: xcode9.4
+    # BENCHMARKS:
+    - name: "Benchmarks - x86_64-unknown-linux-gnu"
+      install: rustup component add rustfmt-preview
+      script: NORUN=1 FEATURES=coresimd,ispc,sleef-sys ci/benchmark.sh
+    - name: "Benchmarks - x86_64-apple-darwin"
+      install: rustup component add rustfmt-preview
+      script: NORUN=1 FEATURES=coresimd,ispc,sleef-sys ci/benchmark.sh
+      os: osx
+      osx_image: xcode9.4
     # TOOLS:
     - name: "Documentation"
       install: true
