@@ -28,9 +28,9 @@ impl Isect {
     #[must_use]
     pub fn almost_eq(&self, rhs: &Isect) -> bool {
         const EPSILON: f32 = 1E-3;
-        (self.t - rhs.t).abs() < EPSILON &&
-        self.p.almost_eq(&rhs.p) &&
-        self.n.almost_eq(&rhs.n) &&
-        self.hit == rhs.hit
+        (self.t - rhs.t).abs() < EPSILON
+            && self.p.almost_eq(&rhs.p)
+            && self.n.almost_eq(&rhs.n)
+            && self.hit == rhs.hit
     }
 }

@@ -65,9 +65,9 @@ impl V3D {
     #[must_use]
     pub fn almost_eq(&self, rhs: &Self) -> bool {
         const EPSILON: f32 = 1E-3;
-        (self.x - rhs.x).abs() < EPSILON &&
-        (self.y - rhs.y).abs() < EPSILON &&
-        (self.z - rhs.z).abs() < EPSILON
+        (self.x - rhs.x).abs() < EPSILON
+            && (self.y - rhs.y).abs() < EPSILON
+            && (self.z - rhs.z).abs() < EPSILON
     }
 }
 

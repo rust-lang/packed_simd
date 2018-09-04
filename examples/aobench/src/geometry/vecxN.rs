@@ -158,7 +158,10 @@ impl Dot<V3D> for V3DxN {
     type Output = f32xN;
     #[inline(always)]
     fn dot(self, o: V3D) -> Self::Output {
-        self.x.mul_adde(f32xN::splat(o.x), self.y.mul_adde(f32xN::splat(o.y), self.z * o.z))
+        self.x.mul_adde(
+            f32xN::splat(o.x),
+            self.y.mul_adde(f32xN::splat(o.y), self.z * o.z),
+        )
     }
 }
 

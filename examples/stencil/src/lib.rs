@@ -84,13 +84,15 @@ impl Data {
             for y in 0..self.n.1 {
                 for x in 0..self.n.0 {
                     unsafe {
-                        *self.a.0.get_unchecked_mut(offset) = if x < self.n.0 / 2 {
-                            x as f32 / self.n.0 as f32
-                        } else {
-                            y as f32 / self.n.1 as f32
-                        };
+                        *self.a.0.get_unchecked_mut(offset) =
+                            if x < self.n.0 / 2 {
+                                x as f32 / self.n.0 as f32
+                            } else {
+                                y as f32 / self.n.1 as f32
+                            };
                         *self.a.1.get_unchecked_mut(offset) = 0.;
-                        *self.vsq.get_unchecked_mut(offset) = (x * y * z) as f32
+                        *self.vsq.get_unchecked_mut(offset) = (x * y * z)
+                            as f32
                             / (self.n.0 * self.n.1 * self.n.2) as f32;
                         offset += 1;
                     }
@@ -138,19 +140,28 @@ fn assert_data_eq(a: &Data, b: &Data) {
                 assert!(
                     (a.vsq[idx] - b.vsq[idx]).abs() < EPSILON,
                     "vsq diff at idx = {} ({}, {}, {})",
-                    idx, x, y, z,
+                    idx,
+                    x,
+                    y,
+                    z,
                 );
 
                 assert!(
                     (a.a.0[idx] - b.a.0[idx]).abs() < EPSILON,
                     "a.0 diff at idx = {} ({}, {}, {})",
-                    idx, x, y, z,
+                    idx,
+                    x,
+                    y,
+                    z,
                 );
 
                 assert!(
                     (a.a.1[idx] - b.a.1[idx]).abs() < EPSILON,
                     "a.1 diff at idx = {} ({}, {}, {})",
-                    idx, x, y, z,
+                    idx,
+                    x,
+                    y,
+                    z,
                 );
             }
         }
