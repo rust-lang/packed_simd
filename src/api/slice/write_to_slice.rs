@@ -47,9 +47,16 @@ macro_rules! impl_slice_write_to_slice {
             pub unsafe fn write_to_slice_aligned_unchecked(
                 self, slice: &mut [$elem_ty],
             ) {
+                debug_assert!(slice.len() >= $elem_count);
+                let target_ptr =
+                    slice.get_unchecked_mut(0) as *mut $elem_ty;
+                debug_assert_eq!(
+                    target_ptr.align_offset(mem::align_of::<Self>()),
+                    0
+                );
+
                 #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
-                *(slice.get_unchecked_mut(0) as *mut $elem_ty as *mut Self) =
-                    self;
+                *(target_ptr as *mut Self) = self;
             }
 
             /// Writes the values of the vector to the `slice`.
@@ -61,6 +68,7 @@ macro_rules! impl_slice_write_to_slice {
             pub unsafe fn write_to_slice_unaligned_unchecked(
                 self, slice: &mut [$elem_ty],
             ) {
+                debug_assert!(slice.len() >= $elem_count);
                 let target_ptr =
                     slice.get_unchecked_mut(0) as *mut $elem_ty as *mut u8;
                 let self_ptr = &self as *const Self as *const u8;
