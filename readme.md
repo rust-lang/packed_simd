@@ -38,10 +38,11 @@ Most of the examples come with both a scalar and a vectorized implementation.
   target feature combinations that are enabled by this feature. Note, however, 
   that this is an unstable dependency, that rustc might break at any time.
   
-* `sleef-sys` (default: disabled - `x86_64` only): internally uses the SLEEF
-  short-vector math library when profitable. SLEEF is licensed under the Boost
-  Software License v1.0, an extremely permissive license, and can be statically
-  linked without issues. 
+* `sleef-sys` (default: disabled - `x86_64` only): internally uses the [SLEEF]
+  short-vector math library when profitable via the [`sleef-sys`][sleef_sys]
+  crate. [SLEEF] is licensed under the [Boost Software License
+  v1.0][boost_license], an extremely permissive license, and can be statically
+  linked without issues.
 
 # Performance
 
@@ -56,9 +57,9 @@ Single-Program-Multiple-Data (SPMD) programming model, where this combination is
 * `mandelbrot`: ~1.2x faster,
 
  than [ISPC]. While SPMD is not the intended use case for `packed_simd`, it is
- possible to combine the library with [`rayon`] to poorly emulate [ISPC]'s SPMD
- programming model in Rust. Writing performant code is not as straightforward as
- with [ISPC].
+ possible to combine the library with [`rayon`][rayon] to poorly emulate
+ [ISPC]'s SPMD programming model in Rust. Writing performant code is not as
+ straightforward as with [ISPC].
 
 # Platform support
 
@@ -152,3 +153,8 @@ dual licensed as above, without any additional terms or conditions.
 [master_docs]: https://rust-lang-nursery.github.io/packed_simd/packed_simd/
 [perf_guide]: https://github.com/rust-lang-nursery/packed_simd/blob/master/perf_guide.md
 [rfc2366]: https://github.com/rust-lang/rfcs/pull/2366
+[ISPC]: https://ispc.github.io/
+[rayon]: https://crates.io/crates/rayon
+[boost_license]: https://www.boost.org/LICENSE_1_0.txt
+[SLEEF]: https://sleef.org/
+[sleef_sys]: https://crates.io/crates/sleef-sys
