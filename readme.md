@@ -48,18 +48,21 @@ Most of the examples come with both a scalar and a vectorized implementation.
 
 The following [ISPC] examples are also part of `packed_simd`'s
 [`examples/`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/)
-directory and allow putting the performance achievable with `packed_simd` into
-perspective. In these examples, `packed_simd`+`rayon` are used to emulate ISPC's
-Single-Program-Multiple-Data (SPMD) programming model, where this combination is:
+directory, where `packed_simd`+[`rayon`][rayon] are used to emulate [ISPC]'s
+Single-Program-Multiple-Data (SPMD) programming model. The performance results
+on different hardware is shown in the `readme.md` of each example. The following
+table summarizes the performance ranges, where `+` means speed-up and `-`
+slowdown:
 
-* `aobench`: ~1.4x slower,
-* `stencil`: ~1.7x faster,
-* `mandelbrot`: ~1.2x faster,
+* `aobench`: `[-1.02x, +1.53x]`,
+* `stencil`: `[+1.06x, +1.72x]`,
+* `mandelbrot`: `[-1.74x, +1.2x]`,
 
- than [ISPC]. While SPMD is not the intended use case for `packed_simd`, it is
- possible to combine the library with [`rayon`][rayon] to poorly emulate
- [ISPC]'s SPMD programming model in Rust. Writing performant code is not as
- straightforward as with [ISPC].
+ While SPMD is not the intended use case for `packed_simd`, it is possible to
+ combine the library with [`rayon`][rayon] to poorly emulate [ISPC]'s SPMD programming
+ model in Rust. Writing performant code is not as straightforward as with
+ [ISPC], but with some care (e.g. see the [Performance Guide][perf_guide]) one
+ can easily match and often out-perform [ISPC]'s "default performance".
 
 # Platform support
 
