@@ -60,6 +60,15 @@ impl V3D {
         basis[1] = basis[2].cross(basis[0]).normalized();
         basis
     }
+    // Fuzzy float comparison between vectors
+    #[inline(always)]
+    #[must_use]
+    pub fn almost_eq(&self, rhs: &Self) -> bool {
+        const EPSILON: f32 = 1E-3;
+        (self.x - rhs.x).abs() < EPSILON &&
+        (self.y - rhs.y).abs() < EPSILON &&
+        (self.z - rhs.z).abs() < EPSILON
+    }
 }
 
 impl Add for V3D {
