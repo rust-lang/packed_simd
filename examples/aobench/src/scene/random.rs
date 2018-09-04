@@ -55,15 +55,19 @@ impl Default for Random {
 
 impl Scene for Random {
     const NAO_SAMPLES: usize = 8;
+    #[inline(always)]
     fn rand(&mut self) -> f32 {
         ::random::scalar::thread_rng().gen()
     }
+    #[inline(always)]
     fn plane(&self) -> &Plane {
         &self.plane
     }
+    #[inline(always)]
     fn spheres(&self) -> &[Sphere] {
         &self.spheres
     }
+    #[inline(always)]
     fn rand_f32xN(&mut self) -> (f32xN, f32xN) {
         let mut rng = ::random::vector::thread_rng();
         (rng.gen(), rng.gen())
