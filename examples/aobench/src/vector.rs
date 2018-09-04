@@ -72,6 +72,12 @@ cfg_if! {
             ao_impl(scene, nsubsamples, img);
         }
 
+        #[target_feature(enable = "avx,fma")]
+        unsafe fn ao_avx_fma<S: Scene>(scene: &mut S, nsubsamples: usize,
+                                   img: &mut ::Image) {
+            ao_impl(scene, nsubsamples, img);
+        }
+
         #[target_feature(enable = "avx2,fma")]
         unsafe fn ao_avx2<S: Scene>(scene: &mut S, nsubsamples: usize,
                                     img: &mut ::Image) {
@@ -84,7 +90,11 @@ cfg_if! {
                 if is_x86_feature_detected!("avx2") && is_x86_feature_detected!("fma") {
                     ao_avx2(scene, nsubsamples, img);
                 } else if is_x86_feature_detected!("avx") {
-                    ao_avx(scene, nsubsamples, img);
+                    if is_x86_feature_detected!("fma") {
+                        ao_avx_fma(scene, nsubsamples, img);
+                    } else {
+                        ao_avx(scene, nsubsamples, img);
+                    }
                 } else if is_x86_feature_detected!("sse4.2") {
                     ao_sse42(scene, nsubsamples, img);
                 } else {
