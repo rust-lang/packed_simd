@@ -43,8 +43,15 @@ macro_rules! impl_slice_from_slice {
             /// to an `align_of::<Self>()` boundary, the behavior is undefined.
             #[inline]
             pub unsafe fn from_slice_aligned_unchecked(slice: &[$elem_ty]) -> Self {
+                debug_assert!(slice.len() >= $elem_count);
+                let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
+                debug_assert_eq!(
+                    target_ptr.align_offset(mem::align_of::<Self>()),
+                    0
+                );
+
                 #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
-                *(slice.get_unchecked(0) as *const $elem_ty as *const Self)
+                *(target_ptr as *const Self)
             }
 
             /// Instantiates a new vector with the values of the `slice`.
@@ -57,6 +64,7 @@ macro_rules! impl_slice_from_slice {
                 slice: &[$elem_ty],
             ) -> Self {
                 use mem::size_of;
+                debug_assert!(slice.len() >= $elem_count);
                 let target_ptr =
                     slice.get_unchecked(0) as *const $elem_ty as *const u8;
                 let mut x = Self::splat(0 as $elem_ty);

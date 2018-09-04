@@ -13,6 +13,7 @@
 //! - [Vector types](#vector-types)
 //! - [Conditional operations](#conditional-operations)
 //! - [Conversions](#conversions)
+//! - [Performance guide](https://github.com/rust-lang-nursery/packed_simd/blob/master/perf_guide.md)
 //!
 //! ## Introduction
 //!

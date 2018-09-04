@@ -1,0 +1,23 @@
+[package]
+name = "slice_sum"
+version = "0.1.0"
+authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+autobenches = false
+
+[[bin]]
+name = "slice_sum"
+path = "src/main.rs"
+
+[dependencies]
+packed_simd = { path = "../.." }
+rayon = "^1.0"
+time = "^0.1"
+rand = "0.5.5"
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = 'fat'
+debug-assertions = false
+codegen-units = 1
+panic = 'abort'

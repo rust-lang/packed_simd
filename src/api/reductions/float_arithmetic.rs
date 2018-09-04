@@ -58,6 +58,34 @@ macro_rules! impl_reduction_float_arithmetic {
             }
         }
 
+        impl ::iter::Sum for $id {
+            #[inline]
+            fn sum<I: Iterator<Item=$id>>(iter: I) -> $id {
+                iter.fold($id::splat(0.), ::ops::Add::add)
+            }
+        }
+
+        impl ::iter::Product for $id {
+            #[inline]
+            fn product<I: Iterator<Item=$id>>(iter: I) -> $id {
+                iter.fold($id::splat(1.), ::ops::Mul::mul)
+            }
+        }
+
+        impl<'a> ::iter::Sum<&'a $id> for $id {
+            #[inline]
+            fn sum<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
+                iter.fold($id::splat(0.), |a, b| ::ops::Add::add(a, *b))
+            }
+        }
+
+        impl<'a> ::iter::Product<&'a $id> for $id {
+            #[inline]
+            fn product<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
+                iter.fold($id::splat(1.), |a, b| ::ops::Mul::mul(a, *b))
+            }
+        }
+
         test_if!{
             $test_tt:
             interpolate_idents! {

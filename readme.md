@@ -1,14 +1,17 @@
 # `Simd<[T; N]>` - Implementation of [RFC2366: `std::simd`][rfc2366]
 
-[![Travis-CI Status]][travis] [![Appveyor Status]][appveyor] [![Latest Version]][crates.io] [![docs]][docs.rs]
+[![Travis-CI Status]][travis] [![Appveyor Status]][appveyor] [![Latest Version]][crates.io] [![docs]][master_docs]
 
 > This aims to be a 100% conforming implementation of the RFC2366 for stabilization.
 
 # Documentation
 
-* [`master` branch][master_docs]
-* [latest release][docs.rs]
-* [RFC2366 `std::simd`][rfc2366]
+* [API docs (`master` branch)][master_docs]
+* [Performance guide][perf_guide]
+* [API docs (`docs.rs`)][docs.rs]: **CURRENTLY DOWN** due to
+  https://github.com/rust-lang-nursery/packed_simd/issues/110
+* [RFC2366 `std::simd`][rfc2366]: - contains motivation, design rationale,
+  discussion, etc.
 
 # Examples
 
@@ -147,4 +150,5 @@ dual licensed as above, without any additional terms or conditions.
 [docs]: https://docs.rs/packed_simd/badge.svg
 [docs.rs]: https://docs.rs/packed_simd/
 [master_docs]: https://rust-lang-nursery.github.io/packed_simd/packed_simd/
+[perf_guide]: https://github.com/rust-lang-nursery/packed_simd/blob/master/perf_guide.md
 [rfc2366]: https://github.com/rust-lang/rfcs/pull/2366
