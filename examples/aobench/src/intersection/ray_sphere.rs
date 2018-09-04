@@ -66,7 +66,7 @@ impl Intersect<Sphere> for RayxN {
                 let old_isect_i = old_isect.get(i);
                 let ray_i = self.get(i);
                 let isect_i = ray_i.intersect(sphere, old_isect_i);
-                assert_eq!(isect_i, isect.get(i), "\n\nsphere: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\nisect_i: {:?}\n\n", sphere, old_isect, self, i, old_isect_i, ray_i, isect_i);
+                assert!(isect_i.almost_eq(&isect.get(i)), "{:?} !~= {:?}\n\nsphere: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\n\n", isect_i, isect.get(i), sphere, old_isect, self, i, old_isect_i, ray_i);
             }
             true
         });

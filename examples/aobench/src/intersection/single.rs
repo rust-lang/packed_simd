@@ -3,7 +3,7 @@
 use geometry::V3D;
 
 /// Intersection result
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug)]
 pub struct Isect {
     pub t: f32,
     pub p: V3D,
@@ -20,5 +20,17 @@ impl Default for Isect {
             p: V3D::default(),
             n: V3D::default(),
         }
+    }
+}
+
+impl Isect {
+    #[inline(always)]
+    #[must_use]
+    pub fn almost_eq(&self, rhs: &Isect) -> bool {
+        const EPSILON: f32 = 1E-3;
+        (self.t - rhs.t).abs() < EPSILON &&
+        self.p.almost_eq(&rhs.p) &&
+        self.n.almost_eq(&rhs.n) &&
+        self.hit == rhs.hit
     }
 }
