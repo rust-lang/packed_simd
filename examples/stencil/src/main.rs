@@ -3,6 +3,8 @@ use stencil_lib::*;
 
 extern crate time;
 
+use std::env;
+
 #[rustfmt::skip]
 fn run<F>(name: &str, f: F)
 where
@@ -15,13 +17,34 @@ where
 }
 
 fn main() {
-    run("scalar", scalar::scalar);
-    run("simd", simd::x8);
-    run("simd+par", simd_par::x8_par);
+    let mut args = env::args();
+    args.next();
+    let alg: usize = args.next().unwrap().parse().unwrap();
 
-    #[cfg(feature = "ispc")]
-    {
-        run("ispc", ispc_loops::serial);
-        run("ispc+tasks", ispc_loops::tasks);
+    match alg {
+        0 => run("scalar", scalar::scalar),
+        1 => run("vector", simd::x8),
+        2 => run("vector_par", simd_par::x8_par),
+        3 => {
+            #[cfg(feature = "ispc")]
+            {
+                run("ispc", ispc_loops::serial);
+            }
+            #[cfg(not(feature = "ispc"))]
+            {
+                panic!("error: algorithm requires binary to be compiled with the ispc feature")
+            }
+        }
+        4 => {
+            #[cfg(feature = "ispc")]
+            {
+                run("ispc+tasks", ispc_loops::tasks);
+            }
+            #[cfg(not(feature = "ispc"))]
+            {
+                panic!("error: algorithm requires binary to be compiled with the ispc feature")
+            }
+        }
+        _ => panic!("unknown algorithm"),
     }
 }

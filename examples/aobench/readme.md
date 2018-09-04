@@ -24,6 +24,10 @@ Use `RUSTFLAGS` to set the target CPU, for example:
 
 ## Results
 
+```
+./benchmark.sh
+```
+
 On a dual core AVX1 i5 @1.8 GHz:
 
 | 800 x 600    | time [ms] <br> Rust | speedup vs `scalar` [-] |

@@ -13,6 +13,10 @@ will run all benchmarks including the ISPC ones.
 
 ## Results
 
+```
+./benchmark.sh
+```
+
 On a dual core AVX1 i5 @1.8 GHz:
 
 | 800 x 600    | time [ms] <br> Rust | speedup [-] <br> Rust-vs-Rust | time [ms] <br> ISPC 1.9.2 | speedup [-] <br> ISPC-vs-Rust |
