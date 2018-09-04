@@ -33,17 +33,43 @@ It takes four arguments in this order:
 ./benchmark.sh
 ```
 
-| 800 x 800  | time [ms] <br> Rust | speedup [-] |
+On a dual core AVX1 i5 @1.8 GHz:
+
+| 800 x 800  | time [ms] <br> Rust | speedup vs `scalar` [-] |
 |------------|---------------------|-------------|
 | `scalar`   | 86.6                | 1.0x        |
 | `simd`     | 46.2                | 1.9x        |
 | `par_simd` | 21.0                | 4.1x        |
-| `ispc`     | 24.6                | 3.5x        |
+| `ispc`     | 25.7                | 3.4x        |
 
-On my system the `par_simd` algorithm is ~1.2x faster than ISPC. While both
-algorithms produce the same output, they are however different. The `par_simd`
-implementation writes the formatted output in parallel inside from the main
-loop, while the ISPC algorithm computes the mandelbrot set first saving it to
-memory, and subsequently loads it from memory again to do the formatting.
+`par_simd` algorithm is ~1.2x faster than `ispc`.
+
+On a 28 core Xeon CPU E5-2690 v4 @ 2.60GHz:
+
+| 800 x 800  | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|------------|---------------------|-------------------------|
+| `scalar`   | 50.8                | 1.0x                    |
+| `simd`     | 34.8                | 1.5x                    |
+| `par_simd` | 25.1                | 2x                      |
+| `ispc`     | 14.4                | 3.52x                   |
+
+`par_simd` algorithm is ~1.74x slower than `ispc`.
+
+On a 40 core Xeon Gold 6148 CPU @ 2.40GHz:
+
+| 800 x 800  | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|------------|---------------------|-------------|
+| `scalar`   | 59.9                | 1.0x        |
+| `simd`     | 46.6                | 1.3x        |
+| `par_simd` | 29.9                | 2.0x        |
+| `ispc`     | 30.3                | 2.0x        |
+
+`par_simd` algorithm is as fast as `ispc`.
+
+**Note**: While both algorithms produce the same output, they are however
+different. The `par_simd` implementation writes the formatted output in parallel
+inside from the main loop, while the ISPC algorithm computes the mandelbrot set
+first saving it to memory, and subsequently loads it from memory again to do the
+formatting.
 
 [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
