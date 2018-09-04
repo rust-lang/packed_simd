@@ -166,12 +166,12 @@ matrix:
       install: true
       before_script:
       - rustup component add rustfmt-preview
-      script: ci/check_fmt.sh || true
+      script: ci/all.sh check_fmt || true
     - name: "clippy"
       install: true
       before_script:
       - rustup component add clippy-preview
-      script: ci/check_clippy.sh
+      script: ci/all.sh clippy
 
   allow_failures:
     # FIXME: TBD

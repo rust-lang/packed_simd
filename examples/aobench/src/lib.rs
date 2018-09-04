@@ -36,14 +36,14 @@ pub mod intersection;
 pub mod random;
 pub mod scene;
 
+#[cfg(feature = "ispc")]
+pub mod ispc_;
 pub mod scalar;
 pub mod scalar_parallel;
 pub mod tiled;
 pub mod tiled_parallel;
 pub mod vector;
 pub mod vector_parallel;
-#[cfg(feature = "ispc")]
-pub mod ispc_;
 
 pub use self::image::Image;
 pub use self::scene::Scene;
