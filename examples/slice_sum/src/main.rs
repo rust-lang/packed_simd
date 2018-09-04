@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
+
 extern crate packed_simd;
 extern crate rand;
 extern crate rayon;
@@ -54,6 +56,7 @@ fn sum_ver_par(x: &[f32]) -> f32 {
     let (head, tail) = x.split_at(i);
     let head_sum: f32 = head.iter().sum();
 
+    #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
     let tail: &[f32s] = unsafe {
         slice::from_raw_parts(
             tail.as_ptr() as *const f32s,
@@ -67,7 +70,7 @@ fn sum_ver_par(x: &[f32]) -> f32 {
 fn main() {
     let n: usize = std::env::args()
         .nth(1)
-        .unwrap_or("1000000000".to_string())
+        .unwrap_or_else(|| "1000000000".to_string())
         .parse()
         .expect("argument should be a usize");
 

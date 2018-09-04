@@ -26,7 +26,7 @@ impl Default for Isect {
 impl Isect {
     #[inline(always)]
     #[must_use]
-    pub fn almost_eq(&self, rhs: &Isect) -> bool {
+    pub fn almost_eq(&self, rhs: &Self) -> bool {
         const EPSILON: f32 = 1E-3;
         (self.t - rhs.t).abs() < EPSILON
             && self.p.almost_eq(&rhs.p)
