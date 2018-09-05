@@ -173,13 +173,11 @@ matrix:
       script: ci/dox.sh
     - name: "rustfmt"
       install: true
-      before_script:
-      - rustup component add rustfmt-preview
+      before_script: rustup component add rustfmt-preview
       script: ci/all.sh check_fmt || true
     - name: "clippy"
       install: true
-      before_script:
-      - rustup component add clippy-preview
+      before_script: rustup component add clippy-preview
       script: ci/all.sh clippy
 
   allow_failures:
