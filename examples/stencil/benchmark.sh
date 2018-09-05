@@ -4,8 +4,13 @@
 
 set -ex
 
+if [[ ${NORUN} != 1 ]]; then
+    hash hyperfine 2>/dev/null || { echo >&2 "hyperfine is not in PATH."; exit 1; }
+fi
+
 algs=("0" "1" "2")
 if echo "$FEATURES" | grep -q "ispc"; then
+    hash ispc 2>/dev/null || { echo >&2 "ispc is not in PATH."; exit 1; }
     algs+=( "3" "4" )
 fi
 
