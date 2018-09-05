@@ -22,6 +22,7 @@ Most of the examples come with both a scalar and a vectorized implementation.
 * [`matrix inverse`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/matrix_inverse)
 * [`mandelbrot`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/mandelbrot)
 * [`n-body`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/nbody)
+* [`options_pricing`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/options_pricing)
 * [`spectral_norm`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/spectral_norm)
 * [`stencil`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/stencil)
 * [`vector dot product`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/dot_product)
@@ -57,6 +58,7 @@ slowdown:
 * `aobench`: `[-1.02x, +1.53x]`,
 * `stencil`: `[+1.06x, +1.72x]`,
 * `mandelbrot`: `[-1.74x, +1.2x]`,
+* `options_pricing`: TBD,
 
  While SPMD is not the intended use case for `packed_simd`, it is possible to
  combine the library with [`rayon`][rayon] to poorly emulate [ISPC]'s SPMD programming

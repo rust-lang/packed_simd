@@ -95,14 +95,14 @@ cfg_if! {
                 impl_vpowf!(f64x2: Sleef_powd2_u10sse4);
                 impl_vpowf!(f64x4: Sleef_powd4_u10avx);
             } else if #[cfg(target_feature = "sse4.2")] {
-                impl_vpowf!(f32x4: Sleef_powf4_sse4);
+                impl_vpowf!(f32x4: Sleef_powf4_u10sse4);
                 impl_vpowf!(f32x8: powf_v8f32);
-                impl_vpowf!(f64x2: Sleef_powd2_sse4);
+                impl_vpowf!(f64x2: Sleef_powd2_u10sse4);
                 impl_vpowf!(f64x4: powf_v4f64);
             } else if #[cfg(target_feature = "sse2")] {
-                impl_vpowf!(f32x4: Sleef_powf4_sse2);
+                impl_vpowf!(f32x4: Sleef_powf4_u10sse2);
                 impl_vpowf!(f32x8: powf_v8f32);
-                impl_vpowf!(f64x2: Sleef_powd2_sse2);
+                impl_vpowf!(f64x2: Sleef_powd2_u10sse2);
                 impl_vpowf!(f64x4: powf_v4f64);
             } else {
                 impl_vpowf!(f32x4: powf_v4f32);

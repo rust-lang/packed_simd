@@ -92,14 +92,14 @@ cfg_if! {
                 impl_vln!(f64x2: Sleef_logd2_u10sse4);
                 impl_vln!(f64x4: Sleef_logd4_u10avx);
             } else if #[cfg(target_feature = "sse4.2")] {
-                impl_vln!(f32x4: Sleef_logf4_sse4);
+                impl_vln!(f32x4: Sleef_logf4_u10sse4);
                 impl_vln!(f32x8: ln_v8f32);
-                impl_vln!(f64x2: Sleef_logd2_sse4);
+                impl_vln!(f64x2: Sleef_logd2_u10sse4);
                 impl_vln!(f64x4: ln_v4f64);
             } else if #[cfg(target_feature = "sse2")] {
-                impl_vln!(f32x4: Sleef_logf4_sse2);
+                impl_vln!(f32x4: Sleef_logf4_u10sse2);
                 impl_vln!(f32x8: ln_v8f32);
-                impl_vln!(f64x2: Sleef_logd2_sse2);
+                impl_vln!(f64x2: Sleef_logd2_u10sse2);
                 impl_vln!(f64x4: ln_v4f64);
             } else {
                 impl_vln!(f32x4: ln_v4f32);
