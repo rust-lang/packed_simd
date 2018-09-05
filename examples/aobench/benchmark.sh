@@ -7,8 +7,13 @@ set -ex
 export WIDTH=800
 export HEIGHT=600
 
+if [[ ${NORUN} != 1 ]]; then
+    hash hyperfine 2>/dev/null || { echo >&2 "hyperfine is not in PATH."; exit 1; }
+fi
+
 ALGS=("scalar" "scalar_par" "vector" "vector_par" "tiled" "tiled_par")
 if echo "$FEATURES" | grep -q "ispc"; then
+    hash ispc 2>/dev/null || { echo >&2 "ispc is not in PATH."; exit 1; }
     ALGS+=("ispc" "ispc_tasks")
 fi
 
