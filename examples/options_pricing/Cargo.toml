@@ -1,5 +1,5 @@
 [package]
-name = "options"
+name = "options_pricing"
 version = "0.1.0"
 authors = ["gnzlbg <gonzalobg88@gmail.com>"]
 
@@ -13,12 +13,14 @@ ispc = { version = "^0.3.6", optional = true }
 ispc = { version = "^0.3.6", optional = true }
 
 [[bin]]
-name = "options"
+name = "options_pricing"
 path = "src/main.rs"
 
 [lib]
-name = "options_lib"
+name = "options_pricing_lib"
 path = "src/lib.rs"
 
 [features]
 default = []
+coresimd = [ "packed_simd/coresimd" ]
+sleef-sys = [ "packed_simd/sleef-sys" ]

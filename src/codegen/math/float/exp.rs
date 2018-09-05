@@ -92,14 +92,14 @@ cfg_if! {
                 impl_vexp!(f64x2: Sleef_expd2_u10sse4);
                 impl_vexp!(f64x4: Sleef_expd4_u10avx);
             } else if #[cfg(target_feature = "sse4.2")] {
-                impl_vexp!(f32x4: Sleef_expf4_sse4);
+                impl_vexp!(f32x4: Sleef_expf4_u10sse4);
                 impl_vexp!(f32x8: exp_v8f32);
-                impl_vexp!(f64x2: Sleef_expd2_sse4);
+                impl_vexp!(f64x2: Sleef_expd2_u10sse4);
                 impl_vexp!(f64x4: exp_v4f64);
             } else if #[cfg(target_feature = "sse2")] {
-                impl_vexp!(f32x4: Sleef_expf4_sse2);
+                impl_vexp!(f32x4: Sleef_expf4_u10sse2);
                 impl_vexp!(f32x8: exp_v8f32);
-                impl_vexp!(f64x2: Sleef_expd2_sse2);
+                impl_vexp!(f64x2: Sleef_expd2_u10sse2);
                 impl_vexp!(f64x4: exp_v4f64);
             } else {
                 impl_vexp!(f32x4: exp_v4f32);

@@ -1,5 +1,5 @@
-extern crate options_lib;
-use options_lib::*;
+extern crate options_pricing_lib;
+use options_pricing_lib::*;
 
 extern crate time;
 
