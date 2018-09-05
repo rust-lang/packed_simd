@@ -3,7 +3,7 @@
 
 use llvm::simd_fsqrt;
 
-// FIXME 64-bit sqrtgle elem vectors missqrtg
+// FIXME 64-bit 1 elem vectors sqrte
 
 use crate::*;
 

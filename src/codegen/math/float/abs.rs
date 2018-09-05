@@ -1,7 +1,7 @@
 //! Vertical floating-point `fabs`
 #![allow(unused)]
 
-// FIXME 64-bit fabsgle elem vectors misfabsg
+// FIXME 64-bit 1 elem vectors fabs
 
 use crate::*;
 

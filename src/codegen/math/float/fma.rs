@@ -1,8 +1,8 @@
 //! Vertical floating-point `fma`
-
 #![allow(unused)]
-
 use crate::*;
+
+// FIXME: 64-bit 1 element mul_add
 
 crate trait Fma {
     fn fma(self, y: Self, z: Self) -> Self;

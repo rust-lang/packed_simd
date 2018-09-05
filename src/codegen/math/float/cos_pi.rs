@@ -1,7 +1,7 @@
 //! Vertical floating-point `cos`
 #![allow(unused)]
 
-// FIXME 64-bit cosgle elem vectors miscosg
+// FIXME 64-bit 1 elem vectors cos_pi
 
 use crate::*;
 

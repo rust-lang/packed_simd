@@ -1,8 +1,8 @@
 //! Approximation for floating-point `fma`
-
 #![allow(unused)]
-
 use crate::*;
+
+// FIXME: 64-bit 1 element mul_adde
 
 crate trait Fmae {
     fn fmae(self, y: Self, z: Self) -> Self;
