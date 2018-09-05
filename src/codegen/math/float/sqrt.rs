@@ -1,7 +1,7 @@
 //! Vertical floating-point `sqrt`
 #![allow(unused)]
 
-// FIXME 64-bit sqrtgle elem vectors missqrtg
+// FIXME 64-bit 1 elem vectors sqrt
 
 use crate::*;
 

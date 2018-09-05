@@ -1,7 +1,7 @@
-//! Vertical floating-point `sin`
+//! Vertical floating-point `sin_pi`
 #![allow(unused)]
 
-// FIXME 64-bit single elem vectors missing
+// FIXME 64-bit 1 elem vectors sin_pi
 
 use crate::*;
 

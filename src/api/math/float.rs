@@ -4,16 +4,16 @@
 mod abs;
 
 #[macro_use]
-mod sqrt;
+mod cos;
 
 #[macro_use]
-mod sqrte;
+mod exp;
 
 #[macro_use]
-mod recpre;
+mod powf;
 
 #[macro_use]
-mod rsqrte;
+mod ln;
 
 #[macro_use]
 mod mul_add;
@@ -22,7 +22,16 @@ mod mul_add;
 mod mul_adde;
 
 #[macro_use]
+mod recpre;
+
+#[macro_use]
+mod rsqrte;
+
+#[macro_use]
 mod sin;
 
 #[macro_use]
-mod cos;
+mod sqrt;
+
+#[macro_use]
+mod sqrte;

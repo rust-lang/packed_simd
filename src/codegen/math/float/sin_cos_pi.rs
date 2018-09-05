@@ -1,7 +1,7 @@
 //! Vertical floating-point `sin_cos`
 #![allow(unused)]
 
-// FIXME 64-bit sin_cosgle elem vectors missin_cosg
+// FIXME 64-bit 1 elem vectors sin_cos
 
 use crate::*;
 

@@ -1,7 +1,7 @@
 //! Vertical floating-point `sin`
 #![allow(unused)]
 
-// FIXME 64-bit single elem vectors missing
+// FIXME 64-bit 1 elem vectors sin
 
 use crate::*;
 
