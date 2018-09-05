@@ -1,6 +1,6 @@
 # Mandelbrot
 
-This is the [`mandelbrot` benchmark from the benchmarksgame][bg]. 
+This is the [`mandelbrot` benchmark from the benchmarksgame][bg].
 
 ## Background
 
@@ -18,12 +18,14 @@ It takes four arguments in this order:
 * (optional) `output_format`: the output format to use - defaults to `PBM`
   * `0`: PBM: Portable BitMap format (black & white output)
   * `1`: PPM: Portable PixMap format (colored output)
-  
-`cargo run --release -- 400` outputs:
+
+The resulting image is piped to `stdout`.
+
+`cargo run --release -- 400 > output.ppm` outputs:
 
 ![run_400_png](https://user-images.githubusercontent.com/904614/43190942-72bdb834-8ffa-11e8-9dcf-a9a9632ae907.png)
 
-`cargo run --releae -- 400 400 1 1` outputs:
+`cargo run --release -- 400 400 1 1 > output.ppm` outputs:
 
 ![run_400_400_1_1_png](https://user-images.githubusercontent.com/904614/43190948-759969a4-8ffa-11e8-81a9-35e5baef3e86.png)
 

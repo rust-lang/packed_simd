@@ -7,7 +7,7 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
     let out_fn = m.get_format_fn();
 
     let mut out = Vec::<i32>::with_capacity(m.height * m.width);
-    unsafe {
+    let dur = time::Duration::span(|| unsafe {
         mandelbrot::mandelbrot_ispc(
             m.left,
             m.bottom,
@@ -19,7 +19,8 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
             out.as_mut_ptr() as *mut i32,
         );
         out.set_len(m.height * m.width);
-    }
+    });
+    eprintln!("ispc: {} ms", dur.num_milliseconds());
 
     let mut line_buffer = m.line_buffer(1);
     for i in 0..m.height {

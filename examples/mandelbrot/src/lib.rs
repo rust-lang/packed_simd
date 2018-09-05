@@ -15,6 +15,7 @@
 
 extern crate packed_simd;
 extern crate rayon;
+extern crate time;
 #[cfg(feature = "ispc")]
 #[macro_use]
 extern crate ispc;
