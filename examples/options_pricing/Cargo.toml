@@ -24,6 +24,7 @@ path = "src/lib.rs"
 default = []
 coresimd = [ "packed_simd/coresimd" ]
 sleef-sys = [ "packed_simd/sleef-sys" ]
+ispc_libm = [ "ispc" ]
 
 [profile.release]
 opt-level = 3
