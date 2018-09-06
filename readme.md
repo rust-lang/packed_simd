@@ -154,7 +154,7 @@ dual licensed as above, without any additional terms or conditions.
 [docs]: https://docs.rs/packed_simd/badge.svg
 [docs.rs]: https://docs.rs/packed_simd/
 [master_docs]: https://rust-lang-nursery.github.io/packed_simd/packed_simd/
-[perf_guide]: https://github.com/rust-lang-nursery/packed_simd/blob/master/perf_guide.md
+[perf_guide]: https://rust-lang-nursery.github.io/packed_simd/packed_simd/perf-guide/
 [rfc2366]: https://github.com/rust-lang/rfcs/pull/2366
 [ISPC]: https://ispc.github.io/
 [rayon]: https://crates.io/crates/rayon
