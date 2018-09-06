@@ -21,6 +21,13 @@ echo "Benchmark 256-bit wide vectors"
 RUSTFLAGS="-C target-cpu=native ${RUSTFLAGS}" \
          cargo build --release --no-default-features \
          --features="${FEATURES},256bit"
+
+if [[ "${VERIFY}" == "1" ]]; then
+    RUSTFLAGS="-C target-cpu=native ${RUSTFLAGS}" \
+    cargo test --release --no-default-features \
+          --features="${FEATURES},256bit"
+fi
+
 if [[ "${NORUN}" == "1" ]]; then
     exit 0
 fi
