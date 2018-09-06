@@ -18,6 +18,12 @@ RUSTFLAGS="-C target-cpu=native ${RUSTFLAGS}" \
          cargo build --release --no-default-features \
          --features="${FEATURES}"
 
+if [[ "${VERIFY}" == "1" ]]; then
+    RUSTFLAGS="-C target-cpu=native ${RUSTFLAGS}" \
+             cargo test --release --no-default-features \
+             --features="${FEATURES}"
+fi
+
 if [[ "${NORUN}" == "1" ]]; then
     exit 0
 fi
