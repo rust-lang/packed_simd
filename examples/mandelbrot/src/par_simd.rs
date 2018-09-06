@@ -48,7 +48,7 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
     let mut line_buffer = m.line_buffer(1);
     for i in 0..height {
         for j in (0..width).step_by(block_size) {
-            let ref val = out[i * width_in_blocks + j / block_size];
+            let val = &out[i * width_in_blocks + j / block_size];
             for k in 0..block_size {
                 out_fn(&mut line_buffer, j + k, val.extract(k));
             }
