@@ -23,7 +23,8 @@ macro_rules! impl_math_float_exp {
                         assert_eq!(o, z.exp());
 
                         let e = $id::splat(::core::f64::consts::E as $elem_ty);
-                        assert_eq!(e, o.exp());
+                        let tol = $id::splat(2.4e-4 as $elem_ty);
+                        assert!((e - o.exp()).abs().le(tol).all());
                     }
                 }
             }
