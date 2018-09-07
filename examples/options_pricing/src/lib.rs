@@ -15,7 +15,7 @@ extern crate packed_simd;
 extern crate rayon;
 
 use packed_simd::f32x8 as f32s;
-// use packed_simd::f64x8 as f64s;
+use packed_simd::f64x8 as f64s;
 
 #[cfg(feature = "ispc")]
 #[macro_use]
