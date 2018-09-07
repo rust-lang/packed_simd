@@ -13,7 +13,37 @@ cargo run --release --features=ispc -- ${SIZE} ${ALGORITHM}
 
 ## Results
 
-TBD 
+```
+./benchmark.sh
+```
+
+## Black-Scholes
+
+On a dual core AVX1 i5 @1.8 GHz:
+
+| 800 x 800    | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|--------------|---------------------|-------------------------|
+| `scalar`     |                998 | 1.0x                       |
+| `simd`       |                367 | 2.7x                       |
+| `par_simd`   |               246 | 4.1x                       |
+| `ispc`       |                360 | 2.8x                       |
+| `ispc+tasks` |               248 | 4.0x                       |
+
+`par_simd` and `ispc+tasks` algorithms are on par.
+
+## Binomial put
+
+On a dual core AVX1 i5 @1.8 GHz:
+
+| 800 x 800    | time [ms] <br> Rust | speedup vs `scalar` [-] |
+|--------------|---------------------|-------------------------|
+| `scalar`     |               2057 | 1.0x                       |
+| `simd`       |               1206 | 1.7x                       |
+| `par_simd`   |               484 | 4.3x                       |
+| `ispc`       |                805 | 2.6x                       |
+| `ispc+tasks` |               404 | 5.1x                       |
+
+`par_simd` algorithm is ~1.2x slower than `ispc+tasks`.
 
 
 [ispc]: https://github.com/ispc/ispc/tree/master/examples/options

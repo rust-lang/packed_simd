@@ -27,6 +27,8 @@ const BINOMIAL_NUM: usize = 64;
 pub mod ispc_;
 pub mod scalar;
 pub mod simd;
+pub mod simd_kernels;
+pub mod simd_par;
 pub mod sum;
 
 #[derive(PartialEq, Debug)]

@@ -73,6 +73,12 @@ fn main() {
         "binomial_put_simd" => {
             run("binomial_put_simd", num_options, simd::binomial_put)
         }
+        "black_scholes_simd_par" => {
+            run("black_scholes_simd_par", num_options, simd_par::black_scholes)
+        }
+        "binomial_put_simd_par" => {
+            run("binomial_put_simd_par", num_options, simd_par::binomial_put)
+        }
         _ => panic!("unknown algorithm: {}", algorithm),
     }
 }
