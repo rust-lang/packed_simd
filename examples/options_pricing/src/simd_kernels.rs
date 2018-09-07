@@ -35,7 +35,9 @@ pub fn binomial_put(s: f32s, x: f32s, t: f32s, r: f32s, v: f32s) -> f32s {
     let u = (v * dt.sqrt()).exp();
     let d = 1. / u;
     let disc = (r * dt).exp();
+    let inv_disc = 1. / disc;
     let pu = (disc - d) / (u - d);
+    let o_m_pu = 1. - pu;
 
     let mut vs = [f32s::splat(0.); BINOMIAL_NUM];
     for (j, v) in vs.iter_mut().enumerate() {
@@ -46,7 +48,7 @@ pub fn binomial_put(s: f32s, x: f32s, t: f32s, r: f32s, v: f32s) -> f32s {
 
     for j in (0..BINOMIAL_NUM).rev() {
         for k in 0..j {
-            vs[k] = ((1. - pu) * vs[k] + pu * vs[k + 1]) / disc;
+            vs[k] = (o_m_pu * vs[k] + pu * vs[k + 1]) * inv_disc;
         }
     }
 

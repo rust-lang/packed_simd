@@ -38,12 +38,12 @@ On a dual core AVX1 i5 @1.8 GHz:
 | 800 x 800    | time [ms] <br> Rust | speedup vs `scalar` [-] |
 |--------------|---------------------|-------------------------|
 | `scalar`     |               2057 | 1.0x                       |
-| `simd`       |               1206 | 1.7x                       |
-| `par_simd`   |               484 | 4.3x                       |
-| `ispc`       |                805 | 2.6x                       |
+| `simd`       |               651 | 3.2x                       |
+| `par_simd`   |               279 | 4.3x                       |
+| `ispc`       |                805 | 7.4x                       |
 | `ispc+tasks` |               404 | 5.1x                       |
 
-`par_simd` algorithm is ~1.2x slower than `ispc+tasks`.
+`par_simd` algorithm is ~1.4x faster than `ispc+tasks`.
 
 
 [ispc]: https://github.com/ispc/ispc/tree/master/examples/options

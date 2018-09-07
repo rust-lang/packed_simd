@@ -38,7 +38,7 @@ pub fn black_scholes(
         let d2 = d1 - v * t.sqrt();
         result[i] = s * cnd(d1) - x * (-r * t).exp() * cnd(d2);
     }
-    ::sum::sum_slice(&result)
+    ::sum::slice_scalar(&result)
 }
 
 pub fn binomial_put(
@@ -75,7 +75,7 @@ pub fn binomial_put(
 
         result[i] = vs[0];
     }
-    ::sum::sum_slice(&result)
+    ::sum::slice_scalar(&result)
 }
 
 #[cfg(feature = "ispc")]

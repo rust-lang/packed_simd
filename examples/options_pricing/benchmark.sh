@@ -25,10 +25,10 @@ if [[ "${NORUN}" == "1" ]]; then
     exit 0
 fi
 
-for alg in "${ALGS[@]}"
-do
-    hyperfine "target/release/options_pricing ${NUM_OPTIONS_BLACK_SCHOLES} ${alg}"
-done
+#for alg in "${ALGS[@]}"
+#do
+#    hyperfine "target/release/options_pricing ${NUM_OPTIONS_BLACK_SCHOLES} ${alg}"
+#done
 
 # Binomial put:
 ALGS=("binomial_put_scalar" "binomial_put_simd" "binomial_put_simd_par")

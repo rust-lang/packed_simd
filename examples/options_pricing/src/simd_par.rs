@@ -25,7 +25,7 @@ where
             }
         },
     );
-    ::sum::sum_slice(&result)
+    ::sum::slice(&result)
 }
 
 pub fn black_scholes(
