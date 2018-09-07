@@ -68,10 +68,4 @@ On a 40 core Xeon Gold 6148 CPU @ 2.40GHz:
 
 `par_simd` algorithm is as fast as `ispc`.
 
-**Note**: While both algorithms produce the same output, they are however
-different. The `par_simd` implementation writes the formatted output in parallel
-inside from the main loop, while the ISPC algorithm computes the mandelbrot set
-first saving it to memory, and subsequently loads it from memory again to do the
-formatting.
-
 [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot

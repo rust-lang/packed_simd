@@ -126,9 +126,14 @@ mod tests {
         }
 
         assert_eq!(v_expected.len(), 3 * w * h);
-        verify(w, h, &v_simd, &v_expected);
-        verify(w, h, &v_par_simd, &v_expected);
-        #[cfg(feature = "ispc")]
-        verify(w, h, &v_ispc, &v_expected);
+        #[cfg(not(target_feature = "fma"))]
+        {
+            verify(w, h, &v_simd, &v_expected);
+            verify(w, h, &v_par_simd, &v_expected);
+        }
+        if !is_x86_feature_detected!("fma") {
+            #[cfg(feature = "ispc")]
+            verify(w, h, &v_ispc, &v_expected);
+        }
     }
 }

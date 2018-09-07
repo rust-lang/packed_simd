@@ -8,33 +8,34 @@ pub type u64s = u64x4;
 pub type u32s = u32x4;
 pub type f64s = f64x4;
 
-pub fn mandelbrot(c_x: f64s, c_y: f64s, max_iter: u32) -> u32s {
+pub fn mandelbrot(c_x: f64s, c_y: f64s, iterations: u32) -> u32s {
     let mut x = c_x;
     let mut y = c_y;
 
     let mut count = u64s::splat(0);
-    let max_iter = u64s::splat(u64::from(max_iter));
 
-    loop {
-        let mask = count.ge(max_iter);
-        if mask.all() {
-            break;
-        }
-
-        let xx = x * x;
-        let yy = y * y;
-        let sum = xx + yy;
-
-        let mask = !sum.gt(f64s::splat(4.)) & !mask;
-        if mask.none() {
-            break;
-        }
-
-        count += mask.select(u64s::splat(1), u64s::splat(0));
-
+    for i in 0..iterations {
         let xy = x * y;
-        x = mask.select(xx - yy + c_x, x);
-        y = mask.select(xy * f64s::splat(2.0) + c_y, y);
+        let new_x = x.mul_adde(x, y.mul_adde(-y, c_x));
+        let new_y = xy.mul_adde(f64s::splat(2.0), c_y);
+
+        let sum = x.mul_adde(x, y * y);
+
+        // Keep track of those lanes which haven't diverged yet. The other ones
+        // will be masked off.
+        let undiverged = sum.le(f64s::splat(4.));
+
+        // Stop the iteration if they all diverged. Note that we don't do this
+        // check every iteration, since a branch misprediction can hurt more than
+        // doing some extra calculations.
+        if i % 5 == 0 && undiverged.none() {
+            break;
+        }
+
+        count += undiverged.select(u64s::splat(1), u64s::splat(0));
+
+        x = new_x;
+        y = new_y;
     }
     count.cast()
 }
