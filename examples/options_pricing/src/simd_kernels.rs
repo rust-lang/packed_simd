@@ -27,7 +27,6 @@ pub fn black_scholes(s: f32s, x: f32s, t: f32s, r: f32s, v: f32s) -> f32s {
     s * cnd(d1) - x * (-r * t).exp() * cnd(d2)
 }
 
-
 #[inline(always)]
 pub fn binomial_put(s: f32s, x: f32s, t: f32s, r: f32s, v: f32s) -> f32s {
     use BINOMIAL_NUM;

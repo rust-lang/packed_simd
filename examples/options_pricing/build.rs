@@ -27,8 +27,8 @@ fn main() {
                 ispc::opt::TargetISA::AVX512KNLi32x16,
             ]);
 
-
-            #[cfg(feature = "ispc_libm")] {
+            #[cfg(feature = "ispc_libm")]
+            {
                 // Use the system's libm
                 cfg.math_lib(ispc::opt::MathLib::System);
             }

@@ -2,27 +2,29 @@
 
 use f32s;
 
-pub fn parallel<K>(sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
-                 result: &mut [f32], count: usize, kernel: K) -> f64
-    where K: Fn(f32s, f32s, f32s, f32s, f32s) -> f32s + Sync + Send
+pub fn parallel<K>(
+    sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
+    result: &mut [f32], count: usize, kernel: K,
+) -> f64
+where
+    K: Fn(f32s, f32s, f32s, f32s, f32s) -> f32s + Sync + Send,
 {
-    use ::rayon::prelude::*;
+    use rayon::prelude::*;
     assert_eq!(count % f32s::lanes(), 0);
-    result
-        .par_chunks_mut(f32s::lanes())
-        .enumerate()
-        .for_each(|(i, result)| {
+    result.par_chunks_mut(f32s::lanes()).enumerate().for_each(
+        |(i, result)| {
             debug_assert!(result.len() == 8);
-        unsafe {
-            let s = f32s::from_slice_unaligned_unchecked(&sa[i..]);
-            let x = f32s::from_slice_unaligned_unchecked(&xa[i..]);
-            let t = f32s::from_slice_unaligned_unchecked(&ta[i..]);
-            let r = f32s::from_slice_unaligned_unchecked(&ra[i..]);
-            let v = f32s::from_slice_unaligned_unchecked(&va[i..]);
-            let r = kernel(s, x, t, r, v);
-            r.write_to_slice_unaligned_unchecked(result);
-        }
-    });
+            unsafe {
+                let s = f32s::from_slice_unaligned_unchecked(&sa[i..]);
+                let x = f32s::from_slice_unaligned_unchecked(&xa[i..]);
+                let t = f32s::from_slice_unaligned_unchecked(&ta[i..]);
+                let r = f32s::from_slice_unaligned_unchecked(&ra[i..]);
+                let v = f32s::from_slice_unaligned_unchecked(&va[i..]);
+                let r = kernel(s, x, t, r, v);
+                r.write_to_slice_unaligned_unchecked(result);
+            }
+        },
+    );
     ::sum::sum_slice(&result)
 }
 
@@ -71,4 +73,3 @@ mod tests {
         assert!(almost_equal(simd_par_sum, scalar_sum, 1e-5));
     }
 }
-

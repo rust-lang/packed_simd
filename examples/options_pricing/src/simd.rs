@@ -2,9 +2,12 @@
 
 use f32s;
 
-pub fn serial<K>(sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
-                 result: &mut [f32], count: usize, kernel: K) -> f64
-    where K: Fn(f32s, f32s, f32s, f32s, f32s) -> f32s
+pub fn serial<K>(
+    sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
+    result: &mut [f32], count: usize, kernel: K,
+) -> f64
+where
+    K: Fn(f32s, f32s, f32s, f32s, f32s) -> f32s,
 {
     assert_eq!(count % f32s::lanes(), 0);
     for i in (0..count).step_by(f32s::lanes()) {
@@ -37,8 +40,8 @@ pub fn binomial_put(
 
 #[cfg(test)]
 mod tests {
-    use almost_equal;
     use super::*;
+    use almost_equal;
     #[test]
     fn black_scholes_scalar() {
         const NOPTS: usize = 1_000_000;
