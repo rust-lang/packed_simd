@@ -20,7 +20,7 @@ pub mod ppm {
         (255.0, 170.0, 0.0),
         (0.0, 2.0, 0.0),
     ];
-    const SCALE: f32 = 12.0;
+    const SCALE: u32 = 12;
 
     pub fn write_header<O: io::Write>(o: &mut O, width: usize, height: usize) {
         writeln!(o, "P6\n{} {} 255", width, height).unwrap();
@@ -34,7 +34,7 @@ pub mod ppm {
         let (r, g, b) = if val == LIMIT {
             (0, 0, 0)
         } else {
-            let val = (val as f32 % SCALE) * (COLOURS.len() as f32) / SCALE;
+            let val = ((val % SCALE) as f32) * (COLOURS.len() as f32) / (SCALE as f32);
             let left = val as usize % COLOURS.len();
             let right = (left + 1) % COLOURS.len();
 
