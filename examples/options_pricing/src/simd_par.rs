@@ -23,7 +23,7 @@ pub fn parallel<K>(sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
             r.write_to_slice_unaligned_unchecked(result);
         }
     });
-    ::sum::fastest(&result)
+    ::sum::sum_slice(&result)
 }
 
 pub fn black_scholes(
