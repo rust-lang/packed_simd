@@ -131,9 +131,15 @@ mod tests {
             verify(w, h, &v_simd, &v_expected);
             verify(w, h, &v_par_simd, &v_expected);
         }
-        if !is_x86_feature_detected!("fma") {
-            #[cfg(feature = "ispc")]
-            verify(w, h, &v_ispc, &v_expected);
+        #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+        {
+            // We don't want to check ISPC since it will use FMA, which will
+            // affect the accuracy of the results.
+            if is_x86_feature_detected!("fma") {
+                return
+            }
         }
+        #[cfg(feature = "ispc")]
+        verify(w, h, &v_ispc, &v_expected);
     }
 }
