@@ -58,7 +58,9 @@ slowdown:
 * `aobench`: `[-1.02x, +1.53x]`,
 * `stencil`: `[+1.06x, +1.72x]`,
 * `mandelbrot`: `[-1.74x, +1.2x]`,
-* `options_pricing`: TBD,
+* `options_pricing`:
+   * `black_scholes`: +`1.0x` 
+   * `binomial_put`: -`1.2x` 
 
  While SPMD is not the intended use case for `packed_simd`, it is possible to
  combine the library with [`rayon`][rayon] to poorly emulate [ISPC]'s SPMD programming
