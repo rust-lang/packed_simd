@@ -2,7 +2,7 @@
 
 use super::{f32s, f64s};
 
-pub fn sum_slice(x: &[f32]) -> f64 {
+pub fn slice(x: &[f32]) -> f64 {
     assert_eq!(f32s::lanes(), f64s::lanes());
     assert_eq!(x.len() % f32s::lanes(), 0);
 
@@ -15,4 +15,12 @@ pub fn sum_slice(x: &[f32]) -> f64 {
         }
     }
     sum.sum()
+}
+
+pub fn slice_scalar(x: &[f32]) -> f64 {
+    let mut sum = 0_f64;
+    for &x in x {
+        sum += f64::from(x);
+    }
+    sum
 }

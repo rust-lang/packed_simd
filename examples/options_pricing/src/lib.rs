@@ -8,7 +8,8 @@
         clippy::excessive_precision,
         clippy::cast_precision_loss,
         clippy::cast_possible_truncation,
-        clippy::cast_possible_wrap
+        clippy::cast_possible_wrap,
+        clippy::too_many_arguments
     )
 )]
 extern crate packed_simd;

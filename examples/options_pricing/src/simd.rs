@@ -21,7 +21,7 @@ where
             r.write_to_slice_unaligned_unchecked(&mut result[i..]);
         }
     }
-    ::sum::sum_slice(&result)
+    ::sum::slice(&result)
 }
 
 pub fn black_scholes(
