@@ -36,81 +36,68 @@ extern "C" {
     fn cos_f64(x: f64) -> f64;
 }
 
-macro_rules! impl_vcos {
-    ($vid:ident: $llvm_fn:ident) => {
-        impl Cos for $vid {
-            #[inline]
-            fn cos(self) -> Self {
-                unsafe { mem::transmute($llvm_fn(mem::transmute(self))) }
-            }
-        }
-    };
-}
-
-macro_rules! impl_scos {
-    ($vid:ident => [$sid:ident; $scount:expr]: $llvm_fn:ident) => {
-        impl Cos for $vid {
-            #[inline]
-            fn cos(self) -> Self {
-                unsafe {
-                    let mut scalars: [$sid; $scount] = mem::transmute(self);
-                    for i in &mut scalars {
-                        *i = $llvm_fn(*i);
-                    }
-                    mem::transmute(scalars)
-                }
-            }
-        }
-    };
-}
+gen_unary_impl_table!(Cos, cos);
 
 cfg_if! {
     if #[cfg(target_arch = "s390x")] {
         // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/14
-        impl_scos!(f32x2 => [f32; 2]: cos_f32);
-        impl_scos!(f32x4 => [f32; 4]: cos_f32);
-        impl_scos!(f32x8 => [f32; 8]: cos_f32);
-        impl_scos!(f32x16 => [f32; 16]: cos_f32);
+        impl_unary!(f32x2[f32; 2]: cos_f32);
+        impl_unary!(f32x4[f32; 4]: cos_f32);
+        impl_unary!(f32x8[f32; 8]: cos_f32);
+        impl_unary!(f32x16[f32; 16]: cos_f32);
 
-        impl_scos!(f64x2 => [f64; 2]: cos_f64);
-        impl_scos!(f64x4 => [f64; 4]: cos_f64);
-        impl_scos!(f64x8 => [f64; 8]: cos_f64);
+        impl_unary!(f64x2[f64; 2]: cos_f64);
+        impl_unary!(f64x4[f64; 4]: cos_f64);
+        impl_unary!(f64x8[f64; 8]: cos_f64);
     } else if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
         use ::sleef_sys::*;
-        impl_scos!(f32x2 => [f32; 2]: cos_f32);
-        impl_vcos!(f32x16: cos_v16f32);
-        impl_vcos!(f64x8: cos_v8f64);
         cfg_if! {
             if #[cfg(target_feature = "avx2")] {
-                impl_vcos!(f32x4: Sleef_cosf4_u10avx2128);
-                impl_vcos!(f32x8: Sleef_cosf8_u10avx2);
-                impl_vcos!(f64x2: Sleef_cosd2_u10avx2128);
-                impl_vcos!(f64x4: Sleef_cosd4_u10avx2);
+                impl_unary!(f32x2[t => f32x4]: Sleef_cosf4_u10avx2128);
+                impl_unary!(f32x16[h => f32x8]: Sleef_cosf8_u10avx2);
+                impl_unary!(f64x8[h => f64x4]: Sleef_cosd4_u10avx2);
+
+                impl_unary!(f32x4: Sleef_cosf4_u10avx2128);
+                impl_unary!(f32x8: Sleef_cosf8_u10avx2);
+                impl_unary!(f64x2: Sleef_cosd2_u10avx2128);
+                impl_unary!(f64x4: Sleef_cosd4_u10avx2);
             } else if #[cfg(target_feature = "avx")] {
-                impl_vcos!(f32x4: Sleef_cosf4_u10sse4);
-                impl_vcos!(f32x8: Sleef_cosf8_u10avx);
-                impl_vcos!(f64x2: Sleef_cosd2_u10sse4);
-                impl_vcos!(f64x4: Sleef_cosd4_u10avx);
+                impl_unary!(f32x2[t => f32x4]: Sleef_cosf4_u10sse4);
+                impl_unary!(f32x16[h => f32x8]: Sleef_cosf8_u10avx);
+                impl_unary!(f64x8[h => f64x4]: Sleef_cosd4_u10avx);
+
+                impl_unary!(f32x4: Sleef_cosf4_u10sse4);
+                impl_unary!(f32x8: Sleef_cosf8_u10avx);
+                impl_unary!(f64x2: Sleef_cosd2_u10sse4);
+                impl_unary!(f64x4: Sleef_cosd4_u10avx);
             } else if #[cfg(target_feature = "sse4.2")] {
-                impl_vcos!(f32x4: Sleef_cosf4_u10sse4);
-                impl_vcos!(f32x8: cos_v8f32);
-                impl_vcos!(f64x2: Sleef_cosd2_u10sse4);
-                impl_vcos!(f64x4: cos_v4f64);
+                impl_unary!(f32x2[t => f32x4]: Sleef_cosf4_u10sse4);
+                impl_unary!(f32x16[q => f32x4]: Sleef_cosf4_u10sse4);
+                impl_unary!(f64x8[q => f64x2]: Sleef_cosd2_u10sse4);
+
+                impl_unary!(f32x4: Sleef_cosf4_u10sse4);
+                impl_unary!(f32x8[h => f32x4]: Sleef_cosf4_u10sse4);
+                impl_unary!(f64x2: Sleef_cosd2_u10sse4);
+                impl_unary!(f64x4[h => f64x2]: Sleef_cosd2_u10sse4);
             } else {
-                impl_vcos!(f32x4: cos_v4f32);
-                impl_vcos!(f32x8: cos_v8f32);
-                impl_vcos!(f64x2: cos_v2f64);
-                impl_vcos!(f64x4: cos_v4f64);
+                impl_unary!(f32x2[f32; 2]: cos_f32);
+                impl_unary!(f32x16: cos_v16f32);
+                impl_unary!(f64x8: cos_v8f64);
+
+                impl_unary!(f32x4: cos_v4f32);
+                impl_unary!(f32x8: cos_v8f32);
+                impl_unary!(f64x2: cos_v2f64);
+                impl_unary!(f64x4: cos_v4f64);
             }
         }
     } else {
-        impl_scos!(f32x2 => [f32; 2]: cos_f32);
-        impl_vcos!(f32x4: cos_v4f32);
-        impl_vcos!(f32x8: cos_v8f32);
-        impl_vcos!(f32x16: cos_v16f32);
+        impl_unary!(f32x2[f32; 2]: cos_f32);
+        impl_unary!(f32x4: cos_v4f32);
+        impl_unary!(f32x8: cos_v8f32);
+        impl_unary!(f32x16: cos_v16f32);
 
-        impl_vcos!(f64x2: cos_v2f64);
-        impl_vcos!(f64x4: cos_v4f64);
-        impl_vcos!(f64x8: cos_v8f64);
+        impl_unary!(f64x2: cos_v2f64);
+        impl_unary!(f64x4: cos_v4f64);
+        impl_unary!(f64x8: cos_v8f64);
     }
 }

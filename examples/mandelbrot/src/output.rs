@@ -34,7 +34,8 @@ pub mod ppm {
         let (r, g, b) = if val == LIMIT {
             (0, 0, 0)
         } else {
-            let val = ((val % SCALE) as f32) * (COLOURS.len() as f32) / (SCALE as f32);
+            let val = ((val % SCALE) as f32) * (COLOURS.len() as f32)
+                / (SCALE as f32);
             let left = val as usize % COLOURS.len();
             let right = (left + 1) % COLOURS.len();
 

@@ -136,7 +136,7 @@ mod tests {
             // We don't want to check ISPC since it will use FMA, which will
             // affect the accuracy of the results.
             if is_x86_feature_detected!("fma") {
-                return
+                return;
             }
         }
         #[cfg(feature = "ispc")]

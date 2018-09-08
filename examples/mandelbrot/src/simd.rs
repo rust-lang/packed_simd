@@ -26,8 +26,8 @@ pub fn mandelbrot(c_x: f64s, c_y: f64s, iterations: u32) -> u32s {
         let undiverged = sum.le(f64s::splat(4.));
 
         // Stop the iteration if they all diverged. Note that we don't do this
-        // check every iteration, since a branch misprediction can hurt more than
-        // doing some extra calculations.
+        // check every iteration, since a branch misprediction can hurt more
+        // than doing some extra calculations.
         if i % 5 == 0 && undiverged.none() {
             break;
         }

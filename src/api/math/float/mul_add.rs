@@ -6,8 +6,8 @@ macro_rules! impl_math_float_mul_add {
             /// Fused multiply add: `self * y + z`
             #[inline]
             pub fn mul_add(self, y: Self, z: Self) -> Self {
-                use crate::codegen::math::float::fma::Fma;
-                Fma::fma(self, y, z)
+                use crate::codegen::math::float::mul_add::MulAdd;
+                MulAdd::mul_add(self, y, z)
             }
         }
 

@@ -35,7 +35,9 @@ mod f32x4 {
     #[cfg_attr(
         any(target_arch = "x86", target_arch = "x86_64"), assert_instr(vfnmadd)
     )]
-    unsafe fn fused_negate_multiply_add(a: f32x4, b: f32x4, c: f32x4) -> f32x4 {
+    unsafe fn fused_negate_multiply_add(
+        a: f32x4, b: f32x4, c: f32x4,
+    ) -> f32x4 {
         a.mul_add(-b, c)
     }
 
@@ -47,7 +49,9 @@ mod f32x4 {
     #[cfg_attr(
         any(target_arch = "x86", target_arch = "x86_64"), assert_instr(vfnmsub)
     )]
-    unsafe fn fused_negate_multiply_sub(a: f32x4, b: f32x4, c: f32x4) -> f32x4 {
+    unsafe fn fused_negate_multiply_sub(
+        a: f32x4, b: f32x4, c: f32x4,
+    ) -> f32x4 {
         a.mul_add(-b, -c)
     }
 
@@ -57,14 +61,14 @@ mod f32x4 {
         target_feature(enable = "sse,fma")
     )]
     #[cfg_attr(
-        any(target_arch = "x86", target_arch = "x86_64"), assert_instr(vfmaddsub)
+        any(target_arch = "x86", target_arch = "x86_64"),
+        assert_instr(vfmaddsub)
     )]
     unsafe fn fused_multiply_add_sub(a: f32x4, b: f32x4, c: f32x4) -> f32x4 {
         let add = a.mul_add(b, c);
         let sub = a.mul_add(b, -c);
 
-        m32x4::new(false, true, false, true)
-            .select(add, sub)
+        m32x4::new(false, true, false, true).select(add, sub)
     }
 
     #[inline]
@@ -73,13 +77,13 @@ mod f32x4 {
         target_feature(enable = "sse,fma")
     )]
     #[cfg_attr(
-        any(target_arch = "x86", target_arch = "x86_64"), assert_instr(vfmsubadd)
+        any(target_arch = "x86", target_arch = "x86_64"),
+        assert_instr(vfmsubadd)
     )]
     unsafe fn fused_multiply_sub_add(a: f32x4, b: f32x4, c: f32x4) -> f32x4 {
         let add = a.mul_add(b, c);
         let sub = a.mul_add(b, -c);
 
-        m32x4::new(true, false, true, false)
-            .select(add, sub)
+        m32x4::new(true, false, true, false).select(add, sub)
     }
 }

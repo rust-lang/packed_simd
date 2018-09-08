@@ -1,11 +1,11 @@
-//! Approximation for floating-point `fma`
+//! Approximation for floating-point `mul_add`
 #![allow(unused)]
 use crate::*;
 
 // FIXME: 64-bit 1 element mul_adde
 
-crate trait Fmae {
-    fn fmae(self, y: Self, z: Self) -> Self;
+crate trait MulAddE {
+    fn mul_adde(self, y: Self, z: Self) -> Self;
 }
 
 #[cfg(not(target_arch = "s390x"))]
@@ -31,11 +31,11 @@ extern "C" {
     fn fmuladd_v8f64(x: f64x8, y: f64x8, z: f64x8) -> f64x8;
 }
 
-macro_rules! impl_fma {
+macro_rules! impl_mul_adde {
     ($id:ident : $fn:ident) => {
-        impl Fmae for $id {
+        impl MulAddE for $id {
             #[inline]
-            fn fmae(self, y: Self, z: Self) -> Self {
+            fn mul_adde(self, y: Self, z: Self) -> Self {
                 #[cfg(not(target_arch = "s390x"))]
                 {
                     unsafe {
@@ -56,11 +56,11 @@ macro_rules! impl_fma {
     };
 }
 
-impl_fma!(f32x2: fmuladd_v2f32);
-impl_fma!(f32x4: fmuladd_v4f32);
-impl_fma!(f32x8: fmuladd_v8f32);
-impl_fma!(f32x16: fmuladd_v16f32);
-// impl_fma!(f64x1: fma_v1f64); // FIXME 64-bit fmagle elem vectors
-impl_fma!(f64x2: fmuladd_v2f64);
-impl_fma!(f64x4: fmuladd_v4f64);
-impl_fma!(f64x8: fmuladd_v8f64);
+impl_mul_adde!(f32x2: fmuladd_v2f32);
+impl_mul_adde!(f32x4: fmuladd_v4f32);
+impl_mul_adde!(f32x8: fmuladd_v8f32);
+impl_mul_adde!(f32x16: fmuladd_v16f32);
+// impl_mul_adde!(f64x1: fma_v1f64); // FIXME 64-bit fmagle elem vectors
+impl_mul_adde!(f64x2: fmuladd_v2f64);
+impl_mul_adde!(f64x4: fmuladd_v4f64);
+impl_mul_adde!(f64x8: fmuladd_v8f64);

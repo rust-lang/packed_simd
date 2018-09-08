@@ -1,8 +1,8 @@
 //! Vectorized mandelbrot
 
 use rayon::prelude::*;
-use *;
 use simd::u32s;
+use *;
 
 pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
     use simd::f64s;
@@ -40,7 +40,7 @@ pub fn output<O: io::Write>(o: &mut O, m: &mut Mandelbrot, limit: u32) {
                     let val = simd::mandelbrot(x, y, limit);
                     line[j / block_size] = val;
                 }
-            }
+            },
         )
     });
     eprintln!("par_simd: {} ms", dur.num_milliseconds());
