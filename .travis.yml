@@ -45,7 +45,7 @@ matrix:
     - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx2"
       name: "Intel SDE + AVX2"
       install: true
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx-512"
+    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx-512f"
       name: "Intel SDE + AVX-512"
       install: true
     - env: TARGET=arm-unknown-linux-gnueabi

@@ -6,12 +6,12 @@ macro_rules! impl_math_float_mul_adde {
             /// Fused multiply add estimate: ~= `self * y + z`
             ///
             /// While fused multiply-add (`fma`) has infinite precision,
-            /// `mul_adde` has at worst the same precision of a multiply followed by an add.
+            /// `mul_adde` has _at worst_ the same precision of a multiply followed by an add.
             /// This might be more efficient on architectures that do not have an `fma` instruction.
             #[inline]
             pub fn mul_adde(self, y: Self, z: Self) -> Self {
-                use crate::codegen::math::float::fmae::Fmae;
-                Fmae::fmae(self, y, z)
+                use crate::codegen::math::float::mul_adde::MulAddE;
+                MulAddE::mul_adde(self, y, z)
             }
         }
 
