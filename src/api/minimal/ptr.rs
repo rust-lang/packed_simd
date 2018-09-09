@@ -1175,5 +1175,68 @@ macro_rules! impl_minimal_p {
                 self.wrapping_offset(-1 * x)
             }
         }
+
+        impl<T> $id<T> {
+            /// Shuffle vector elements according to `indices`.
+            #[inline]
+            pub fn shuffle1_dyn<I>(self, indices: I) -> Self
+                where
+                Self: codegen::shuffle1_dyn::Shuffle1Dyn<Indices = I>,
+            {
+                codegen::shuffle1_dyn::Shuffle1Dyn::shuffle1_dyn(self, indices)
+            }
+        }
+
+        test_if! {
+                $test_tt:
+            interpolate_idents! {
+                pub mod [$id _shuffle1_dyn] {
+                    use super::*;
+                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    fn shuffle1_dyn() {
+                        let (null, non_null) = ptr_vals!($id<i32>);
+
+                        // alternating = [non_null, null, non_null, null, ...]
+                        let mut alternating = $id::<i32>::splat(null);
+                        for i in 0..$id::<i32>::lanes() {
+                            if i % 2 == 0 {
+                                alternating = alternating.replace(i, non_null);
+                            }
+                        }
+
+                        type Indices = <$id<i32> as codegen::shuffle1_dyn::Shuffle1Dyn>::Indices;
+                        // even = [0, 0, 2, 2, 4, 4, ..]
+                        let even = {
+                            let mut v = Indices::splat(0);
+                            for i in 0..$id::<i32>::lanes() {
+                                if i % 2 == 0 {
+                                    v = v.replace(i, (i as u8).into());
+                                } else {
+                                v = v.replace(i, (i as u8 - 1).into());
+                                }
+                            }
+                            v
+                        };
+                        // odd = [1, 1, 3, 3, 5, 5, ...]
+                        let odd = {
+                            let mut v = Indices::splat(0);
+                            for i in 0..$id::<i32>::lanes() {
+                                if i % 2 != 0 {
+                                    v = v.replace(i, (i as u8).into());
+                                } else {
+                                    v = v.replace(i, (i as u8 + 1).into());
+                                }
+                            }
+                            v
+                        };
+
+                        assert_eq!(alternating.shuffle1_dyn(even), $id::<i32>::splat(non_null));
+                        if $id::<i32>::lanes() > 1 {
+                            assert_eq!(alternating.shuffle1_dyn(odd), $id::<i32>::splat(null));
+                        }
+                    }
+                }
+            }
+        }
     };
 }
