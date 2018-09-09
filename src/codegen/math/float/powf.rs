@@ -41,7 +41,12 @@ macro_rules! impl_vpowf {
         impl Powf for $vid {
             #[inline]
             fn powf(self, e: Self) -> Self {
-                unsafe { mem::transmute($llvm_fn(mem::transmute(self), mem::transmute(e))) }
+                unsafe {
+                    mem::transmute($llvm_fn(
+                        mem::transmute(self),
+                        mem::transmute(e),
+                    ))
+                }
             }
         }
     };

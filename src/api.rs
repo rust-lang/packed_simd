@@ -78,6 +78,7 @@ macro_rules! impl_i {
         impl_slice_from_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_swap_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_cmp_partial_eq!([$elem_ty; $elem_n]: $tuple_id | $test_tt | (0, 1));
         impl_cmp_eq!([$elem_ty; $elem_n]: $tuple_id | $test_tt | (0, 1));
         impl_cmp_vertical!(
@@ -88,6 +89,7 @@ macro_rules! impl_i {
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2) | $test_tt);
         test_cmp_partial_ord_int!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        test_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
     }
 }
 
@@ -146,6 +148,7 @@ macro_rules! impl_u {
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1, 2) | $test_tt);
         test_cmp_partial_ord_int!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        test_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
     }
 }
 
@@ -177,6 +180,7 @@ macro_rules! impl_f {
         );
         impl_slice_from_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
 
         // floating-point math
         impl_math_float_abs!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -199,6 +203,7 @@ macro_rules! impl_f {
         test_reduction_float_min_max!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt
         );
+        test_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
     }
 }
 
@@ -243,8 +248,10 @@ macro_rules! impl_m {
         impl_cmp_ord!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (false, true)
         );
+        impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
 
         test_cmp_partial_ord_mask!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        test_shuffle1_dyn_mask!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
     }
 }
 

@@ -2,16 +2,18 @@
 
 use *;
 
-crate trait Shuffle1Dyn {
-    fn shuffle1_dyn(self, Self) -> Self;
+pub trait Shuffle1Dyn {
+    type Indices;
+    fn shuffle1_dyn(self, Self::Indices) -> Self;
 }
 
 // Fallback implementation
 macro_rules! impl_fallback {
     ($id:ident) => {
         impl Shuffle1Dyn for $id {
+            type Indices = Self;
             #[inline]
-            fn shuffle1_dyn(self, indices: Self) -> Self {
+            fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                 let mut result = Self::splat(0);
                 for i in 0..$id::lanes() {
                     result = result
@@ -29,8 +31,9 @@ macro_rules! impl_shuffle1_dyn {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "ssse3"))] {
                 impl Shuffle1Dyn for u8x8 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::_mm_shuffle_pi8;
                         #[cfg(target_arch = "x86_64")]
@@ -50,8 +53,9 @@ macro_rules! impl_shuffle1_dyn {
                 feature = "coresimd")
             )] {
                 impl Shuffle1Dyn for u8x8 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(targt_arch = "aarch64")]
                         use arch::aarch64::vtbl1_u8;
                         #[cfg(targt_arch = "arm")]
@@ -78,8 +82,9 @@ macro_rules! impl_shuffle1_dyn {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "ssse3"))] {
                 impl Shuffle1Dyn for u8x16 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::_mm_shuffle_epi8;
                         #[cfg(target_arch = "x86_64")]
@@ -98,8 +103,9 @@ macro_rules! impl_shuffle1_dyn {
             } else if #[cfg(all(target_aarch = "aarch64", target_feature = "neon",
                                 feature = "coresimd"))] {
                 impl Shuffle1Dyn for u8x16 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         use arch::aarch64::vqtbl1q_u8;
 
                         // This is safe because the binary is compiled with
@@ -116,8 +122,9 @@ macro_rules! impl_shuffle1_dyn {
             } else if #[cfg(all(target_aarch = "arm", target_feature = "v7",
                                 target_feature = "neon", feature = "coresimd"))] {
                 impl Shuffle1Dyn for u8x16 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         use arch::arm::vtbl2_u8;
 
                         // This is safe because the binary is compiled with
@@ -147,8 +154,9 @@ macro_rules! impl_shuffle1_dyn {
     };
     (u16x8) => {
         impl Shuffle1Dyn for u16x8 {
+            type Indices = Self;
             #[inline]
-            fn shuffle1_dyn(self, indices: Self) -> Self {
+            fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                 let indices: u8x8 = (indices * 2).cast();
                 let indices: u8x16 = shuffle!(indices, [0, 0, 1, 1, 2, 2, 3, 3,
                                                         4, 4, 5, 5, 6, 6, 7, 7]);
@@ -166,8 +174,9 @@ macro_rules! impl_shuffle1_dyn {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "avx"))] {
                 impl Shuffle1Dyn for u32x4 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::{_mm_permutevar_ps};
                         #[cfg(target_arch = "x86_64")]
@@ -182,8 +191,9 @@ macro_rules! impl_shuffle1_dyn {
                 }
             } else {
                 impl Shuffle1Dyn for u32x4 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         let indices: u8x4 = (indices * 4).cast();
                         let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 1, 1, 1, 1,
                                                                 2, 2, 2, 2, 3, 3, 3, 3]);
@@ -203,8 +213,9 @@ macro_rules! impl_shuffle1_dyn {
             if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
                          target_feature = "avx"))] {
                 impl Shuffle1Dyn for u64x2 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
                         use arch::x86::{_mm_permutevar_pd};
                         #[cfg(target_arch = "x86_64")]
@@ -222,8 +233,9 @@ macro_rules! impl_shuffle1_dyn {
                 }
             } else {
                 impl Shuffle1Dyn for u64x2 {
+                    type Indices = Self;
                     #[inline]
-                    fn shuffle1_dyn(self, indices: Self) -> Self {
+                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         let indices: u8x2 = (indices * 8).cast();
                         let indices: u8x16 = shuffle!(indices, [0, 0, 0, 0, 0, 0, 0, 0,
                                                                 1, 1, 1, 1, 1, 1, 1, 1]);
@@ -240,8 +252,9 @@ macro_rules! impl_shuffle1_dyn {
     };
     (u128x1) => {
         impl Shuffle1Dyn for u128x1 {
+            type Indices = Self;
             #[inline]
-            fn shuffle1_dyn(self, _indices: Self) -> Self {
+            fn shuffle1_dyn(self, _indices: Self::Indices) -> Self {
                 self
             }
         }
@@ -278,3 +291,112 @@ impl_shuffle1_dyn!(usizex8);
 impl_shuffle1_dyn!(u128x1);
 impl_shuffle1_dyn!(u128x2);
 impl_shuffle1_dyn!(u128x4);
+
+// Implementation for non-unsigned vector types
+macro_rules! impl_shuffle1_dyn_non_u {
+    ($id:ident, $uid:ident) => {
+        impl Shuffle1Dyn for $id {
+            type Indices = $uid;
+            #[inline]
+            fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
+                unsafe {
+                    let u: $uid = mem::transmute(self);
+                    mem::transmute(u.shuffle1_dyn(indices))
+                }
+            }
+        }
+    };
+}
+
+impl_shuffle1_dyn_non_u!(i8x2, u8x2);
+impl_shuffle1_dyn_non_u!(i8x4, u8x4);
+impl_shuffle1_dyn_non_u!(i8x8, u8x8);
+impl_shuffle1_dyn_non_u!(i8x16, u8x16);
+impl_shuffle1_dyn_non_u!(i8x32, u8x32);
+impl_shuffle1_dyn_non_u!(i8x64, u8x64);
+
+impl_shuffle1_dyn_non_u!(i16x2, u16x2);
+impl_shuffle1_dyn_non_u!(i16x4, u16x4);
+impl_shuffle1_dyn_non_u!(i16x8, u16x8);
+impl_shuffle1_dyn_non_u!(i16x16, u16x16);
+impl_shuffle1_dyn_non_u!(i16x32, u16x32);
+
+impl_shuffle1_dyn_non_u!(i32x2, u32x2);
+impl_shuffle1_dyn_non_u!(i32x4, u32x4);
+impl_shuffle1_dyn_non_u!(i32x8, u32x8);
+impl_shuffle1_dyn_non_u!(i32x16, u32x16);
+
+impl_shuffle1_dyn_non_u!(i64x2, u64x2);
+impl_shuffle1_dyn_non_u!(i64x4, u64x4);
+impl_shuffle1_dyn_non_u!(i64x8, u64x8);
+
+impl_shuffle1_dyn_non_u!(isizex2, usizex2);
+impl_shuffle1_dyn_non_u!(isizex4, usizex4);
+impl_shuffle1_dyn_non_u!(isizex8, usizex8);
+
+impl_shuffle1_dyn_non_u!(i128x1, u128x1);
+impl_shuffle1_dyn_non_u!(i128x2, u128x2);
+impl_shuffle1_dyn_non_u!(i128x4, u128x4);
+
+impl_shuffle1_dyn_non_u!(m8x2, u8x2);
+impl_shuffle1_dyn_non_u!(m8x4, u8x4);
+impl_shuffle1_dyn_non_u!(m8x8, u8x8);
+impl_shuffle1_dyn_non_u!(m8x16, u8x16);
+impl_shuffle1_dyn_non_u!(m8x32, u8x32);
+impl_shuffle1_dyn_non_u!(m8x64, u8x64);
+
+impl_shuffle1_dyn_non_u!(m16x2, u16x2);
+impl_shuffle1_dyn_non_u!(m16x4, u16x4);
+impl_shuffle1_dyn_non_u!(m16x8, u16x8);
+impl_shuffle1_dyn_non_u!(m16x16, u16x16);
+impl_shuffle1_dyn_non_u!(m16x32, u16x32);
+
+impl_shuffle1_dyn_non_u!(m32x2, u32x2);
+impl_shuffle1_dyn_non_u!(m32x4, u32x4);
+impl_shuffle1_dyn_non_u!(m32x8, u32x8);
+impl_shuffle1_dyn_non_u!(m32x16, u32x16);
+
+impl_shuffle1_dyn_non_u!(m64x2, u64x2);
+impl_shuffle1_dyn_non_u!(m64x4, u64x4);
+impl_shuffle1_dyn_non_u!(m64x8, u64x8);
+
+impl_shuffle1_dyn_non_u!(msizex2, usizex2);
+impl_shuffle1_dyn_non_u!(msizex4, usizex4);
+impl_shuffle1_dyn_non_u!(msizex8, usizex8);
+
+impl_shuffle1_dyn_non_u!(m128x1, u128x1);
+impl_shuffle1_dyn_non_u!(m128x2, u128x2);
+impl_shuffle1_dyn_non_u!(m128x4, u128x4);
+
+impl_shuffle1_dyn_non_u!(f32x2, u32x2);
+impl_shuffle1_dyn_non_u!(f32x4, u32x4);
+impl_shuffle1_dyn_non_u!(f32x8, u32x8);
+impl_shuffle1_dyn_non_u!(f32x16, u32x16);
+
+impl_shuffle1_dyn_non_u!(f64x2, u64x2);
+impl_shuffle1_dyn_non_u!(f64x4, u64x4);
+impl_shuffle1_dyn_non_u!(f64x8, u64x8);
+
+// Implementation for non-unsigned vector types
+macro_rules! impl_shuffle1_dyn_ptr {
+    ($id:ident, $uid:ident) => {
+        impl<T> Shuffle1Dyn for $id<T> {
+            type Indices = $uid;
+            #[inline]
+            fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
+                unsafe {
+                    let u: $uid = mem::transmute(self);
+                    mem::transmute(u.shuffle1_dyn(indices))
+                }
+            }
+        }
+    };
+}
+
+impl_shuffle1_dyn_ptr!(cptrx2, usizex2);
+impl_shuffle1_dyn_ptr!(cptrx4, usizex4);
+impl_shuffle1_dyn_ptr!(cptrx8, usizex8);
+
+impl_shuffle1_dyn_ptr!(mptrx2, usizex2);
+impl_shuffle1_dyn_ptr!(mptrx4, usizex4);
+impl_shuffle1_dyn_ptr!(mptrx8, usizex8);

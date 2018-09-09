@@ -60,9 +60,6 @@ impl_from_cast_mask!(
     i64x2, u64x2, f64x2, i128x2, u128x2, m128x2, isizex2, usizex2, msizex2
 );
 
-// FIXME[test_v128]: 64-bit single element vectors into_cast impls
-// e.g. impls for _128x1 for e.g. _64x1
-
 impl_from_cast!(
     isizex2[test_v128]: i8x2, u8x2, m8x2, i16x2, u16x2, m16x2, i32x2, u32x2, f32x2, m32x2,
     i64x2, u64x2, f64x2, m64x2, i128x2, u128x2, m128x2, usizex2, msizex2
@@ -75,3 +72,8 @@ impl_from_cast_mask!(
     msizex2[test_v128]: i8x2, u8x2, m8x2, i16x2, u16x2, m16x2, i32x2, u32x2, f32x2, m32x2,
     i64x2, u64x2, f64x2, m64x2, i128x2, u128x2, m128x2, isizex2, usizex2
 );
+
+// FIXME[test_v128]: 64-bit single element vectors into_cast impls
+impl_from_cast!(i128x1[test_v128]: u128x1, m128x1);
+impl_from_cast!(u128x1[test_v128]: i128x1, m128x1);
+impl_from_cast!(m128x1[test_v128]: i128x1, u128x1);
