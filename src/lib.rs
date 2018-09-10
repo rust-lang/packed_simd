@@ -200,6 +200,7 @@
 
 #![feature(
     rust_2018_preview,
+    crate_visibility_modifier,
     repr_simd,
     const_fn,
     platform_intrinsics,
