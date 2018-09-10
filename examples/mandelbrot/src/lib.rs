@@ -186,6 +186,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[cfg_attr(windows, ignore)]
     fn verify_all() {
         let width = 400;
         let height = 800;
@@ -252,6 +253,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(windows, ignore)]
     fn verify_output_simd() {
         verify_algo(Algorithm::Simd);
     }
