@@ -15,131 +15,260 @@
 
 extern crate packed_simd;
 extern crate rayon;
-extern crate time;
 #[cfg(feature = "ispc")]
 #[macro_use]
 extern crate ispc;
-use std::io;
 
-pub mod output;
-pub use output::{Format, FormatFn};
+use rayon::prelude::*;
+use std::{io, ops};
+
+// Each algorithm implementation must expose a single public function,
+// `generate`:   fn generate(dimensions: Dimensions, xr: Range, yr: Range) ->
+// Vec<u8>;
+//
+// Generates the Mandelbrot fractal for a region of Cartesian space,
+// where X is bounded by `xr.begin..xr.end` and Y by `yr.begin..yr.end`.
+//
+// Returns a vector of dimensions `width * height`, where each byte is
+// the number of iterations the corresponding point reached before diverging.
 
 #[cfg(feature = "ispc")]
-pub mod ispc_;
-pub mod par_simd;
-pub mod scalar;
-pub mod simd;
+mod ispc_tasks;
+mod scalar_par;
+mod simd_par;
 
-pub const LIMIT: u32 = 50;
+type Range = ops::Range<f64>;
+type Region = (Range, Range);
+
+/// The width and height of a generated image
+pub type Dimensions = (usize, usize);
+
+/// The Mandelbrot algorithms supported by this crate.
+#[derive(Debug, Copy, Clone)]
+pub enum Algorithm {
+    /// Scalar parallel algorithm
+    Scalar,
+    /// Parallel SIMD algorithm using Rayon
+    Simd,
+    /// ISPC SIMD + parallel tasks algorithm
+    Ispc,
+}
 
 pub struct Mandelbrot {
-    // output image width/height:
-    pub width: usize,
-    pub height: usize,
-    // region:
-    pub left: f64,
-    pub right: f64,
-    pub top: f64,
-    pub bottom: f64,
-    // output format
-    format: Format,
+    dims: Dimensions,
+    data: Vec<u32>,
 }
 
 impl Mandelbrot {
-    pub fn new(width: usize, height: usize, format: Format) -> Self {
-        Self {
-            width,
-            height,
-            left: -1.5,
-            right: 0.5,
-            top: 1.0,
-            bottom: -1.0,
-            format,
-        }
-    }
-    pub fn width_step(&self) -> f64 {
-        (self.right - self.left) / self.width as f64
-    }
-    pub fn height_step(&self) -> f64 {
-        (self.bottom - self.top) / self.height as f64
-    }
-    pub fn get_format_fn(&self) -> FormatFn {
-        output::get_format_fn(self.format)
-    }
-    pub fn write_header<O: io::Write>(&self, o: &mut O) {
-        output::write_header(o, self.width, self.height, self.format)
+    /// Generates a new image of the Mandelbrot fractal.
+    pub fn generate(dims: Dimensions, algo: Algorithm) -> Self {
+        Self::generate_region(dims, DEFAULT_REGION, algo)
     }
 
-    pub fn line_buffer(&self, no_lines: usize) -> Vec<u8> {
-        match self.format {
-            Format::PPM => vec![0_u8; 3 * self.width * no_lines],
-            Format::PBM => {
-                assert!(self.width % 8 == 0);
-                vec![0_u8; self.width / 8 * no_lines]
+    /// Generates a new image containing a certain region of the Mandelbrot
+    /// fractal.
+    pub fn generate_region(
+        dims: Dimensions, region: Region, algo: Algorithm,
+    ) -> Self {
+        let data = match algo {
+            Algorithm::Scalar => {
+                scalar_par::generate(dims, region.0, region.1)
             }
+            Algorithm::Simd => simd_par::generate(dims, region.0, region.1),
+            #[cfg(feature = "ispc")]
+            Algorithm::Ispc => ispc_tasks::generate(dims, region.0, region.1),
+            #[cfg(not(feature = "ispc"))]
+            Algorithm::Ispc => unimplemented!(
+                "This crate was built with the `ispc` feature disabled"
+            ),
+        };
+
+        Self { dims, data }
+    }
+
+    /// Writes the PBM / PPM header to the output.
+    fn write_header(&self, f: &mut io::Write, color: bool) -> io::Result<()> {
+        writeln!(f, "P{}", if color { 6 } else { 4 })?;
+        write!(f, "{} {}", self.dims.0, self.dims.1)?;
+        if color {
+            write!(f, " 255")?;
         }
+        writeln!(f)
+    }
+
+    /// Outputs a black/white PBM bitmap to the given writer.
+    pub fn output_pbm(&self, f: &mut io::Write) -> io::Result<()> {
+        self.write_header(f, false)?;
+
+        assert_eq!(
+            self.data.len() % 8,
+            0,
+            "Output data must be a multiple of 8"
+        );
+        let buf = self
+            .data
+            .par_chunks(8)
+            .map(|ch| {
+                let mut result = 0;
+                ch.into_iter().enumerate().for_each(|(i, &count)| {
+                    let undiverged = count == ITER_LIMIT;
+                    result |= (undiverged as u8) << (7 - i);
+                });
+                result
+            }).collect::<Vec<u8>>();
+
+        f.write_all(&buf)
+    }
+
+    /// Outputs a color PPM image to the given writer.
+    pub fn output_ppm(&self, f: &mut io::Write) -> io::Result<()> {
+        self.write_header(f, true)?;
+
+        let buf = self
+            .data
+            .par_iter()
+            .flat_map(|&val| {
+                const COLORS: &[(f32, f32, f32)] = &[
+                    (0.0, 7.0, 100.0),
+                    (32.0, 107.0, 203.0),
+                    (237.0, 255.0, 255.0),
+                    (255.0, 170.0, 0.0),
+                    (0.0, 2.0, 0.0),
+                ];
+                const SCALE: u32 = 12;
+
+                let color_count = COLORS.len() as u32;
+
+                let color = if val == ITER_LIMIT {
+                    vec![0, 0, 0]
+                } else {
+                    let val = (val % SCALE) * color_count / SCALE;
+                    let left = val % color_count;
+                    let right = (left + 1) % color_count;
+
+                    let alpha = (val - left) as f32;
+                    let (r1, g1, b1) = COLORS[left as usize];
+                    let (r2, g2, b2) = COLORS[right as usize];
+                    vec![
+                        (r1 + (r2 - r1) * alpha) as u8,
+                        (g1 + (g2 - g1) * alpha) as u8,
+                        (b1 + (b2 - b1) * alpha) as u8,
+                    ]
+                };
+
+                color.into_par_iter()
+            }).collect::<Vec<_>>();
+
+        f.write_all(&buf)
     }
 }
+
+/// Returns the default region of space to generate an image for.
+///
+/// This is the region containing the fractal most people think of when they
+/// think of Mandelbrot, since values outside definitely diverge.
+const DEFAULT_REGION: (Range, Range) = (-1.5..0.5, -1.0..1.0);
+
+/// Threshold for Mandelbrot sequence divergence
+///
+/// Complex numbers which have a modulus squared greater than this are
+/// considered to be diverging.
+const THRESHOLD: f64 = 4.0;
+
+/// Maximum amount of iterations to perform
+///
+/// Increasing this will make more features to be visible in the image,
+/// assuming the resolution is large enoguh.
+const ITER_LIMIT: u32 = 50;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
-    fn verify_simd() {
-        fn verify(w: usize, h: usize, is: &[u8], expected: &[u8]) {
-            if expected != is {
-                for i in 0..h {
-                    let b = 3 * w * i;
-                    let e = 3 * w * (i + 1);
-                    assert_eq!(
-                        &is[b..e],
-                        &expected[b..e],
-                        "line {} differs",
-                        i
-                    );
+    fn verify_all() {
+        let width = 400;
+        let height = 800;
+
+        let dims = (width, height);
+
+        let verify = |actual: &[u32], expected: &[u32]| {
+            if actual != expected {
+                for row in 0..height {
+                    for column in 0..width {
+                        let idx = row * width + column;
+                        assert_eq!(
+                            actual[idx], expected[idx],
+                            "difference at ({}, {})",
+                            row, column,
+                        );
+                    }
                 }
             }
-        }
+        };
 
-        let w = 200;
-        let h = 200;
-        let mut m = Mandelbrot::new(w, h, Format::PPM);
-
-        let mut v_expected = Vec::new();
-        let mut v_simd = Vec::new();
-        let mut v_par_simd = Vec::new();
-        #[cfg(feature = "ispc")]
-        let mut v_ispc = Vec::new();
+        let scalar =
+            scalar_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
+        assert_eq!(scalar.len(), width * height);
 
         {
-            scalar::output(&mut v_expected, &mut m, LIMIT);
+            let simd =
+                simd_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
+            verify(&simd[..], &scalar[..]);
         }
-        {
-            simd::output(&mut v_simd, &mut m, LIMIT);
-        }
-        {
-            par_simd::output(&mut v_par_simd, &mut m, LIMIT);
-        }
+
         #[cfg(feature = "ispc")]
         {
-            ispc_::output(&mut v_ispc, &mut m, LIMIT);
-        }
-
-        assert_eq!(v_expected.len(), 3 * w * h);
-        #[cfg(not(target_feature = "fma"))]
-        {
-            verify(w, h, &v_simd, &v_expected);
-            verify(w, h, &v_par_simd, &v_expected);
-        }
-        #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-        {
-            // We don't want to check ISPC since it will use FMA, which will
-            // affect the accuracy of the results.
-            if is_x86_feature_detected!("fma") {
-                return;
+            #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+            {
+                // FMA breaks ISPC's test results.
+                if is_x86_feature_detected!("fma") {
+                    return;
+                }
             }
+
+            let ispc =
+                ispc_tasks::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
+            verify(&ispc[..], &scalar[..]);
         }
-        #[cfg(feature = "ispc")]
-        verify(w, h, &v_ispc, &v_expected);
+    }
+
+    fn verify_algo(algo: Algorithm) {
+        static OUTPUT: &'static [u8] = include_bytes!("mandelbrot-output.txt");
+
+        let (width, height) = (200, 200);
+
+        let dims = (width, height);
+        let mb = Mandelbrot::generate(dims, algo);
+
+        let out = {
+            let mut out = Vec::with_capacity(width * height);
+            mb.output_pbm(&mut out).unwrap();
+            out
+        };
+
+        assert_eq!(out.len(), OUTPUT.len());
+
+        if out != OUTPUT {
+            out.into_iter().zip(OUTPUT.into_iter()).enumerate().for_each(
+                |(i, (a, &b))| {
+                    assert_eq!(
+                        a, b,
+                        "byte {} differs - {:#08b} != {:#08b} (expected)",
+                        i, a, b,
+                    );
+                },
+            );
+        }
+    }
+
+    #[test]
+    fn verify_output_scalar() {
+        verify_algo(Algorithm::Scalar);
+    }
+
+    #[test]
+    fn verify_output_simd() {
+        verify_algo(Algorithm::Simd);
     }
 }
