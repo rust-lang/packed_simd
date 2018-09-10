@@ -27,10 +27,9 @@ if [[ "${NORUN}" == "1" ]]; then
     exit 0
 fi
 
-hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} 0"
-hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} 1"
-hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} 2"
+hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} --algo scalar"
+hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} --algo simd"
 
 if echo "$FEATURES" | grep -q "ispc"; then
-    hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} 3"
+    hyperfine "target/release/mandelbrot ${WIDTH} ${HEIGHT} --algo ispc"
 fi
