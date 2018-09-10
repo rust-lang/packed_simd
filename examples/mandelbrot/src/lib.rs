@@ -207,30 +207,14 @@ mod tests {
             }
         };
 
+        eprintln!("Generating Mandelbrot with scalar algorithm");
         let scalar =
             scalar_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
         assert_eq!(scalar.len(), width * height);
 
-        {
-            let simd =
-                simd_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
-            verify(&simd[..], &scalar[..]);
-        }
-
-        #[cfg(feature = "ispc")]
-        {
-            #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-            {
-                // FMA breaks ISPC's test results.
-                if is_x86_feature_detected!("fma") {
-                    return;
-                }
-            }
-
-            let ispc =
-                ispc_tasks::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
-            verify(&ispc[..], &scalar[..]);
-        }
+        eprintln!("Generating Mandelbrot with SIMD algorithm");
+        let simd = simd_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
+        verify(&simd[..], &scalar[..]);
     }
 
     fn verify_algo(algo: Algorithm) {
