@@ -57,11 +57,19 @@ mod tests {
             .flat_map(|tri| tri.unpack())
             .collect::<Vec<_>>();
 
+        const EPSILON: f32 = 1E-5;
+
         if scalar_xformed != simd_xformed {
             scalar_xformed.into_iter()
                 .zip(simd_xformed.into_iter())
                 .for_each(|(a, b)| {
-                    assert_eq!(a, b, "Triangles do not match");
+                    if a != b {
+                        a.0.into_iter().zip(b.0.into_iter()).for_each(|(v1, v2)| {
+                            v1.into_iter().zip(v2.into_iter()).for_each(|(a, b)| {
+                                assert!((a - b).abs() <= EPSILON, "Vertex components do not match");
+                            });
+                        });
+                    }
                 });
         }
     }
