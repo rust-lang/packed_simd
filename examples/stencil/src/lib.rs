@@ -1,4 +1,4 @@
-#![feature(stmt_expr_attributes)]
+#![feature(custom_inner_attributes, stmt_expr_attributes)]
 #![deny(warnings)]
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(

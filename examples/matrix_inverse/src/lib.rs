@@ -1,4 +1,5 @@
 //! 4x4 matrix inverse
+#![feature(custom_inner_attributes)]
 #![deny(warnings)]
 
 #[macro_use(shuffle)]

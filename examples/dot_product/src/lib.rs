@@ -1,5 +1,6 @@
 //! Vector dot product
 #![deny(warnings)]
+#![feature(custom_inner_attributes)]
 
 extern crate packed_simd;
 

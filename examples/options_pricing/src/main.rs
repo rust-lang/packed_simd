@@ -1,3 +1,5 @@
+#![feature(custom_inner_attributes)]
+
 extern crate options_pricing_lib;
 use options_pricing_lib::*;
 
