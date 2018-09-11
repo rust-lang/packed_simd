@@ -45,3 +45,6 @@ if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
     cp -r examples/stencil target/stencil
     cargo_test --manifest-path=target/stencil/Cargo.toml --release
 fi
+
+cp -r examples/triangle_xform target/triangle_xform
+cargo_test --manifest-path=target/triangle_xform/Cargo.toml --release
