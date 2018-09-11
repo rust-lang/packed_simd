@@ -36,6 +36,9 @@ In order to compare the generated results, the tests will convert the SIMD outpu
 into a scalar representation.
 
 That being said, the crate's tests also come with a micro-benchmark.
+It is recommended to increase the `TRIANGLE_COUNT` constant to the point where
+you get accurate benchmark results.
+
 Run the unit tests in release mode, and with `stdout` capture disabled:
 
 ```sh

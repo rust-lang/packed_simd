@@ -13,7 +13,7 @@ mod tests {
     use super::*;
     use rand::prelude::*;
 
-    const TRIANGLE_COUNT: usize = 1 << 20;
+    const TRIANGLE_COUNT: usize = 1 << 5;
 
     #[test]
     fn compare_scalar_simd() {
@@ -57,6 +57,12 @@ mod tests {
             .flat_map(|tri| tri.unpack())
             .collect::<Vec<_>>();
 
-        assert_eq!(scalar_xformed, simd_xformed);
+        if scalar_xformed != simd_xformed {
+            scalar_xformed.into_iter()
+                .zip(simd_xformed.into_iter())
+                .for_each(|(a, b)| {
+                    assert_eq!(a, b, "Triangles do not match");
+                });
+        }
     }
 }
