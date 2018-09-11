@@ -19,12 +19,12 @@ impl Triangle {
         let mut x = [VecF::splat(0.0); 3];
         let mut y = [VecF::splat(0.0); 3];
         let mut z = [VecF::splat(0.0); 3];
-        for k in 0..3 {
+        (0..3).for_each(|k| {
             let x = &mut x[k];
             let y = &mut y[k];
             let z = &mut z[k];
 
-            for i in 0..VecF::lanes() {
+            (0..VecF::lanes()).for_each(|i| {
                 let t = tris[i];
                 let vertex = t.0[k];
                 let tx = vertex[0];
@@ -34,24 +34,24 @@ impl Triangle {
                 *x = x.replace(i, tx);
                 *y = y.replace(i, ty);
                 *z = z.replace(i, tz);
-            }
-        }
+            });
+        });
 
-        Triangle { x, y, z }
+        Self { x, y, z }
     }
 
     /// Unpacks the N scalar triangles into an array-of-structures layout.
     pub fn unpack(self) -> Vec<crate::scalar::Triangle> {
         let mut tris = [crate::scalar::Triangle::default(); VecF::lanes()];
 
-        for k in 0..3 {
-            for i in 0..VecF::lanes() {
+        (0..3).for_each(|k| {
+            (0..VecF::lanes()).for_each(|i| {
                 let vtx = &mut tris[i].0;
                 vtx[k][0] = self.x[k].extract(i);
                 vtx[k][1] = self.y[k].extract(i);
                 vtx[k][2] = self.z[k].extract(i);
-            }
-        }
+            });
+        });
 
         tris.to_vec()
     }
@@ -59,7 +59,7 @@ impl Triangle {
     /// Transforms this triangle by multiplying with a matrix.
     #[inline]
     pub fn transform(self, mat: Matrix) -> Self {
-        let mut tri = Triangle::default();
+        let mut tri = Self::default();
 
         let x = self.x;
         let y = self.y;
