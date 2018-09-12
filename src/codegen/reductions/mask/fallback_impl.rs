@@ -16,7 +16,7 @@ macro_rules! fallback_to_other_impl {
                 m.any()
             }
         }
-    }
+    };
 }
 
 /// Fallback implementation.
@@ -55,7 +55,9 @@ macro_rules! fallback_impl {
             }
         }
     };
-    (m16x2) => { fallback_to_other_impl!(m16x2, m8x4); };
+    (m16x2) => {
+        fallback_to_other_impl!(m16x2, m8x4);
+    };
     // 64-bit wide masks:
     (m8x8) => {
         impl All for m8x8 {
@@ -73,8 +75,12 @@ macro_rules! fallback_impl {
             }
         }
     };
-    (m16x4) => { fallback_to_other_impl!(m16x4, m8x8); };
-    (m32x2) => { fallback_to_other_impl!(m32x2, m16x4); };
+    (m16x4) => {
+        fallback_to_other_impl!(m16x4, m8x8);
+    };
+    (m32x2) => {
+        fallback_to_other_impl!(m32x2, m16x4);
+    };
     // FIXME: 64x1 maxk
     // 128-bit wide masks:
     (m8x16) => {
@@ -93,10 +99,18 @@ macro_rules! fallback_impl {
             }
         }
     };
-    (m16x8) => { fallback_to_other_impl!(m16x8, m8x16); };
-    (m32x4) => { fallback_to_other_impl!(m32x4, m16x8); };
-    (m64x2) => { fallback_to_other_impl!(m64x2, m32x4); };
-    (m128x1) => { fallback_to_other_impl!(m128x1, m64x2); };
+    (m16x8) => {
+        fallback_to_other_impl!(m16x8, m8x16);
+    };
+    (m32x4) => {
+        fallback_to_other_impl!(m32x4, m16x8);
+    };
+    (m64x2) => {
+        fallback_to_other_impl!(m64x2, m32x4);
+    };
+    (m128x1) => {
+        fallback_to_other_impl!(m128x1, m64x2);
+    };
     // 256-bit wide masks
     (m8x32) => {
         impl All for m8x32 {
@@ -116,10 +130,18 @@ macro_rules! fallback_impl {
             }
         }
     };
-    (m16x16) => { fallback_to_other_impl!(m16x16, m8x32); };
-    (m32x8) => { fallback_to_other_impl!(m32x8, m16x16); };
-    (m64x4) => { fallback_to_other_impl!(m64x4, m32x8); };
-    (m128x2) => { fallback_to_other_impl!(m128x2, m64x4); };
+    (m16x16) => {
+        fallback_to_other_impl!(m16x16, m8x32);
+    };
+    (m32x8) => {
+        fallback_to_other_impl!(m32x8, m16x16);
+    };
+    (m64x4) => {
+        fallback_to_other_impl!(m64x4, m32x8);
+    };
+    (m128x2) => {
+        fallback_to_other_impl!(m128x2, m64x4);
+    };
     // 512-bit wide masks
     (m8x64) => {
         impl All for m8x64 {
@@ -139,10 +161,18 @@ macro_rules! fallback_impl {
             }
         }
     };
-    (m16x32) => { fallback_to_other_impl!(m16x32, m8x64); };
-    (m32x16) => { fallback_to_other_impl!(m32x16, m16x32); };
-    (m64x8) => { fallback_to_other_impl!(m64x8, m32x16); };
-    (m128x4) => { fallback_to_other_impl!(m128x4, m64x8); };
+    (m16x32) => {
+        fallback_to_other_impl!(m16x32, m8x64);
+    };
+    (m32x16) => {
+        fallback_to_other_impl!(m32x16, m16x32);
+    };
+    (m64x8) => {
+        fallback_to_other_impl!(m64x8, m32x16);
+    };
+    (m128x4) => {
+        fallback_to_other_impl!(m128x4, m64x8);
+    };
     // Masks with pointer-sized elements64
     (msizex2) => {
         cfg_if! {
@@ -203,5 +233,5 @@ macro_rules! recurse_half {
                 halves.0.any() || halves.1.any()
             }
         }
-    }
+    };
 }

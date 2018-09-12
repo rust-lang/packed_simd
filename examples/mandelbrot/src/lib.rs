@@ -214,7 +214,8 @@ mod tests {
         assert_eq!(scalar.len(), width * height);
 
         eprintln!("Generating Mandelbrot with SIMD algorithm");
-        let simd = simd_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
+        let simd =
+            simd_par::generate(dims, DEFAULT_REGION.0, DEFAULT_REGION.1);
         verify(&simd[..], &scalar[..]);
     }
 
