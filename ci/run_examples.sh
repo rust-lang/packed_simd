@@ -8,7 +8,8 @@ fi
 
 # FIXME: travis exceeds 50 minutes on these targets
 # Skipping the examples is an attempt at preventing travis from timing-out
-if [[ ${TARGET} == "arm-linux-androidabi" ]] || [[ ${TARGET} == "aarch64-linux-androidabi" ]]; then
+if [[ ${TARGET} == "arm-linux-androidabi" ]] || [[ ${TARGET} == "aarch64-linux-androidabi" ]] \
+    || [[ ${TARGET} == "sparc64-unknown-linux-gnu" ]]; then
     exit 0
 fi
 
@@ -45,3 +46,6 @@ if [[ ${TARGET} != "i586-unknown-linux-gnu" ]]; then
     cp -r examples/stencil target/stencil
     cargo_test --manifest-path=target/stencil/Cargo.toml --release
 fi
+
+cp -r examples/triangle_xform target/triangle_xform
+cargo_test --manifest-path=target/triangle_xform/Cargo.toml --release

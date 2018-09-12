@@ -18,6 +18,8 @@ matrix:
       name: "aarch64-unknown-linux-android + NEON"
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
+      name: "i586-unknown-linux-gnu"
+    - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse"
       name: "i586-unknown-linux-gnu + SSE"
     - env: TARGET=i586-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse2"
       name: "i586-unknown-linux-gnu + SSE2"
@@ -137,7 +139,7 @@ matrix:
     # Solaris:
     #- env: TARGET=x86_64-sun-solaris NORUN=1
     #  script: ci/run.sh
-    # iOS: 
+    # iOS:
     - os: osx
       env: TARGET=i386-apple-ios
       name: "i386-apple-ios"
