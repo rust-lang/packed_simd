@@ -1,5 +1,8 @@
 #![deny(warnings)]
-#![cfg_attr(test, feature(plugin, rust_2018_preview, avx512_target_feature, abi_vectorcall))]
+#![cfg_attr(
+    test,
+    feature(plugin, rust_2018_preview, avx512_target_feature, abi_vectorcall)
+)]
 #![cfg_attr(test, plugin(interpolate_idents))]
 
 #[cfg(test)]
