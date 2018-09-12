@@ -80,6 +80,9 @@ fi
 if [[ "${NOVERIFY}" != "1" ]]; then
     cp -r verify/verify target/verify
     export STDSIMD_ASSERT_INSTR_LIMIT=30
+    if [[ "${TARGET}" == "i586-unknown-linux-gnu" ]]; then
+        export STDSIMD_ASSERT_INSTR_LIMIT=50
+    fi
     cargo_test --release --manifest-path=target/verify/Cargo.toml
 fi
 
