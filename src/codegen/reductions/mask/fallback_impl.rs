@@ -111,8 +111,8 @@ macro_rules! fallback_impl {
             #[inline]
             unsafe fn any(self) -> bool {
                 let i: [u128; 2] = mem::transmute(self);
-                let o: [u128; 2] = [u128::max_value(); 2];
-                i == o
+                let o: [u128; 2] = [0; 2];
+                i != o
             }
         }
     };
@@ -134,8 +134,8 @@ macro_rules! fallback_impl {
             #[inline]
             unsafe fn any(self) -> bool {
                 let i: [u128; 4] = mem::transmute(self);
-                *i.get_unchecked(0) != 0 || *i.get_unchecked(1) != 0 ||
-                    *i.get_unchecked(2) != 0 || *i.get_unchecked(3) != 0
+                let o: [u128; 4] = [0; 4];
+                i != o
             }
         }
     };

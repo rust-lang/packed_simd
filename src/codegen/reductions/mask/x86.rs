@@ -141,7 +141,6 @@ macro_rules! x86_intr_impl {
     };
 }
 
-
 /// Mask reduction implementation for `x86` and `x86_64` targets
 macro_rules! impl_mask_reductions {
     // 64-bit wide masks
