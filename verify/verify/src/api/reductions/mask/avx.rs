@@ -14,13 +14,13 @@ verify!(m8x16 => vpmovmskb);
 verify!(m16x8 => vpmovmskb);
 verify!(m32x4 => vmovmskps);
 verify!(m64x2 => vmovmskpd);
-verify!(m128x1 => vmovmskpd);
+// FIXME: verify!(m128x1 => vmovmskpd);
 
 // 256-bit wide:
 verify!(m8x32 => vpmovmskb);
 verify!(m16x16 => vpmovmskb);
 verify!(m32x8 => vmovmskps);
 verify!(m64x4 => vmovmskpd);
-verify!(m128x2 => vmovmskpd);
+// FIXME: verify!(m128x2 => vmovmskpd);
 
 // FIXME: 512-bit wide masks
