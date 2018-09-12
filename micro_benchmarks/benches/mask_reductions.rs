@@ -20,9 +20,11 @@ macro_rules! bench {
                 c.bench(
                     stringify!($id),
                     Benchmark::new("all", |b| b.iter(|| {
-                        let x: $id = Default::default();
+                        let mut x: $id = Default::default();
                         for _ in 0..NO_ITERATIONS {
-                            black_box(black_box(x).all());
+                            if black_box(x).all() {
+                                black_box(&mut x);
+                            }
                         }
                     })).throughput(Throughput::Elements(NO_ITERATIONS))
                 );
@@ -31,9 +33,11 @@ macro_rules! bench {
                 c.bench(
                     stringify!($id),
                     Benchmark::new("any", |b| b.iter(|| {
-                        let x: $id = Default::default();
+                        let mut x: $id = Default::default();
                         for _ in 0..NO_ITERATIONS {
-                            black_box(black_box(x).any());
+                            if black_box(x).any() {
+                                black_box(&mut x);
+                            }
                         }
                     })).throughput(Throughput::Elements(NO_ITERATIONS))
                 );
@@ -42,9 +46,11 @@ macro_rules! bench {
                 c.bench(
                     stringify!($id),
                     Benchmark::new("none", |b| b.iter(|| {
-                        let x: $id = Default::default();
+                        let mut x: $id = Default::default();
                         for _ in 0..NO_ITERATIONS {
-                            black_box(black_box(x).none());
+                            if black_box(x).none() {
+                                black_box(&mut x);
+                            }
                         }
                     })).throughput(Throughput::Elements(NO_ITERATIONS))
                 );
