@@ -34,3 +34,68 @@ macro_rules! x86_m8x32_avx_impl {
         }
     };
 }
+
+/// x86/x86_64 256-bit m32x8 AVX implementation
+macro_rules! x86_m32x8_avx_impl {
+    ($id:ident) => {
+        impl All for $id {
+            #[inline]
+            #[target_feature(enable = "sse")]
+            unsafe fn all(self) -> bool {
+                #[cfg(target_arch = "x86")]
+                use ::arch::x86::_mm256_movemask_ps;
+                #[cfg(target_arch = "x86_64")]
+                use ::arch::x86_64::_mm256_movemask_ps;
+                // _mm256_movemask_ps(a) creates a 8bit mask containing the
+                // most significant bit of each lane of `a`. If all bits are
+                // set, then all 8 lanes of the mask are true.
+                _mm256_movemask_ps(::mem::transmute(self)) == 0b_1111_1111_i32
+            }
+        }
+        impl Any for $id {
+            #[inline]
+            #[target_feature(enable = "sse")]
+            unsafe fn any(self) -> bool {
+                #[cfg(target_arch = "x86")]
+                use ::arch::x86::_mm256_movemask_ps;
+                #[cfg(target_arch = "x86_64")]
+                use ::arch::x86_64::_mm256_movemask_ps;
+
+                _mm256_movemask_ps(::mem::transmute(self)) != 0
+            }
+        }
+    };
+}
+
+/// x86/x86_64 256-bit m64x4 AVX implementation
+macro_rules! x86_m64x4_avx_impl {
+    ($id:ident) => {
+        impl All for $id {
+            #[inline]
+            #[target_feature(enable = "sse")]
+            unsafe fn all(self) -> bool {
+                #[cfg(target_arch = "x86")]
+                use ::arch::x86::_mm256_movemask_pd;
+                #[cfg(target_arch = "x86_64")]
+                use ::arch::x86_64::_mm256_movemask_pd;
+                // _mm256_movemask_pd(a) creates a 4bit mask containing the
+                // most significant bit of each lane of `a`. If all bits are
+                // set, then all 4 lanes of the mask are true.
+                _mm256_movemask_pd(::mem::transmute(self)) == 0b_1111_i32a
+            }
+        }
+        impl Any for $id {
+            #[inline]
+            #[target_feature(enable = "sse")]
+            unsafe fn any(self) -> bool {
+                #[cfg(target_arch = "x86")]
+                use ::arch::x86::_mm256_movemask_pd;
+                #[cfg(target_arch = "x86_64")]
+                use ::arch::x86_64::_mm256_movemask_pd;
+
+                _mm256_movemask_pd(::mem::transmute(self)) != 0
+            }
+        }
+    };
+}
+
