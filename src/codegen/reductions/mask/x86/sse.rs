@@ -1,7 +1,7 @@
 //! Mask reductions implementation for `x86` and `x86_64` targets with `SSE`.
 #![allow(unused)]
 
-/// x86/x86_64 128-bit m32x4 SSE implementation
+/// `x86`/`x86_64` 128-bit `m32x4` `SSE` implementation
 macro_rules! x86_m32x4_sse_impl {
     ($id:ident) => {
         impl All for $id {

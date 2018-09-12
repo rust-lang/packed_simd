@@ -33,13 +33,13 @@ cfg_if! {
     if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64")),
              target_feature = "sse")] {
         // FIXME: avx512
-        #[cfg(not(target_feature = "avx512f"))]
+        #[cfg(all(not(target_feature = "avx512f"), target_feature = "avx2"))]
         mod avx2;
-        #[cfg(not(target_feature = "avx2"))]
+        #[cfg(all(not(target_feature = "avx2"), target_feature = "avx"))]
         mod avx;
-        #[cfg(not(target_feature = "avx"))]
+        #[cfg(all(not(target_feature = "avx"), target_feature = "sse2"))]
         mod sse2;
-        #[cfg(not(target_feature = "sse2"))]
+        #[cfg(all(not(target_feature = "sse2"), target_feature = "sse"))]
         mod sse;
     }
 }
