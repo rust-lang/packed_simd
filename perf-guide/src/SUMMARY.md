@@ -15,3 +15,7 @@
 
 - [Bounds checking](./bound_checks.md)
 - [Vertical and horizontal operations](./vert-hor-ops.md)
+
+- [Performance profiling](./prof/profiling.md)
+  - [Profiling on Linux](./prof/linux.md)
+  - [Using machine code analyzers](./prof/mca.md)
