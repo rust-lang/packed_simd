@@ -7,12 +7,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "nbody"
 version = "0.1.0"
 dependencies = [
- "packed_simd 0.2.0",
+ "packed_simd 0.3.0",
 ]
 
 [[package]]
 name = "packed_simd"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cfg-if 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

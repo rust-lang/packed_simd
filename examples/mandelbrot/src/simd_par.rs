@@ -47,8 +47,9 @@ impl MandelbrotIter {
         Self { start, current: start }
     }
 
-    /// Returns the number of iterations it takes for each member of the Mandelbrot
-    /// sequence to diverge at this point, or `ITER_LIMIT` if they don't diverge.
+    /// Returns the number of iterations it takes for each member of the
+    /// Mandelbrot sequence to diverge at this point, or `ITER_LIMIT` if
+    /// they don't diverge.
     ///
     /// This function will operate on N complex numbers at once, where N is the
     /// number of lanes in a SIMD vector of doubles.
@@ -56,13 +57,14 @@ impl MandelbrotIter {
         let mut z = self.start;
         let mut count = u64s::splat(0);
         for _ in 0..ITER_LIMIT {
-            // Keep track of those lanes which haven't diverged yet. The other ones
-            // will be masked off.
+            // Keep track of those lanes which haven't diverged yet. The other
+            // ones will be masked off.
             let undiverged = z.undiverged();
 
-            // Stop the iteration if they all diverged. Note that we don't do this
-            // check every iteration, since a branch misprediction can hurt more
-            // than doing some extra calculations.
+            // Stop the iteration if they all diverged. Note that we don't do
+            // this check every iteration, since a branch
+            // misprediction can hurt more than doing some extra
+            // calculations.
             if undiverged.none() {
                 break;
             }
