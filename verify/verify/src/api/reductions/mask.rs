@@ -30,7 +30,8 @@ macro_rules! verify_mask {
 }
 
 cfg_if! {
-    if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
+    if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64")),
+             target_feature = "sse")] {
         // FIXME: avx512
         #[cfg(not(target_feature = "avx512f"))]
         mod avx2;
