@@ -1,6 +1,7 @@
 //! Mask reductions implementation for `x86` and `x86_64` targets with `AVX`
 
 /// x86/x86_64 256-bit AVX implementation
+/// FIXME: it might be faster here to do two _mm_movmask_epi8
 #[cfg(target_feature = "avx")]
 macro_rules! x86_m8x32_avx_impl {
     ($id:ident) => {
@@ -81,7 +82,7 @@ macro_rules! x86_m64x4_avx_impl {
                 // _mm256_movemask_pd(a) creates a 4bit mask containing the
                 // most significant bit of each lane of `a`. If all bits are
                 // set, then all 4 lanes of the mask are true.
-                _mm256_movemask_pd(::mem::transmute(self)) == 0b_1111_i32a
+                _mm256_movemask_pd(::mem::transmute(self)) == 0b_1111_i32
             }
         }
         impl Any for $id {

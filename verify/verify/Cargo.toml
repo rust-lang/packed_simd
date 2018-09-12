@@ -7,3 +7,4 @@ authors = ["gnzlbg <gonzalobg88@gmail.com>"]
 stdsimd-test = { git = "https://github.com/rust-lang-nursery/stdsimd.git"  }
 packed_simd = { path = "../.."  }
 cfg-if = "^0.1"
+interpolate_idents = "0.2"

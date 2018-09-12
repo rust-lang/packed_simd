@@ -79,6 +79,7 @@ fi
 # Verify code generation
 if [[ "${NOVERIFY}" != "1" ]]; then
     cp -r verify/verify target/verify
+    export STDSIMD_ASSERT_INSTR_LIMIT=30
     cargo_test --release --manifest-path=target/verify/Cargo.toml
 fi
 
