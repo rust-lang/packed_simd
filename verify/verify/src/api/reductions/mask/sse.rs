@@ -13,11 +13,11 @@ macro_rules! verify {
 // 128-bit wide:
 verify!(m32x4 => movmskps);
 verify!(m64x2 => movmskps);
-verify!(m128x1 => movmskps);
+// FIXME: verify!(m128x1 => movmskps);
 
 // 256-bit wide:
 verify!(m32x8 => movmskps);
 verify!(m64x4 => movmskps);
-verify!(m128x2 => movmskps);
+// FIXME: verify!(m128x2 => movmskps);
 
 // FIXME: 512-bit wide masks
