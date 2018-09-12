@@ -8,4 +8,8 @@ extern crate packed_simd;
 extern crate stdsimd_test;
 
 #[cfg(test)]
+#[macro_use]
+extern crate cfg_if;
+
+#[cfg(test)]
 mod api;

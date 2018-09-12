@@ -10,7 +10,7 @@ use packed_simd::*;
 
 #[macro_use]
 extern crate criterion;
-use criterion::{Criterion, Benchmark, Throughput};
+use criterion::{Benchmark, Criterion, Throughput};
 const NO_ITERATIONS: u32 = 1_000;
 
 macro_rules! bench {

@@ -17,6 +17,10 @@ environment:
       NOVERIFY: "1"
     - TARGET: x86_64-pc-windows-msvc
       MSYSTEM: MINGW64
+      RUSTFLAGS: "-C target-feature=+avx"
+      NOVERIFY: "1"
+    - TARGET: x86_64-pc-windows-msvc
+      MSYSTEM: MINGW64
       RUSTFLAGS: "-C target-feature=+avx2"
       NOVERIFY: "1"
 
@@ -26,6 +30,10 @@ environment:
     - TARGET: i686-pc-windows-msvc
       MSYSTEM: MINGW32
       RUSTFLAGS: "-C target-feature=+sse4.2"
+      NOVERIFY: "1"
+    - TARGET: i686-pc-windows-msvc
+      MSYSTEM: MINGW32
+      RUSTFLAGS: "-C target-feature=+avx"
       NOVERIFY: "1"
     - TARGET: i686-pc-windows-msvc
       MSYSTEM: MINGW32
