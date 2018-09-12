@@ -1,7 +1,7 @@
 //! Mask reductions implementation for `x86` and `x86_64` targets with `AVX`
 
-/// x86/x86_64 256-bit AVX implementation
-/// FIXME: it might be faster here to do two _mm_movmask_epi8
+/// `x86`/`x86_64` 256-bit `AVX` implementation
+/// FIXME: it might be faster here to do two `_mm_movmask_epi8`
 #[cfg(target_feature = "avx")]
 macro_rules! x86_m8x32_avx_impl {
     ($id:ident) => {
@@ -36,7 +36,7 @@ macro_rules! x86_m8x32_avx_impl {
     };
 }
 
-/// x86/x86_64 256-bit m32x8 AVX implementation
+/// `x86`/`x86_64` 256-bit m32x8 `AVX` implementation
 macro_rules! x86_m32x8_avx_impl {
     ($id:ident) => {
         impl All for $id {
@@ -68,7 +68,7 @@ macro_rules! x86_m32x8_avx_impl {
     };
 }
 
-/// x86/x86_64 256-bit m64x4 AVX implementation
+/// `x86`/`x86_64` 256-bit m64x4 `AVX` implementation
 macro_rules! x86_m64x4_avx_impl {
     ($id:ident) => {
         impl All for $id {

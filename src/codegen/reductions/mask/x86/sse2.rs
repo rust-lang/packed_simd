@@ -1,7 +1,7 @@
 //! Mask reductions implementation for `x86` and `x86_64` targets with `SSE2`.
 #![allow(unused)]
 
-/// x86/x86_64 128-bit m64x2 SSE implementation
+/// `x86`/`x86_64` 128-bit m64x2 `SSE2` implementation
 macro_rules! x86_m64x2_sse2_impl {
     ($id:ident) => {
         impl All for $id {
@@ -35,7 +35,7 @@ macro_rules! x86_m64x2_sse2_impl {
     };
 }
 
-/// x86/x86_64 128-bit m8x16 SSE2 implementation
+/// `x86`/`x86_64` 128-bit m8x16 `SSE2` implementation
 macro_rules! x86_m8x16_sse2_impl {
     ($id:ident) => {
         impl All for $id {
