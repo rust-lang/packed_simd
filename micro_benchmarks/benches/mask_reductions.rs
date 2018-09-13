@@ -1,15 +1,11 @@
 //! Benchmarks for the mask reductions `all`, `any`, and `none`.
+#![deny(warnings, rust_2018_idioms)]
 #![feature(plugin, test)]
 #![plugin(interpolate_idents)]
 
-extern crate test;
 use test::black_box;
-
-extern crate packed_simd;
 use packed_simd::*;
 
-#[macro_use]
-extern crate criterion;
 use criterion::{Benchmark, Criterion, Throughput};
 const NO_ITERATIONS: u32 = 1_000;
 

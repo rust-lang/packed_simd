@@ -3,6 +3,7 @@ name = "micro_benchmarks"
 version = "0.1.0"
 authors = ["gnzlbg <gonzalobg88@gmail.com>"]
 autobenches = false
+edition = "2018"
 
 [dev-dependencies]
 packed_simd = { path = ".." }
