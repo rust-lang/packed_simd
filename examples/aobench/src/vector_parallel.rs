@@ -1,12 +1,12 @@
 //! SIMD parallel aobench
 
-use ambient_occlusion;
-use geometry::{Ray, V3D};
-use intersection::{Intersect, Isect};
+use crate::ambient_occlusion;
+use crate::geometry::{Ray, V3D};
+use crate::intersection::{Intersect, Isect};
 use rayon::prelude::*;
-use scene::Scene;
+use crate::scene::Scene;
 
-pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut ::Image) {
+pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut crate::Image) {
     let (w, h) = img.size();
     let ns = nsubsamples;
     let inv_ns = 1. / (ns as f32);

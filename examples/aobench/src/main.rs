@@ -2,11 +2,7 @@
 //!
 //! Based on [aobench](https://code.google.com/archive/p/aobench/) by Syoyo
 //! Fujita.
-#![deny(warnings)]
-
-extern crate aobench_lib;
-extern crate structopt;
-extern crate time;
+#![deny(warnings, rust_2018_idioms)]
 
 use aobench_lib::*;
 use std::path::PathBuf;

@@ -1,8 +1,8 @@
 //! Ambient Occlusion implementations
 
-use geometry::{f32xN, Ray, RayxN, Selectable, V3DxN, V3D};
-use intersection::{Intersect, Isect, IsectxN};
-use scene::Scene;
+use crate::geometry::{f32xN, Ray, RayxN, Selectable, V3DxN, V3D};
+use crate::intersection::{Intersect, Isect, IsectxN};
+use crate::scene::Scene;
 use std::f32::consts::PI;
 
 /// Scalar ambient occlusion algorithm
@@ -128,11 +128,11 @@ pub fn vector_tiled<S: Scene>(scene: &mut S, isect: &IsectxN) -> f32xN {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use geometry::V3D;
+    use crate::geometry::V3D;
 
     #[test]
     fn sanity_hit() {
-        let scene = ::scene::Test::default();
+        let scene = crate::scene::Test::default();
         let mut scene_scalar = scene.clone();
         let mut scene_vector = scene.clone();
         let ray = Ray {
@@ -159,7 +159,7 @@ mod tests {
 
     #[test]
     fn sanity_miss() {
-        let scene = ::scene::Test::default();
+        let scene = crate::scene::Test::default();
         let mut scene_scalar = scene.clone();
         let mut scene_vector = scene.clone();
 

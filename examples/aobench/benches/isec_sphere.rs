@@ -1,15 +1,11 @@
 //! Benchmarks intersection between rays and spheres
 #![feature(stdsimd)]
 
-extern crate aobench_lib;
-
-#[macro_use]
-extern crate criterion;
-
+use test::*;
 use aobench_lib::*;
 use criterion::*;
-use geometry::{f32xN, Ray, RayxN, Sphere, V3DxN, V3D};
-use intersection::{Intersect, Isect, IsectxN};
+use crate::geometry::{f32xN, Ray, RayxN, Sphere, V3DxN, V3D};
+use crate::intersection::{Intersect, Isect, IsectxN};
 
 fn hit_scalar(c: &mut Criterion) {
     let mut s = Sphere {
@@ -38,7 +34,7 @@ fn hit_scalar(c: &mut Criterion) {
         "scalar",
         Benchmark::new("isec_sphere_hit", move |b| {
             b.iter(|| {
-                let mut isect = Isect::new();
+                let mut isect = Isect::default();
                 let isect = black_box(&mut isect);
                 let s = black_box(&mut s);
                 let r = black_box(&mut r);
@@ -76,7 +72,7 @@ fn miss_scalar(c: &mut Criterion) {
         "scalar",
         Benchmark::new("isec_sphere_miss", move |b| {
             b.iter(|| {
-                let mut isect = Isect::new();
+                let mut isect = Isect::default();
                 let isect = black_box(&mut isect);
                 let s = black_box(&mut s);
                 let r = black_box(&mut r);
@@ -114,7 +110,7 @@ fn hit_vector(c: &mut Criterion) {
         "vector",
         Benchmark::new("isec_sphere_hit", move |b| {
             b.iter(|| {
-                let mut isect = IsectxN::new();
+                let mut isect = IsectxN::default();
                 let isect = black_box(&mut isect);
                 let s = black_box(&mut s);
                 let r = black_box(&mut r);
@@ -152,7 +148,7 @@ fn miss_vector(c: &mut Criterion) {
         "vector",
         Benchmark::new("isec_sphere_miss", move |b| {
             b.iter(|| {
-                let mut isect = IsectxN::new();
+                let mut isect = IsectxN::default();
                 let isect = black_box(&mut isect);
                 let s = black_box(&mut s);
                 let r = black_box(&mut r);

@@ -1,11 +1,6 @@
 //! Benchmarks PNRG
 #![feature(stdsimd)]
 
-extern crate aobench_lib;
-
-#[macro_use]
-extern crate criterion;
-
 use aobench_lib::geometry::f32xN;
 use aobench_lib::random;
 use criterion::*;

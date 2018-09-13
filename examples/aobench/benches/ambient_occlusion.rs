@@ -1,11 +1,6 @@
 //! Benchmarks intersection between rays and planes
 #![feature(stdsimd)]
 
-extern crate aobench_lib;
-
-#[macro_use]
-extern crate criterion;
-
 use aobench_lib::*;
 use criterion::*;
 use intersection::Isect;
@@ -17,7 +12,7 @@ fn hit_scalar(c: &mut Criterion) {
         "scalar",
         Benchmark::new("ao_hit", move |b| {
             b.iter(|| {
-                let mut isect = Isect::new();
+                let mut isect = Isect::default();
                 let isect = black_box(&mut isect);
                 let s = black_box(&mut scene);
                 let mut v = ambient_occlusion::scalar(s, isect);
@@ -34,7 +29,7 @@ fn hit_vector(c: &mut Criterion) {
         "vector",
         Benchmark::new("ao_hit", move |b| {
             b.iter(|| {
-                let mut isect = Isect::new();
+                let mut isect = Isect::default();
                 let isect = black_box(&mut isect);
                 let s = black_box(&mut scene);
                 let mut v = ambient_occlusion::vector(s, isect);

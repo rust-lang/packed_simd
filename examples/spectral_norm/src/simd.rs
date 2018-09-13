@@ -1,7 +1,7 @@
 //! Vectorized spectral norm implementation
 
 use packed_simd::*;
-use *;
+use crate::*;
 
 fn mult_Av(v: &[f64], out: &mut [f64]) {
     assert!(v.len() == out.len());

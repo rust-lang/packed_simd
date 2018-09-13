@@ -1,5 +1,5 @@
 #![feature(custom_inner_attributes, stmt_expr_attributes)]
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
@@ -13,13 +13,6 @@
         clippy::inline_always
     )
 )]
-
-extern crate packed_simd;
-extern crate rayon;
-
-#[cfg(feature = "ispc")]
-#[macro_use]
-extern crate ispc;
 
 #[cfg(feature = "ispc")]
 pub mod ispc_loops;

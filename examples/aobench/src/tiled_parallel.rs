@@ -1,12 +1,12 @@
 //! SIMD tiled parallel aobench
 
-use ambient_occlusion;
-use geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
-use intersection::{Intersect, IsectxN};
+use crate::ambient_occlusion;
+use crate::geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
+use crate::intersection::{Intersect, IsectxN};
 use rayon::prelude::*;
-use scene::Scene;
+use crate::scene::Scene;
 
-pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut ::Image) {
+pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut crate::Image) {
     let (w, h) = img.size();
     assert_eq!(w % f32xN::lanes(), 0);
     let ns = nsubsamples;

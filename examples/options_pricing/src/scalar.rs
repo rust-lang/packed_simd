@@ -38,14 +38,14 @@ pub fn black_scholes(
         let d2 = d1 - v * t.sqrt();
         result[i] = s * cnd(d1) - x * (-r * t).exp() * cnd(d2);
     }
-    ::sum::slice_scalar(&result)
+    crate::sum::slice_scalar(&result)
 }
 
 pub fn binomial_put(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
     result: &mut [f32], count: usize,
 ) -> f64 {
-    use BINOMIAL_NUM;
+    use crate::BINOMIAL_NUM;
 
     for i in 0..count {
         let s = sa[i];
@@ -75,7 +75,7 @@ pub fn binomial_put(
 
         result[i] = vs[0];
     }
-    ::sum::slice_scalar(&result)
+    crate::sum::slice_scalar(&result)
 }
 
 #[cfg(feature = "ispc")]

@@ -1,9 +1,5 @@
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
-
-extern crate packed_simd;
-extern crate rand;
-extern crate rayon;
-extern crate time;
+#![deny(warnings, rust_2018_idioms)]
 
 use packed_simd::f32x8 as f32s;
 use std::{mem, slice};

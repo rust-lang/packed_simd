@@ -1,6 +1,6 @@
 //! Scalar implementation
 #![rustfmt::skip]
-use ::*;
+use crate::*;
 
 pub fn inv4x4(m: Matrix4x4) -> Option<Matrix4x4> {
     let m = m.0;

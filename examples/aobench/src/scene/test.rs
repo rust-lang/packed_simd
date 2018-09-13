@@ -1,7 +1,7 @@
 //! Aobench scene: 3 spheres and a plane using a random number generator
 
-use geometry::{Plane, Sphere, V3D};
-use scene::Scene;
+use crate::geometry::{Plane, Sphere, V3D};
+use crate::scene::Scene;
 use std::num::Wrapping;
 
 #[derive(Clone)]
@@ -53,7 +53,7 @@ impl Default for Test {
             },
         ];
         let mut rands = Vec::new();
-        let mut rng = ::random::scalar::thread_rng();
+        let mut rng = crate::random::scalar::thread_rng();
         for _ in 0..2 * Self::NAO_SAMPLES * Self::NAO_SAMPLES {
             rands.push(rng.gen());
         }

@@ -2,7 +2,7 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
 
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
@@ -12,12 +12,6 @@
         clippy::cast_possible_truncation
     )
 )]
-
-extern crate packed_simd;
-extern crate rayon;
-#[cfg(feature = "ispc")]
-#[macro_use]
-extern crate ispc;
 
 use rayon::prelude::*;
 use std::{io, ops};
@@ -87,7 +81,7 @@ impl Mandelbrot {
     }
 
     /// Writes the PBM / PPM header to the output.
-    fn write_header(&self, f: &mut io::Write, color: bool) -> io::Result<()> {
+    fn write_header(&self, f: &mut dyn io::Write, color: bool) -> io::Result<()> {
         writeln!(f, "P{}", if color { 6 } else { 4 })?;
         write!(f, "{} {}", self.dims.0, self.dims.1)?;
         if color {
@@ -97,7 +91,7 @@ impl Mandelbrot {
     }
 
     /// Outputs a black/white PBM bitmap to the given writer.
-    pub fn output_pbm(&self, f: &mut io::Write) -> io::Result<()> {
+    pub fn output_pbm(&self, f: &mut dyn io::Write) -> io::Result<()> {
         self.write_header(f, false)?;
 
         assert_eq!(
@@ -121,7 +115,7 @@ impl Mandelbrot {
     }
 
     /// Outputs a color PPM image to the given writer.
-    pub fn output_ppm(&self, f: &mut io::Write) -> io::Result<()> {
+    pub fn output_ppm(&self, f: &mut dyn io::Write) -> io::Result<()> {
         self.write_header(f, true)?;
 
         let buf = self

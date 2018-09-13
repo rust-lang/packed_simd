@@ -1,5 +1,5 @@
 //! Fannkuch redux
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![allow(non_snake_case, non_camel_case_types)]
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
@@ -12,7 +12,6 @@
         clippy::cast_possible_wrap
     )
 )]
-extern crate packed_simd;
 
 pub mod scalar;
 pub mod simd;

@@ -1,9 +1,6 @@
 //! 4x4 matrix inverse
 #![feature(custom_inner_attributes)]
-#![deny(warnings)]
-
-#[macro_use(shuffle)]
-extern crate packed_simd;
+#![deny(warnings, rust_2018_idioms)]
 
 pub mod scalar;
 pub mod simd;

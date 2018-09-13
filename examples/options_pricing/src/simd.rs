@@ -1,6 +1,6 @@
 //! SIMD implementation
 
-use f32s;
+use crate::f32s;
 
 pub fn serial<K>(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
@@ -21,21 +21,21 @@ where
             r.write_to_slice_unaligned_unchecked(&mut result[i..]);
         }
     }
-    ::sum::slice(&result)
+    crate::sum::slice(&result)
 }
 
 pub fn black_scholes(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
     result: &mut [f32], count: usize,
 ) -> f64 {
-    serial(sa, xa, ta, ra, va, result, count, ::simd_kernels::black_scholes)
+    serial(sa, xa, ta, ra, va, result, count, crate::simd_kernels::black_scholes)
 }
 
 pub fn binomial_put(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
     result: &mut [f32], count: usize,
 ) -> f64 {
-    serial(sa, xa, ta, ra, va, result, count, ::simd_kernels::binomial_put)
+    serial(sa, xa, ta, ra, va, result, count, crate::simd_kernels::binomial_put)
 }
 
 #[cfg(test)]

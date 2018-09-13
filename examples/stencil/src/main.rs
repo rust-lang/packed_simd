@@ -1,9 +1,6 @@
 #![feature(custom_inner_attributes)]
 
-extern crate stencil_lib;
 use stencil_lib::*;
-
-extern crate time;
 
 use std::env;
 

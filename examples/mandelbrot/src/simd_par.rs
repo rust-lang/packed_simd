@@ -3,7 +3,7 @@
 
 use packed_simd::*;
 use rayon::prelude::*;
-use *;
+use crate::*;
 
 type u64s = u64x8;
 type u32s = u32x8;

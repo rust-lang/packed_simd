@@ -1,7 +1,7 @@
 //! SIMD intersection result
 
-use geometry::{f32xN, m32xN, V3DxN};
-use intersection::Isect;
+use crate::geometry::{f32xN, m32xN, V3DxN};
+use crate::intersection::Isect;
 
 /// Intersection result
 #[derive(Copy, Clone, Debug)]

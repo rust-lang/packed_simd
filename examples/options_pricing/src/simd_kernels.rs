@@ -1,4 +1,4 @@
-use f32s;
+use crate::f32s;
 
 // Cumulative normal distribution function
 #[inline(always)]
@@ -29,7 +29,7 @@ pub fn black_scholes(s: f32s, x: f32s, t: f32s, r: f32s, v: f32s) -> f32s {
 
 #[inline(always)]
 pub fn binomial_put(s: f32s, x: f32s, t: f32s, r: f32s, v: f32s) -> f32s {
-    use BINOMIAL_NUM;
+    use crate::BINOMIAL_NUM;
 
     let dt = t / BINOMIAL_NUM as f32;
     let u = (v * dt.sqrt()).exp();
