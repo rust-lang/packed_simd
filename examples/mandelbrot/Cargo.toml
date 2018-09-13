@@ -25,11 +25,3 @@ path = "src/lib.rs"
 default = []
 sleef-sys = ["packed_simd/sleef-sys"]
 coresimd = ["packed_simd/coresimd"]
-
-[profile.release]
-opt-level = 3
-debug = false
-lto = 'fat'
-debug-assertions = false
-codegen-units = 1
-panic = 'abort'

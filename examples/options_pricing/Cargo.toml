@@ -25,11 +25,3 @@ default = []
 coresimd = [ "packed_simd/coresimd" ]
 sleef-sys = [ "packed_simd/sleef-sys" ]
 ispc_libm = [ "ispc" ]
-
-[profile.release]
-opt-level = 3
-debug = false
-lto = 'fat'
-debug-assertions = false
-codegen-units = 1
-panic = 'abort'

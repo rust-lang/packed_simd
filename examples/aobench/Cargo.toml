@@ -34,21 +34,6 @@ default = [ "256bit" ]
 sleef-sys = [ "packed_simd/sleef-sys" ]
 coresimd = [ "packed_simd/coresimd" ]
 
-[profile.bench]
-opt-level = 3
-debug = false
-lto = 'fat'
-debug-assertions = false
-codegen-units = 1
-
-[profile.release]
-opt-level = 3
-debug = false
-lto = 'fat'
-debug-assertions = false
-codegen-units = 1
-panic = 'abort'
-
 [[bench]]
 name = "isec_sphere"
 path = "benches/isec_sphere.rs"
