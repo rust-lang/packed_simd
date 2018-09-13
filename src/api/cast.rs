@@ -29,9 +29,9 @@
 /// * casting from an `f64` to an `f32` **rounds to nearest, ties to even**.
 ///
 /// [RFC2484]: https://github.com/rust-lang/rfcs/pull/2484
-pub trait FromCast<T>: ::marker::Sized {
+pub trait FromCast<T>: crate::marker::Sized {
     /// Numeric cast from `T` to `Self`.
-    fn from_cast(T) -> Self;
+    fn from_cast(_: T) -> Self;
 }
 
 /// Numeric cast from `Self` to `T`.
@@ -62,7 +62,7 @@ pub trait FromCast<T>: ::marker::Sized {
 /// * casting from an `f64` to an `f32` **rounds to nearest, ties to even**.
 ///
 /// [RFC2484]: https://github.com/rust-lang/rfcs/pull/2484
-pub trait Cast<T>: ::marker::Sized {
+pub trait Cast<T>: crate::marker::Sized {
     /// Numeric cast from `self` to `T`.
     fn cast(self) -> T;
 }

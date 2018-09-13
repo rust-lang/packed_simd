@@ -1,8 +1,8 @@
 //! Implementations of the `ShuffleResult` trait for the different numbers of
 //! lanes and vector element types.
 
-use masks::*;
-use sealed::Shuffle;
+use crate::masks::*;
+use crate::sealed::Shuffle;
 
 impl Shuffle<[u32; 2]> for i8 {
     type Output = crate::codegen::i8x2;

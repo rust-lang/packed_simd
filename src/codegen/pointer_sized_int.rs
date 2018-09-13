@@ -1,5 +1,7 @@
 //! Provides `isize` and `usize`
 
+use cfg_if::cfg_if;
+
 cfg_if! {
     if #[cfg(target_pointer_width = "8")] {
         crate type isize_ = i8;

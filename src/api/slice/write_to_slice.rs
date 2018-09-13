@@ -16,7 +16,7 @@ macro_rules! impl_slice_write_to_slice {
                     let target_ptr =
                         slice.get_unchecked_mut(0) as *mut $elem_ty;
                     assert_eq!(
-                        target_ptr.align_offset(mem::align_of::<Self>()),
+                        target_ptr.align_offset(crate::mem::align_of::<Self>()),
                         0
                     );
                     self.write_to_slice_aligned_unchecked(slice);
@@ -51,7 +51,7 @@ macro_rules! impl_slice_write_to_slice {
                 let target_ptr =
                     slice.get_unchecked_mut(0) as *mut $elem_ty;
                 debug_assert_eq!(
-                    target_ptr.align_offset(mem::align_of::<Self>()),
+                    target_ptr.align_offset(crate::mem::align_of::<Self>()),
                     0
                 );
 
@@ -72,10 +72,10 @@ macro_rules! impl_slice_write_to_slice {
                 let target_ptr =
                     slice.get_unchecked_mut(0) as *mut $elem_ty as *mut u8;
                 let self_ptr = &self as *const Self as *const u8;
-                ptr::copy_nonoverlapping(
+                crate::ptr::copy_nonoverlapping(
                     self_ptr,
                     target_ptr,
-                    mem::size_of::<Self>(),
+                    crate::mem::size_of::<Self>(),
                 );
             }
         }
@@ -167,7 +167,7 @@ macro_rules! impl_slice_write_to_slice {
                             // offset pointer by one element
                             let ptr = ptr.wrapping_add(1);
 
-                            if ptr.align_offset(mem::align_of::<$id>()) == 0 {
+                            if ptr.align_offset(crate::mem::align_of::<$id>()) == 0 {
                                 // the pointer is properly aligned, so write_to_slice_aligned
                                 // won't fail here (e.g. this can happen for i128x1). So
                                 // we panic to make the "should_fail" test pass:

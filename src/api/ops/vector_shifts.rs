@@ -2,29 +2,29 @@
 
 macro_rules! impl_ops_vector_shifts {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
-        impl ::ops::Shl<$id> for $id {
+        impl crate::ops::Shl<$id> for $id {
             type Output = Self;
             #[inline]
             fn shl(self, other: Self) -> Self {
-                use llvm::simd_shl;
+                use crate::llvm::simd_shl;
                 unsafe { Simd(simd_shl(self.0, other.0)) }
             }
         }
-        impl ::ops::Shr<$id> for $id {
+        impl crate::ops::Shr<$id> for $id {
             type Output = Self;
             #[inline]
             fn shr(self, other: Self) -> Self {
-                use llvm::simd_shr;
+                use crate::llvm::simd_shr;
                 unsafe { Simd(simd_shr(self.0, other.0)) }
             }
         }
-        impl ::ops::ShlAssign<$id> for $id {
+        impl crate::ops::ShlAssign<$id> for $id {
             #[inline]
             fn shl_assign(&mut self, other: Self) {
                 *self = *self << other;
             }
         }
-        impl ::ops::ShrAssign<$id> for $id {
+        impl crate::ops::ShrAssign<$id> for $id {
             #[inline]
             fn shr_assign(&mut self, other: Self) {
                 *self = *self >> other;

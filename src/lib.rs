@@ -165,11 +165,11 @@
 //!   patterns of the target type and are also implemented for the
 //!   architecture-specific vector types of `std::arch`. For example, `let x:
 //!   u8x8 = m8x8::splat(true).into_bits();` is provided because all `m8x8` bit
-//!   patterns are valid `u8x8` bit patterns. However, the opposite is not
-//! true,   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
+//!   patterns are valid `u8x8` bit patterns. However, the opposite is not true,
+//!   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
 //!   operation cannot be peformed safely using `x.into_bits()`; one needs to
-//!   use `unsafe { mem::transmute(x) }` for that, making sure that the value
-//! in   the `u8x8` is a valid bit-pattern of `m8x8`.
+//!   use `unsafe { crate::mem::transmute(x) }` for that, making sure that the
+//!   value in the `u8x8` is a valid bit-pattern of `m8x8`.
 //!
 //! * **numeric casts** (`as`): are peformed using [`FromCast`]/[`Cast`]
 //! (`x.cast()`), just like `as`:
@@ -199,7 +199,6 @@
 //!   preserving, etc.
 
 #![feature(
-    rust_2018_preview,
     repr_simd,
     const_fn,
     platform_intrinsics,
@@ -230,16 +229,14 @@
 #![cfg_attr(
     feature = "cargo-clippy", deny(clippy::missing_inline_in_public_items)
 )]
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![no_std]
 
-#[macro_use]
-extern crate cfg_if;
+use cfg_if::cfg_if;
 
 cfg_if! {
     if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon",
                  feature = "coresimd"))] {
-        extern crate coresimd;
         #[allow(unused_imports)]
         use coresimd::arch;
     } else {
@@ -247,12 +244,6 @@ cfg_if! {
         use core::arch;
     }
 }
-
-#[cfg(test)]
-extern crate arrayvec;
-
-#[cfg(all(target_arch = "wasm32", test))]
-extern crate wasm_bindgen_test;
 
 #[cfg(all(target_arch = "wasm32", test))]
 use wasm_bindgen_test::*;
@@ -262,9 +253,6 @@ use core::{
     /* arch (handled above), */ cmp, default, f32, f64, fmt, hash, hint,
     intrinsics, iter, marker, mem, ops, ptr, slice,
 };
-
-#[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))]
-extern crate sleef_sys;
 
 #[macro_use]
 mod testing;
@@ -343,5 +331,5 @@ pub use self::codegen::llvm::{
 };
 
 crate mod llvm {
-    crate use codegen::llvm::*;
+    crate use crate::codegen::llvm::*;
 }

@@ -45,7 +45,7 @@ macro_rules! impl_ptr_read {
 
                         for i in 0..$elem_count {
                             ptr = ptr.replace(i, unsafe {
-                                ::mem::transmute(&v[[i]] as *const i32)
+                                crate::mem::transmute(&v[[i]] as *const i32)
                             });
                         }
 

@@ -79,7 +79,7 @@ macro_rules! impl_swap_bytes {
                         ($func: ident) => {{
                             let actual = swap!($func);
                             let expected =
-                                BYTES.iter().rev().skip(64 - mem::size_of::<$id>());
+                                BYTES.iter().rev().skip(64 - crate::mem::size_of::<$id>());
 
                             assert!(actual.iter().zip(expected).all(|(x, y)| x == y));
                         }};

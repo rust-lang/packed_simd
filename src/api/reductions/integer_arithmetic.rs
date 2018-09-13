@@ -17,7 +17,7 @@ macro_rules! impl_reduction_integer_arithmetic {
             pub fn wrapping_sum(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use llvm::simd_reduce_add_ordered;
+                    use crate::llvm::simd_reduce_add_ordered;
                     let v: $ielem_ty = unsafe {
                         simd_reduce_add_ordered(self.0, 0 as $ielem_ty)
                     };
@@ -48,7 +48,7 @@ macro_rules! impl_reduction_integer_arithmetic {
             pub fn wrapping_product(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use llvm::simd_reduce_mul_ordered;
+                    use crate::llvm::simd_reduce_mul_ordered;
                     let v: $ielem_ty = unsafe {
                         simd_reduce_mul_ordered(self.0, 1 as $ielem_ty)
                     };
@@ -67,31 +67,31 @@ macro_rules! impl_reduction_integer_arithmetic {
             }
         }
 
-        impl ::iter::Sum for $id {
+        impl crate::iter::Sum for $id {
             #[inline]
             fn sum<I: Iterator<Item=$id>>(iter: I) -> $id {
-                iter.fold($id::splat(0), ::ops::Add::add)
+                iter.fold($id::splat(0), crate::ops::Add::add)
             }
         }
 
-        impl ::iter::Product for $id {
+        impl crate::iter::Product for $id {
             #[inline]
             fn product<I: Iterator<Item=$id>>(iter: I) -> $id {
-                iter.fold($id::splat(1), ::ops::Mul::mul)
+                iter.fold($id::splat(1), crate::ops::Mul::mul)
             }
         }
 
-        impl<'a> ::iter::Sum<&'a $id> for $id {
+        impl<'a> crate::iter::Sum<&'a $id> for $id {
             #[inline]
             fn sum<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
-                iter.fold($id::splat(0), |a, b| ::ops::Add::add(a, *b))
+                iter.fold($id::splat(0), |a, b| crate::ops::Add::add(a, *b))
             }
         }
 
-        impl<'a> ::iter::Product<&'a $id> for $id {
+        impl<'a> crate::iter::Product<&'a $id> for $id {
             #[inline]
             fn product<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
-                iter.fold($id::splat(1), |a, b| ::ops::Mul::mul(a, *b))
+                iter.fold($id::splat(1), |a, b| crate::ops::Mul::mul(a, *b))
             }
         }
 

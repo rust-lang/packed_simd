@@ -25,12 +25,12 @@ macro_rules! impl_def {
 
 macro_rules! impl_def32 {
     ($vid:ident) => {
-        impl_def!($vid, core::f32::consts::PI);
+        impl_def!($vid, crate::f32::consts::PI);
     };
 }
 macro_rules! impl_def64 {
     ($vid:ident) => {
-        impl_def!($vid, core::f64::consts::PI);
+        impl_def!($vid, crate::f64::consts::PI);
     };
 }
 
@@ -40,7 +40,7 @@ macro_rules! impl_unary_t {
             type Output = (Self, Self);
             fn sin_cos_pi(self) -> Self::Output {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     transmute($fun(transmute(self)))
                 }
             }
@@ -51,7 +51,7 @@ macro_rules! impl_unary_t {
             type Output = (Self, Self);
             fn sin_cos_pi(self) -> Self::Output {
                 unsafe {
-                    use mem::{transmute, uninitialized};
+                    use crate::mem::{transmute, uninitialized};
 
                     union U {
                         vec: [$vid; 2],
@@ -76,7 +76,7 @@ macro_rules! impl_unary_t {
             type Output = (Self, Self);
             fn sin_cos_pi(self) -> Self::Output {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
 
                     union U {
                         vec: $vid,
@@ -105,7 +105,7 @@ macro_rules! impl_unary_t {
             type Output = (Self, Self);
             fn sin_cos_pi(self) -> Self::Output {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
 
                     union U {
                         vec: $vid,
@@ -141,7 +141,7 @@ macro_rules! impl_unary_t {
 
 cfg_if! {
     if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
-        use ::sleef_sys::*;
+        use crate::sleef_sys::*;
         cfg_if! {
             if #[cfg(target_feature = "avx2")] {
                 impl_unary_t!(f32x2[t => f32x4]: Sleef_sincospif4_u05avx2128);

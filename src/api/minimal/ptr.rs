@@ -43,7 +43,7 @@ macro_rules! impl_minimal_p {
             /// Constructs a new instance with each element initialized to `null`.
             #[inline]
             pub const fn null() -> Self {
-                Self::splat(ptr::null_mut() as $elem_ty)
+                Self::splat(crate::ptr::null_mut() as $elem_ty)
             }
 
             /// Returns a mask that selects those lanes that contain `null` pointers.
@@ -70,7 +70,7 @@ macro_rules! impl_minimal_p {
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
             pub unsafe fn extract_unchecked(self, index: usize) -> $elem_ty {
-                use llvm::simd_extract;
+                use crate::llvm::simd_extract;
                 simd_extract(self.0, index as u32)
             }
 
@@ -99,7 +99,7 @@ macro_rules! impl_minimal_p {
                 index: usize,
                 new_value: $elem_ty,
             ) -> Self {
-                use llvm::simd_insert;
+                use crate::llvm::simd_insert;
                 Simd(simd_insert(self.0, index as u32, new_value))
             }
         }
@@ -145,9 +145,9 @@ macro_rules! impl_minimal_p {
                         }
 
                         let mut n = $id::<i32>::null();
-                        assert_eq!(n, $id::<i32>::splat(unsafe { mem::zeroed() }));
+                        assert_eq!(n, $id::<i32>::splat(unsafe { crate::mem::zeroed() }));
                         assert!(n.is_null().all());
-                        n = n.replace(0, unsafe { mem::transmute(1_isize) });
+                        n = n.replace(0, unsafe { crate::mem::transmute(1_isize) });
                         assert!(!n.is_null().all());
                         if $id::<i32>::lanes() > 1 {
                             assert!(n.is_null().any());
@@ -182,13 +182,13 @@ macro_rules! impl_minimal_p {
             }
         }
 
-        impl<T> ::fmt::Debug for $id<T> {
+        impl<T> crate::fmt::Debug for $id<T> {
             #[cfg_attr(feature = "cargo-clippy",
                        allow(clippy::missing_inline_in_public_items))]
-            fn fmt(&self, f: &mut ::fmt::Formatter) -> ::fmt::Result {
+            fn fmt(&self, f: &mut crate::fmt::Formatter<'_>) -> crate::fmt::Result {
                 // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2891
                 #[cfg_attr(feature = "cargo-clippy", allow(clippy::write_literal))]
-                write!(f, "{}<{}>(", stringify!($id), unsafe { intrinsics::type_name::<T>() })?;
+                write!(f, "{}<{}>(", stringify!($id), unsafe { crate::intrinsics::type_name::<T>() })?;
                 for i in 0..$elem_count {
                     if i > 0 {
                         write!(f, ", ")?;
@@ -234,7 +234,7 @@ macro_rules! impl_minimal_p {
             }
          }
 
-        impl<T> ::default::Default for $id<T> {
+        impl<T> Default for $id<T> {
             #[inline]
             fn default() -> Self {
                 // FIXME: ptrs do not implement default
@@ -251,7 +251,7 @@ macro_rules! impl_minimal_p {
                     fn default() {
                         let a = $id::<i32>::default();
                         for i in 0..$id::<i32>::lanes() {
-                            assert_eq!(a.extract(i), unsafe { mem::zeroed() });
+                            assert_eq!(a.extract(i), unsafe { crate::mem::zeroed() });
                         }
                     }
                 }
@@ -263,9 +263,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn eq(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use llvm::simd_eq;
-                    let a: $usize_ty = ::mem::transmute(self);
-                    let b: $usize_ty = ::mem::transmute(other);
+                    use crate::llvm::simd_eq;
+                    let a: $usize_ty = crate::mem::transmute(self);
+                    let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_eq(a.0, b.0))
                 }
             }
@@ -274,9 +274,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn ne(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use llvm::simd_ne;
-                    let a: $usize_ty = ::mem::transmute(self);
-                    let b: $usize_ty = ::mem::transmute(other);
+                    use crate::llvm::simd_ne;
+                    let a: $usize_ty = crate::mem::transmute(self);
+                    let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_ne(a.0, b.0))
                 }
             }
@@ -285,9 +285,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn lt(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use llvm::simd_lt;
-                    let a: $usize_ty = ::mem::transmute(self);
-                    let b: $usize_ty = ::mem::transmute(other);
+                    use crate::llvm::simd_lt;
+                    let a: $usize_ty = crate::mem::transmute(self);
+                    let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_lt(a.0, b.0))
                 }
             }
@@ -296,9 +296,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn le(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use llvm::simd_le;
-                    let a: $usize_ty = ::mem::transmute(self);
-                    let b: $usize_ty = ::mem::transmute(other);
+                    use crate::llvm::simd_le;
+                    let a: $usize_ty = crate::mem::transmute(self);
+                    let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_le(a.0, b.0))
                 }
             }
@@ -307,9 +307,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn gt(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use llvm::simd_gt;
-                    let a: $usize_ty = ::mem::transmute(self);
-                    let b: $usize_ty = ::mem::transmute(other);
+                    use crate::llvm::simd_gt;
+                    let a: $usize_ty = crate::mem::transmute(self);
+                    let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_gt(a.0, b.0))
                 }
             }
@@ -318,9 +318,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn ge(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use llvm::simd_ge;
-                    let a: $usize_ty = ::mem::transmute(self);
-                    let b: $usize_ty = ::mem::transmute(other);
+                    use crate::llvm::simd_ge;
+                    let a: $usize_ty = crate::mem::transmute(self);
+                    let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_ge(a.0, b.0))
                 }
             }
@@ -334,7 +334,7 @@ macro_rules! impl_minimal_p {
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn cmp() {
                         let a = $id::<i32>::null();
-                        let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
+                        let b = $id::<i32>::splat(unsafe { crate::mem::transmute(1_isize) });
 
                         let r = a.lt(b);
                         let e = $mask_ty::splat(true);
@@ -355,12 +355,12 @@ macro_rules! impl_minimal_p {
                         let mut e = e;
                         for i in 0..$id::<i32>::lanes() {
                             if i % 2 == 0 {
-                                a = a.replace(i, unsafe { mem::transmute(0_isize) });
-                                b = b.replace(i, unsafe { mem::transmute(1_isize) });
+                                a = a.replace(i, unsafe { crate::mem::transmute(0_isize) });
+                                b = b.replace(i, unsafe { crate::mem::transmute(1_isize) });
                                 e = e.replace(i, true);
                             } else {
-                                a = a.replace(i, unsafe { mem::transmute(1_isize) });
-                                b = b.replace(i, unsafe { mem::transmute(0_isize) });
+                                a = a.replace(i, unsafe { crate::mem::transmute(1_isize) });
+                                b = b.replace(i, unsafe { crate::mem::transmute(0_isize) });
                                 e = e.replace(i, false);
                             }
                         }
@@ -372,7 +372,7 @@ macro_rules! impl_minimal_p {
         }
 
         #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
-        impl<T> ::cmp::PartialEq<$id<T>> for $id<T> {
+        impl<T> crate::cmp::PartialEq<$id<T>> for $id<T> {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
                 $id::<T>::eq(*self, *other).all()
@@ -385,7 +385,7 @@ macro_rules! impl_minimal_p {
 
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
         #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
-        impl<T> ::cmp::PartialEq<LexicographicallyOrdered<$id<T>>>
+        impl<T> crate::cmp::PartialEq<LexicographicallyOrdered<$id<T>>>
             for LexicographicallyOrdered<$id<T>>
         {
             #[inline]
@@ -406,7 +406,7 @@ macro_rules! impl_minimal_p {
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn partial_eq() {
                         let a = $id::<i32>::null();
-                        let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
+                        let b = $id::<i32>::splat(unsafe { crate::mem::transmute(1_isize) });
 
                         assert!(a != b);
                         assert!(!(a == b));
@@ -414,8 +414,8 @@ macro_rules! impl_minimal_p {
                         assert!(!(a != a));
 
                         if $id::<i32>::lanes() > 1 {
-                            let a = $id::<i32>::null().replace(0, unsafe { mem::transmute(1_isize) });
-                            let b = $id::<i32>::splat(unsafe { mem::transmute(1_isize) });
+                            let a = $id::<i32>::null().replace(0, unsafe { crate::mem::transmute(1_isize) });
+                            let b = $id::<i32>::splat(unsafe { crate::mem::transmute(1_isize) });
 
                             assert!(a != b);
                             assert!(!(a == b));
@@ -427,8 +427,8 @@ macro_rules! impl_minimal_p {
             }
         }
 
-        impl<T> ::cmp::Eq for $id<T> {}
-        impl<T> ::cmp::Eq for LexicographicallyOrdered<$id<T>> {}
+        impl<T> crate::cmp::Eq for $id<T> {}
+        impl<T> crate::cmp::Eq for LexicographicallyOrdered<$id<T>> {}
 
         test_if!{
             $test_tt:
@@ -437,7 +437,7 @@ macro_rules! impl_minimal_p {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn eq() {
-                        fn foo<E: ::cmp::Eq>(_: E) {}
+                        fn foo<E: crate::cmp::Eq>(_: E) {}
                         let a = $id::<i32>::null();
                         foo(a);
                     }
@@ -450,11 +450,11 @@ macro_rules! impl_minimal_p {
             fn from(array: [$elem_ty; $elem_count]) -> Self {
                 unsafe {
                     // FIXME: unnecessary zeroing; better than UB.
-                    let mut u: Self = mem::zeroed();
-                    ptr::copy_nonoverlapping(
+                    let mut u: Self = crate::mem::zeroed();
+                    crate::ptr::copy_nonoverlapping(
                         &array as *const [$elem_ty; $elem_count] as *const u8,
                         &mut u as *mut Self as *mut u8,
-                        mem::size_of::<Self>()
+                        crate::mem::size_of::<Self>()
                     );
                     u
                 }
@@ -465,11 +465,11 @@ macro_rules! impl_minimal_p {
             fn into(self) -> [$elem_ty; $elem_count] {
                 unsafe {
                     // FIXME: unnecessary zeroing; better than UB.
-                    let mut u: [$elem_ty; $elem_count] = mem::zeroed();
-                    ptr::copy_nonoverlapping(
+                    let mut u: [$elem_ty; $elem_count] = crate::mem::zeroed();
+                    crate::ptr::copy_nonoverlapping(
                         &self as *const $id<T> as *const u8,
                         &mut u as *mut [$elem_ty; $elem_count] as *mut u8,
-                        mem::size_of::<Self>()
+                        crate::mem::size_of::<Self>()
                     );
                     u
                 }
@@ -489,7 +489,7 @@ macro_rules! impl_minimal_p {
                         let mut array = [$id::<i32>::null().extract(0); $elem_count];
 
                         for i in 0..$elem_count {
-                            let ptr = unsafe { mem::transmute(&values[[i]] as *const i32) };
+                            let ptr = unsafe { crate::mem::transmute(&values[[i]] as *const i32) };
                             vec = vec.replace(i, ptr);
                             array[[i]] = ptr;
                         }
@@ -524,7 +524,7 @@ macro_rules! impl_minimal_p {
                     assert!(slice.len() >= $elem_count);
                     let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
                     assert!(
-                        target_ptr.align_offset(::mem::align_of::<Self>())
+                        target_ptr.align_offset(crate::mem::align_of::<Self>())
                             == 0
                     );
                     Self::from_slice_aligned_unchecked(slice)
@@ -565,12 +565,12 @@ macro_rules! impl_minimal_p {
             pub unsafe fn from_slice_unaligned_unchecked(
                 slice: &[$elem_ty],
             ) -> Self {
-                use mem::size_of;
+                use crate::mem::size_of;
                 let target_ptr =
                     slice.get_unchecked(0) as *const $elem_ty as *const u8;
-                let mut x = Self::splat(ptr::null_mut() as $elem_ty);
+                let mut x = Self::splat(crate::ptr::null_mut() as $elem_ty);
                 let self_ptr = &mut x as *mut Self as *mut u8;
-                ptr::copy_nonoverlapping(
+                crate::ptr::copy_nonoverlapping(
                     target_ptr,
                     self_ptr,
                     size_of::<Self>(),
@@ -677,7 +677,7 @@ macro_rules! impl_minimal_p {
                             // offset pointer by one element
                             let ptr = ptr.wrapping_add(1);
 
-                            if ptr.align_offset(mem::align_of::<$id<i32>>()) == 0 {
+                            if ptr.align_offset(crate::mem::align_of::<$id<i32>>()) == 0 {
                                 // the pointer is properly aligned, so from_slice_aligned
                                 // won't fail here (e.g. this can happen for i128x1). So
                                 // we panic to make the "should_fail" test pass:
@@ -710,7 +710,7 @@ macro_rules! impl_minimal_p {
                     let target_ptr =
                         slice.get_unchecked_mut(0) as *mut $elem_ty;
                     assert!(
-                        target_ptr.align_offset(mem::align_of::<Self>())
+                        target_ptr.align_offset(crate::mem::align_of::<Self>())
                             == 0
                     );
                     self.write_to_slice_aligned_unchecked(slice);
@@ -758,10 +758,10 @@ macro_rules! impl_minimal_p {
                 let target_ptr =
                     slice.get_unchecked_mut(0) as *mut $elem_ty as *mut u8;
                 let self_ptr = &self as *const Self as *const u8;
-                ptr::copy_nonoverlapping(
+                crate::ptr::copy_nonoverlapping(
                     self_ptr,
                     target_ptr,
-                    mem::size_of::<Self>(),
+                    crate::mem::size_of::<Self>(),
                 );
             }
         }
@@ -859,7 +859,7 @@ macro_rules! impl_minimal_p {
                             // offset pointer by one element
                             let ptr = ptr.wrapping_add(1);
 
-                            if ptr.align_offset(mem::align_of::<$id<i32>>()) == 0 {
+                            if ptr.align_offset(crate::mem::align_of::<$id<i32>>()) == 0 {
                                 // the pointer is properly aligned, so write_to_slice_aligned
                                 // won't fail here (e.g. this can happen for i128x1). So
                                 // we panic to make the "should_fail" test pass:
@@ -879,10 +879,10 @@ macro_rules! impl_minimal_p {
             }
         }
 
-        impl<T> ::hash::Hash for $id<T> {
+        impl<T> crate::hash::Hash for $id<T> {
             #[inline]
-            fn hash<H: ::hash::Hasher>(&self, state: &mut H) {
-                let s: $usize_ty = unsafe { mem::transmute(*self) };
+            fn hash<H: crate::hash::Hasher>(&self, state: &mut H) {
+                let s: $usize_ty = unsafe { crate::mem::transmute(*self) };
                 s.hash(state)
             }
         }
@@ -894,9 +894,9 @@ macro_rules! impl_minimal_p {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn hash() {
-                        use ::hash::{Hash, Hasher};
+                        use crate::hash::{Hash, Hasher};
                         #[allow(deprecated)]
-                        use ::hash::{SipHasher13};
+                        use crate::hash::{SipHasher13};
 
                         let values = [1_i32; $elem_count];
 
@@ -904,7 +904,7 @@ macro_rules! impl_minimal_p {
                         let mut array = [$id::<i32>::null().extract(0); $elem_count];
 
                         for i in 0..$elem_count {
-                            let ptr = unsafe { mem::transmute(&values[[i]] as *const i32) };
+                            let ptr = unsafe { crate::mem::transmute(&values[[i]] as *const i32) };
                             vec = vec.replace(i, ptr);
                             array[[i]] = ptr;
                         }
@@ -979,9 +979,9 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn wrapping_offset(self, count: $isize_ty) -> Self {
                 unsafe {
-                    let x: $isize_ty = mem::transmute(self);
+                    let x: $isize_ty = crate::mem::transmute(self);
                     // note: {+,*} currently performs a `wrapping_{add, mul}`
-                    mem::transmute(x + (count * mem::size_of::<T>() as isize))
+                    crate::mem::transmute(x + (count * crate::mem::size_of::<T>() as isize))
                 }
             }
 
@@ -1046,10 +1046,10 @@ macro_rules! impl_minimal_p {
             /// different local variables.
             #[inline]
             pub fn wrapping_offset_from(self, origin: Self) -> $isize_ty {
-                let x: $isize_ty = unsafe { mem::transmute(self) };
-                let y: $isize_ty = unsafe { mem::transmute(origin) };
+                let x: $isize_ty = unsafe { crate::mem::transmute(self) };
+                let y: $isize_ty = unsafe { crate::mem::transmute(origin) };
                 // note: {-,/} currently perform wrapping_{sub, div}
-                (y - x) / (mem::size_of::<T>() as isize)
+                (y - x) / (crate::mem::size_of::<T>() as isize)
             }
 
             /// Calculates the offset from a pointer (convenience for

@@ -11,12 +11,12 @@ macro_rules! x86_m32x4_sse_impl {
                 #[cfg(target_arch = "x86")]
                 use ::arch::x86::_mm_movemask_ps;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm_movemask_ps;
+                use crate::arch::x86_64::_mm_movemask_ps;
                 // _mm_movemask_ps(a) creates a 4bit mask containing the
                 // most significant bit of each lane of `a`. If all
                 // bits are set, then all 4 lanes of the mask are
                 // true.
-                _mm_movemask_ps(::mem::transmute(self))
+                _mm_movemask_ps(crate::mem::transmute(self))
                     == 0b_1111_i32
             }
         }
@@ -27,9 +27,9 @@ macro_rules! x86_m32x4_sse_impl {
                 #[cfg(target_arch = "x86")]
                 use ::arch::x86::_mm_movemask_ps;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm_movemask_ps;
+                use crate::arch::x86_64::_mm_movemask_ps;
 
-                _mm_movemask_ps(::mem::transmute(self)) != 0
+                _mm_movemask_ps(crate::mem::transmute(self)) != 0
             }
         }
     };

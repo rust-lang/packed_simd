@@ -15,7 +15,7 @@ macro_rules! impl_slice_from_slice {
                     assert!(slice.len() >= $elem_count);
                     let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
                     assert_eq!(
-                        target_ptr.align_offset(mem::align_of::<Self>()),
+                        target_ptr.align_offset(crate::mem::align_of::<Self>()),
                         0
                     );
                     Self::from_slice_aligned_unchecked(slice)
@@ -46,7 +46,7 @@ macro_rules! impl_slice_from_slice {
                 debug_assert!(slice.len() >= $elem_count);
                 let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
                 debug_assert_eq!(
-                    target_ptr.align_offset(mem::align_of::<Self>()),
+                    target_ptr.align_offset(crate::mem::align_of::<Self>()),
                     0
                 );
 
@@ -63,13 +63,13 @@ macro_rules! impl_slice_from_slice {
             pub unsafe fn from_slice_unaligned_unchecked(
                 slice: &[$elem_ty],
             ) -> Self {
-                use mem::size_of;
+                use crate::mem::size_of;
                 debug_assert!(slice.len() >= $elem_count);
                 let target_ptr =
                     slice.get_unchecked(0) as *const $elem_ty as *const u8;
                 let mut x = Self::splat(0 as $elem_ty);
                 let self_ptr = &mut x as *mut Self as *mut u8;
-                ptr::copy_nonoverlapping(
+                crate::ptr::copy_nonoverlapping(
                     target_ptr,
                     self_ptr,
                     size_of::<Self>(),
@@ -170,7 +170,7 @@ macro_rules! impl_slice_from_slice {
                             // offset pointer by one element
                             let ptr = ptr.wrapping_add(1);
 
-                            if ptr.align_offset(mem::align_of::<$id>()) == 0 {
+                            if ptr.align_offset(crate::mem::align_of::<$id>()) == 0 {
                                 // the pointer is properly aligned, so from_slice_aligned
                                 // won't fail here (e.g. this can happen for i128x1). So
                                 // we panic to make the "should_fail" test pass:
