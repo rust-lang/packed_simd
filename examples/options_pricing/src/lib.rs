@@ -1,4 +1,4 @@
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
@@ -12,15 +12,9 @@
         clippy::too_many_arguments
     )
 )]
-extern crate packed_simd;
-extern crate rayon;
 
 use packed_simd::f32x8 as f32s;
 use packed_simd::f64x8 as f64s;
-
-#[cfg(feature = "ispc")]
-#[macro_use]
-extern crate ispc;
 
 const BINOMIAL_NUM: usize = 64;
 

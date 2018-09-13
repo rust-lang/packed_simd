@@ -1,5 +1,5 @@
 /// Scene interface
-use geometry::{f32xN, Plane, Sphere};
+use crate::geometry::{f32xN, Plane, Sphere};
 
 pub trait Scene: Send + Sync + Default {
     const NAO_SAMPLES: usize;

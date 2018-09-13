@@ -1,7 +1,7 @@
 //! Intersection of a ray with a plane
 
-use geometry::{f32xN, Dot, Plane, Ray, RayxN, Selectable};
-use intersection::{Intersect, Isect, IsectxN};
+use crate::geometry::{f32xN, Dot, Plane, Ray, RayxN, Selectable};
+use crate::intersection::{Intersect, Isect, IsectxN};
 
 // Scalar ray-plane intersection
 impl Intersect<Plane> for Ray {
@@ -72,7 +72,7 @@ impl Intersect<Plane> for RayxN {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use geometry::{m32xN, V3DxN, V3D};
+    use crate::geometry::{m32xN, V3DxN, V3D};
 
     #[test]
     fn sanity() {

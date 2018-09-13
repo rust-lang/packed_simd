@@ -74,7 +74,7 @@ pub mod scalar {
 
 /// Vector pseudo random number generator
 pub mod vector {
-    use geometry::{f32xN, u32xN, IncrV};
+    use crate::geometry::{f32xN, u32xN, IncrV};
     use std::cell::UnsafeCell;
     use std::rc::Rc;
     struct RngT(u32xN, u32xN, u32xN, u32xN);

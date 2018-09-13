@@ -1,7 +1,7 @@
 //! Intersection of a ray with a sphere.
 
-use geometry::{f32xN, Dot, Ray, RayxN, Selectable, Sphere};
-use intersection::{Intersect, Isect, IsectxN};
+use crate::geometry::{f32xN, Dot, Ray, RayxN, Selectable, Sphere};
+use crate::intersection::{Intersect, Isect, IsectxN};
 
 // Scalar ray-sphere intersection
 impl Intersect<Sphere> for Ray {
@@ -78,7 +78,7 @@ impl Intersect<Sphere> for RayxN {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use geometry::{m32xN, V3DxN, V3D};
+    use crate::geometry::{m32xN, V3DxN, V3D};
 
     #[test]
     fn sanity() {

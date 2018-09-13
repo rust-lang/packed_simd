@@ -153,7 +153,7 @@ impl Mul<V3D> for M3x3 {
 /// Vector dot product
 pub trait Dot<O> {
     type Output;
-    fn dot(self, O) -> Self::Output;
+    fn dot(self, _: O) -> Self::Output;
 }
 
 impl Dot<V3D> for V3D {

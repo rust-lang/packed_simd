@@ -1,6 +1,6 @@
 //! SIMD implementation
 
-use f32s;
+use crate::f32s;
 
 pub fn parallel<K>(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
@@ -25,21 +25,21 @@ where
             }
         },
     );
-    ::sum::slice(&result)
+    crate::sum::slice(&result)
 }
 
 pub fn black_scholes(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
     result: &mut [f32], count: usize,
 ) -> f64 {
-    parallel(sa, xa, ta, ra, va, result, count, ::simd_kernels::black_scholes)
+    parallel(sa, xa, ta, ra, va, result, count, crate::simd_kernels::black_scholes)
 }
 
 pub fn binomial_put(
     sa: &[f32], xa: &[f32], ta: &[f32], ra: &[f32], va: &[f32],
     result: &mut [f32], count: usize,
 ) -> f64 {
-    parallel(sa, xa, ta, ra, va, result, count, ::simd_kernels::binomial_put)
+    parallel(sa, xa, ta, ra, va, result, count, crate::simd_kernels::binomial_put)
 }
 
 #[cfg(test)]

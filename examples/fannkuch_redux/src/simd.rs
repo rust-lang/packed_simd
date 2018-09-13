@@ -1,7 +1,6 @@
 //! Vectorized fannkuch redux implementation
 
 use packed_simd::*;
-use *;
 
 struct State {
     s: [u8; 16],

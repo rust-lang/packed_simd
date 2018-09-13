@@ -2,7 +2,7 @@
 
 use std::ops::*;
 
-use geometry::{f32xN, m32xN, Dot, M3x3, V3D};
+use crate::geometry::{f32xN, m32xN, Dot, M3x3, V3D};
 
 #[derive(Copy, Clone, Debug)]
 pub struct V3DxN {

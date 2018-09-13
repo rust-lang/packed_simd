@@ -2,7 +2,7 @@
 //!
 //! Based on [aobench](https://code.google.com/archive/p/aobench/) by Syoyo
 //! Fujita.
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![allow(non_snake_case, non_camel_case_types)]
 #![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
@@ -18,16 +18,6 @@
         clippy::erasing_op
     )
 )]
-
-#[macro_use]
-extern crate cfg_if;
-extern crate failure;
-extern crate packed_simd;
-extern crate png;
-extern crate rayon;
-#[cfg(feature = "ispc")]
-#[macro_use]
-extern crate ispc;
 
 pub mod ambient_occlusion;
 pub mod geometry;

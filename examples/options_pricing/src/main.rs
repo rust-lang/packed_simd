@@ -1,9 +1,7 @@
+#![deny(warnings, rust_2018_idioms)]
 #![feature(custom_inner_attributes)]
 
-extern crate options_pricing_lib;
 use options_pricing_lib::*;
-
-extern crate time;
 
 #[rustfmt::skip]
 fn run<F>(name: &str, count: usize, f: F)

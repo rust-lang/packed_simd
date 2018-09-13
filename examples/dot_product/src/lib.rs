@@ -1,8 +1,6 @@
 //! Vector dot product
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 #![feature(custom_inner_attributes)]
-
-extern crate packed_simd;
 
 pub mod scalar;
 pub mod simd;

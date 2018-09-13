@@ -1,8 +1,7 @@
 //! The N-body benchmark from the [benchmarks game][bg].
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
-#![deny(warnings)]
-extern crate nbody_lib;
+#![deny(warnings, rust_2018_idioms)]
 
 fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let (energy_before, energy_after) = nbody_lib::run(n, alg);

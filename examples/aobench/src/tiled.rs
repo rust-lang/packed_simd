@@ -1,12 +1,13 @@
 //! SIMD serial aobench
 
-use ambient_occlusion;
-use geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
-use intersection::{Intersect, IsectxN};
-use scene::Scene;
+use crate::ambient_occlusion;
+use crate::geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
+use crate::intersection::{Intersect, IsectxN};
+use crate::scene::Scene;
+use cfg_if::cfg_if;
 
 #[inline(always)]
-fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
+fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
     let (w, h) = img.size();
     assert_eq!(w % f32xN::lanes(), 0);
     let image = &mut img.fdata;
@@ -76,30 +77,30 @@ cfg_if! {
     if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
         #[target_feature(enable = "sse4.2")]
         unsafe fn ao_sse42<S: Scene>(scene: &mut S, nsubsamples: usize,
-                                     img: &mut ::Image) {
+                                     img: &mut crate::Image) {
             ao_impl(scene, nsubsamples, img);
         }
 
         #[target_feature(enable = "avx")]
         unsafe fn ao_avx<S: Scene>(scene: &mut S, nsubsamples: usize,
-                                   img: &mut ::Image) {
+                                   img: &mut crate::Image) {
             ao_impl(scene, nsubsamples, img);
         }
 
         #[target_feature(enable = "avx,fma")]
         unsafe fn ao_avx_fma<S: Scene>(scene: &mut S, nsubsamples: usize,
-                                   img: &mut ::Image) {
+                                   img: &mut crate::Image) {
             ao_impl(scene, nsubsamples, img);
         }
 
         #[target_feature(enable = "avx2,fma")]
         unsafe fn ao_avx2<S: Scene>(scene: &mut S, nsubsamples: usize,
-                                    img: &mut ::Image) {
+                                    img: &mut crate::Image) {
             ao_impl(scene, nsubsamples, img);
         }
 
         pub fn ao<S: Scene>(scene: &mut S, nsubsamples: usize,
-                            img: &mut ::Image) {
+                            img: &mut crate::Image) {
             unsafe {
                 if is_x86_feature_detected!("avx2") && is_x86_feature_detected!("fma") {
                     ao_avx2(scene, nsubsamples, img);

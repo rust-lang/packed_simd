@@ -1,5 +1,6 @@
 //! 4x4 matrix inverse using SIMD
-use *;
+use crate::*;
+use packed_simd::shuffle;
 
 use packed_simd::f32x4;
 

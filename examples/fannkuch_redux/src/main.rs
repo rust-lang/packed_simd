@@ -1,6 +1,5 @@
-#![deny(warnings)]
+#![deny(warnings, rust_2018_idioms)]
 
-extern crate fannkuch_redux_lib;
 use fannkuch_redux_lib::*;
 
 fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {

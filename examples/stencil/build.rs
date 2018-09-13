@@ -1,6 +1,3 @@
-#[cfg(feature = "ispc")]
-extern crate ispc;
-
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
 

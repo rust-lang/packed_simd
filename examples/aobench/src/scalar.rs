@@ -1,11 +1,11 @@
 //! Scalar serial aobench
 
-use ambient_occlusion;
-use geometry::{Ray, V3D};
-use intersection::{Intersect, Isect};
-use scene::Scene;
+use crate::ambient_occlusion;
+use crate::geometry::{Ray, V3D};
+use crate::intersection::{Intersect, Isect};
+use crate::scene::Scene;
 
-pub fn ao<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
+pub fn ao<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
     let (w, h) = img.size();
     let image = &mut img.fdata;
     let ns = nsubsamples;

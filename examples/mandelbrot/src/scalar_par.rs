@@ -1,7 +1,7 @@
 //! Scalar mandelbrot implementation
 
 use rayon::prelude::*;
-use *;
+use crate::*;
 
 /// Complex number
 #[repr(align(16))]

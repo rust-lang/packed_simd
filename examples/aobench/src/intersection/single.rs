@@ -1,6 +1,6 @@
 //! Scalar intersection result
 
-use geometry::V3D;
+use crate::geometry::V3D;
 
 /// Intersection result
 #[derive(Copy, Clone, Debug)]

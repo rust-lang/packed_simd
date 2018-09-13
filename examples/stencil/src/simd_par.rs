@@ -1,6 +1,6 @@
 //! SIMD+Rayon implementation.
 use rayon::prelude::*;
-use simd::step_x8;
+use crate::simd::step_x8;
 
 #[inline(always)]
 fn x8_par_impl(
