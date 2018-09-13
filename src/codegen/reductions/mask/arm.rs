@@ -8,7 +8,7 @@ macro_rules! arm_m32x2_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn all(self) -> bool {
                 use arch::arm::$vpmin;
-                use mem::transmute;
+                use crate::mem::transmute;
                 // pmin((a, b), (-,-)) => (b, -).0 => b
                 let tmp: $id =
                     transmute($vpmin(transmute(self), ::mem::uninitialized()));
@@ -20,7 +20,7 @@ macro_rules! arm_m32x2_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn any(self) -> bool {
                 use arch::arm::$vpmax;
-                use mem::transmute;
+                use crate::mem::transmute;
                 // pmax((a, b), (-,-)) => (b, -).0 => b
                 let tmp: $id =
                     transmute($vpmax(transmute(self), ::mem::uninitialized()));
@@ -38,7 +38,7 @@ macro_rules! arm_m16x4_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn all(self) -> bool {
                 use arch::arm::$vpmin;
-                use mem::transmute;
+                use crate::mem::transmute;
                 // tmp = pmin((a, b, c, d), (-,-,-,-)) => (a, c, -, -)
                 let tmp = $vpmin(transmute(self), ::mem::uninitialized());
                 // tmp = pmin((a, b, -, -), (-,-,-,-)) => (c, -, -, -).0 => c
@@ -51,7 +51,7 @@ macro_rules! arm_m16x4_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn any(self) -> bool {
                 use arch::arm::$vpmax;
-                use mem::transmute;
+                use crate::mem::transmute;
                 // tmp = pmax((a, b, c, d), (-,-,-,-)) => (a, c, -, -)
                 let tmp = $vpmax(transmute(self), ::mem::uninitialized());
                 // tmp = pmax((a, b, -, -), (-,-,-,-)) => (c, -, -, -).0 => c
@@ -70,7 +70,7 @@ macro_rules! arm_m8x8_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn all(self) -> bool {
                 use arch::arm::$vpmin;
-                use mem::transmute;
+                use crate::mem::transmute;
                 // tmp = pmin(
                 //     (a, b, c, d, e, f, g, h),
                 //     (-, -, -, -, -, -, -, -)
@@ -94,7 +94,7 @@ macro_rules! arm_m8x8_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn any(self) -> bool {
                 use arch::arm::$vpmax;
-                use mem::transmute;
+                use crate::mem::transmute;
                 // tmp = pmax(
                 //     (a, b, c, d, e, f, g, h),
                 //     (-, -, -, -, -, -, -, -)
@@ -125,7 +125,7 @@ macro_rules! arm_128_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn all(self) -> bool {
                 use arch::arm::$vpmin;
-                use mem::transmute;
+                use crate::mem::transmute;
                 union U {
                     halves: ($half, $half),
                     vec: $id,
@@ -143,7 +143,7 @@ macro_rules! arm_128_v7_neon_impl {
             #[target_feature(enable = "v7,neon")]
             unsafe fn any(self) -> bool {
                 use arch::arm::$vpmax;
-                use mem::transmute;
+                use crate::mem::transmute;
                 union U {
                     halves: ($half, $half),
                     vec: $id,

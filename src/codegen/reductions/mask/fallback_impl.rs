@@ -5,14 +5,14 @@ macro_rules! fallback_to_other_impl {
         impl All for $id {
             #[inline]
             unsafe fn all(self) -> bool {
-                let m: $other = mem::transmute(self);
+                let m: $other = crate::mem::transmute(self);
                 m.all()
             }
         }
         impl Any for $id {
             #[inline]
             unsafe fn any(self) -> bool {
-                let m: $other = mem::transmute(self);
+                let m: $other = crate::mem::transmute(self);
                 m.any()
             }
         }
@@ -26,14 +26,14 @@ macro_rules! fallback_impl {
         impl All for m8x2 {
             #[inline]
             unsafe fn all(self) -> bool {
-                let i: u16 = mem::transmute(self);
+                let i: u16 = crate::mem::transmute(self);
                 i == u16::max_value()
             }
         }
         impl Any for m8x2 {
             #[inline]
             unsafe fn any(self) -> bool {
-                let i: u16 = mem::transmute(self);
+                let i: u16 = crate::mem::transmute(self);
                 i != 0
             }
         }
@@ -43,14 +43,14 @@ macro_rules! fallback_impl {
         impl All for m8x4 {
             #[inline]
             unsafe fn all(self) -> bool {
-                let i: u32 = mem::transmute(self);
+                let i: u32 = crate::mem::transmute(self);
                 i == u32::max_value()
             }
         }
         impl Any for m8x4 {
             #[inline]
             unsafe fn any(self) -> bool {
-                let i: u32 = mem::transmute(self);
+                let i: u32 = crate::mem::transmute(self);
                 i != 0
             }
         }
@@ -63,14 +63,14 @@ macro_rules! fallback_impl {
         impl All for m8x8 {
             #[inline]
             unsafe fn all(self) -> bool {
-                let i: u64 = mem::transmute(self);
+                let i: u64 = crate::mem::transmute(self);
                 i == u64::max_value()
             }
         }
         impl Any for m8x8 {
             #[inline]
             unsafe fn any(self) -> bool {
-                let i: u64 = mem::transmute(self);
+                let i: u64 = crate::mem::transmute(self);
                 i != 0
             }
         }
@@ -87,14 +87,14 @@ macro_rules! fallback_impl {
         impl All for m8x16 {
             #[inline]
             unsafe fn all(self) -> bool {
-                let i: u128 = mem::transmute(self);
+                let i: u128 = crate::mem::transmute(self);
                 i == u128::max_value()
             }
         }
         impl Any for m8x16 {
             #[inline]
             unsafe fn any(self) -> bool {
-                let i: u128 = mem::transmute(self);
+                let i: u128 = crate::mem::transmute(self);
                 i != 0
             }
         }
@@ -116,7 +116,7 @@ macro_rules! fallback_impl {
         impl All for m8x32 {
             #[inline]
             unsafe fn all(self) -> bool {
-                let i: [u128; 2] = mem::transmute(self);
+                let i: [u128; 2] = crate::mem::transmute(self);
                 let o: [u128; 2] = [u128::max_value(); 2];
                 i == o
             }
@@ -124,7 +124,7 @@ macro_rules! fallback_impl {
         impl Any for m8x32 {
             #[inline]
             unsafe fn any(self) -> bool {
-                let i: [u128; 2] = mem::transmute(self);
+                let i: [u128; 2] = crate::mem::transmute(self);
                 let o: [u128; 2] = [0; 2];
                 i != o
             }
@@ -147,7 +147,7 @@ macro_rules! fallback_impl {
         impl All for m8x64 {
             #[inline]
             unsafe fn all(self) -> bool {
-                let i: [u128; 4] = mem::transmute(self);
+                let i: [u128; 4] = crate::mem::transmute(self);
                 let o: [u128; 4] = [u128::max_value(); 4];
                 i == o
             }
@@ -155,7 +155,7 @@ macro_rules! fallback_impl {
         impl Any for m8x64 {
             #[inline]
             unsafe fn any(self) -> bool {
-                let i: [u128; 4] = mem::transmute(self);
+                let i: [u128; 4] = crate::mem::transmute(self);
                 let o: [u128; 4] = [0; 4];
                 i != o
             }

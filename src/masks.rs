@@ -107,7 +107,7 @@ macro_rules! impl_mask_ty {
             #[inline]
             #[cfg_attr(feature = "cargo-clippy", allow(clippy::write_literal))]
             fn fmt(
-                &self, fmtter: &mut crate::fmt::Formatter,
+                &self, fmtter: &mut crate::fmt::Formatter<'_>,
             ) -> Result<(), crate::fmt::Error> {
                 write!(fmtter, "{}({})", stringify!($id), self.0 != 0)
             }

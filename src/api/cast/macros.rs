@@ -5,7 +5,7 @@ macro_rules! impl_from_cast_ {
         impl crate::api::cast::FromCast<$from_ty> for $id {
             #[inline]
             fn from_cast(x: $from_ty) -> Self {
-                use codegen::llvm::simd_cast;
+                use crate::codegen::llvm::simd_cast;
                 debug_assert_eq!($from_ty::lanes(), $id::lanes());
                 Simd(unsafe { simd_cast(x.0) })
             }

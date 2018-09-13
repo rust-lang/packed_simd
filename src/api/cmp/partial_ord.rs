@@ -12,17 +12,19 @@ macro_rules! impl_cmp_partial_ord {
             }
         }
 
-        impl ::cmp::PartialOrd<LexicographicallyOrdered<$id>>
+        impl crate::cmp::PartialOrd<LexicographicallyOrdered<$id>>
             for LexicographicallyOrdered<$id>
         {
             #[inline]
-            fn partial_cmp(&self, other: &Self) -> Option<::cmp::Ordering> {
+            fn partial_cmp(
+                &self, other: &Self,
+            ) -> Option<crate::cmp::Ordering> {
                 if PartialEq::eq(self, other) {
-                    Some(::cmp::Ordering::Equal)
+                    Some(crate::cmp::Ordering::Equal)
                 } else if PartialOrd::lt(self, other) {
-                    Some(::cmp::Ordering::Less)
+                    Some(crate::cmp::Ordering::Less)
                 } else if PartialOrd::gt(self, other) {
-                    Some(::cmp::Ordering::Greater)
+                    Some(crate::cmp::Ordering::Greater)
                 } else {
                     None
                 }
@@ -72,7 +74,7 @@ macro_rules! test_cmp_partial_ord_int {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn partial_lex_ord() {
-                        use ::testing::utils::{test_cmp};
+                        use crate::testing::utils::{test_cmp};
                         // constant values
                         let a = $id::splat(0);
                         let b = $id::splat(1);
@@ -159,7 +161,7 @@ macro_rules! test_cmp_partial_ord_mask {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn partial_lex_ord() {
-                        use ::testing::utils::{test_cmp};
+                        use crate::testing::utils::{test_cmp};
                         // constant values
                         let a = $id::splat(false);
                         let b = $id::splat(true);

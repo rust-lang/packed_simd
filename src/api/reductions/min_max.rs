@@ -14,7 +14,7 @@ macro_rules! impl_reduction_min_max {
                     target_arch = "wasm32",
                 )))]
                 {
-                    use llvm::simd_reduce_max;
+                    use crate::llvm::simd_reduce_max;
                     let v: $ielem_ty = unsafe { simd_reduce_max(self.0) };
                     v as $elem_ty
                 }
@@ -48,7 +48,7 @@ macro_rules! impl_reduction_min_max {
                     target_arch = "wasm32",
                 ),))]
                 {
-                    use llvm::simd_reduce_min;
+                    use crate::llvm::simd_reduce_min;
                     let v: $ielem_ty = unsafe { simd_reduce_min(self.0) };
                     v as $elem_ty
                 }

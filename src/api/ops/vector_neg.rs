@@ -2,7 +2,7 @@
 
 macro_rules! impl_ops_vector_neg {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
-        impl ::ops::Neg for $id {
+        impl crate::ops::Neg for $id {
             type Output = Self;
             #[inline]
             fn neg(self) -> Self {

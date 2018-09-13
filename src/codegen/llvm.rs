@@ -1,9 +1,9 @@
 //! LLVM's platform intrinsics
 #![allow(dead_code)]
 
-use sealed::Shuffle;
+use crate::sealed::Shuffle;
 #[allow(unused_imports)] // FIXME: spurious warning?
-use sealed::Simd;
+use crate::sealed::Simd;
 
 // Shuffle intrinsics: expanded in users' crates, therefore public.
 extern "platform-intrinsic" {

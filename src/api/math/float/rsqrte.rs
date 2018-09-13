@@ -9,7 +9,7 @@ macro_rules! impl_math_float_rsqrte {
             #[inline]
             pub fn rsqrte(self) -> Self {
                 unsafe {
-                    use llvm::simd_fsqrt;
+                    use crate::llvm::simd_fsqrt;
                     $id::splat(1.) / Simd(simd_fsqrt(self.0))
                 }
             }

@@ -8,13 +8,13 @@ macro_rules! x86_m8x8_mmx_impl {
             #[target_feature(enable = "mmx")]
             unsafe fn all(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm_movemask_pi8;
+                use crate::arch::x86::_mm_movemask_pi8;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm_movemask_pi8;
+                use crate::arch::x86_64::_mm_movemask_pi8;
                 // _mm_movemask_pi8(a) creates an 8bit mask containing the most
                 // significant bit of each byte of `a`. If all bits are set,
                 // then all 8 lanes of the mask are true.
-                _mm_movemask_pi8(::mem::transmute(self))
+                _mm_movemask_pi8(crate::mem::transmute(self))
                     == u8::max_value() as i32
             }
         }
@@ -23,11 +23,11 @@ macro_rules! x86_m8x8_mmx_impl {
             #[target_feature(enable = "mmx")]
             unsafe fn any(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm_movemask_pi8;
+                use crate::arch::x86::_mm_movemask_pi8;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm_movemask_pi8;
+                use crate::arch::x86_64::_mm_movemask_pi8;
 
-                _mm_movemask_pi8(::mem::transmute(self)) != 0
+                _mm_movemask_pi8(crate::mem::transmute(self)) != 0
             }
         }
     };

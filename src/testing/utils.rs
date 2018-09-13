@@ -66,13 +66,13 @@ pub fn test_cmp<T>(
     let mut arr_b: [T::Element; 64] = [Default::default(); 64];
 
     unsafe {
-        crate::ptr::write_unaligned(
+        cratecrate::ptr::write_unaligned(
             arr_a.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
             a,
         )
     }
     unsafe {
-        crate::ptr::write_unaligned(
+        cratecrate::ptr::write_unaligned(
             arr_b.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
             b,
         )
@@ -125,10 +125,11 @@ macro_rules! ptr_vals {
         #[allow(unused_unsafe)]
         unsafe {
             // all bits cleared
-            let mut clear: <$id as sealed::Simd>::Element = mem::zeroed();
+            let mut clear: <$id as sealed::Simd>::Element =
+                crate::mem::zeroed();
             // all bits set
             let mut set: <$id as sealed::Simd>::Element =
-                mem::transmute(-1_isize);
+                crate::mem::transmute(-1_isize);
             (clear, set)
         }
     };

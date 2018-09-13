@@ -10,12 +10,12 @@ macro_rules! x86_m8x32_avx_impl {
             #[target_feature(enable = "avx")]
             unsafe fn all(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_testc_si256;
+                use crate::arch::x86::_mm256_testc_si256;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_testc_si256;
+                use crate::arch::x86_64::_mm256_testc_si256;
                 _mm256_testc_si256(
-                    ::mem::transmute(self),
-                    ::mem::transmute($id::splat(true)),
+                    crate::mem::transmute(self),
+                    crate::mem::transmute($id::splat(true)),
                 ) != 0
             }
         }
@@ -24,12 +24,12 @@ macro_rules! x86_m8x32_avx_impl {
             #[target_feature(enable = "avx")]
             unsafe fn any(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_testz_si256;
+                use crate::arch::x86::_mm256_testz_si256;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_testz_si256;
+                use crate::arch::x86_64::_mm256_testz_si256;
                 _mm256_testz_si256(
-                    ::mem::transmute(self),
-                    ::mem::transmute(self),
+                    crate::mem::transmute(self),
+                    crate::mem::transmute(self),
                 ) == 0
             }
         }
@@ -44,13 +44,13 @@ macro_rules! x86_m32x8_avx_impl {
             #[target_feature(enable = "sse")]
             unsafe fn all(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_movemask_ps;
+                use crate::arch::x86::_mm256_movemask_ps;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_movemask_ps;
+                use crate::arch::x86_64::_mm256_movemask_ps;
                 // _mm256_movemask_ps(a) creates a 8bit mask containing the
                 // most significant bit of each lane of `a`. If all bits are
                 // set, then all 8 lanes of the mask are true.
-                _mm256_movemask_ps(::mem::transmute(self)) == 0b_1111_1111_i32
+                _mm256_movemask_ps(crate::mem::transmute(self)) == 0b_1111_1111_i32
             }
         }
         impl Any for $id {
@@ -58,11 +58,11 @@ macro_rules! x86_m32x8_avx_impl {
             #[target_feature(enable = "sse")]
             unsafe fn any(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_movemask_ps;
+                use crate::arch::x86::_mm256_movemask_ps;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_movemask_ps;
+                use crate::arch::x86_64::_mm256_movemask_ps;
 
-                _mm256_movemask_ps(::mem::transmute(self)) != 0
+                _mm256_movemask_ps(crate::mem::transmute(self)) != 0
             }
         }
     };
@@ -76,13 +76,13 @@ macro_rules! x86_m64x4_avx_impl {
             #[target_feature(enable = "sse")]
             unsafe fn all(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_movemask_pd;
+                use crate::arch::x86::_mm256_movemask_pd;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_movemask_pd;
+                use crate::arch::x86_64::_mm256_movemask_pd;
                 // _mm256_movemask_pd(a) creates a 4bit mask containing the
                 // most significant bit of each lane of `a`. If all bits are
                 // set, then all 4 lanes of the mask are true.
-                _mm256_movemask_pd(::mem::transmute(self)) == 0b_1111_i32
+                _mm256_movemask_pd(crate::mem::transmute(self)) == 0b_1111_i32
             }
         }
         impl Any for $id {
@@ -90,13 +90,12 @@ macro_rules! x86_m64x4_avx_impl {
             #[target_feature(enable = "sse")]
             unsafe fn any(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_movemask_pd;
+                use crate::arch::x86::_mm256_movemask_pd;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_movemask_pd;
+                use crate::arch::x86_64::_mm256_movemask_pd;
 
-                _mm256_movemask_pd(::mem::transmute(self)) != 0
+                _mm256_movemask_pd(crate::mem::transmute(self)) != 0
             }
         }
     };
 }
-

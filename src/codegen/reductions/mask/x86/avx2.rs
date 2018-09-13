@@ -9,14 +9,14 @@ macro_rules! x86_m8x32_avx2_impl {
             #[target_feature(enable = "sse2")]
             unsafe fn all(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_movemask_epi8;
+                use crate::arch::x86::_mm256_movemask_epi8;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_movemask_epi8;
+                use crate::arch::x86_64::_mm256_movemask_epi8;
                 // _mm256_movemask_epi8(a) creates a 32bit mask containing the
                 // most significant bit of each byte of `a`. If all
                 // bits are set, then all 32 lanes of the mask are
                 // true.
-                _mm256_movemask_epi8(::mem::transmute(self)) == -1_i32
+                _mm256_movemask_epi8(crate::mem::transmute(self)) == -1_i32
             }
         }
         impl Any for $id {
@@ -24,11 +24,11 @@ macro_rules! x86_m8x32_avx2_impl {
             #[target_feature(enable = "sse2")]
             unsafe fn any(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm256_movemask_epi8;
+                use crate::arch::x86::_mm256_movemask_epi8;
                 #[cfg(target_arch = "x86_64")]
-                use ::arch::x86_64::_mm256_movemask_epi8;
+                use crate::arch::x86_64::_mm256_movemask_epi8;
 
-                _mm256_movemask_epi8(::mem::transmute(self)) != 0
+                _mm256_movemask_epi8(crate::mem::transmute(self)) != 0
             }
         }
     };

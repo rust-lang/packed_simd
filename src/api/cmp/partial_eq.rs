@@ -8,7 +8,7 @@ macro_rules! impl_cmp_partial_eq {
     ) => {
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
         #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
-        impl ::cmp::PartialEq<$id> for $id {
+        impl crate::cmp::PartialEq<$id> for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
                 $id::eq(*self, *other).all()
@@ -21,7 +21,7 @@ macro_rules! impl_cmp_partial_eq {
 
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
         #[cfg_attr(feature = "cargo-clippy", allow(clippy::partialeq_ne_impl))]
-        impl ::cmp::PartialEq<LexicographicallyOrdered<$id>>
+        impl crate::cmp::PartialEq<LexicographicallyOrdered<$id>>
             for LexicographicallyOrdered<$id>
         {
             #[inline]

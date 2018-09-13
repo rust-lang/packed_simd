@@ -9,7 +9,7 @@ macro_rules! impl_unary_ {
             #[inline]
             fn $trait_method(self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     transmute($fun(transmute(self)))
                 }
             }
@@ -22,7 +22,7 @@ macro_rules! impl_unary_ {
             #[inline]
             fn $trait_method(self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     transmute($fun(self.0))
                 }
             }
@@ -53,7 +53,7 @@ macro_rules! impl_unary_ {
             #[inline]
             fn $trait_method(self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     union U {
                         vec: $vec_id,
                         halves: [$vech_id; 2],
@@ -77,7 +77,7 @@ macro_rules! impl_unary_ {
             #[inline]
             fn $trait_method(self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     union U {
                         vec: $vec_id,
                         quarters: [$vecq_id; 4],
@@ -105,7 +105,7 @@ macro_rules! impl_unary_ {
             #[inline]
             fn $trait_method(self) -> Self {
                 unsafe {
-                    use mem::{transmute, uninitialized};
+                    use crate::mem::{transmute, uninitialized};
 
                     union U {
                         vec: [$vec_id; 2],
@@ -181,7 +181,7 @@ macro_rules! impl_tertiary_ {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     transmute($fun(
                         transmute(self),
                         transmute(y),
@@ -218,7 +218,7 @@ macro_rules! impl_tertiary_ {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     union U {
                         vec: $vec_id,
                         halves: [$vech_id; 2],
@@ -250,7 +250,7 @@ macro_rules! impl_tertiary_ {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     union U {
                         vec: $vec_id,
                         quarters: [$vecq_id; 4],
@@ -295,7 +295,7 @@ macro_rules! impl_tertiary_ {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
                 unsafe {
-                    use mem::{transmute, uninitialized};
+                    use crate::mem::{transmute, uninitialized};
 
                     union U {
                         vec: [$vec_id; 2],
@@ -374,7 +374,7 @@ macro_rules! impl_binary_ {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     transmute($fun(transmute(self), transmute(y)))
                 }
             }
@@ -406,7 +406,7 @@ macro_rules! impl_binary_ {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     union U {
                         vec: $vec_id,
                         halves: [$vech_id; 2],
@@ -435,7 +435,7 @@ macro_rules! impl_binary_ {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
                 unsafe {
-                    use mem::transmute;
+                    use crate::mem::transmute;
                     union U {
                         vec: $vec_id,
                         quarters: [$vecq_id; 4],
@@ -475,7 +475,7 @@ macro_rules! impl_binary_ {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
                 unsafe {
-                    use mem::{transmute, uninitialized};
+                    use crate::mem::{transmute, uninitialized};
 
                     union U {
                         vec: [$vec_id; 2],

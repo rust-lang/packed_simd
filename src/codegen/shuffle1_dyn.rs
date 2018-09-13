@@ -1,10 +1,10 @@
 //! Shuffle vector lanes with run-time indices.
 
-use *;
+use crate::*;
 
 pub trait Shuffle1Dyn {
     type Indices;
-    fn shuffle1_dyn(self, Self::Indices) -> Self;
+    fn shuffle1_dyn(self, _: Self::Indices) -> Self;
 }
 
 // Fallback implementation
@@ -40,8 +40,8 @@ macro_rules! impl_shuffle1_dyn {
                         use arch::x86_64::_mm_shuffle_pi8;
 
                         unsafe {
-                            mem::transmute(_mm_shuffle_pi8(
-                                mem::transmute(self.0), mem::transmute(indices.0))
+                           crate::mem::transmute(_mm_shuffle_pi8(
+                               crate::mem::transmute(self.0),crate::mem::transmute(indices.0))
                             )
                         }
                     }
@@ -67,7 +67,7 @@ macro_rules! impl_shuffle1_dyn {
                         unsafe {
                             Simd(mem::transmute(
                                 vtbl1_u8(mem::transmute(self.0),
-                                         mem::transmute(indices.0))
+                                        crate::mem::transmute(indices.0))
                             ))
                         }
                     }
@@ -95,7 +95,7 @@ macro_rules! impl_shuffle1_dyn {
                         unsafe {
                             Simd(mem::transmute(
                                 _mm_shuffle_epi8(mem::transmute(self.0),
-                                                 mem::transmute(indices))
+                                                crate::mem::transmute(indices))
                             ))
                         }
                     }
@@ -114,7 +114,7 @@ macro_rules! impl_shuffle1_dyn {
                         unsafe {
                             Simd(mem::transmute(
                                 vqtbl1q_u8(mem::transmute(self.0),
-                                           mem::transmute(indices.0))
+                                          crate::mem::transmute(indices.0))
                             ))
                         }
                     }
@@ -138,8 +138,8 @@ macro_rules! impl_shuffle1_dyn {
 
                             let (i0, i1) = U { j: y }.s;
 
-                            let r0 = vtbl2_u8(mem::transmute(x), mem::transmute(i0));
-                            let r1 = vtbl2_u8(mem::transmute(x), mem::transmute(i1));
+                            let r0 = vtbl2_u8(mem::transmute(x),crate::mem::transmute(i0));
+                            let r1 = vtbl2_u8(mem::transmute(x),crate::mem::transmute(i1));
 
                             let r = U { s: (r0, r1) }.j;
 
@@ -163,8 +163,8 @@ macro_rules! impl_shuffle1_dyn {
                 let v = u8x16::new(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
                 let indices = indices + v;
                 unsafe {
-                    let s: u8x16 = mem::transmute(self);
-                    mem::transmute(s.shuffle1_dyn(indices))
+                    let s: u8x16 =crate::mem::transmute(self);
+                   crate::mem::transmute(s.shuffle1_dyn(indices))
                 }
             }
         }
@@ -183,8 +183,8 @@ macro_rules! impl_shuffle1_dyn {
                         use arch::x86_64::{_mm_permutevar_ps};
 
                         unsafe {
-                            mem::transmute(_mm_permutevar_ps(
-                                mem::transmute(self.0), mem::transmute(indices.0))
+                           crate::mem::transmute(_mm_permutevar_ps(
+                               crate::mem::transmute(self.0),crate::mem::transmute(indices.0))
                             )
                         }
                     }
@@ -200,8 +200,8 @@ macro_rules! impl_shuffle1_dyn {
                         let v = u8x16::new(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3);
                         let indices = indices + v;
                         unsafe {
-                            let s: u8x16 = mem::transmute(self);
-                            mem::transmute(s.shuffle1_dyn(indices))
+                            let s: u8x16 =crate::mem::transmute(self);
+                           crate::mem::transmute(s.shuffle1_dyn(indices))
                         }
                     }
                 }
@@ -225,8 +225,8 @@ macro_rules! impl_shuffle1_dyn {
                         // 0b10 => 1:
                         let indices = indices << 1;
                         unsafe {
-                            mem::transmute(_mm_permutevar_pd(
-                                mem::transmute(self), mem::transmute(indices))
+                           crate::mem::transmute(_mm_permutevar_pd(
+                               crate::mem::transmute(self),crate::mem::transmute(indices))
                             )
                         }
                     }
@@ -242,8 +242,8 @@ macro_rules! impl_shuffle1_dyn {
                         let v = u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7);
                         let indices = indices + v;
                         unsafe {
-                            let s: u8x16 = mem::transmute(self);
-                            mem::transmute(s.shuffle1_dyn(indices))
+                            let s: u8x16 =crate::mem::transmute(self);
+                           crate::mem::transmute(s.shuffle1_dyn(indices))
                         }
                     }
                 }
@@ -300,8 +300,8 @@ macro_rules! impl_shuffle1_dyn_non_u {
             #[inline]
             fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                 unsafe {
-                    let u: $uid = mem::transmute(self);
-                    mem::transmute(u.shuffle1_dyn(indices))
+                    let u: $uid = crate::mem::transmute(self);
+                    crate::mem::transmute(u.shuffle1_dyn(indices))
                 }
             }
         }
@@ -385,8 +385,8 @@ macro_rules! impl_shuffle1_dyn_ptr {
             #[inline]
             fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                 unsafe {
-                    let u: $uid = mem::transmute(self);
-                    mem::transmute(u.shuffle1_dyn(indices))
+                    let u: $uid = crate::mem::transmute(self);
+                    crate::mem::transmute(u.shuffle1_dyn(indices))
                 }
             }
         }

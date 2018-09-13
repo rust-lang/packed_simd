@@ -1,7 +1,7 @@
 //! Vertical floating-point `sqrt`
 #![allow(unused)]
 
-use llvm::simd_fsqrt;
+use crate::llvm::simd_fsqrt;
 
 // FIXME 64-bit 1 elem vectors sqrte
 
@@ -15,7 +15,7 @@ gen_unary_impl_table!(Sqrte, sqrte);
 
 cfg_if! {
     if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
-        use ::sleef_sys::*;
+        use crate::sleef_sys::*;
         cfg_if! {
             if #[cfg(target_feature = "avx2")] {
                 impl_unary!(f32x2[t => f32x4]: Sleef_sqrtf4_u35avx2128);

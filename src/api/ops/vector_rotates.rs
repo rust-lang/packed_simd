@@ -13,7 +13,7 @@ macro_rules! impl_ops_vector_rotates {
             #[inline]
             pub fn rotate_left(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty =
-                    ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
+                    crate::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts
                 let n = n % LANE_WIDTH;
                 (self << n) | (self >> ((LANE_WIDTH - n) % LANE_WIDTH))
@@ -28,7 +28,7 @@ macro_rules! impl_ops_vector_rotates {
             #[inline]
             pub fn rotate_right(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty =
-                    ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
+                    crate::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts
                 let n = n % LANE_WIDTH;
                 (self >> n) | (self << ((LANE_WIDTH - n) % LANE_WIDTH))

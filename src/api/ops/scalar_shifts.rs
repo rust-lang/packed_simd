@@ -2,14 +2,14 @@
 
 macro_rules! impl_ops_scalar_shifts {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
-        impl ::ops::Shl<u32> for $id {
+        impl crate::ops::Shl<u32> for $id {
             type Output = Self;
             #[inline]
             fn shl(self, other: u32) -> Self {
                 self << $id::splat(other as $elem_ty)
             }
         }
-        impl ::ops::Shr<u32> for $id {
+        impl crate::ops::Shr<u32> for $id {
             type Output = Self;
             #[inline]
             fn shr(self, other: u32) -> Self {
@@ -17,13 +17,13 @@ macro_rules! impl_ops_scalar_shifts {
             }
         }
 
-        impl ::ops::ShlAssign<u32> for $id {
+        impl crate::ops::ShlAssign<u32> for $id {
             #[inline]
             fn shl_assign(&mut self, other: u32) {
                 *self = *self << other;
             }
         }
-        impl ::ops::ShrAssign<u32> for $id {
+        impl crate::ops::ShrAssign<u32> for $id {
             #[inline]
             fn shr_assign(&mut self, other: u32) {
                 *self = *self >> other;
