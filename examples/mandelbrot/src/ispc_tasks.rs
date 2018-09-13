@@ -1,5 +1,6 @@
 //! Includes the ISPC implementations.
-use *;
+use crate::*;
+use ispc::*;
 
 ispc_module!(mandelbrot);
 

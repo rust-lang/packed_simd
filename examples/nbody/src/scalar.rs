@@ -150,7 +150,7 @@ fn shift_mut_ref<'a, T>(r: &mut &'a mut [T]) -> Option<&'a mut T> {
     if r.is_empty() {
         return None;
     }
-    let tmp = ::std::mem::replace(r, &mut []);
+    let tmp = std::mem::replace(r, &mut []);
     let (h, t) = tmp.split_at_mut(1);
     *r = t;
     Some(&mut h[0])
@@ -171,7 +171,7 @@ pub fn run(n: usize) -> (f64, f64) {
 mod tests {
     #[test]
     fn test() {
-        for &(size, a_e, b_e) in ::RESULTS {
+        for &(size, a_e, b_e) in crate::RESULTS {
             let (a, b) = super::run(size);
             assert_eq!(format!("{:.9}", a), a_e);
             assert_eq!(format!("{:.9}", b), b_e);

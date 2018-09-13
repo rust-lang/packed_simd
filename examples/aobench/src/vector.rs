@@ -104,7 +104,7 @@ cfg_if! {
             }
         }
     } else {
-        pub fn ao<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut ::Image) {
+        pub fn ao<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
             ao_impl(scene, nsubsamples, img);
         }
     }

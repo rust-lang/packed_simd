@@ -146,5 +146,5 @@ pub fn inv4x4(m: Matrix4x4) -> Option<Matrix4x4> {
 #[cfg(test)]
 #[test]
 fn test() {
-    ::test(inv4x4)
+    crate::test(inv4x4)
 }

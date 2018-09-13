@@ -11,21 +11,21 @@ macro_rules! impl_cmp_vertical {
             /// Lane-wise equality comparison.
             #[inline]
             pub fn eq(self, other: Self) -> $mask_ty {
-                use crate::llvm::simd_eq;
+                use super::llvm::simd_eq;
                 Simd(unsafe { simd_eq(self.0, other.0) })
             }
 
             /// Lane-wise inequality comparison.
             #[inline]
             pub fn ne(self, other: Self) -> $mask_ty {
-                use crate::llvm::simd_ne;
+                use super::llvm::simd_ne;
                 Simd(unsafe { simd_ne(self.0, other.0) })
             }
 
             /// Lane-wise less-than comparison.
             #[inline]
             pub fn lt(self, other: Self) -> $mask_ty {
-                use crate::llvm::{simd_gt, simd_lt};
+                use super::llvm::{simd_gt, simd_lt};
                 if $is_mask {
                     Simd(unsafe { simd_gt(self.0, other.0) })
                 } else {
@@ -36,7 +36,7 @@ macro_rules! impl_cmp_vertical {
             /// Lane-wise less-than-or-equals comparison.
             #[inline]
             pub fn le(self, other: Self) -> $mask_ty {
-                use crate::llvm::{simd_ge, simd_le};
+                use super::llvm::{simd_ge, simd_le};
                 if $is_mask {
                     Simd(unsafe { simd_ge(self.0, other.0) })
                 } else {
@@ -47,7 +47,7 @@ macro_rules! impl_cmp_vertical {
             /// Lane-wise greater-than comparison.
             #[inline]
             pub fn gt(self, other: Self) -> $mask_ty {
-                use crate::llvm::{simd_gt, simd_lt};
+                use super::llvm::{simd_gt, simd_lt};
                 if $is_mask {
                     Simd(unsafe { simd_lt(self.0, other.0) })
                 } else {
@@ -58,7 +58,7 @@ macro_rules! impl_cmp_vertical {
             /// Lane-wise greater-than-or-equals comparison.
             #[inline]
             pub fn ge(self, other: Self) -> $mask_ty {
-                use crate::llvm::{simd_ge, simd_le};
+                use super::llvm::{simd_ge, simd_le};
                 if $is_mask {
                     Simd(unsafe { simd_le(self.0, other.0) })
                 } else {

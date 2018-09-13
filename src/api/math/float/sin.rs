@@ -32,7 +32,7 @@ macro_rules! impl_math_float_sin {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn sin() {
-                        use $elem_ty::consts::PI;
+                        use crate::$elem_ty::consts::PI;
                         let z = $id::splat(0 as $elem_ty);
                         let p = $id::splat(PI as $elem_ty);
                         let ph = $id::splat(PI as $elem_ty / 2.);

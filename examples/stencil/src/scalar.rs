@@ -63,8 +63,8 @@ pub fn scalar(
 #[cfg(all(test, feature = "ispc"))]
 mod tests {
     use super::scalar;
-    use ispc_loops::serial;
-    use {assert_data_eq, Data};
+    use crate::ispc_loops::serial;
+    use crate::{assert_data_eq, Data};
 
     #[test]
 

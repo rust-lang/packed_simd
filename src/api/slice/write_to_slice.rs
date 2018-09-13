@@ -86,7 +86,7 @@ macro_rules! impl_slice_write_to_slice {
             interpolate_idents! {
                 pub mod [$id _slice_write_to_slice] {
                     use super::*;
-                    use iter::Iterator;
+                    use crate::iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn write_to_slice_unaligned() {

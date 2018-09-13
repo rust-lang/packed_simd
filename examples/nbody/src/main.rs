@@ -3,7 +3,7 @@
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
 #![deny(warnings, rust_2018_idioms)]
 
-fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
+fn run<O: std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let (energy_before, energy_after) = nbody_lib::run(n, alg);
 
     writeln!(o, "{:.9}", energy_before);
@@ -23,7 +23,7 @@ fn main() {
         1 // SIMD algorithm
     };
 
-    run(&mut ::std::io::stdout(), n, alg);
+    run(&mut std::io::stdout(), n, alg);
 }
 
 #[cfg(test)]

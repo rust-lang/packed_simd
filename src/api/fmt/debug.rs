@@ -12,7 +12,7 @@ macro_rules! impl_fmt_debug_tests {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 
-                        use fmt::Write;
+                        use crate::fmt::Write;
                         let v = $id::default();
                         let mut s = TinyString::new();
                         write!(&mut s, "{:?}", v).unwrap();

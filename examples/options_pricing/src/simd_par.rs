@@ -45,15 +45,15 @@ pub fn binomial_put(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use almost_equal;
+    use crate::almost_equal;
     #[test]
     fn black_scholes_scalar() {
         const NOPTS: usize = 1_000_000;
-        let mut simd_par = ::State::new(NOPTS);
-        let mut scalar = ::State::new(NOPTS);
+        let mut simd_par = crate::State::new(NOPTS);
+        let mut scalar = crate::State::new(NOPTS);
 
         let simd_par_sum = simd_par.exec(black_scholes);
-        let scalar_sum = scalar.exec(::scalar::black_scholes);
+        let scalar_sum = scalar.exec(crate::scalar::black_scholes);
 
         assert_eq!(simd_par, scalar);
         assert_eq!(simd_par_sum, scalar_sum);
@@ -62,11 +62,11 @@ mod tests {
     #[test]
     fn binomial_put_scalar() {
         const NOPTS: usize = 1_000_000;
-        let mut simd_par = ::State::new(NOPTS);
-        let mut scalar = ::State::new(NOPTS);
+        let mut simd_par = crate::State::new(NOPTS);
+        let mut scalar = crate::State::new(NOPTS);
 
         let simd_par_sum = simd_par.exec(binomial_put);
-        let scalar_sum = scalar.exec(::scalar::binomial_put);
+        let scalar_sum = scalar.exec(crate::scalar::binomial_put);
 
         // assert_eq!(simd_par, scalar);
         // assert_eq!(simd_par_sum, scalar_sum);

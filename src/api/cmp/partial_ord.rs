@@ -80,13 +80,13 @@ macro_rules! test_cmp_partial_ord_int {
                         let b = $id::splat(1);
 
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Less));
+                                 Some(crate::cmp::Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Greater));
+                                 Some(crate::cmp::Ordering::Greater));
                         test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(crate::cmp::Ordering::Equal));
                         test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(crate::cmp::Ordering::Equal));
 
                         // variable values: a = [0, 1, 2, 3]; b = [3, 2, 1, 0]
                         let mut a = $id::splat(0);
@@ -96,26 +96,26 @@ macro_rules! test_cmp_partial_ord_int {
                             b = b.replace(i, ($id::lanes() - i) as $elem_ty);
                         }
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Less));
+                                 Some(crate::cmp::Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Greater));
+                                 Some(crate::cmp::Ordering::Greater));
                         test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(crate::cmp::Ordering::Equal));
                         test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(crate::cmp::Ordering::Equal));
 
                         // variable values: a = [0, 1, 2, 3]; b = [0, 1, 2, 4]
                         let mut b = a;
                         b = b.replace($id::lanes()-1,
                                       a.extract($id::lanes() - 1) + 1 as $elem_ty);
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Less));
+                                 Some(crate::cmp::Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Greater));
+                                 Some(crate::cmp::Ordering::Greater));
                         test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(crate::cmp::Ordering::Equal));
                         test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(crate::cmp::Ordering::Equal));
 
                         if $id::lanes() > 2 {
                             // variable values a = [0, 1, 0, 0]; b = [0, 1, 2, 3]
@@ -123,13 +123,13 @@ macro_rules! test_cmp_partial_ord_int {
                             let mut a = $id::splat(0);
                             a = a.replace(1, 1 as $elem_ty);
                             test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Less));
+                                     Some(crate::cmp::Ordering::Less));
                             test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Greater));
+                                     Some(crate::cmp::Ordering::Greater));
                             test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Equal));
+                                     Some(crate::cmp::Ordering::Equal));
                             test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Equal));
+                                     Some(crate::cmp::Ordering::Equal));
 
                             // variable values: a = [0, 1, 2, 3]; b = [0, 1, 3, 2]
                             let mut b = a;
@@ -137,13 +137,13 @@ macro_rules! test_cmp_partial_ord_int {
                                 2, a.extract($id::lanes() - 1) + 1 as $elem_ty
                             );
                             test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Less));
+                                     Some(crate::cmp::Ordering::Less));
                             test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Greater));
+                                     Some(crate::cmp::Ordering::Greater));
                             test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Equal));
+                                     Some(crate::cmp::Ordering::Equal));
                             test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Equal));
+                                     Some(crate::cmp::Ordering::Equal));
                         }
                     }
                 }
@@ -162,18 +162,20 @@ macro_rules! test_cmp_partial_ord_mask {
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn partial_lex_ord() {
                         use crate::testing::utils::{test_cmp};
+                        use crate::cmp::Ordering;
+
                         // constant values
                         let a = $id::splat(false);
                         let b = $id::splat(true);
 
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Less));
+                                 Some(Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Greater));
+                                 Some(Ordering::Greater));
                         test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(Ordering::Equal));
                         test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(Ordering::Equal));
 
                         // variable values:
                         // a = [false, false, false, false];
@@ -182,13 +184,13 @@ macro_rules! test_cmp_partial_ord_mask {
                         let mut b = $id::splat(false);
                         b = b.replace($id::lanes() - 1, true);
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Less));
+                                 Some(Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Greater));
+                                 Some(Ordering::Greater));
                         test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(Ordering::Equal));
                         test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(Ordering::Equal));
 
                         // variable values:
                         // a = [true, true, true, false];
@@ -197,13 +199,13 @@ macro_rules! test_cmp_partial_ord_mask {
                         let b = $id::splat(true);
                         a = a.replace($id::lanes() - 1, false);
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Less));
+                                 Some(Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Greater));
+                                 Some(Ordering::Greater));
                         test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(Ordering::Equal));
                         test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                 Some(::cmp::Ordering::Equal));
+                                 Some(Ordering::Equal));
 
                         if $id::lanes() > 2 {
                             // variable values
@@ -214,13 +216,13 @@ macro_rules! test_cmp_partial_ord_mask {
                             a = a.replace(1, true);
                             b = b.replace(0, false);
                             test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Less));
+                                     Some(Ordering::Less));
                             test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Greater));
+                                     Some(Ordering::Greater));
                             test_cmp(a.partial_lex_ord(), a.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Equal));
+                                     Some(Ordering::Equal));
                             test_cmp(b.partial_lex_ord(), b.partial_lex_ord(),
-                                     Some(::cmp::Ordering::Equal));
+                                     Some(Ordering::Equal));
                         }
                     }
                 }

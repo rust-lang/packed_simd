@@ -127,14 +127,14 @@ macro_rules! x86_intr_impl {
     impl All for $id {
         #[inline]
         unsafe fn all(self) -> bool {
-        use crate::llvm::simd_reduce_all;
+        use super::super::super::llvm::simd_reduce_all;
             simd_reduce_all(self.0)
         }
     }
         impl Any for $id {
             #[inline]
             unsafe fn any(self) -> bool {
-            use crate::llvm::simd_reduce_any;
+            use super::super::super::llvm::simd_reduce_any;
                 simd_reduce_any(self.0)
             }
         }

@@ -29,7 +29,7 @@ macro_rules! impl_fmt_binary {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 
-                        use fmt::Write;
+                        use crate::fmt::Write;
                         let v = $id::splat($elem_ty::default());
                         let mut s = TinyString::new();
                         write!(&mut s, "{:#b}", v).unwrap();

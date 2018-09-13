@@ -50,7 +50,7 @@ cfg_if! {
         impl_unary!(f64x4[f64; 4]: sqrt_f64);
         impl_unary!(f64x8[f64; 8]: sqrt_f64);
     } else if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
-        use crate::sleef_sys::*;
+        use sleef_sys::*;
         cfg_if! {
             if #[cfg(target_feature = "avx2")] {
                 impl_unary!(f32x2[t => f32x4]: Sleef_sqrtf4_avx2128);

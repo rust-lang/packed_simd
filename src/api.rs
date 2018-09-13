@@ -229,7 +229,7 @@ macro_rules! impl_m {
         impl_fmt_debug!([bool; $elem_n]: $tuple_id | $test_tt);
         impl_from_array!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt
-            | ($elem_ty::new(true), true)
+            | (crate::$elem_ty::new(true), true)
         );
         impl_from_vectors!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | $($from_vec_ty),*

@@ -82,15 +82,15 @@ pub fn binomial_put(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use almost_equal;
+    use crate::almost_equal;
     #[test]
     fn black_scholes_ispc() {
         const NOPTS: usize = 1_000_000;
-        let mut scalar = ::State::new(NOPTS);
-        let mut ispc = ::State::new(NOPTS);
+        let mut scalar = crate::State::new(NOPTS);
+        let mut ispc = crate::State::new(NOPTS);
 
         let scalar_sum = scalar.exec(black_scholes);
-        let ispc_sum = ispc.exec(::ispc_::black_scholes::serial);
+        let ispc_sum = ispc.exec(crate::ispc_::black_scholes::serial);
 
         assert_eq!(scalar, ispc);
         assert_eq!(scalar_sum, ispc_sum);
@@ -99,11 +99,11 @@ mod tests {
     #[test]
     fn binomial_put_ispc() {
         const NOPTS: usize = 1_000_000;
-        let mut scalar = ::State::new(NOPTS);
-        let mut ispc = ::State::new(NOPTS);
+        let mut scalar = crate::State::new(NOPTS);
+        let mut ispc = crate::State::new(NOPTS);
 
         let scalar_sum = scalar.exec(binomial_put);
-        let ispc_sum = ispc.exec(::ispc_::binomial_put::serial);
+        let ispc_sum = ispc.exec(crate::ispc_::binomial_put::serial);
 
         // FIXME: results differ slightly for each value of the result vector
         // need to figure out why

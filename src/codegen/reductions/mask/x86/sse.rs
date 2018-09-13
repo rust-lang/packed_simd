@@ -9,7 +9,7 @@ macro_rules! x86_m32x4_sse_impl {
             #[target_feature(enable = "sse")]
             unsafe fn all(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm_movemask_ps;
+                use crate::arch::x86::_mm_movemask_ps;
                 #[cfg(target_arch = "x86_64")]
                 use crate::arch::x86_64::_mm_movemask_ps;
                 // _mm_movemask_ps(a) creates a 4bit mask containing the
@@ -25,7 +25,7 @@ macro_rules! x86_m32x4_sse_impl {
             #[target_feature(enable = "sse")]
             unsafe fn any(self) -> bool {
                 #[cfg(target_arch = "x86")]
-                use ::arch::x86::_mm_movemask_ps;
+                use crate::arch::x86::_mm_movemask_ps;
                 #[cfg(target_arch = "x86_64")]
                 use crate::arch::x86_64::_mm_movemask_ps;
 

@@ -14,7 +14,7 @@ macro_rules! impl_reduction_min_max {
                     target_arch = "wasm32",
                 )))]
                 {
-                    use crate::llvm::simd_reduce_max;
+                    use super::llvm::simd_reduce_max;
                     let v: $ielem_ty = unsafe { simd_reduce_max(self.0) };
                     v as $elem_ty
                 }
@@ -48,7 +48,7 @@ macro_rules! impl_reduction_min_max {
                     target_arch = "wasm32",
                 ),))]
                 {
-                    use crate::llvm::simd_reduce_min;
+                    use super::llvm::simd_reduce_min;
                     let v: $ielem_ty = unsafe { simd_reduce_min(self.0) };
                     v as $elem_ty
                 }
@@ -126,7 +126,7 @@ macro_rules! test_reduction_float_min_max {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn min_element_test() {
-                        let n = $elem_ty::NAN;
+                        let n = crate::$elem_ty::NAN;
 
                         assert_eq!(n.min(-3.), -3.);
                         assert_eq!((-3. as $elem_ty).min(n), -3.);
@@ -230,7 +230,7 @@ macro_rules! test_reduction_float_min_max {
                     }
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn max_element_test() {
-                        let n = $elem_ty::NAN;
+                        let n = crate::$elem_ty::NAN;
 
                         assert_eq!(n.max(-3.), -3.);
                         assert_eq!((-3. as $elem_ty).max(n), -3.);

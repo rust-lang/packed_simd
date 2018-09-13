@@ -1,5 +1,6 @@
 //! Includes the ISPC implementations.
 
+use ispc::*;
 ispc_module!(options);
 
 pub mod black_scholes {
@@ -10,7 +11,7 @@ pub mod black_scholes {
         result: &mut [f32], count: usize,
     ) -> f64 {
         unsafe {
-            options::black_scholes_ispc(
+            self::options::black_scholes_ispc(
                 sa.as_ptr() as *mut f32,
                 xa.as_ptr() as *mut f32,
                 ta.as_ptr() as *mut f32,
@@ -27,7 +28,7 @@ pub mod black_scholes {
         result: &mut [f32], count: usize,
     ) -> f64 {
         unsafe {
-            options::black_scholes_ispc_tasks(
+            self::options::black_scholes_ispc_tasks(
                 sa.as_ptr() as *mut f32,
                 xa.as_ptr() as *mut f32,
                 ta.as_ptr() as *mut f32,
@@ -48,7 +49,7 @@ pub mod binomial_put {
         result: &mut [f32], count: usize,
     ) -> f64 {
         unsafe {
-            options::binomial_put_ispc(
+            self::options::binomial_put_ispc(
                 sa.as_ptr() as *mut f32,
                 xa.as_ptr() as *mut f32,
                 ta.as_ptr() as *mut f32,
@@ -65,7 +66,7 @@ pub mod binomial_put {
         result: &mut [f32], count: usize,
     ) -> f64 {
         unsafe {
-            options::binomial_put_ispc_tasks(
+            self::options::binomial_put_ispc_tasks(
                 sa.as_ptr() as *mut f32,
                 xa.as_ptr() as *mut f32,
                 ta.as_ptr() as *mut f32,
@@ -84,8 +85,8 @@ mod tests {
     #[test]
     fn black_scholes() {
         const NOPTS: usize = 1_000_000;
-        let mut serial = ::State::new(NOPTS);
-        let mut tasks = ::State::new(NOPTS);
+        let mut serial = crate::State::new(NOPTS);
+        let mut tasks = crate::State::new(NOPTS);
 
         let serial_sum = serial.exec(black_scholes::serial);
         let tasks_sum = tasks.exec(black_scholes::tasks);
@@ -97,8 +98,8 @@ mod tests {
     #[test]
     fn binomial_put() {
         const NOPTS: usize = 1_000_000;
-        let mut serial = ::State::new(NOPTS);
-        let mut tasks = ::State::new(NOPTS);
+        let mut serial = crate::State::new(NOPTS);
+        let mut tasks = crate::State::new(NOPTS);
 
         let serial_sum = serial.exec(binomial_put::serial);
         let tasks_sum = tasks.exec(binomial_put::tasks);

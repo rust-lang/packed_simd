@@ -11,7 +11,7 @@ macro_rules! impl_from_vector {
                     U: crate::sealed::Simd<LanesType = T::LanesType>,
                 {
                 }
-                use crate::llvm::simd_cast;
+                use super::llvm::simd_cast;
                 static_assert_same_number_of_lanes::<$id, $source>();
                 Simd(unsafe { simd_cast(source.0) })
             }

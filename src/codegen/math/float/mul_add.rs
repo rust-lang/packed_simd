@@ -56,7 +56,7 @@ cfg_if! {
         impl_broken!(f64x4);
         impl_broken!(f64x8);
     } else if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
-        use crate::sleef_sys::*;
+        use sleef_sys::*;
         cfg_if! {
             if #[cfg(target_feature = "avx2")] {
                 impl_tertiary!(f32x2[t => f32x4]: Sleef_fmaf4_avx2128);

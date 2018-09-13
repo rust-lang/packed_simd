@@ -16,7 +16,7 @@ macro_rules! impl_reduction_float_arithmetic {
             #[inline]
             pub fn sum(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))] {
-                    use crate::llvm::simd_reduce_add_ordered;
+                    use super::llvm::simd_reduce_add_ordered;
                     unsafe { simd_reduce_add_ordered(self.0, 0 as $elem_ty) }
                 }
                 #[cfg(target_arch = "aarch64")] {
@@ -43,7 +43,7 @@ macro_rules! impl_reduction_float_arithmetic {
             #[inline]
             pub fn product(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))] {
-                    use crate::llvm::simd_reduce_mul_ordered;
+                    use super::llvm::simd_reduce_mul_ordered;
                     unsafe { simd_reduce_mul_ordered(self.0, 1 as $elem_ty) }
                 }
                 #[cfg(target_arch = "aarch64")] {
@@ -136,7 +136,7 @@ macro_rules! impl_reduction_float_arithmetic {
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
                         return;
 
-                        let n0 = $elem_ty::NAN;
+                        let n0 = crate::$elem_ty::NAN;
                         let v0 = $id::splat(-3.0);
                         for i in 0..$id::lanes() {
                             let mut v = v0.replace(i, n0);
@@ -164,7 +164,7 @@ macro_rules! impl_reduction_float_arithmetic {
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
                         return;
 
-                        let n0 = $elem_ty::NAN;
+                        let n0 = crate::$elem_ty::NAN;
                         let v0 = $id::splat(-3.0);
                         for i in 0..$id::lanes() {
                             let mut v = v0.replace(i, n0);
@@ -202,7 +202,7 @@ macro_rules! impl_reduction_float_arithmetic {
                             }
                         }
 
-                        let mut start = $elem_ty::EPSILON;
+                        let mut start = crate::$elem_ty::EPSILON;
                         let mut scalar_reduction = 0. as $elem_ty;
 
                         let mut v = $id::splat(0. as $elem_ty);
@@ -251,7 +251,7 @@ macro_rules! impl_reduction_float_arithmetic {
                             }
                         }
 
-                        let mut start = $elem_ty::EPSILON;
+                        let mut start = crate::$elem_ty::EPSILON;
                         let mut scalar_reduction = 1. as $elem_ty;
 
                         let mut v = $id::splat(0. as $elem_ty);

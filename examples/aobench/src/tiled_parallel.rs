@@ -19,7 +19,7 @@ pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut crate::Image) {
             assert!(image.len() == 3 * w);
             let mut scene = S::default();
             let yf = f32xN::splat(y as f32);
-            let ptr: pf32xN = unsafe { ::std::mem::transmute(ptr) };
+            let ptr: pf32xN = unsafe { std::mem::transmute(ptr) };
             for x in (0..w).step_by(f32xN::lanes()) {
                 let xf = f32xN::incr(x as f32, 1.);
                 let offset = usizexN::splat(3 * (y * w + x));

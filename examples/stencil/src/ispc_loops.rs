@@ -1,5 +1,6 @@
 //! Includes the ISPC implementations.
 
+use ispc::*;
 ispc_module!(stencil);
 
 pub fn serial(
@@ -8,7 +9,7 @@ pub fn serial(
     a_even: &mut [f32], a_odd: &mut [f32],
 ) {
     unsafe {
-        stencil::loop_stencil_ispc(
+        self::stencil::loop_stencil_ispc(
             t0,
             t1,
             x0,
@@ -34,7 +35,7 @@ pub fn tasks(
     a_even: &mut [f32], a_odd: &mut [f32],
 ) {
     unsafe {
-        stencil::loop_stencil_ispc_tasks(
+        self::stencil::loop_stencil_ispc_tasks(
             t0,
             t1,
             x0,

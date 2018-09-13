@@ -22,7 +22,7 @@ fn endian_bitcasts() {
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
     );
-    let t: i16x8 = unsafe { core::mem::transmute(x) };
+    let t: i16x8 = unsafe { mem::transmute(x) };
     let e: i16x8 = if cfg!(target_endian = "little") {
         i16x8::new(256, 770, 1284, 1798, 2312, 2826, 3340, 3854)
     } else {

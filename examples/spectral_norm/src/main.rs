@@ -3,7 +3,7 @@
 extern crate spectral_norm_lib;
 use spectral_norm_lib::*;
 
-fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
+fn run<O: std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let answer = spectral_norm(n, alg);
     writeln!(o, "{:.9}", answer).unwrap();
 }
@@ -18,7 +18,7 @@ fn main() {
         0
     };
 
-    run(&mut ::std::io::stdout(), n, alg);
+    run(&mut std::io::stdout(), n, alg);
 }
 
 #[cfg(test)]

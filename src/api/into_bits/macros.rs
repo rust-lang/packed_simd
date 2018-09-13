@@ -16,7 +16,7 @@ macro_rules! impl_from_bits_ {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn test() {
-                        use crate::{ptr::{read_unaligned}, crate::mem::{size_of, zeroed}};
+                        use crate::{ptr::{read_unaligned}, mem::{size_of, zeroed}};
                         use crate::IntoBits;
                         assert_eq!(size_of::<$id>(),
                                    size_of::<$from_ty>());
