@@ -6,7 +6,7 @@ macro_rules! impl_ops_vector_arithmetic {
             type Output = Self;
             #[inline]
             fn add(self, other: Self) -> Self {
-                use crate::llvm::simd_add;
+                use super::llvm::simd_add;
                 unsafe { Simd(simd_add(self.0, other.0)) }
             }
         }
@@ -15,7 +15,7 @@ macro_rules! impl_ops_vector_arithmetic {
             type Output = Self;
             #[inline]
             fn sub(self, other: Self) -> Self {
-                use crate::llvm::simd_sub;
+                use super::llvm::simd_sub;
                 unsafe { Simd(simd_sub(self.0, other.0)) }
             }
         }
@@ -24,7 +24,7 @@ macro_rules! impl_ops_vector_arithmetic {
             type Output = Self;
             #[inline]
             fn mul(self, other: Self) -> Self {
-                use crate::llvm::simd_mul;
+                use super::llvm::simd_mul;
                 unsafe { Simd(simd_mul(self.0, other.0)) }
             }
         }
@@ -33,7 +33,7 @@ macro_rules! impl_ops_vector_arithmetic {
             type Output = Self;
             #[inline]
             fn div(self, other: Self) -> Self {
-                use crate::llvm::simd_div;
+                use super::llvm::simd_div;
                 unsafe { Simd(simd_div(self.0, other.0)) }
             }
         }
@@ -42,7 +42,7 @@ macro_rules! impl_ops_vector_arithmetic {
             type Output = Self;
             #[inline]
             fn rem(self, other: Self) -> Self {
-                use crate::llvm::simd_rem;
+                use super::llvm::simd_rem;
                 unsafe { Simd(simd_rem(self.0, other.0)) }
             }
         }

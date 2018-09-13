@@ -55,7 +55,7 @@ pub fn test_le<T>(
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
 pub fn test_cmp<T>(
     a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
-    o: Option<::cmp::Ordering>,
+    o: Option<crate::cmp::Ordering>,
 ) where
     LexicographicallyOrdered<T>: PartialOrd + Debug,
     T: Debug + crate::sealed::Simd + Copy + Clone,
@@ -66,13 +66,13 @@ pub fn test_cmp<T>(
     let mut arr_b: [T::Element; 64] = [Default::default(); 64];
 
     unsafe {
-        cratecrate::ptr::write_unaligned(
+        crate::ptr::write_unaligned(
             arr_a.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
             a,
         )
     }
     unsafe {
-        cratecrate::ptr::write_unaligned(
+        crate::ptr::write_unaligned(
             arr_b.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
             b,
         )
@@ -82,15 +82,15 @@ pub fn test_cmp<T>(
     assert_eq!(expected, result, "{:?}, {:?}", a, b);
     assert_eq!(o, result, "{:?}, {:?}", a, b);
     match o {
-        Some(::cmp::Ordering::Less) => {
+        Some(crate::cmp::Ordering::Less) => {
             test_lt(a, b);
             test_le(a, b);
         }
-        Some(::cmp::Ordering::Greater) => {
+        Some(crate::cmp::Ordering::Greater) => {
             test_lt(b, a);
             test_le(b, a);
         }
-        Some(::cmp::Ordering::Equal) => {
+        Some(crate::cmp::Ordering::Equal) => {
             assert!(a == b, "{:?}, {:?}", a, b);
             assert!(!(a != b), "{:?}, {:?}", a, b);
             assert!(!(a < b), "{:?}, {:?}", a, b);

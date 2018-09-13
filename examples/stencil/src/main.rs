@@ -21,13 +21,13 @@ fn main() {
     let alg: usize = args.next().unwrap().parse().unwrap();
 
     match alg {
-        0 => run("scalar", scalar::scalar),
-        1 => run("vector", simd::x8),
-        2 => run("vector_par", simd_par::x8_par),
+        0 => run("scalar", self::scalar::scalar),
+        1 => run("vector", self::simd::x8),
+        2 => run("vector_par", self::simd_par::x8_par),
         3 => {
             #[cfg(feature = "ispc")]
             {
-                run("ispc", ispc_loops::serial);
+                run("ispc", self::ispc_loops::serial);
             }
             #[cfg(not(feature = "ispc"))]
             {
@@ -37,7 +37,7 @@ fn main() {
         4 => {
             #[cfg(feature = "ispc")]
             {
-                run("ispc+tasks", ispc_loops::tasks);
+                run("ispc+tasks", self::ispc_loops::tasks);
             }
             #[cfg(not(feature = "ispc"))]
             {

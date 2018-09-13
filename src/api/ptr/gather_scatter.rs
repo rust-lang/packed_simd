@@ -154,7 +154,7 @@ macro_rules! impl_ptr_write {
                         let mut ptr = $id::<i32>::null();
                         for i in 0..$elem_count {
                             ptr = ptr.replace(i, unsafe {
-                                ::mem::transmute(arr.as_ptr().add(i))
+                                crate::mem::transmute(arr.as_ptr().add(i))
                             });
                         }
                         // ptr = [&arr[0], &arr[1], ...]

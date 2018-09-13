@@ -146,8 +146,8 @@ pub fn x8_par(
 #[cfg(test)]
 mod tests {
     use super::x8_par;
-    use scalar::scalar;
-    use {assert_data_eq, Data};
+    use crate::scalar::scalar;
+    use crate::{assert_data_eq, Data};
 
     #[test]
     fn simd_par_verify() {

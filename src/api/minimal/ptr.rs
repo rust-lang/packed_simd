@@ -70,7 +70,7 @@ macro_rules! impl_minimal_p {
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
             pub unsafe fn extract_unchecked(self, index: usize) -> $elem_ty {
-                use crate::llvm::simd_extract;
+                use super::llvm::simd_extract;
                 simd_extract(self.0, index as u32)
             }
 
@@ -99,7 +99,7 @@ macro_rules! impl_minimal_p {
                 index: usize,
                 new_value: $elem_ty,
             ) -> Self {
-                use crate::llvm::simd_insert;
+                use super::llvm::simd_insert;
                 Simd(simd_insert(self.0, index as u32, new_value))
             }
         }
@@ -209,7 +209,7 @@ macro_rules! impl_minimal_p {
                         use arrayvec::{ArrayString,ArrayVec};
                         type TinyString = ArrayString<[u8; 512]>;
 
-                        use fmt::Write;
+                        use crate::fmt::Write;
                         let v = $id::<i32>::default();
                         let mut s = TinyString::new();
                         write!(&mut s, "{:?}", v).unwrap();
@@ -263,7 +263,7 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn eq(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use crate::llvm::simd_eq;
+                    use super::llvm::simd_eq;
                     let a: $usize_ty = crate::mem::transmute(self);
                     let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_eq(a.0, b.0))
@@ -274,7 +274,7 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn ne(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use crate::llvm::simd_ne;
+                    use super::llvm::simd_ne;
                     let a: $usize_ty = crate::mem::transmute(self);
                     let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_ne(a.0, b.0))
@@ -285,7 +285,7 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn lt(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use crate::llvm::simd_lt;
+                    use super::llvm::simd_lt;
                     let a: $usize_ty = crate::mem::transmute(self);
                     let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_lt(a.0, b.0))
@@ -296,7 +296,7 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn le(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use crate::llvm::simd_le;
+                    use super::llvm::simd_le;
                     let a: $usize_ty = crate::mem::transmute(self);
                     let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_le(a.0, b.0))
@@ -307,7 +307,7 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn gt(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use crate::llvm::simd_gt;
+                    use super::llvm::simd_gt;
                     let a: $usize_ty = crate::mem::transmute(self);
                     let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_gt(a.0, b.0))
@@ -318,7 +318,7 @@ macro_rules! impl_minimal_p {
             #[inline]
             pub fn ge(self, other: Self) -> $mask_ty {
                 unsafe {
-                    use crate::llvm::simd_ge;
+                    use super::llvm::simd_ge;
                     let a: $usize_ty = crate::mem::transmute(self);
                     let b: $usize_ty = crate::mem::transmute(other);
                     Simd(simd_ge(a.0, b.0))
@@ -584,7 +584,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 pub mod [$id _slice_from_slice] {
                     use super::*;
-                    use iter::Iterator;
+                    use crate::iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn from_slice_unaligned() {
@@ -771,7 +771,7 @@ macro_rules! impl_minimal_p {
             interpolate_idents! {
                 pub mod [$id _slice_write_to_slice] {
                     use super::*;
-                    use iter::Iterator;
+                    use crate::iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn write_to_slice_unaligned() {

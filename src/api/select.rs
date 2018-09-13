@@ -16,7 +16,7 @@ macro_rules! impl_select {
                     NT = <[$elem_ty; $elem_count] as sealed::SimdArray>::NT,
                 >,
             {
-                use crate::llvm::simd_select;
+                use super::llvm::simd_select;
                 Simd(unsafe { simd_select(self.0, a.0, b.0) })
             }
         }

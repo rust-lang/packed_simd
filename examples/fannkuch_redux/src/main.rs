@@ -2,7 +2,7 @@
 
 use fannkuch_redux_lib::*;
 
-fn run<O: ::std::io::Write>(o: &mut O, n: usize, alg: usize) {
+fn run<O: std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let (checksum, maxflips) = fannkuch_redux(n, alg);
     writeln!(o, "{}\nPfannkuchen({}) = {}", checksum, n, maxflips).unwrap();
 }
@@ -17,7 +17,7 @@ fn main() {
         0
     };
 
-    run(&mut ::std::io::stdout(), n, alg);
+    run(&mut std::io::stdout(), n, alg);
 }
 
 #[cfg(test)]

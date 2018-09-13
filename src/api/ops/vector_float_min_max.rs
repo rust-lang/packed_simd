@@ -30,7 +30,7 @@ macro_rules! impl_ops_vector_float_min_max {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn min_max() {
-                        let n = $elem_ty::NAN;
+                        let n = crate::$elem_ty::NAN;
                         let o = $id::splat(1. as $elem_ty);
                         let t = $id::splat(2. as $elem_ty);
 

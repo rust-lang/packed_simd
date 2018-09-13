@@ -8,7 +8,7 @@ macro_rules! aarch64_128_neon_impl {
             #[target_feature(enable = "neon")]
             unsafe fn all(self) -> bool {
                 use crate::arch::aarch64::$vmin;
-                $vmin(::mem::transmute(self)) != 0
+                $vmin(crate::mem::transmute(self)) != 0
             }
         }
         impl Any for $id {
@@ -16,7 +16,7 @@ macro_rules! aarch64_128_neon_impl {
             #[target_feature(enable = "neon")]
             unsafe fn any(self) -> bool {
                 use crate::arch::aarch64::$vmax;
-                $vmax(::mem::transmute(self)) != 0
+                $vmax(crate::mem::transmute(self)) != 0
             }
         }
     }

@@ -165,8 +165,8 @@
 //!   patterns of the target type and are also implemented for the
 //!   architecture-specific vector types of `std::arch`. For example, `let x:
 //!   u8x8 = m8x8::splat(true).into_bits();` is provided because all `m8x8` bit
-//!   patterns are valid `u8x8` bit patterns. However, the opposite is not true,
-//!   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
+//!   patterns are valid `u8x8` bit patterns. However, the opposite is not
+//! true,   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
 //!   operation cannot be peformed safely using `x.into_bits()`; one needs to
 //!   use `unsafe { crate::mem::transmute(x) }` for that, making sure that the
 //!   value in the `u8x8` is a valid bit-pattern of `m8x8`.
@@ -250,8 +250,9 @@ use wasm_bindgen_test::*;
 
 #[allow(unused_imports)]
 use core::{
-    /* arch (handled above), */ cmp, default, f32, f64, fmt, hash, hint,
-    intrinsics, iter, marker, mem, ops, ptr, slice,
+    /* arch (handled above), */ cmp, f32, f64, fmt, hash, hint, i128,
+    i16, i32, i64, i8, intrinsics, isize, iter, marker, mem, ops, ptr, slice,
+    u128, u16, u32, u64, u8, usize,
 };
 
 #[macro_use]

@@ -1,5 +1,7 @@
 //! Verify the mask reduction API.
 
+use cfg_if::cfg_if;
+
 #[allow(unused)]
 macro_rules! verify_mask {
     ($mask_id:ident[$target_feature:tt] => $all_instr:tt, $any_instr:tt, $none_instr:tt) => {

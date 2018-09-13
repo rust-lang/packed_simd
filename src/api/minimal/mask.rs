@@ -61,7 +61,7 @@ macro_rules! impl_minimal_mask {
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
             pub unsafe fn extract_unchecked(self, index: usize) -> bool {
-                use crate::llvm::simd_extract;
+                use super::llvm::simd_extract;
                 let x: $ielem_ty = simd_extract(self.0, index as u32);
                 x != 0
             }
@@ -90,7 +90,7 @@ macro_rules! impl_minimal_mask {
                 index: usize,
                 new_value: bool,
             ) -> Self {
-                use crate::llvm::simd_insert;
+                use super::llvm::simd_insert;
                 Simd(simd_insert(self.0, index as u32, Self::bool_to_internal(new_value)))
             }
         }

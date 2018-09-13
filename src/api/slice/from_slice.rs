@@ -83,7 +83,7 @@ macro_rules! impl_slice_from_slice {
             interpolate_idents! {
                 pub mod [$id _slice_from_slice] {
                     use super::*;
-                    use iter::Iterator;
+                    use crate::iter::Iterator;
 
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn from_slice_unaligned() {

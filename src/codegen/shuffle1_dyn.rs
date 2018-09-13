@@ -35,9 +35,9 @@ macro_rules! impl_shuffle1_dyn {
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
-                        use arch::x86::_mm_shuffle_pi8;
+                        use crate::arch::x86::_mm_shuffle_pi8;
                         #[cfg(target_arch = "x86_64")]
-                        use arch::x86_64::_mm_shuffle_pi8;
+                        use crate::arch::x86_64::_mm_shuffle_pi8;
 
                         unsafe {
                            crate::mem::transmute(_mm_shuffle_pi8(
@@ -57,9 +57,9 @@ macro_rules! impl_shuffle1_dyn {
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(targt_arch = "aarch64")]
-                        use arch::aarch64::vtbl1_u8;
+                        use crate::arch::aarch64::vtbl1_u8;
                         #[cfg(targt_arch = "arm")]
-                        use arch::arm::vtbl1_u8;
+                        use crate::arch::arm::vtbl1_u8;
 
                         // This is safe because the binary is compiled with
                         // neon enabled at compile-time and can therefore only
@@ -86,9 +86,9 @@ macro_rules! impl_shuffle1_dyn {
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
-                        use arch::x86::_mm_shuffle_epi8;
+                        use crate::arch::x86::_mm_shuffle_epi8;
                         #[cfg(target_arch = "x86_64")]
-                        use arch::x86_64::_mm_shuffle_epi8;
+                        use crate::arch::x86_64::_mm_shuffle_epi8;
                         // This is safe because the binary is compiled with
                         // ssse3 enabled at compile-time and can therefore only
                         // run on CPUs that have it enabled.
@@ -106,7 +106,7 @@ macro_rules! impl_shuffle1_dyn {
                     type Indices = Self;
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
-                        use arch::aarch64::vqtbl1q_u8;
+                        use crate::arch::aarch64::vqtbl1q_u8;
 
                         // This is safe because the binary is compiled with
                         // neon enabled at compile-time and can therefore only
@@ -125,7 +125,7 @@ macro_rules! impl_shuffle1_dyn {
                     type Indices = Self;
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
-                        use arch::arm::vtbl2_u8;
+                        use crate::arch::arm::vtbl2_u8;
 
                         // This is safe because the binary is compiled with
                         // neon enabled at compile-time and can therefore only
@@ -178,9 +178,9 @@ macro_rules! impl_shuffle1_dyn {
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
-                        use arch::x86::{_mm_permutevar_ps};
+                        use crate::arch::x86::{_mm_permutevar_ps};
                         #[cfg(target_arch = "x86_64")]
-                        use arch::x86_64::{_mm_permutevar_ps};
+                        use crate::arch::x86_64::{_mm_permutevar_ps};
 
                         unsafe {
                            crate::mem::transmute(_mm_permutevar_ps(
@@ -217,9 +217,9 @@ macro_rules! impl_shuffle1_dyn {
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
                         #[cfg(target_arch = "x86")]
-                        use arch::x86::{_mm_permutevar_pd};
+                        use crate::arch::x86::{_mm_permutevar_pd};
                         #[cfg(target_arch = "x86_64")]
-                        use arch::x86_64::{_mm_permutevar_pd};
+                        use crate::arch::x86_64::{_mm_permutevar_pd};
                         // _mm_permutevar_pd uses the _second_ bit of each
                         // element to perform the selection, that is: 0b00 => 0,
                         // 0b10 => 1:

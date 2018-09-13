@@ -109,7 +109,7 @@ pub mod vector {
             let mut v = self.gen_u32();
             v &= u32xN::splat((1_u32 << 23) - 1);
             let v: f32xN = unsafe {
-                ::std::mem::transmute(u32xN::splat(0x3F80_0000) | v)
+                std::mem::transmute(u32xN::splat(0x3F80_0000) | v)
             };
             v - f32xN::splat(1.)
         }

@@ -1,6 +1,6 @@
 //! 64-bit wide vector types
 
-use crate::*;
+use super::*;
 
 impl_i!([i8; 8]: i8x8, m8x8 | i8 | test_v64 | x0, x1, x2, x3, x4, x5, x6, x7 |
         From: |

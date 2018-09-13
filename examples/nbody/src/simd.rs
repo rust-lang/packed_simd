@@ -169,7 +169,7 @@ pub fn run(n: usize) -> (f64, f64) {
 mod tests {
     #[test]
     fn test() {
-        for &(size, a_e, b_e) in ::RESULTS {
+        for &(size, a_e, b_e) in crate::RESULTS {
             let (a, b) = super::run(size);
             assert_eq!(format!("{:.9}", a), a_e);
             assert_eq!(format!("{:.9}", b), b_e);

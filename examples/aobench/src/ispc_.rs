@@ -1,4 +1,5 @@
 //! Includes the ISPC implementations.
+use ispc::*;
 use crate::*;
 
 ispc_module!(aobench);
@@ -6,7 +7,7 @@ ispc_module!(aobench);
 pub fn ao<S: Scene>(_scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
     let (w, h) = img.size();
     unsafe {
-        aobench::ao_ispc(
+        self::aobench::ao_ispc(
             w as i32,
             h as i32,
             nsubsamples as i32,
@@ -22,7 +23,7 @@ pub fn ao_tasks<S: Scene>(
 ) {
     let (w, h) = img.size();
     unsafe {
-        aobench::ao_ispc_tasks(
+        self::aobench::ao_ispc_tasks(
             w as i32,
             h as i32,
             nsubsamples as i32,

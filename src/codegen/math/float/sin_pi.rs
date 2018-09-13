@@ -34,7 +34,7 @@ macro_rules! impl_def64 {
 
 cfg_if! {
     if #[cfg(all(target_arch = "x86_64", feature = "sleef-sys"))] {
-        use crate::sleef_sys::*;
+        use sleef_sys::*;
         cfg_if! {
             if #[cfg(target_feature = "avx2")] {
                 impl_unary!(f32x2[t => f32x4]: Sleef_sinpif4_u05avx2128);

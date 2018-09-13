@@ -205,8 +205,8 @@ pub fn x8(
 #[cfg(test)]
 mod tests {
     use super::x8;
-    use scalar::scalar;
-    use {assert_data_eq, Data};
+    use crate::scalar::scalar;
+    use crate::{assert_data_eq, Data};
 
     #[test]
     fn simd_scalar_verify() {
@@ -222,7 +222,7 @@ mod tests {
     #[cfg(feature = "ispc")]
     #[test]
     fn simd_ispc_verify() {
-        use ispc_loops::serial;
+        use crate::ispc_loops::serial;
 
         let mut data_simd = Data::default();
         data_simd.exec(x8);
