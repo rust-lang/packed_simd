@@ -1,5 +1,4 @@
 //! Approximation for floating-point `mul_add`
-#![allow(unused)]
 use crate::*;
 
 // FIXME: 64-bit 1 element mul_adde
@@ -38,11 +37,12 @@ macro_rules! impl_mul_adde {
             fn mul_adde(self, y: Self, z: Self) -> Self {
                 #[cfg(not(target_arch = "s390x"))]
                 {
+                    use crate::mem::transmute;
                     unsafe {
-                        crate::mem::transmute($fn(
-                            crate::mem::transmute(self),
-                            crate::mem::transmute(y),
-                            crate::mem::transmute(z),
+                        transmute($fn(
+                            transmute(self),
+                            transmute(y),
+                            transmute(z),
                         ))
                     }
                 }

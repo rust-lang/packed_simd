@@ -17,7 +17,7 @@ macro_rules! impl_reduction_integer_arithmetic {
             pub fn wrapping_sum(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use super::llvm::simd_reduce_add_ordered;
+                    use crate::llvm::simd_reduce_add_ordered;
                     let v: $ielem_ty = unsafe {
                         simd_reduce_add_ordered(self.0, 0 as $ielem_ty)
                     };
@@ -48,7 +48,7 @@ macro_rules! impl_reduction_integer_arithmetic {
             pub fn wrapping_product(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use super::llvm::simd_reduce_mul_ordered;
+                    use crate::llvm::simd_reduce_mul_ordered;
                     let v: $ielem_ty = unsafe {
                         simd_reduce_mul_ordered(self.0, 1 as $ielem_ty)
                     };
