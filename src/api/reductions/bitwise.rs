@@ -17,7 +17,7 @@ macro_rules! impl_reduction_bitwise {
             pub fn and(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use super::llvm::simd_reduce_and;
+                    use crate::llvm::simd_reduce_and;
                     let r: $ielem_ty = unsafe { simd_reduce_and(self.0) };
                     $convert(r)
                 }
@@ -41,7 +41,7 @@ macro_rules! impl_reduction_bitwise {
             pub fn or(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use super::llvm::simd_reduce_or;
+                    use crate::llvm::simd_reduce_or;
                     let r: $ielem_ty = unsafe { simd_reduce_or(self.0) };
                     $convert(r)
                 }
@@ -65,7 +65,7 @@ macro_rules! impl_reduction_bitwise {
             pub fn xor(self) -> $elem_ty {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
-                    use super::llvm::simd_reduce_xor;
+                    use crate::llvm::simd_reduce_xor;
                     let r: $ielem_ty = unsafe { simd_reduce_xor(self.0) };
                     $convert(r)
                 }

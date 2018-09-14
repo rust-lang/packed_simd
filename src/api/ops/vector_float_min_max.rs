@@ -9,7 +9,7 @@ macro_rules! impl_ops_vector_float_min_max {
             /// the input vector lanes.
             #[inline]
             pub fn min(self, x: Self) -> Self {
-                use crate::codegen::llvm::simd_fmin;
+                use crate::llvm::simd_fmin;
                 unsafe { Simd(simd_fmin(self.0, x.0)) }
             }
 
@@ -19,7 +19,7 @@ macro_rules! impl_ops_vector_float_min_max {
             /// the input vector lanes.
             #[inline]
             pub fn max(self, x: Self) -> Self {
-                use crate::codegen::llvm::simd_fmax;
+                use crate::llvm::simd_fmax;
                 unsafe { Simd(simd_fmax(self.0, x.0)) }
             }
         }

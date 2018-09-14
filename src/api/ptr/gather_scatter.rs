@@ -24,7 +24,7 @@ macro_rules! impl_ptr_read {
                 where M: sealed::Mask,
                       [M; $elem_count]: sealed::SimdArray,
             {
-                use crate::codegen::llvm::{simd_gather};
+                use crate::llvm::{simd_gather};
                 Simd(simd_gather(value.0, self.0, mask.0))
             }
         }
@@ -117,7 +117,7 @@ macro_rules! impl_ptr_write {
                 // FIXME:
                 // https://github.com/rust-lang-nursery/packed_simd/issues/85
                 #[cfg(not(target_arch = "mips"))] {
-                    use crate::codegen::llvm::simd_scatter;
+                    use crate::llvm::simd_scatter;
                     simd_scatter(value.0, self.0, mask.0)
                 }
                 #[cfg(target_arch = "mips")] {

@@ -17,7 +17,7 @@ macro_rules! impl_ops_vector_bitwise {
             type Output = Self;
             #[inline]
             fn bitxor(self, other: Self) -> Self {
-                use super::llvm::simd_xor;
+                use crate::llvm::simd_xor;
                 unsafe { Simd(simd_xor(self.0, other.0)) }
             }
         }
@@ -25,7 +25,7 @@ macro_rules! impl_ops_vector_bitwise {
             type Output = Self;
             #[inline]
             fn bitand(self, other: Self) -> Self {
-                use super::llvm::simd_and;
+                use crate::llvm::simd_and;
                 unsafe { Simd(simd_and(self.0, other.0)) }
             }
         }
@@ -33,7 +33,7 @@ macro_rules! impl_ops_vector_bitwise {
             type Output = Self;
             #[inline]
             fn bitor(self, other: Self) -> Self {
-                use super::llvm::simd_or;
+                use crate::llvm::simd_or;
                 unsafe { Simd(simd_or(self.0, other.0)) }
             }
         }

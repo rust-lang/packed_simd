@@ -6,7 +6,7 @@ macro_rules! impl_ops_vector_shifts {
             type Output = Self;
             #[inline]
             fn shl(self, other: Self) -> Self {
-                use super::llvm::simd_shl;
+                use crate::llvm::simd_shl;
                 unsafe { Simd(simd_shl(self.0, other.0)) }
             }
         }
@@ -14,7 +14,7 @@ macro_rules! impl_ops_vector_shifts {
             type Output = Self;
             #[inline]
             fn shr(self, other: Self) -> Self {
-                use super::llvm::simd_shr;
+                use crate::llvm::simd_shr;
                 unsafe { Simd(simd_shr(self.0, other.0)) }
             }
         }
