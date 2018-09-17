@@ -153,6 +153,9 @@ at your option.
 We welcome all people who want to contribute.
 Please see the [contributing instructions] for more information.
 
+Contributions in any form (issues, pull requests, etc.) to this project
+must adhere to Rust's [Code of Conduct].
+
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in `packed_simd` by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
@@ -174,3 +177,4 @@ dual licensed as above, without any additional terms or conditions.
 [SLEEF]: https://sleef.org/
 [sleef_sys]: https://crates.io/crates/sleef-sys
 [contributing instructions]: contributing.md
+[Code of Conduct]: https://www.rust-lang.org/en-US/conduct.html
