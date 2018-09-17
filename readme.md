@@ -4,6 +4,8 @@
 
 > This aims to be a 100% conforming implementation of the RFC2366 for stabilization.
 
+**WARNING**: this crate only supports the most recent nightly Rust toolchain.
+
 # Documentation
 
 * [API docs (`master` branch)][master_docs]
