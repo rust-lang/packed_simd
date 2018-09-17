@@ -1,12 +1,14 @@
-# `Simd<[T; N]>` - Implementation of [RFC2366: `std::simd`][rfc2366]
+# `Simd<[T; N]>`
+
+## Implementation of [Rust RFC #2366: `std::simd`][rfc2366]
 
 [![Travis-CI Status]][travis] [![Appveyor Status]][appveyor] [![Latest Version]][crates.io] [![docs]][master_docs]
 
-> This aims to be a 100% conforming implementation of the RFC2366 for stabilization.
+> This aims to be a 100% conforming implementation of Rust RFC 2366 for stabilization.
 
 **WARNING**: this crate only supports the most recent nightly Rust toolchain.
 
-# Documentation
+## Documentation
 
 * [API docs (`master` branch)][master_docs]
 * [Performance guide][perf_guide]
@@ -15,7 +17,7 @@
 * [RFC2366 `std::simd`][rfc2366]: - contains motivation, design rationale,
   discussion, etc.
 
-# Examples
+## Examples
 
 Most of the examples come with both a scalar and a vectorized implementation.
 
@@ -26,28 +28,29 @@ Most of the examples come with both a scalar and a vectorized implementation.
 * [`n-body`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/nbody)
 * [`options_pricing`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/options_pricing)
 * [`spectral_norm`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/spectral_norm)
+* [`triangle transform`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/triangle_xform)
 * [`stencil`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/stencil)
 * [`vector dot product`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/dot_product)
 
-# Cargo features
+## Cargo features
 
 * `into_bits` (default: disabled): enables `FromBits`/`IntoBits` trait
   implementations for the vector types. These allow reinterpreting the bits of a
   vector type as those of another vector type safely by just using the
   `.into_bits()` method.
-  
+
 * `coresimd` (default: disabled): enable this feature to recompile `core::arch`
   for the target-features enabled. `packed_simd` includes optimizations for some
-  target feature combinations that are enabled by this feature. Note, however, 
+  target feature combinations that are enabled by this feature. Note, however,
   that this is an unstable dependency, that rustc might break at any time.
-  
+
 * `sleef-sys` (default: disabled - `x86_64` only): internally uses the [SLEEF]
   short-vector math library when profitable via the [`sleef-sys`][sleef_sys]
   crate. [SLEEF] is licensed under the [Boost Software License
   v1.0][boost_license], an extremely permissive license, and can be statically
   linked without issues.
 
-# Performance
+## Performance
 
 The following [ISPC] examples are also part of `packed_simd`'s
 [`examples/`](https://github.com/rust-lang-nursery/packed_simd/tree/master/examples/)
@@ -61,8 +64,8 @@ slowdown:
 * `stencil`: `[+1.06x, +1.72x]`,
 * `mandelbrot`: `[-1.74x, +1.2x]`,
 * `options_pricing`:
-   * `black_scholes`: `+1.0x` 
-   * `binomial_put`: `+1.4x` 
+   * `black_scholes`: `+1.0x`
+   * `binomial_put`: `+1.4x`
 
  While SPMD is not the intended use case for `packed_simd`, it is possible to
  combine the library with [`rayon`][rayon] to poorly emulate [ISPC]'s SPMD programming
@@ -70,7 +73,7 @@ slowdown:
  [ISPC], but with some care (e.g. see the [Performance Guide][perf_guide]) one
  can easily match and often out-perform [ISPC]'s "default performance".
 
-# Platform support
+## Platform support
 
 The following table describes the supported platforms: `build` shows whether the
 library compiles without issues for a given target, while `run` shows whether
@@ -125,8 +128,7 @@ there are correctness bugs open in the issue tracker.
 
 [**] it is currently not easily possible to run these platforms on CI.
 
-
-# Machine code verification
+## Machine code verification
 
 The
 [`verify/`](https://github.com/rust-lang-nursery/packed_simd/tree/master/verify)
@@ -134,18 +136,25 @@ crate tests disassembles the portable packed vector APIs at run-time and
 compares the generated machine code against the desired one to make sure that
 this crate remains efficient.
 
-# License
+## License
 
 This project is licensed under either of
 
- * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
-   http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license ([LICENSE-MIT](LICENSE-MIT) or
-   http://opensource.org/licenses/MIT)
+* [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+  ([LICENSE-APACHE](LICENSE-APACHE))
+
+* [MIT License](http://opensource.org/licenses/MIT)
+  ([LICENSE-MIT](LICENSE-MIT))
 
 at your option.
 
-### Contribution
+## Contributing
+
+We welcome all people who want to contribute.
+Please see the [contributing instructions] for more information.
+
+Contributions in any form (issues, pull requests, etc.) to this project
+must adhere to Rust's [Code of Conduct].
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in `packed_simd` by you, as defined in the Apache-2.0 license, shall be
@@ -167,3 +176,5 @@ dual licensed as above, without any additional terms or conditions.
 [boost_license]: https://www.boost.org/LICENSE_1_0.txt
 [SLEEF]: https://sleef.org/
 [sleef_sys]: https://crates.io/crates/sleef-sys
+[contributing instructions]: contributing.md
+[Code of Conduct]: https://www.rust-lang.org/en-US/conduct.html
