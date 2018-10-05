@@ -7,8 +7,6 @@ macro_rules! impl_fmt_upper_hex {
                 feature = "cargo-clippy", allow(clippy::missing_inline_in_public_items)
             )]
             fn fmt(&self, f: &mut crate::fmt::Formatter<'_>) -> crate::fmt::Result {
-                // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2891
-                #[cfg_attr(feature = "cargo-clippy", allow(clippy::write_literal))]
                 write!(f, "{}(", stringify!($id))?;
                 for i in 0..$elem_count {
                     if i > 0 {
