@@ -211,7 +211,7 @@
     align_offset,
     mmx_target_feature,
     crate_visibility_modifier,
-    custom_inner_attributes,
+    custom_inner_attributes
 )]
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]

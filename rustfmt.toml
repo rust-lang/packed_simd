@@ -3,4 +3,4 @@ use_small_heuristics = "Max"
 wrap_comments = true
 comment_width = 79
 fn_args_density = "Compressed"
-edition = "Edition2018"
+edition = "2018"

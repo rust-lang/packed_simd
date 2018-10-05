@@ -132,7 +132,8 @@ macro_rules! impl_unary_t {
                             [res_0.0, res_1.0, res_2.0, res_3.0],
                             [res_0.1, res_1.1, res_2.1, res_3.1],
                         ),
-                    }.result
+                    }
+                    .result
                 }
             }
         }

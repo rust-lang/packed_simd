@@ -3,8 +3,8 @@
 
 // FIXME 64-bit 1 elem vectors sqrte
 
-use crate::*;
 use crate::llvm::simd_fsqrt;
+use crate::*;
 
 crate trait Sqrte {
     fn sqrte(self) -> Self;
