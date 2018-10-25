@@ -125,10 +125,10 @@ macro_rules! ptr_vals {
         #[allow(unused_unsafe)]
         unsafe {
             // all bits cleared
-            let mut clear: <$id as sealed::Simd>::Element =
+            let clear: <$id as sealed::Simd>::Element =
                 crate::mem::zeroed();
             // all bits set
-            let mut set: <$id as sealed::Simd>::Element =
+            let set: <$id as sealed::Simd>::Element =
                 crate::mem::transmute(-1_isize);
             (clear, set)
         }
