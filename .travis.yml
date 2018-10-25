@@ -211,6 +211,11 @@ matrix:
     - env: TARGET=i386-apple-ios
     - env: TARGET=x86_64-apple-ios
 
+    # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/182
+    - env: TARGET=arm-unknown-linux-gnueabi RUSTFLAGS="-C target-feature=+v7,+neon"
+    - env: TARGET=arm-unknown-linux-gnueabihf RUSTFLAGS="-C target-feature=+v7,+neon"
+    - env: TARGET=armv7-unknown-linux-gnueabihf RUSTFLAGS="-C target-feature=+neon"
+
 install: travis_retry rustup target add $TARGET
 before_script: cargo generate-lockfile
 script: travis_wait 50 ci/run-docker.sh
