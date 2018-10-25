@@ -216,7 +216,6 @@
 #![allow(non_camel_case_types, non_snake_case)]
 #![cfg_attr(test, feature(plugin, hashmap_internals))]
 #![cfg_attr(test, plugin(interpolate_idents))]
-#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
     allow(
