@@ -1,4 +1,3 @@
-#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![deny(warnings, rust_2018_idioms)]
 
 use packed_simd::f32x8 as f32s;

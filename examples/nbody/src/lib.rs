@@ -2,7 +2,6 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
 #![deny(warnings, rust_2018_idioms)]
-#![cfg_attr(feature = "cargo-clippy", feature(tool_lints))]
 #![cfg_attr(
     feature = "cargo-clippy",
     allow(clippy::similar_names, clippy::excessive_precision)
