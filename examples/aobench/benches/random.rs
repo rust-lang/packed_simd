@@ -13,7 +13,8 @@ fn random_scalar(c: &mut Criterion) {
             b.iter(|| {
                 black_box(rng.gen());
             })
-        }).throughput(Throughput::Elements(1)),
+        })
+        .throughput(Throughput::Elements(1)),
     );
 }
 
@@ -25,7 +26,8 @@ fn random_vector(c: &mut Criterion) {
             b.iter(|| {
                 black_box(rng.gen());
             })
-        }).throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        })
+        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
     );
 }
 

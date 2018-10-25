@@ -1,13 +1,17 @@
 //! SIMD serial aobench
 
+use cfg_if::cfg_if;
 use crate::ambient_occlusion;
 use crate::geometry::{Ray, V3D};
 use crate::intersection::{Intersect, Isect};
 use crate::scene::Scene;
-use cfg_if::cfg_if;
 
 #[inline(always)]
-fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
+fn ao_impl<S: Scene>(
+    scene: &mut S,
+    nsubsamples: usize,
+    img: &mut crate::Image,
+) {
     let (w, h) = img.size();
     let image = &mut img.fdata;
     let ns = nsubsamples;

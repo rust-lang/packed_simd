@@ -13,7 +13,8 @@
 //! - [Vector types](#vector-types)
 //! - [Conditional operations](#conditional-operations)
 //! - [Conversions](#conversions)
-//! - [Performance guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
+//! - [Performance
+//!   guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
 //!
 //! ## Introduction
 //!
@@ -180,8 +181,8 @@
 //!   * casting from a larger integer to a smaller integer (e.g. `u32xN` ->
 //! `u8xN`)     will **truncate**,
 //!
-//!   * casting from a smaller integer to a larger integer
-//!     (e.g. `u8xN` -> `u32xN`) will:
+//!   * casting from a smaller integer to a larger integer     (e.g. `u8xN` ->
+//!     `u32xN`) will:
 //!        * **zero-extend** if the source is unsigned, or
 //!        * **sign-extend** if the source is signed,
 //!
@@ -226,7 +227,8 @@
     )
 )]
 #![cfg_attr(
-    feature = "cargo-clippy", deny(clippy::missing_inline_in_public_items)
+    feature = "cargo-clippy",
+    deny(clippy::missing_inline_in_public_items)
 )]
 #![deny(warnings, rust_2018_idioms)]
 #![no_std]
@@ -287,7 +289,8 @@ pub struct Simd<A: sealed::SimdArray>(
 #[repr(transparent)]
 #[derive(Copy, Clone, Debug)]
 #[cfg_attr(
-    feature = "cargo-clippy", allow(clippy::missing_inline_in_public_items)
+    feature = "cargo-clippy",
+    allow(clippy::missing_inline_in_public_items)
 )]
 pub struct LexicographicallyOrdered<T>(T);
 

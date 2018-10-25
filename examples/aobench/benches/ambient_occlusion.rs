@@ -18,7 +18,8 @@ fn hit_scalar(c: &mut Criterion) {
                 let mut v = ambient_occlusion::scalar(s, isect);
                 black_box(&mut v);
             })
-        }).throughput(Throughput::Elements(1)),
+        })
+        .throughput(Throughput::Elements(1)),
     );
 }
 
@@ -35,7 +36,8 @@ fn hit_vector(c: &mut Criterion) {
                 let mut v = ambient_occlusion::vector(s, isect);
                 black_box(&mut v);
             })
-        }).throughput(Throughput::Elements(1)),
+        })
+        .throughput(Throughput::Elements(1)),
     );
 }
 

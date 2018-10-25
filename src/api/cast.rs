@@ -14,8 +14,8 @@
 /// * casting from a larger integer to a smaller integer (e.g. `u32xN` ->
 /// `u8xN`) will **truncate**,
 ///
-/// * casting from a smaller integer to a larger integer
-///   (e.g. `u8xN` -> `u32xN`) will:
+/// * casting from a smaller integer to a larger integer   (e.g. `u8xN` ->
+///   `u32xN`) will:
 ///    * **zero-extend** if the source is unsigned, or
 ///    * **sign-extend** if the source is signed,
 ///
@@ -47,8 +47,8 @@ pub trait FromCast<T>: crate::marker::Sized {
 /// * casting from a larger integer to a smaller integer (e.g. `u32xN` ->
 /// `u8xN`) will **truncate**,
 ///
-/// * casting from a smaller integer to a larger integer
-///   (e.g. `u8xN` -> `u32xN`) will:
+/// * casting from a smaller integer to a larger integer   (e.g. `u8xN` ->
+///   `u32xN`) will:
 ///    * **zero-extend** if the source is unsigned, or
 ///    * **sign-extend** if the source is signed,
 ///

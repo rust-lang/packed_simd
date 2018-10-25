@@ -128,7 +128,7 @@ macro_rules! impl_reduction_float_arithmetic {
                             (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
                         );
                     }
-                    
+
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
                     #[allow(unused_mut)]

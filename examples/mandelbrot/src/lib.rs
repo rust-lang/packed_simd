@@ -81,7 +81,9 @@ impl Mandelbrot {
     }
 
     /// Writes the PBM / PPM header to the output.
-    fn write_header(&self, f: &mut dyn io::Write, color: bool) -> io::Result<()> {
+    fn write_header(
+        &self, f: &mut dyn io::Write, color: bool,
+    ) -> io::Result<()> {
         writeln!(f, "P{}", if color { 6 } else { 4 })?;
         write!(f, "{} {}", self.dims.0, self.dims.1)?;
         if color {
@@ -109,7 +111,8 @@ impl Mandelbrot {
                     result |= (undiverged as u8) << (7 - i);
                 });
                 result
-            }).collect::<Vec<u8>>();
+            })
+            .collect::<Vec<u8>>();
 
         f.write_all(&buf)
     }
@@ -151,7 +154,8 @@ impl Mandelbrot {
                 };
 
                 color.into_par_iter()
-            }).collect::<Vec<_>>();
+            })
+            .collect::<Vec<_>>();
 
         f.write_all(&buf)
     }
