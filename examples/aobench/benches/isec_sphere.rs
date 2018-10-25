@@ -1,11 +1,11 @@
 //! Benchmarks intersection between rays and spheres
 #![feature(stdsimd)]
 
-use test::*;
 use aobench_lib::*;
-use criterion::*;
 use crate::geometry::{f32xN, Ray, RayxN, Sphere, V3DxN, V3D};
 use crate::intersection::{Intersect, Isect, IsectxN};
+use criterion::*;
+use test::*;
 
 fn hit_scalar(c: &mut Criterion) {
     let mut s = Sphere {
@@ -42,7 +42,8 @@ fn hit_scalar(c: &mut Criterion) {
                 black_box(&mut v);
                 assert_eq!(v.hit, true);
             })
-        }).throughput(Throughput::Elements(1)),
+        })
+        .throughput(Throughput::Elements(1)),
     );
 }
 
@@ -80,7 +81,8 @@ fn miss_scalar(c: &mut Criterion) {
                 black_box(&mut v);
                 assert_eq!(v.hit, false);
             })
-        }).throughput(Throughput::Elements(1)),
+        })
+        .throughput(Throughput::Elements(1)),
     );
 }
 
@@ -118,7 +120,8 @@ fn hit_vector(c: &mut Criterion) {
                 black_box(&mut v);
                 assert_eq!(v.hit.all(), true);
             })
-        }).throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        })
+        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
     );
 }
 
@@ -156,7 +159,8 @@ fn miss_vector(c: &mut Criterion) {
                 black_box(&mut v);
                 assert_eq!(v.hit.any(), false);
             })
-        }).throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        })
+        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
     );
 }
 

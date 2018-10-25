@@ -3,8 +3,8 @@
 use crate::ambient_occlusion;
 use crate::geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
 use crate::intersection::{Intersect, IsectxN};
-use rayon::prelude::*;
 use crate::scene::Scene;
+use rayon::prelude::*;
 
 pub fn ao<S: Scene>(_: &mut S, nsubsamples: usize, img: &mut crate::Image) {
     let (w, h) = img.size();

@@ -1,13 +1,17 @@
 //! SIMD serial aobench
 
+use cfg_if::cfg_if;
 use crate::ambient_occlusion;
 use crate::geometry::{f32xN, pf32xN, usizexN, IncrV, RayxN, V3DxN};
 use crate::intersection::{Intersect, IsectxN};
 use crate::scene::Scene;
-use cfg_if::cfg_if;
 
 #[inline(always)]
-fn ao_impl<S: Scene>(scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
+fn ao_impl<S: Scene>(
+    scene: &mut S,
+    nsubsamples: usize,
+    img: &mut crate::Image,
+) {
     let (w, h) = img.size();
     assert_eq!(w % f32xN::lanes(), 0);
     let image = &mut img.fdata;

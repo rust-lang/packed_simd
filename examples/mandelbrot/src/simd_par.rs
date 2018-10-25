@@ -1,9 +1,9 @@
 //! Vectorized parallel Mandelbrot implementation
 #![allow(non_camel_case_types)]
 
+use crate::*;
 use packed_simd::*;
 use rayon::prelude::*;
-use crate::*;
 
 type u64s = u64x8;
 type u32s = u32x8;

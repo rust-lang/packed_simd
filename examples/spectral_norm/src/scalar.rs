@@ -1,10 +1,10 @@
 //! Scalar spectral norm implementation
 
+use crate::*;
 use std::{
     iter::*,
     ops::{Add, Div},
 };
-use crate::*;
 
 struct f64x2(f64, f64);
 impl Add for f64x2 {

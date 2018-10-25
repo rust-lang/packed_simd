@@ -1,10 +1,14 @@
 //! Includes the ISPC implementations.
-use ispc::*;
 use crate::*;
+use ispc::*;
 
 ispc_module!(aobench);
 
-pub fn ao<S: Scene>(_scene: &mut S, nsubsamples: usize, img: &mut crate::Image) {
+pub fn ao<S: Scene>(
+    _scene: &mut S,
+    nsubsamples: usize,
+    img: &mut crate::Image,
+) {
     let (w, h) = img.size();
     unsafe {
         self::aobench::ao_ispc(

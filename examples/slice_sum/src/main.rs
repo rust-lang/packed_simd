@@ -47,7 +47,8 @@ fn sum_ver_par(x: &[f32]) -> f32 {
         .enumerate()
         .find(|&(_, y): &(usize, &f32)| {
             (y as *const f32) as usize % mem::align_of::<f32s>() == 0
-        }).unwrap();
+        })
+        .unwrap();
 
     let (head, tail) = x.split_at(i);
     let head_sum: f32 = head.iter().sum();
