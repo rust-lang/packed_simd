@@ -45,6 +45,7 @@ macro_rules! impl_swap_bytes {
             ///
             /// On little endian this is a no-op. On big endian the bytes are
             /// swapped.
+            #[inline]
             pub fn from_le(x: Self) -> Self {
                 #[cfg(target_endian = "little")]
                 {
