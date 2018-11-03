@@ -44,8 +44,8 @@ macro_rules! impl_swap_bytes {
 
         test_if! {
             $test_tt:
-            interpolate_idents! {
-                pub mod [$id _swap_bytes] {
+            paste::item_with_macros! {
+                pub mod [<$id _swap_bytes>] {
                     use super::*;
 
                     const BYTES: [u8; 64] = [
@@ -61,7 +61,7 @@ macro_rules! impl_swap_bytes {
                             assert!(mem::size_of::<$id>() <= 64);
 
                             let mut actual = BYTES;
-                            let elems: &mut [[$elem_ty]] = unsafe {
+                            let elems: &mut [$elem_ty] = unsafe {
                                 slice::from_raw_parts_mut(
                                     actual.as_mut_ptr() as *mut $elem_ty,
                                     $id::lanes(),
