@@ -37,7 +37,10 @@ macro_rules! impl_ops_vector_shifts {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg_attr(any(target_arch = "s390x", target_arch = "sparc64"),
-                               allow(unreachable_code, unused_variables, unused_mut))]
+                               allow(unreachable_code,
+                                     unused_variables,
+                                     unused_mut)
+                    )]
                     // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
                     fn ops_vector_shifts() {
                         let z = $id::splat(0 as $elem_ty);
@@ -45,8 +48,9 @@ macro_rules! impl_ops_vector_shifts {
                         let t = $id::splat(2 as $elem_ty);
                         let f = $id::splat(4 as $elem_ty);
 
-                        let max =
-                            $id::splat((mem::size_of::<$elem_ty>() * 8 - 1) as $elem_ty);
+                        let max =$id::splat(
+                            (mem::size_of::<$elem_ty>() * 8 - 1) as $elem_ty
+                        );
 
                         // shr
                         assert_eq!(z >> z, z);

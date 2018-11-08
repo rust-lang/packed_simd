@@ -1,8 +1,8 @@
 //! Implements portable horizontal integer vector arithmetic reductions.
 
 macro_rules! impl_reduction_integer_arithmetic {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident | $test_tt:tt) => {
-
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident
+     | $test_tt:tt) => {
         impl $id {
             /// Horizontal wrapping sum of the vector elements.
             ///
@@ -69,28 +69,28 @@ macro_rules! impl_reduction_integer_arithmetic {
 
         impl crate::iter::Sum for $id {
             #[inline]
-            fn sum<I: Iterator<Item=$id>>(iter: I) -> $id {
+            fn sum<I: Iterator<Item = $id>>(iter: I) -> $id {
                 iter.fold($id::splat(0), crate::ops::Add::add)
             }
         }
 
         impl crate::iter::Product for $id {
             #[inline]
-            fn product<I: Iterator<Item=$id>>(iter: I) -> $id {
+            fn product<I: Iterator<Item = $id>>(iter: I) -> $id {
                 iter.fold($id::splat(1), crate::ops::Mul::mul)
             }
         }
 
         impl<'a> crate::iter::Sum<&'a $id> for $id {
             #[inline]
-            fn sum<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
+            fn sum<I: Iterator<Item = &'a $id>>(iter: I) -> $id {
                 iter.fold($id::splat(0), |a, b| crate::ops::Add::add(a, *b))
             }
         }
 
         impl<'a> crate::iter::Product<&'a $id> for $id {
             #[inline]
-            fn product<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
+            fn product<I: Iterator<Item = &'a $id>>(iter: I) -> $id {
                 iter.fold($id::splat(1), |a, b| crate::ops::Mul::mul(a, *b))
             }
         }
@@ -111,7 +111,8 @@ macro_rules! impl_reduction_integer_arithmetic {
                         v
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn wrapping_sum() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.wrapping_sum(), 0 as $elem_ty);
@@ -130,7 +131,8 @@ macro_rules! impl_reduction_integer_arithmetic {
                             );
                         }
                     }
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn wrapping_sum_overflow() {
                         let start = $elem_ty::max_value()
                             - ($id::lanes() as $elem_ty / 2);
@@ -145,7 +147,8 @@ macro_rules! impl_reduction_integer_arithmetic {
                         assert_eq!(wrapping_sum, vwrapping_sum, "v = {:?}", v);
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn wrapping_product() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.wrapping_product(), 0 as $elem_ty);
@@ -161,7 +164,8 @@ macro_rules! impl_reduction_integer_arithmetic {
                         if $id::lanes() > 1 {
                             assert_eq!(
                                 v.wrapping_product(),
-                                (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
+                                (2_usize.pow(($id::lanes() / f) as u32)
+                                 as $elem_ty)
                             );
                         } else {
                             assert_eq!(
@@ -171,7 +175,8 @@ macro_rules! impl_reduction_integer_arithmetic {
                         }
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn wrapping_product_overflow() {
                         let start = $elem_ty::max_value()
                             - ($id::lanes() as $elem_ty / 2);

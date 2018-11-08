@@ -16,14 +16,16 @@ macro_rules! impl_minimal_mask {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
+            #[cfg_attr(feature = "cargo-clippy",
+                       allow(clippy::too_many_arguments))]
             pub const fn new($($elem_name: bool),*) -> Self {
                 Simd(codegen::$id($(Self::bool_to_internal($elem_name)),*))
             }
 
             /// Converts a boolean type into the type of the vector lanes.
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(clippy::indexing_slicing))]
+            #[cfg_attr(feature = "cargo-clippy",
+                       allow(clippy::indexing_slicing))]
             const fn bool_to_internal(x: bool) -> $ielem_ty {
                 [0 as $ielem_ty, !(0 as $ielem_ty)][x as usize]
             }
@@ -66,32 +68,41 @@ macro_rules! impl_minimal_mask {
                 x != 0
             }
 
-            /// Returns a new vector where the value at `index` is replaced by `new_value`.
+            /// Returns a new vector where the value at `index` is replaced by
+            /// `new_value`.
             ///
             /// # Panics
             ///
             /// If `index >= Self::lanes()`.
             #[inline]
-            #[must_use = "replace does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
+            #[must_use = "replace does not modify the original value - \
+                          it returns a new vector with the value at `index` \
+                          replaced by `new_value`d"
+            ]
             pub fn replace(self, index: usize, new_value: bool) -> Self {
                 assert!(index < $elem_count);
                 unsafe { self.replace_unchecked(index, new_value) }
             }
 
-            /// Returns a new vector where the value at `index` is replaced by `new_value`.
+            /// Returns a new vector where the value at `index` is replaced by
+            /// `new_value`.
             ///
             /// # Panics
             ///
             /// If `index >= Self::lanes()`.
             #[inline]
-            #[must_use = "replace_unchecked does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
+            #[must_use = "replace_unchecked does not modify the original value - \
+                          it returns a new vector with the value at `index` \
+                          replaced by `new_value`d"
+            ]
             pub unsafe fn replace_unchecked(
                 self,
                 index: usize,
                 new_value: bool,
             ) -> Self {
                 use crate::llvm::simd_insert;
-                Simd(simd_insert(self.0, index as u32, Self::bool_to_internal(new_value)))
+                Simd(simd_insert(self.0, index as u32,
+                                 Self::bool_to_internal(new_value)))
             }
         }
 
@@ -100,7 +111,8 @@ macro_rules! impl_minimal_mask {
             paste::item! {
                 pub mod [<$id _minimal>] {
                     use super::*;
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn minimal() {
                         // TODO: test new
 
@@ -111,7 +123,9 @@ macro_rules! impl_minimal_mask {
                         let vec = $id::splat(true);
                         for i in 0..$id::lanes() {
                             assert_eq!(true, vec.extract(i));
-                            assert_eq!(true, unsafe { vec.extract_unchecked(i) });
+                            assert_eq!(true,
+                                       unsafe { vec.extract_unchecked(i) }
+                            );
                         }
 
                         // replace / replace_unchecked
@@ -123,7 +137,9 @@ macro_rules! impl_minimal_mask {
                                 assert_eq!(true, new_vec.extract(i));
                             }
                         }
-                        let new_vec = unsafe { vec.replace_unchecked(0, false) };
+                        let new_vec = unsafe {
+                            vec.replace_unchecked(0, false)
+                        };
                         for i in 0..$id::lanes() {
                             if i == 0 {
                                 assert_eq!(false, new_vec.extract(i));
@@ -134,7 +150,8 @@ macro_rules! impl_minimal_mask {
                     }
 
                     // FIXME: wasm-bindgen-test does not support #[should_panic]
-                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    // #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
@@ -143,7 +160,8 @@ macro_rules! impl_minimal_mask {
                         let _ = vec.extract($id::lanes());
                     }
                     // FIXME: wasm-bindgen-test does not support #[should_panic]
-                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    // #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]

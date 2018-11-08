@@ -14,14 +14,18 @@ macro_rules! impl_from_bits_ {
             paste::item! {
                 pub mod [<$id _from_bits_ $from_ty>] {
                     use super::*;
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn test() {
-                        use crate::{ptr::{read_unaligned}, mem::{size_of, zeroed}};
+                        use crate::{
+                            ptr::{read_unaligned},
+                            mem::{size_of, zeroed}
+                        };
                         use crate::IntoBits;
                         assert_eq!(size_of::<$id>(),
                                    size_of::<$from_ty>());
-                        // This is safe becasue we never create a reference
-                        // to uninitialized memory:
+                        // This is safe becasue we never create a reference to
+                        // uninitialized memory:
                         let a: $from_ty = unsafe { zeroed() };
 
                         let b_0: $id = crate::FromBits::from_bits(a);
@@ -30,11 +34,18 @@ macro_rules! impl_from_bits_ {
                         // Check that these are byte-wise equal, that is,
                         // that the bit patterns are identical:
                         for i in 0..size_of::<$id>() {
-                            // This is safe because we only read initialized memory in bounds. Also,
-                            // taking a reference to `b_i` is ok because the fields are initialized.
+                            // This is safe because we only read initialized
+                            // memory in bounds. Also, taking a reference to
+                            // `b_i` is ok because the fields are initialized.
                             unsafe {
-                                let b_0_v: u8 = read_unaligned((&b_0 as *const $id as *const u8).wrapping_add(i));
-                                let b_1_v: u8 = read_unaligned((&b_1 as *const $id as *const u8).wrapping_add(i));
+                                let b_0_v: u8 = read_unaligned(
+                                    (&b_0 as *const $id as *const u8)
+                                        .wrapping_add(i)
+                                );
+                                let b_1_v: u8 = read_unaligned(
+                                    (&b_1 as *const $id as *const u8)
+                                        .wrapping_add(i)
+                                );
                                 assert_eq!(b_0_v, b_1_v);
                             }
                         }
@@ -42,7 +53,7 @@ macro_rules! impl_from_bits_ {
                 }
             }
         }
-    }
+    };
 }
 
 macro_rules! impl_from_bits {

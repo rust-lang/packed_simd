@@ -4,7 +4,8 @@
 
 macro_rules! impl_unary_ {
     // implementation mapping 1:1
-    (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident, $fun:ident) => {
+    (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self) -> Self {
@@ -17,7 +18,8 @@ macro_rules! impl_unary_ {
     };
     // implementation mapping 1:1 for when `$fun` is a generic function
     // like some of the fp math rustc intrinsics (e.g. `fn fun<T>(x: T) -> T`).
-    (gen | $trait_id:ident, $trait_method:ident, $vec_id:ident, $fun:ident) => {
+    (gen | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self) -> Self {
@@ -48,7 +50,8 @@ macro_rules! impl_unary_ {
         }
     };
     // implementation calling fun twice on each of the vector halves:
-    (halves | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vech_id:ident, $fun:ident) => {
+    (halves | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vech_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self) -> Self {
@@ -72,7 +75,8 @@ macro_rules! impl_unary_ {
         }
     };
     // implementation calling fun four times on each of the vector quarters:
-    (quarter | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vecq_id:ident, $fun:ident) => {
+    (quarter | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vecq_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self) -> Self {
@@ -100,7 +104,8 @@ macro_rules! impl_unary_ {
         }
     };
     // implementation calling fun once on a vector twice as large:
-    (twice | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vect_id:ident, $fun:ident) => {
+    (twice | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vect_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self) -> Self {
@@ -176,7 +181,8 @@ macro_rules! gen_unary_impl_table {
 
 macro_rules! impl_tertiary_ {
     // implementation mapping 1:1
-    (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident, $fun:ident) => {
+    (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
@@ -213,7 +219,8 @@ macro_rules! impl_tertiary_ {
         }
     };
     // implementation calling fun twice on each of the vector halves:
-    (halves | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vech_id:ident, $fun:ident) => {
+    (halves | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vech_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
@@ -245,7 +252,8 @@ macro_rules! impl_tertiary_ {
         }
     };
     // implementation calling fun four times on each of the vector quarters:
-    (quarter | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vecq_id:ident, $fun:ident) => {
+    (quarter | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vecq_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
@@ -290,7 +298,8 @@ macro_rules! impl_tertiary_ {
         }
     };
     // implementation calling fun once on a vector twice as large:
-    (twice | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vect_id:ident, $fun:ident) => {
+    (twice | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vect_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self, z: Self) -> Self {
@@ -369,7 +378,8 @@ macro_rules! gen_tertiary_impl_table {
 
 macro_rules! impl_binary_ {
     // implementation mapping 1:1
-    (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident, $fun:ident) => {
+    (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
@@ -401,7 +411,8 @@ macro_rules! impl_binary_ {
         }
     };
     // implementation calling fun twice on each of the vector halves:
-    (halves | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vech_id:ident, $fun:ident) => {
+    (halves | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vech_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
@@ -430,7 +441,8 @@ macro_rules! impl_binary_ {
         }
     };
     // implementation calling fun four times on each of the vector quarters:
-    (quarter | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vecq_id:ident, $fun:ident) => {
+    (quarter | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vecq_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {
@@ -470,7 +482,8 @@ macro_rules! impl_binary_ {
         }
     };
     // implementation calling fun once on a vector twice as large:
-    (twice | $trait_id:ident, $trait_method:ident, $vec_id:ident, $vect_id:ident, $fun:ident) => {
+    (twice | $trait_id:ident, $trait_method:ident, $vec_id:ident,
+     $vect_id:ident, $fun:ident) => {
         impl $trait_id for $vec_id {
             #[inline]
             fn $trait_method(self, y: Self) -> Self {

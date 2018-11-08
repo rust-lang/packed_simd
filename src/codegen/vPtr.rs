@@ -1,7 +1,8 @@
 //! Pointer vector types
 
 macro_rules! impl_simd_ptr {
-    ([$ptr_ty:ty; $elem_count:expr]: $tuple_id:ident | $ty:ident | $($tys:ty),*) => {
+    ([$ptr_ty:ty; $elem_count:expr]: $tuple_id:ident | $ty:ident
+     | $($tys:ty),*) => {
         #[derive(Copy, Clone)]
         #[repr(simd)]
         pub struct $tuple_id<$ty>($(crate $tys),*);
