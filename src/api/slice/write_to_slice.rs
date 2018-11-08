@@ -16,7 +16,8 @@ macro_rules! impl_slice_write_to_slice {
                     let target_ptr =
                         slice.get_unchecked_mut(0) as *mut $elem_ty;
                     assert_eq!(
-                        target_ptr.align_offset(crate::mem::align_of::<Self>()),
+                        target_ptr
+                            .align_offset(crate::mem::align_of::<Self>()),
                         0
                     );
                     self.write_to_slice_aligned_unchecked(slice);
@@ -48,14 +49,18 @@ macro_rules! impl_slice_write_to_slice {
                 self, slice: &mut [$elem_ty],
             ) {
                 debug_assert!(slice.len() >= $elem_count);
-                let target_ptr =
-                    slice.get_unchecked_mut(0) as *mut $elem_ty;
+                let target_ptr = slice.get_unchecked_mut(0) as *mut $elem_ty;
                 debug_assert_eq!(
                     target_ptr.align_offset(crate::mem::align_of::<Self>()),
                     0
                 );
 
-                #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
+                        #[cfg_attr(feature = "cargo-clippy",
+                                   allow(clippy::cast_ptr_alignment))]
+                #[cfg_attr(
+                    feature = "cargo-clippy",
+                    allow(clippy::cast_ptr_alignment)
+                )]
                 *(target_ptr as *mut Self) = self;
             }
 
@@ -80,7 +85,6 @@ macro_rules! impl_slice_write_to_slice {
             }
         }
 
-
         test_if!{
             $test_tt:
             paste::item! {
@@ -88,7 +92,8 @@ macro_rules! impl_slice_write_to_slice {
                     use super::*;
                     use crate::iter::Iterator;
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn write_to_slice_unaligned() {
                         let mut unaligned = [0 as $elem_ty; $id::lanes() + 1];
                         let vec = $id::splat(42 as $elem_ty);
@@ -104,7 +109,8 @@ macro_rules! impl_slice_write_to_slice {
                     }
 
                     // FIXME: wasm-bindgen-test does not support #[should_panic]
-                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    // #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
@@ -119,25 +125,33 @@ macro_rules! impl_slice_write_to_slice {
                         _vec: $id,
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn write_to_slice_aligned() {
                         let mut aligned = A {
                             data: [0 as $elem_ty; 2 * $id::lanes()],
                         };
                         let vec = $id::splat(42 as $elem_ty);
-                        unsafe { vec.write_to_slice_aligned(&mut aligned.data[$id::lanes()..]) };
-                        for (index, &b) in unsafe { aligned.data.iter().enumerate() } {
-                            if index < $id::lanes() {
-                                assert_eq!(b, 0 as $elem_ty);
-                            } else {
-                                assert_eq!(b, 42 as $elem_ty);
-                                assert_eq!(b, vec.extract(index - $id::lanes()));
+                        unsafe {
+                            vec.write_to_slice_aligned(
+                                &mut aligned.data[$id::lanes()..]
+                            );
+                            for (idx, &b) in aligned.data.iter().enumerate() {
+                                if idx < $id::lanes() {
+                                    assert_eq!(b, 0 as $elem_ty);
+                                } else {
+                                    assert_eq!(b, 42 as $elem_ty);
+                                    assert_eq!(
+                                        b, vec.extract(idx - $id::lanes())
+                                    );
+                                }
                             }
                         }
                     }
 
                     // FIXME: wasm-bindgen-test does not support #[should_panic]
-                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    // #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
@@ -147,12 +161,15 @@ macro_rules! impl_slice_write_to_slice {
                         };
                         let vec = $id::splat(42 as $elem_ty);
                         unsafe {
-                            vec.write_to_slice_aligned(&mut aligned.data[2 * $id::lanes()..])
+                            vec.write_to_slice_aligned(
+                                &mut aligned.data[2 * $id::lanes()..]
+                            )
                         };
                     }
 
                     // FIXME: wasm-bindgen-test does not support #[should_panic]
-                    // #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    // #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    // #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg(not(target_arch = "wasm32"))]
                     #[test]
                     #[should_panic]
@@ -163,22 +180,28 @@ macro_rules! impl_slice_write_to_slice {
                             };
 
                             // get a pointer to the front of data
-                            let ptr: *mut $elem_ty = aligned.data.as_mut_ptr() as *mut $elem_ty;
+                            let ptr: *mut $elem_ty
+                                = aligned.data.as_mut_ptr() as *mut $elem_ty;
                             // offset pointer by one element
                             let ptr = ptr.wrapping_add(1);
 
-                            if ptr.align_offset(crate::mem::align_of::<$id>()) == 0 {
-                                // the pointer is properly aligned, so write_to_slice_aligned
-                                // won't fail here (e.g. this can happen for i128x1). So
-                                // we panic to make the "should_fail" test pass:
+                            if ptr.align_offset(crate::mem::align_of::<$id>())
+                                == 0 {
+                                // the pointer is properly aligned, so
+                                // write_to_slice_aligned won't fail here (e.g.
+                                // this can happen for i128x1). So we panic to
+                                // make the "should_fail" test pass:
                                 panic!("ok");
                             }
 
-                            // create a slice - this is safe, because the elements
-                            // of the slice exist, are properly initialized, and properly aligned:
-                            let s: &mut [$elem_ty] = slice::from_raw_parts_mut(ptr, $id::lanes());
-                            // this should always panic because the slice alignment does not match
-                            // the alignment requirements for the vector type:
+                            // create a slice - this is safe, because the
+                            // elements of the slice exist, are properly
+                            // initialized, and properly aligned:
+                            let s: &mut [$elem_ty]
+                                = slice::from_raw_parts_mut(ptr, $id::lanes());
+                            // this should always panic because the slice
+                            // alignment does not match the alignment
+                            // requirements for the vector type:
                             let vec = $id::splat(42 as $elem_ty);
                             vec.write_to_slice_aligned(s);
                         }

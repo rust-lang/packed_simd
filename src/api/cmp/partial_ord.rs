@@ -106,8 +106,10 @@ macro_rules! test_cmp_partial_ord_int {
 
                         // variable values: a = [0, 1, 2, 3]; b = [0, 1, 2, 4]
                         let mut b = a;
-                        b = b.replace($id::lanes()-1,
-                                      a.extract($id::lanes() - 1) + 1 as $elem_ty);
+                        b = b.replace(
+                            $id::lanes() - 1,
+                            a.extract($id::lanes() - 1) + 1 as $elem_ty
+                        );
                         test_cmp(a.partial_lex_ord(), b.partial_lex_ord(),
                                  Some(crate::cmp::Ordering::Less));
                         test_cmp(b.partial_lex_ord(), a.partial_lex_ord(),

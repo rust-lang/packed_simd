@@ -53,7 +53,9 @@ macro_rules! impl_i {
         impl_ops_scalar_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_neg!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_ops_vector_int_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_ops_vector_int_min_max!(
+            [$elem_ty; $elem_n]: $tuple_id | $test_tt
+        );
         impl_reduction_integer_arithmetic!(
             [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
         );
@@ -79,7 +81,9 @@ macro_rules! impl_i {
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_swap_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_cmp_partial_eq!([$elem_ty; $elem_n]: $tuple_id | $test_tt | (0, 1));
+        impl_cmp_partial_eq!(
+            [$elem_ty; $elem_n]: $tuple_id | $test_tt | (0, 1)
+        );
         impl_cmp_eq!([$elem_ty; $elem_n]: $tuple_id | $test_tt | (0, 1));
         impl_cmp_vertical!(
             [$elem_ty; $elem_n]: $tuple_id, $mask_ty, false, (1, 0) | $test_tt
@@ -110,7 +114,9 @@ macro_rules! impl_u {
         impl_ops_vector_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_scalar_shifts!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_ops_vector_rotates!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
-        impl_ops_vector_int_min_max!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_ops_vector_int_min_max!(
+            [$elem_ty; $elem_n]: $tuple_id | $test_tt
+        );
         impl_reduction_integer_arithmetic!(
             [$elem_ty; $elem_n]: $tuple_id | $ielem_ty | $test_tt
         );
@@ -196,7 +202,8 @@ macro_rules! impl_f {
         impl_math_float_sqrt!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_sqrte!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_cmp_vertical!(
-            [$elem_ty; $elem_n]: $tuple_id, $mask_ty, false, (1., 0.) | $test_tt
+            [$elem_ty; $elem_n]: $tuple_id, $mask_ty, false, (1., 0.)
+                | $test_tt
         );
 
         test_select!($elem_ty, $mask_ty, $tuple_id, (1., 2.) | $test_tt);
@@ -238,7 +245,9 @@ macro_rules! impl_m {
         impl_cmp_partial_eq!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (true, false)
         );
-        impl_cmp_eq!([$elem_ty; $elem_n]: $tuple_id | $test_tt | (true, false));
+        impl_cmp_eq!(
+            [$elem_ty; $elem_n]: $tuple_id | $test_tt | (true, false)
+        );
         impl_cmp_vertical!(
             [$elem_ty; $elem_n]: $tuple_id, $tuple_id, true, (true, false)
             | $test_tt
@@ -260,9 +269,11 @@ macro_rules! impl_const_p {
      $usize_ty:ident, $isize_ty:ident
      | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
-        impl_minimal_p!([$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty |
-                        ref_ | $test_tt | $($elem_ids),*
-                        | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*);
+        impl_minimal_p!(
+            [$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty
+                | ref_ | $test_tt | $($elem_ids),*
+                | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*
+        );
         impl_ptr_read!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
     }
 }
@@ -272,9 +283,11 @@ macro_rules! impl_mut_p {
      $usize_ty:ident, $isize_ty:ident
      | $test_tt:tt | $($elem_ids:ident),*
      | From: $($from_vec_ty:ident),* | $(#[$doc:meta])*) => {
-        impl_minimal_p!([$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty |
-                        ref_mut_ | $test_tt | $($elem_ids),*
-                        | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*);
+        impl_minimal_p!(
+            [$elem_ty; $elem_n]: $tuple_id, $mask_ty, $usize_ty, $isize_ty
+                | ref_mut_ | $test_tt | $($elem_ids),*
+                | (1 as $elem_ty, 0 as $elem_ty) | $(#[$doc])*
+        );
         impl_ptr_read!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
         impl_ptr_write!([$elem_ty; $elem_n]: $tuple_id, $mask_ty | $test_tt);
     }

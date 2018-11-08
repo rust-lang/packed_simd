@@ -27,7 +27,10 @@ macro_rules! impl_hash {
                         use crate::hash::{SipHasher13};
                         type A = [$elem_ty; $id::lanes()];
                         let a: A = [42 as $elem_ty; $id::lanes()];
-                        assert!(crate::mem::size_of::<A>() == crate::mem::size_of::<$id>());
+                        assert_eq!(
+                            crate::mem::size_of::<A>(),
+                            crate::mem::size_of::<$id>()
+                        );
                         #[allow(deprecated)]
                         let mut a_hash = SipHasher13::new();
                         let mut v_hash = a_hash.clone();

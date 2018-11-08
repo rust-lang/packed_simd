@@ -2,10 +2,8 @@
 //! vectors.
 
 macro_rules! impl_minimal_iuf {
-    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident | $test_tt:tt |
-
-     $($elem_name:ident),+ |
-     $(#[$doc:meta])*) => {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident | $ielem_ty:ident |
+     $test_tt:tt | $($elem_name:ident),+ | $(#[$doc:meta])*) => {
 
         $(#[$doc])*
         pub type $id = Simd<[$elem_ty; $elem_count]>;
@@ -20,7 +18,8 @@ macro_rules! impl_minimal_iuf {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
             #[inline]
-            #[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
+            #[cfg_attr(feature = "cargo-clippy",
+                       allow(clippy::too_many_arguments))]
             pub const fn new($($elem_name: $elem_ty),*) -> Self {
                 Simd(codegen::$id($($elem_name as $ielem_ty),*))
             }
@@ -71,7 +70,10 @@ macro_rules! impl_minimal_iuf {
             ///
             /// If `index >= Self::lanes()`.
             #[inline]
-            #[must_use = "replace does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
+            #[must_use = "replace does not modify the original value - \
+                          it returns a new vector with the value at `index` \
+                          replaced by `new_value`d"
+            ]
             pub fn replace(self, index: usize, new_value: $elem_ty) -> Self {
                 assert!(index < $elem_count);
                 unsafe { self.replace_unchecked(index, new_value) }
@@ -83,7 +85,10 @@ macro_rules! impl_minimal_iuf {
             ///
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
-            #[must_use = "replace_unchecked does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
+            #[must_use = "replace_unchecked does not modify the original value - \
+                          it returns a new vector with the value at `index` \
+                          replaced by `new_value`d"
+            ]
             pub unsafe fn replace_unchecked(
                 self,
                 index: usize,
@@ -99,7 +104,8 @@ macro_rules! impl_minimal_iuf {
             paste::item! {
                 pub mod [<$id _minimal>] {
                     use super::*;
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn minimal() {
                         // lanes:
                         assert_eq!($elem_count, $id::lanes());
@@ -109,7 +115,9 @@ macro_rules! impl_minimal_iuf {
                         const VEC: $id = $id::splat(VAL);
                         for i in 0..$id::lanes() {
                             assert_eq!(VAL, VEC.extract(i));
-                            assert_eq!(VAL, unsafe { VEC.extract_unchecked(i) });
+                            assert_eq!(
+                                VAL, unsafe { VEC.extract_unchecked(i) }
+                            );
                         }
 
                         // replace / replace_unchecked

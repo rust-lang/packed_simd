@@ -15,11 +15,13 @@ macro_rules! impl_reduction_float_arithmetic {
             /// of the `NaN`s in the vector.
             #[inline]
             pub fn sum(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use crate::llvm::simd_reduce_add_ordered;
                     unsafe { simd_reduce_add_ordered(self.0, 0 as $elem_ty) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
@@ -42,11 +44,13 @@ macro_rules! impl_reduction_float_arithmetic {
             /// of the `NaN`s in the vector.
             #[inline]
             pub fn product(self) -> $elem_ty {
-                #[cfg(not(target_arch = "aarch64"))] {
+                #[cfg(not(target_arch = "aarch64"))]
+                {
                     use crate::llvm::simd_reduce_mul_ordered;
                     unsafe { simd_reduce_mul_ordered(self.0, 1 as $elem_ty) }
                 }
-                #[cfg(target_arch = "aarch64")] {
+                #[cfg(target_arch = "aarch64")]
+                {
                     // FIXME: broken on AArch64
                     // https://github.com/rust-lang-nursery/packed_simd/issues/15
                     let mut x = self.extract(0) as $elem_ty;
@@ -60,28 +64,28 @@ macro_rules! impl_reduction_float_arithmetic {
 
         impl crate::iter::Sum for $id {
             #[inline]
-            fn sum<I: Iterator<Item=$id>>(iter: I) -> $id {
+            fn sum<I: Iterator<Item = $id>>(iter: I) -> $id {
                 iter.fold($id::splat(0.), crate::ops::Add::add)
             }
         }
 
         impl crate::iter::Product for $id {
             #[inline]
-            fn product<I: Iterator<Item=$id>>(iter: I) -> $id {
+            fn product<I: Iterator<Item = $id>>(iter: I) -> $id {
                 iter.fold($id::splat(1.), crate::ops::Mul::mul)
             }
         }
 
         impl<'a> crate::iter::Sum<&'a $id> for $id {
             #[inline]
-            fn sum<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
+            fn sum<I: Iterator<Item = &'a $id>>(iter: I) -> $id {
                 iter.fold($id::splat(0.), |a, b| crate::ops::Add::add(a, *b))
             }
         }
 
         impl<'a> crate::iter::Product<&'a $id> for $id {
             #[inline]
-            fn product<I: Iterator<Item=&'a $id>>(iter: I) -> $id {
+            fn product<I: Iterator<Item = &'a $id>>(iter: I) -> $id {
                 iter.fold($id::splat(1.), |a, b| crate::ops::Mul::mul(a, *b))
             }
         }
@@ -101,16 +105,21 @@ macro_rules! impl_reduction_float_arithmetic {
                         v
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn sum() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.sum(), 0 as $elem_ty);
                         let v = $id::splat(1 as $elem_ty);
                         assert_eq!(v.sum(), $id::lanes() as $elem_ty);
                         let v = alternating(2);
-                        assert_eq!(v.sum(), ($id::lanes() / 2 + $id::lanes()) as $elem_ty);
+                        assert_eq!(
+                            v.sum(),
+                            ($id::lanes() / 2 + $id::lanes()) as $elem_ty
+                        );
                     }
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn product() {
                         let v = $id::splat(0 as $elem_ty);
                         assert_eq!(v.product(), 0 as $elem_ty);
@@ -125,11 +134,13 @@ macro_rules! impl_reduction_float_arithmetic {
                         let v = alternating(f);
                         assert_eq!(
                             v.product(),
-                            (2_usize.pow(($id::lanes() / f) as u32) as $elem_ty)
+                            (2_usize.pow(($id::lanes() / f) as u32)
+                             as $elem_ty)
                         );
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
                     #[allow(unused_mut)]
                     // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
@@ -159,7 +170,8 @@ macro_rules! impl_reduction_float_arithmetic {
                         assert!(v.sum().is_nan(), "all nans | {:?}", v);
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
                     #[allow(unused_mut)]
                     // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
@@ -189,7 +201,8 @@ macro_rules! impl_reduction_float_arithmetic {
                         assert!(v.product().is_nan(), "all nans | {:?}", v);
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unused, dead_code)]
                     fn sum_roundoff() {
                         // Performs a tree-reduction
@@ -223,12 +236,14 @@ macro_rules! impl_reduction_float_arithmetic {
                         let tree_reduction = tree_reduce_sum(&a);
 
                         // tolerate 1 ULP difference:
+                        let red_bits = simd_reduction.to_bits();
+                        let tree_bits = tree_reduction.to_bits();
                         assert!(
-                            if simd_reduction.to_bits() > tree_reduction.to_bits() {
-                                simd_reduction.to_bits() - tree_reduction.to_bits() < 2
+                            if red_bits > tree_bits {
+                                red_bits - tree_bits
                             } else {
-                                tree_reduction.to_bits() - simd_reduction.to_bits() < 2
-                            },
+                                tree_bits - red_bits
+                            } < 2,
                             "vector: {:?} | simd_reduction: {:?} | \
                              tree_reduction: {} | scalar_reduction: {}",
                             v,
@@ -238,7 +253,8 @@ macro_rules! impl_reduction_float_arithmetic {
                         );
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unused, dead_code)]
                     fn product_roundoff() {
                         // Performs a tree-reduction
@@ -251,7 +267,8 @@ macro_rules! impl_reduction_float_arithmetic {
                             } else {
                                 let mid = a.len() / 2;
                                 let (left, right) = a.split_at(mid);
-                                tree_reduce_product(left) * tree_reduce_product(right)
+                                tree_reduce_product(left)
+                                    * tree_reduce_product(right)
                             }
                         }
 
@@ -272,12 +289,14 @@ macro_rules! impl_reduction_float_arithmetic {
                         let tree_reduction = tree_reduce_product(&a);
 
                         // tolerate 1 ULP difference:
+                        let red_bits = simd_reduction.to_bits();
+                        let tree_bits = tree_reduction.to_bits();
                         assert!(
-                            if simd_reduction.to_bits() > tree_reduction.to_bits() {
-                                simd_reduction.to_bits() - tree_reduction.to_bits() < 2
+                            if red_bits > tree_bits {
+                                red_bits - tree_bits
                             } else {
-                                tree_reduction.to_bits() - simd_reduction.to_bits() < 2
-                            },
+                                tree_bits - red_bits
+                            } < 2,
                             "vector: {:?} | simd_reduction: {:?} | \
                              tree_reduction: {} | scalar_reduction: {}",
                             v,
@@ -289,5 +308,5 @@ macro_rules! impl_reduction_float_arithmetic {
                 }
             }
         }
-    }
+    };
 }

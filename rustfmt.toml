@@ -4,3 +4,4 @@ wrap_comments = true
 comment_width = 79
 fn_args_density = "Compressed"
 edition = "2018"
+error_on_line_overflow = true

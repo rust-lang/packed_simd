@@ -34,33 +34,61 @@ macro_rules! test_shuffle1_dyn {
                         let decreasing = {
                             let mut v = $id::splat(0 as $elem_ty);
                             for i in 0..$id::lanes() {
-                                v = v.replace(i, ($id::lanes() - 1 - i) as $elem_ty);
+                                v = v.replace(
+                                    i,
+                                    ($id::lanes() - 1 - i) as $elem_ty
+                                );
                             }
                             v
                         };
 
-                        type Indices = <$id as codegen::shuffle1_dyn::Shuffle1Dyn>::Indices;
+                        type Indices = <
+                            $id as codegen::shuffle1_dyn::Shuffle1Dyn
+                            >::Indices;
                         let increasing_ids: Indices = increasing.cast();
                         let decreasing_ids: Indices = decreasing.cast();
 
-                        assert_eq!(increasing.shuffle1_dyn(increasing_ids), increasing, "(i,i)=>i");
-                        assert_eq!(decreasing.shuffle1_dyn(increasing_ids), decreasing, "(d,i)=>d");
-                        assert_eq!(increasing.shuffle1_dyn(decreasing_ids), decreasing, "(i,d)=>d");
-                        assert_eq!(decreasing.shuffle1_dyn(decreasing_ids), increasing, "(d,d)=>i");
+                        assert_eq!(
+                            increasing.shuffle1_dyn(increasing_ids),
+                            increasing,
+                            "(i,i)=>i"
+                        );
+                        assert_eq!(
+                            decreasing.shuffle1_dyn(increasing_ids),
+                            decreasing,
+                            "(d,i)=>d"
+                        );
+                        assert_eq!(
+                            increasing.shuffle1_dyn(decreasing_ids),
+                            decreasing,
+                            "(i,d)=>d"
+                        );
+                        assert_eq!(
+                            decreasing.shuffle1_dyn(decreasing_ids),
+                            increasing,
+                            "(d,d)=>i"
+                        );
 
                         for i in 0..$id::lanes() {
-                            let v_ids: Indices = $id::splat(i as $elem_ty).cast();
+                            let v_ids: Indices
+                                = $id::splat(i as $elem_ty).cast();
                             assert_eq!(increasing.shuffle1_dyn(v_ids),
-                                       $id::splat(increasing.extract(i)));
+                                       $id::splat(increasing.extract(i))
+                            );
                             assert_eq!(decreasing.shuffle1_dyn(v_ids),
-                                       $id::splat(decreasing.extract(i)));
-
-                            assert_eq!($id::splat(i as $elem_ty).shuffle1_dyn(increasing_ids),
-                                       $id::splat(i as $elem_ty));
-                            assert_eq!($id::splat(i as $elem_ty).shuffle1_dyn(decreasing_ids),
-                                       $id::splat(i as $elem_ty));
+                                       $id::splat(decreasing.extract(i))
+                            );
+                            assert_eq!(
+                                $id::splat(i as $elem_ty)
+                                    .shuffle1_dyn(increasing_ids),
+                                $id::splat(i as $elem_ty)
+                            );
+                            assert_eq!(
+                                $id::splat(i as $elem_ty)
+                                    .shuffle1_dyn(decreasing_ids),
+                                $id::splat(i as $elem_ty)
+                            );
                         }
-
                     }
                 }
             }
@@ -85,7 +113,9 @@ macro_rules! test_shuffle1_dyn_mask {
                             }
                         }
 
-                        type Indices = <$id as codegen::shuffle1_dyn::Shuffle1Dyn>::Indices;
+                        type Indices = <
+                            $id as codegen::shuffle1_dyn::Shuffle1Dyn
+                            >::Indices;
                         // even = [0, 0, 2, 2, 4, 4, ..]
                         let even = {
                             let mut v = Indices::splat(0);
@@ -111,9 +141,15 @@ macro_rules! test_shuffle1_dyn_mask {
                             v
                         };
 
-                        assert_eq!(alternating.shuffle1_dyn(even), $id::splat(true));
+                        assert_eq!(
+                            alternating.shuffle1_dyn(even),
+                            $id::splat(true)
+                        );
                         if $id::lanes() > 1 {
-                            assert_eq!(alternating.shuffle1_dyn(odd), $id::splat(false));
+                            assert_eq!(
+                                alternating.shuffle1_dyn(odd),
+                                $id::splat(false)
+                            );
                         }
                     }
                 }
