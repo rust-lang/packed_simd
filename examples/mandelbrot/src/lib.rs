@@ -105,7 +105,7 @@ impl Mandelbrot {
             .par_chunks(8)
             .map(|ch| {
                 let mut result = 0;
-                ch.into_iter().enumerate().for_each(|(i, &count)| {
+                ch.iter().enumerate().for_each(|(i, &count)| {
                     let undiverged = count == ITER_LIMIT;
                     result |= (undiverged as u8) << (7 - i);
                 });
