@@ -6,8 +6,8 @@
 fn run<O: std::io::Write>(o: &mut O, n: usize, alg: usize) {
     let (energy_before, energy_after) = nbody_lib::run(n, alg);
 
-    writeln!(o, "{:.9}", energy_before);
-    writeln!(o, "{:.9}", energy_after);
+    writeln!(o, "{:.9}", energy_before).unwrap();
+    writeln!(o, "{:.9}", energy_after).unwrap();
 }
 
 fn main() {
