@@ -31,6 +31,8 @@ mod shuffle1_dyn;
 mod slice;
 #[macro_use]
 mod swap_bytes;
+#[macro_use]
+mod bit_manip;
 
 #[cfg(feature = "into_bits")]
 crate mod into_bits;
@@ -80,6 +82,7 @@ macro_rules! impl_i {
         impl_slice_from_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_swap_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_bit_manip!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_cmp_partial_eq!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (0, 1)
@@ -141,6 +144,7 @@ macro_rules! impl_u {
         impl_slice_from_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_swap_bytes!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_bit_manip!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_cmp_partial_eq!(
             [$elem_ty; $elem_n]: $tuple_id | $test_tt | (1, 0)
