@@ -116,8 +116,7 @@ pub fn generate(dims: Dimensions, xr: Range, yr: Range) -> Vec<u32> {
     // The initial X values are the same for every row.
     let xs = unsafe {
         let dx = (xr.end - xr.start) / (width as f64);
-        let mut buf = Vec::<f64s>::with_capacity(width_in_blocks);
-        buf.set_len(width_in_blocks);
+        let mut buf: Vec<f64s> = vec![f64s::splat(0.); width_in_blocks];
 
         std::slice::from_raw_parts_mut(buf.as_mut_ptr() as *mut f64, width)
             .iter_mut()
