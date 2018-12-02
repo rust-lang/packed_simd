@@ -42,6 +42,7 @@ mod sqrte;
 macro_rules! impl_float_category {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident, $mask_ty:ident) => {
         impl $id {
+            #[inline]
             pub fn is_nan(self) -> $mask_ty {
                 self.ne(self)
             }
