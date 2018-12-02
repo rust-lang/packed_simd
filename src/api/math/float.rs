@@ -4,6 +4,9 @@
 mod abs;
 
 #[macro_use]
+mod consts;
+
+#[macro_use]
 mod cos;
 
 #[macro_use]
@@ -35,3 +38,23 @@ mod sqrt;
 
 #[macro_use]
 mod sqrte;
+
+macro_rules! impl_float_category {
+    ([$elem_ty:ident; $elem_count:expr]: $id:ident, $mask_ty:ident) => {
+        impl $id {
+            pub fn is_nan(self) -> $mask_ty {
+                self.ne(self)
+            }
+
+            #[inline]
+            pub fn is_infinite(self) -> $mask_ty {
+                self.eq(Self::INFINITY) | self.eq(Self::NEG_INFINITY)
+            }
+
+            #[inline]
+            pub fn is_finite(self) -> $mask_ty {
+                !(self.is_nan() | self.is_infinite())
+            }
+        }
+    };
+}
