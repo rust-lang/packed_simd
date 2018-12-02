@@ -192,6 +192,9 @@ macro_rules! impl_f {
         impl_slice_write_to_slice!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_shuffle1_dyn!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
 
+        impl_float_consts!([$elem_ty; $elem_n]: $tuple_id);
+        impl_float_category!([$elem_ty; $elem_n]: $tuple_id, $mask_ty);
+
         // floating-point math
         impl_math_float_abs!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_cos!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
