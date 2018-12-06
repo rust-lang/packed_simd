@@ -222,6 +222,7 @@ matrix:
 install: travis_retry rustup target add $TARGET
 before_script: cargo generate-lockfile
 script: travis_wait 50 ci/run-docker.sh
+after_script: sleep 5
 
 env:
   global:
