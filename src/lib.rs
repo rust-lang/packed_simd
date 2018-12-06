@@ -125,10 +125,10 @@
 //! resulting vector contains the elements of `a` for those lanes for which the
 //! mask is `true`, and the elements of `b` otherwise.
 //!
-//! The example constructs a mask with the first two lanes set to `true` and
-//! the last two lanes set to `false`. This selects the first two lanes of `a
-//! + 1` and the last two lanes of `a`, producing a vector where the first two
-//! lanes have been incremented by `1`.
+//! The example constructs a mask with the first two lanes set to `true` and the
+//! last two lanes set to `false`. This selects the first two lanes of `a + 1`
+//! and the last two lanes of `a`, producing a vector where the first two lanes
+//! have been incremented by `1`.
 //!
 //! > note: mask `select` can be used on vector types that have the same number
 //! > of lanes as the mask. The example shows this by using [`m16x4`] instead
