@@ -222,7 +222,10 @@
         clippy::cast_possible_truncation,
         clippy::cast_lossless,
         clippy::cast_possible_wrap,
-        clippy::cast_precision_loss
+        clippy::cast_precision_loss,
+        // This lint is currently broken for generic code
+        // See https://github.com/rust-lang/rust-clippy/issues/3410
+        clippy::use_self
     )
 )]
 #![cfg_attr(
