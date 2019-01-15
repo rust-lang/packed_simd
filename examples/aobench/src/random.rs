@@ -25,7 +25,7 @@ pub mod scalar {
                 | ((x & 0xff00_u32) << 8)
                 | ((x & 0x00ff_0000_u32) >> 8)
                 | (x & 0xff00_0000_u32) >> 24;
-            RngT(z0, z1, z2, z3)
+            Self(z0, z1, z2, z3)
         }
 
         pub fn gen_u32(&mut self) -> u32 {
@@ -88,7 +88,7 @@ pub mod vector {
                 | ((x & u32xN::splat(0xff00)) << 8)
                 | ((x & u32xN::splat(0x00ff_0000)) >> 8)
                 | (x & u32xN::splat(0xff00_0000)) >> 24;
-            RngT(z0, z1, z2, z3)
+            Self(z0, z1, z2, z3)
         }
 
         #[inline(always)]

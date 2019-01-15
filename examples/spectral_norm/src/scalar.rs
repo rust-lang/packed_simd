@@ -10,13 +10,13 @@ struct f64x2(f64, f64);
 impl Add for f64x2 {
     type Output = Self;
     fn add(self, rhs: Self) -> Self {
-        f64x2(self.0 + rhs.0, self.1 + rhs.1)
+        Self(self.0 + rhs.0, self.1 + rhs.1)
     }
 }
 impl Div for f64x2 {
     type Output = Self;
     fn div(self, rhs: Self) -> Self {
-        f64x2(self.0 / rhs.0, self.1 / rhs.1)
+        Self(self.0 / rhs.0, self.1 / rhs.1)
     }
 }
 

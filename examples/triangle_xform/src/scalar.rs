@@ -33,7 +33,7 @@ impl Triangle {
             xformed[k] = [x, y, z];
         }
 
-        Triangle(xformed)
+        Self(xformed)
     }
 }
 
