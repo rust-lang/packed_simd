@@ -224,9 +224,6 @@ fn endian_tuple_access() {
     assert_eq!(x.6, e[6]);
     assert_eq!(x.7, e[7]);
 
-    // Without repr(C) this produces total garbage.
-    // FIXME: investigate more, this is maybe due to
-    // to tuple field reordering to minimize padding.
     #[cfg_attr(rustfmt, rustfmt_skip)]
     #[repr(C)]
     #[derive(Copy ,Clone)]
