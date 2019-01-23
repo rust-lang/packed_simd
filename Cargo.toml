@@ -10,6 +10,7 @@ keywords = ["simd", "vector", "portability"]
 categories = ["hardware-support", "concurrency", "no-std", "data-structures"]
 license = "MIT/Apache-2.0"
 edition = "2018"
+build = "build.rs"
 
 [badges]
 appveyor = { repository = "rust-lang-nursery/packed_simd" }
