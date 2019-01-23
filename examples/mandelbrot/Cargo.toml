@@ -8,11 +8,11 @@ edition = "2018"
 [dependencies]
 packed_simd = { path = "../.." }
 rayon = "^1.0"
-ispc = { version = "^0.3.6", optional = true }
+ispc = { version = "^1.0.1", optional = true }
 structopt = "0.2.10"
 
 [build-dependencies]
-ispc = { version = "^0.3.6", optional = true }
+ispc = { version = "^1.0.1", optional = true }
 
 [[bin]]
 name = "mandelbrot"
