@@ -53,7 +53,7 @@ macro_rules! impl_shuffle1_dyn {
                     all(target_aarch = "aarch64", target_feature = "neon"),
                     all(target_aarch = "arm", target_feature = "v7",
                         target_feature = "neon")),
-                feature = "coresimd")
+                feature = "core_arch")
             )] {
                 impl Shuffle1Dyn for u8x8 {
                     type Indices = Self;
@@ -104,7 +104,7 @@ macro_rules! impl_shuffle1_dyn {
                     }
                 }
             } else if #[cfg(all(target_aarch = "aarch64", target_feature = "neon",
-                                feature = "coresimd"))] {
+                                feature = "core_arch"))] {
                 impl Shuffle1Dyn for u8x16 {
                     type Indices = Self;
                     #[inline]
@@ -123,7 +123,7 @@ macro_rules! impl_shuffle1_dyn {
                     }
                 }
             } else if #[cfg(all(target_aarch = "arm", target_feature = "v7",
-                                target_feature = "neon", feature = "coresimd"))] {
+                                target_feature = "neon", feature = "core_arch"))] {
                 impl Shuffle1Dyn for u8x16 {
                     type Indices = Self;
                     #[inline]

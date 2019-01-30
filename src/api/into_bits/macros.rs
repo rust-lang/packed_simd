@@ -9,7 +9,7 @@ macro_rules! impl_from_bits_ {
             }
         }
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 pub mod [<$id _from_bits_ $from_ty>] {

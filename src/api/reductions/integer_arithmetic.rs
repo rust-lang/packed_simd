@@ -95,7 +95,7 @@ macro_rules! impl_reduction_integer_arithmetic {
             }
         }
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 pub mod [<$id _reduction_int_arith>] {

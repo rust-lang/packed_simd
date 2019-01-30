@@ -6,7 +6,7 @@ set -ex
 
 # Tests are all super fast anyway, and they fault often enough on travis that
 # having only one thread increases debuggability to be worth it.
-export RUST_TEST_THREADS=1
+#export RUST_TEST_THREADS=1
 #export RUST_BACKTRACE=full
 #export RUST_TEST_NOCAPTURE=1
 
@@ -47,6 +47,13 @@ echo "RUST_TEST_NOCAPTURE=${RUST_TEST_NOCAPTURE}"
 
 cargo_test() {
     cmd="cargo ${CARGO_SUBCMD} --verbose --target=${TARGET} ${@}"
+    if [ "${NORUN}" != "1" ]
+    then
+        if [ "$TARGET" != "wasm32-unknown-unknown" ]
+        then
+            cmd="$cmd -- --quiet"
+        fi
+    fi
     mkdir target || true
     ${cmd} 2>&1 | tee > target/output
     if [[ ${PIPESTATUS[0]} != 0 ]]; then

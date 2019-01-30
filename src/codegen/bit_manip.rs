@@ -1,4 +1,5 @@
 //! LLVM bit manipulation intrinsics.
+#![rustfmt::skip]
 
 use crate::*;
 
@@ -51,7 +52,6 @@ extern "C" {
     #[link_name = "llvm.ctlz.v4i128"]
     fn ctlz_u128x4(x: u128x4, is_zero_undef: bool) -> u128x4;
 
-
     #[link_name = "llvm.cttz.v2i8"]
     fn cttz_u8x2(x: u8x2, is_zero_undef: bool) -> u8x2;
     #[link_name = "llvm.cttz.v4i8"]
@@ -98,7 +98,6 @@ extern "C" {
     fn cttz_u128x2(x: u128x2, is_zero_undef: bool) -> u128x2;
     #[link_name = "llvm.cttz.v4i128"]
     fn cttz_u128x4(x: u128x4, is_zero_undef: bool) -> u128x4;
-
 
     #[link_name = "llvm.ctpop.v2i8"]
     fn ctpop_u8x2(x: u8x2) -> u8x2;
@@ -155,7 +154,8 @@ crate trait BitManip {
 }
 
 macro_rules! impl_bit_manip {
-    (inner: $ty:ident, $scalar:ty, $uty:ident, $ctpop:ident, $ctlz:ident, $cttz:ident) => {
+    (inner: $ty:ident, $scalar:ty, $uty:ident,
+     $ctpop:ident, $ctlz:ident, $cttz:ident) => {
         // FIXME: several LLVM intrinsics break on s390x https://github.com/rust-lang-nursery/packed_simd/issues/192
         #[cfg(target_arch = "s390x")]
         impl_bit_manip! { scalar: $ty, $scalar }
@@ -170,7 +170,8 @@ macro_rules! impl_bit_manip {
             #[inline]
             fn ctlz(self) -> Self {
                 let y: $uty = self.cast();
-                // the ctxx intrinsics need compile-time constant `is_zero_undef`
+                // the ctxx intrinsics need compile-time constant
+                // `is_zero_undef`
                 unsafe { $ctlz(y, false).cast() }
             }
 
@@ -211,7 +212,8 @@ macro_rules! impl_bit_manip {
             fn ctpop(self) -> Self {
                 let mut ones = self;
                 for i in 0..Self::lanes() {
-                    ones = ones.replace(i, self.extract(i).count_ones() as $scalar);
+                    ones = ones
+                        .replace(i, self.extract(i).count_ones() as $scalar);
                 }
                 ones
             }
@@ -220,7 +222,10 @@ macro_rules! impl_bit_manip {
             fn ctlz(self) -> Self {
                 let mut lz = self;
                 for i in 0..Self::lanes() {
-                    lz = lz.replace(i, self.extract(i).leading_zeros() as $scalar);
+                    lz = lz.replace(
+                        i,
+                        self.extract(i).leading_zeros() as $scalar,
+                    );
                 }
                 lz
             }
@@ -229,44 +234,49 @@ macro_rules! impl_bit_manip {
             fn cttz(self) -> Self {
                 let mut tz = self;
                 for i in 0..Self::lanes() {
-                    tz = tz.replace(i, self.extract(i).trailing_zeros() as $scalar);
+                    tz = tz.replace(
+                        i,
+                        self.extract(i).trailing_zeros() as $scalar,
+                    );
                 }
                 tz
             }
         }
     };
-    ($uty:ident, $uscalar:ty, $ity:ident, $iscalar:ty, $ctpop:ident, $ctlz:ident, $cttz:ident) => {
+    ($uty:ident, $uscalar:ty, $ity:ident, $iscalar:ty,
+     $ctpop:ident, $ctlz:ident, $cttz:ident) => {
         impl_bit_manip! { inner: $uty, $uscalar, $uty, $ctpop, $ctlz, $cttz }
         impl_bit_manip! { inner: $ity, $iscalar, $uty, $ctpop, $ctlz, $cttz }
     };
-    (sized: $usize:ident, $uscalar:ty, $isize:ident, $iscalar:ty, $ty:ident) => {
+    (sized: $usize:ident, $uscalar:ty, $isize:ident,
+     $iscalar:ty, $ty:ident) => {
         impl_bit_manip! { sized_inner: $usize, $uscalar, $ty }
         impl_bit_manip! { sized_inner: $isize, $iscalar, $ty }
     };
 }
 
-impl_bit_manip! { u8x2,   u8, i8x2, i8,   ctpop_u8x2,   ctlz_u8x2,   cttz_u8x2   }
-impl_bit_manip! { u8x4,   u8, i8x4, i8,   ctpop_u8x4,   ctlz_u8x4,   cttz_u8x4   }
+impl_bit_manip! { u8x2   ,   u8, i8x2, i8,   ctpop_u8x2,   ctlz_u8x2,   cttz_u8x2   }
+impl_bit_manip! { u8x4   ,   u8, i8x4, i8,   ctpop_u8x4,   ctlz_u8x4,   cttz_u8x4   }
 #[cfg(not(target_arch = "aarch64"))] // see below
-impl_bit_manip! { u8x8,   u8, i8x8, i8,   ctpop_u8x8,   ctlz_u8x8,   cttz_u8x8   }
-impl_bit_manip! { u8x16,  u8, i8x16, i8,  ctpop_u8x16,  ctlz_u8x16,  cttz_u8x16  }
-impl_bit_manip! { u8x32,  u8, i8x32, i8,  ctpop_u8x32,  ctlz_u8x32,  cttz_u8x32  }
-impl_bit_manip! { u8x64,  u8, i8x64, i8,  ctpop_u8x64,  ctlz_u8x64,  cttz_u8x64  }
-impl_bit_manip! { u16x2,  u16, i16x2, i16,  ctpop_u16x2,  ctlz_u16x2,  cttz_u16x2  }
-impl_bit_manip! { u16x4,  u16, i16x4, i16,  ctpop_u16x4,  ctlz_u16x4,  cttz_u16x4  }
-impl_bit_manip! { u16x8,  u16, i16x8, i16,  ctpop_u16x8,  ctlz_u16x8,  cttz_u16x8  }
-impl_bit_manip! { u16x16, u16, i16x16, i16, ctpop_u16x16, ctlz_u16x16, cttz_u16x16 }
-impl_bit_manip! { u16x32, u16, i16x32, i16, ctpop_u16x32, ctlz_u16x32, cttz_u16x32 }
-impl_bit_manip! { u32x2,  u32, i32x2, i32,  ctpop_u32x2,  ctlz_u32x2,  cttz_u32x2  }
-impl_bit_manip! { u32x4,  u32, i32x4, i32,  ctpop_u32x4,  ctlz_u32x4,  cttz_u32x4  }
-impl_bit_manip! { u32x8,  u32, i32x8, i32,  ctpop_u32x8,  ctlz_u32x8,  cttz_u32x8  }
-impl_bit_manip! { u32x16, u32, i32x16, i32, ctpop_u32x16, ctlz_u32x16, cttz_u32x16 }
-impl_bit_manip! { u64x2,  u64, i64x2, i64,  ctpop_u64x2,  ctlz_u64x2,  cttz_u64x2  }
-impl_bit_manip! { u64x4,  u64, i64x4, i64,  ctpop_u64x4,  ctlz_u64x4,  cttz_u64x4  }
-impl_bit_manip! { u64x8,  u64, i64x8, i64,  ctpop_u64x8,  ctlz_u64x8,  cttz_u64x8  }
-impl_bit_manip! { u128x1, u128, i128x1, i128, ctpop_u128x1, ctlz_u128x1, cttz_u128x1 }
-impl_bit_manip! { u128x2, u128, i128x2, i128, ctpop_u128x2, ctlz_u128x2, cttz_u128x2 }
-impl_bit_manip! { u128x4, u128, i128x4, i128, ctpop_u128x4, ctlz_u128x4, cttz_u128x4 }
+impl_bit_manip! { u8x8   ,   u8, i8x8, i8,   ctpop_u8x8,   ctlz_u8x8,   cttz_u8x8   }
+impl_bit_manip! { u8x16  ,  u8, i8x16, i8,  ctpop_u8x16,  ctlz_u8x16,  cttz_u8x16  }
+impl_bit_manip! { u8x32  ,  u8, i8x32, i8,  ctpop_u8x32,  ctlz_u8x32,  cttz_u8x32  }
+impl_bit_manip! { u8x64  ,  u8, i8x64, i8,  ctpop_u8x64,  ctlz_u8x64,  cttz_u8x64  }
+impl_bit_manip! { u16x2  ,  u16, i16x2, i16,  ctpop_u16x2,  ctlz_u16x2,  cttz_u16x2  }
+impl_bit_manip! { u16x4  ,  u16, i16x4, i16,  ctpop_u16x4,  ctlz_u16x4,  cttz_u16x4  }
+impl_bit_manip! { u16x8  ,  u16, i16x8, i16,  ctpop_u16x8,  ctlz_u16x8,  cttz_u16x8  }
+impl_bit_manip! { u16x16 , u16, i16x16, i16, ctpop_u16x16, ctlz_u16x16, cttz_u16x16 }
+impl_bit_manip! { u16x32 , u16, i16x32, i16, ctpop_u16x32, ctlz_u16x32, cttz_u16x32 }
+impl_bit_manip! { u32x2  ,  u32, i32x2, i32,  ctpop_u32x2,  ctlz_u32x2,  cttz_u32x2  }
+impl_bit_manip! { u32x4  ,  u32, i32x4, i32,  ctpop_u32x4,  ctlz_u32x4,  cttz_u32x4  }
+impl_bit_manip! { u32x8  ,  u32, i32x8, i32,  ctpop_u32x8,  ctlz_u32x8,  cttz_u32x8  }
+impl_bit_manip! { u32x16 , u32, i32x16, i32, ctpop_u32x16, ctlz_u32x16, cttz_u32x16 }
+impl_bit_manip! { u64x2  ,  u64, i64x2, i64,  ctpop_u64x2,  ctlz_u64x2,  cttz_u64x2  }
+impl_bit_manip! { u64x4  ,  u64, i64x4, i64,  ctpop_u64x4,  ctlz_u64x4,  cttz_u64x4  }
+impl_bit_manip! { u64x8  ,  u64, i64x8, i64,  ctpop_u64x8,  ctlz_u64x8,  cttz_u64x8  }
+impl_bit_manip! { u128x1 , u128, i128x1, i128, ctpop_u128x1, ctlz_u128x1, cttz_u128x1 }
+impl_bit_manip! { u128x2 , u128, i128x2, i128, ctpop_u128x2, ctlz_u128x2, cttz_u128x2 }
+impl_bit_manip! { u128x4 , u128, i128x4, i128, ctpop_u128x4, ctlz_u128x4, cttz_u128x4 }
 
 #[cfg(target_arch = "aarch64")]
 impl BitManip for u8x8 {
@@ -285,7 +295,8 @@ impl BitManip for u8x8 {
     #[inline]
     fn cttz(self) -> Self {
         // FIXME: LLVM cttz.v8i8 broken on aarch64 https://github.com/rust-lang-nursery/packed_simd/issues/191
-        // OPTIMIZE: adapt the algorithm used for v8i16/etc to Rust's aarch64 intrinsics
+        // OPTIMIZE: adapt the algorithm used for v8i16/etc to Rust's aarch64
+        // intrinsics
         let mut tz = self;
         for i in 0..Self::lanes() {
             tz = tz.replace(i, self.extract(i).trailing_zeros() as u8);
@@ -310,7 +321,8 @@ impl BitManip for i8x8 {
     #[inline]
     fn cttz(self) -> Self {
         // FIXME: LLVM cttz.v8i8 broken on aarch64 https://github.com/rust-lang-nursery/packed_simd/issues/191
-        // OPTIMIZE: adapt the algorithm used for v8i16/etc to Rust's aarch64 intrinsics
+        // OPTIMIZE: adapt the algorithm used for v8i16/etc to Rust's aarch64
+        // intrinsics
         let mut tz = self;
         for i in 0..Self::lanes() {
             tz = tz.replace(i, self.extract(i).trailing_zeros() as i8);

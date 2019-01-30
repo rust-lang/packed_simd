@@ -1,12 +1,12 @@
 //! Code-generation utilities
 
+crate mod bit_manip;
 crate mod llvm;
 crate mod math;
 crate mod reductions;
 crate mod shuffle;
 crate mod shuffle1_dyn;
 crate mod swap_bytes;
-crate mod bit_manip;
 
 macro_rules! impl_simd_array {
     ([$elem_ty:ident; $elem_count:expr]:

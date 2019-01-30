@@ -84,7 +84,7 @@ macro_rules! impl_slice_from_slice {
             }
         }
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 pub mod [<$id _slice_from_slice>] {

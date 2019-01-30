@@ -90,7 +90,7 @@ macro_rules! impl_reduction_float_arithmetic {
             }
         }
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 pub mod [<$id _reduction_float_arith>] {

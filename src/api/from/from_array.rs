@@ -53,7 +53,7 @@ macro_rules! impl_from_array {
         }
         */
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 mod [<$id _from>] {
