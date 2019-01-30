@@ -2,7 +2,7 @@
 #
 # Runs all benchmarks. Controlled by the following environment variables:
 #
-# FEATURES={} - cargo features to pass to all benchmarks (e.g. coresimd,sleef-sys,ispc)
+# FEATURES={} - cargo features to pass to all benchmarks (e.g. core_arch,sleef-sys,ispc)
 # NORUN={1}   - only builds the benchmarks
 
 set -ex
