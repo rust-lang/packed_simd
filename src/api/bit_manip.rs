@@ -17,15 +17,15 @@ macro_rules! impl_bit_manip {
                 super::codegen::bit_manip::BitManip::ctpop(!self)
             }
 
-            /// Returns the number of leading zeros in the binary representation
-            /// of the lanes of `self`.
+            /// Returns the number of leading zeros in the binary
+            /// representation of the lanes of `self`.
             #[inline]
             pub fn leading_zeros(self) -> Self {
                 super::codegen::bit_manip::BitManip::ctlz(self)
             }
 
-            /// Returns the number of trailing zeros in the binary representation
-            /// of the lanes of `self`.
+            /// Returns the number of trailing zeros in the binary
+            /// representation of the lanes of `self`.
             #[inline]
             pub fn trailing_zeros(self) -> Self {
                 super::codegen::bit_manip::BitManip::cttz(self)
@@ -45,7 +45,10 @@ macro_rules! impl_bit_manip {
                         ($x:expr, $func:ident) => {{
                             let mut actual = $x;
                             for i in 0..$id::lanes() {
-                                actual = actual.replace(i, $x.extract(i).$func() as $elem_ty);
+                                actual = actual.replace(
+                                    i,
+                                    $x.extract(i).$func() as $elem_ty
+                                );
                             }
                             let expected = $x.$func();
                             assert_eq!(actual, expected);
@@ -73,21 +76,24 @@ macro_rules! impl_bit_manip {
                         $id::from_slice_unaligned(elems)
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn count_ones() {
                         test_func!($id::splat(0), count_ones);
                         test_func!($id::splat(!0), count_ones);
                         test_func!(load_bytes(), count_ones);
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn count_zeros() {
                         test_func!($id::splat(0), count_zeros);
                         test_func!($id::splat(!0), count_zeros);
                         test_func!(load_bytes(), count_zeros);
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn leading_zeros() {
                         test_func!($id::splat(0), leading_zeros);
                         test_func!($id::splat(1), leading_zeros);
@@ -95,17 +101,24 @@ macro_rules! impl_bit_manip {
                         // behavior when the 8th bit is set.
                         test_func!($id::splat(0b1000_0010), leading_zeros);
                         test_func!($id::splat(!0), leading_zeros);
-                        test_func!($id::splat(1 << (LANE_WIDTH - 1)), leading_zeros);
+                        test_func!(
+                            $id::splat(1 << (LANE_WIDTH - 1)),
+                            leading_zeros
+                        );
                         test_func!(load_bytes(), leading_zeros);
                     }
 
-                    #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+                    #[cfg_attr(not(target_arch = "wasm32"), test)]
+                    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     fn trailing_zeros() {
                         test_func!($id::splat(0), trailing_zeros);
                         test_func!($id::splat(1), trailing_zeros);
                         test_func!($id::splat(0b1000_0010), trailing_zeros);
                         test_func!($id::splat(!0), trailing_zeros);
-                        test_func!($id::splat(1 << (LANE_WIDTH - 1)), trailing_zeros);
+                        test_func!(
+                            $id::splat(1 << (LANE_WIDTH - 1)),
+                            trailing_zeros
+                        );
                         test_func!(load_bytes(), trailing_zeros);
                     }
                 }

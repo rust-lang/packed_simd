@@ -74,7 +74,7 @@ macro_rules! impl_reduction_min_max {
                 }
             }
         }
-        test_if!{$test_tt:
+        test_if! {$test_tt:
         paste::item! {
             pub mod [<$id _reduction_min_max>] {
                 use super::*;

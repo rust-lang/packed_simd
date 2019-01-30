@@ -55,8 +55,16 @@ macro_rules! impl_slice_write_to_slice {
                     0
                 );
 
-                        #[cfg_attr(feature = "cargo-clippy",
-                                   allow(clippy::cast_ptr_alignment))]
+                                #[cfg_attr(feature = "cargo-clippy",
+                                           allow(clippy::cast_ptr_alignment))]
+                        #[cfg_attr(
+                            feature = "cargo-clippy",
+                            allow(clippy::cast_ptr_alignment)
+                        )]
+                #[cfg_attr(
+                    feature = "cargo-clippy",
+                    allow(clippy::cast_ptr_alignment)
+                )]
                 #[cfg_attr(
                     feature = "cargo-clippy",
                     allow(clippy::cast_ptr_alignment)
@@ -85,7 +93,7 @@ macro_rules! impl_slice_write_to_slice {
             }
         }
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 pub mod [<$id _slice_write_to_slice>] {

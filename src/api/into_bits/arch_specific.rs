@@ -38,13 +38,13 @@ macro_rules! impl_arch {
         #[cfg(any(
             not(target_arch = "arm"),
             all(target_feature = "v7", target_feature = "neon",
-                feature = "coresimd"))
+                feature = "core_arch"))
         )]
         // note: if target is "powerpc", "altivec" must be enabled
         // and the std library must be recompiled with it
         #[cfg(any(
             not(target_arch = "powerpc"),
-            all(target_feature = "altivec", feature = "coresimd"),
+            all(target_feature = "altivec", feature = "core_arch"),
         ))]
         #[cfg(target_arch = $arch_tt)]
         use crate::arch::$arch::{
@@ -54,11 +54,11 @@ macro_rules! impl_arch {
         #[cfg(any(
             not(target_arch = "arm"),
             all(target_feature = "v7", target_feature = "neon",
-                feature = "coresimd"))
+                feature = "core_arch"))
         )]
         #[cfg(any(
             not(target_arch = "powerpc"),
-            all(target_feature = "altivec", feature = "coresimd"),
+            all(target_feature = "altivec", feature = "core_arch"),
         ))]
         #[cfg(target_arch = $arch_tt)]
         impl_arch!($($arch_ty),* | $($from_ty),* | $($into_ty),* |

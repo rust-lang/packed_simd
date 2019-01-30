@@ -1,9 +1,5 @@
 //! Mask reductions implementation for `x86` and `x86_64` targets
 
-#[cfg(target_feature = "mmx")]
-#[macro_use]
-mod mmx;
-
 #[cfg(target_feature = "sse")]
 #[macro_use]
 mod sse;
@@ -24,8 +20,8 @@ mod avx2;
 macro_rules! x86_m8x8_impl {
     ($id:ident) => {
         cfg_if! {
-            if #[cfg(all(target_arch = "x86_64", target_feature = "mmx"))] {
-                x86_m8x8_mmx_impl!($id);
+            if #[cfg(all(target_arch = "x86_64", target_feature = "sse"))] {
+                x86_m8x8_sse_impl!($id);
             } else {
                 fallback_impl!($id);
             }
