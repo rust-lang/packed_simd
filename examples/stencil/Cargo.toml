@@ -23,5 +23,5 @@ path = "src/lib.rs"
 
 [features]
 default = []
-coresimd = ["packed_simd/coresimd"]
+core_arch = ["packed_simd/core_arch"]
 sleef-sys = ["packed_simd/sleef-sys"]
