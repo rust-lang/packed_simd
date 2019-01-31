@@ -14,3 +14,8 @@ path = "src/main.rs"
 [lib]
 name = "nbody_lib"
 path = "src/lib.rs"
+
+[features]
+default = [ ]
+sleef-sys = [ "packed_simd/sleef-sys" ]
+core_arch = [ "packed_simd/core_arch" ]
