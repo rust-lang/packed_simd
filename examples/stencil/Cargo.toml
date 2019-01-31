@@ -8,10 +8,10 @@ edition = "2018"
 packed_simd = { path = "../.." }
 time = "^0.1"
 rayon = "^1.0"
-ispc = { version = "^0.3.6", optional = true }
+ispc = { version = "^1.0.4", optional = true }
 
 [build-dependencies]
-ispc = { version = "^0.3.6", optional = true }
+ispc = { version = "^1.0.4", optional = true }
 
 [[bin]]
 name = "stencil"
