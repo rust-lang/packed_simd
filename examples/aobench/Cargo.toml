@@ -21,10 +21,10 @@ packed_simd = { path = "../.." }
 rayon = "^1.0"
 time = "^0.1"
 cfg-if = "^0.1"
-ispc = { version = "^0.3.6", optional = true }
+ispc = { version = "^1.0.4", optional = true }
 
 [build-dependencies]
-ispc = { version = "^0.3.6", optional = true }
+ispc = { version = "^1.0.4", optional = true }
 
 [dev-dependencies]
 criterion = { version = '^0.2', features=['real_blackbox'] }
