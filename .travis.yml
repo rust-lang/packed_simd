@@ -5,13 +5,12 @@ rust: nightly
 matrix:
   fast_finish: true
   stages:
-    - tools
-    - linux-tier1
-    - osx-tier1
-    - osx-tier2
-    - linux-tier2
     - android
-    
+    - linux-tier2
+    - osx-tier2
+    - osx-tier1
+    - linux-tier1
+    - tools
   include:
     # Android:
     - env: TARGET=x86_64-linux-android NOVERIFY=1
