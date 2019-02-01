@@ -21,10 +21,11 @@ members = [
 # for better compile times at the cost of performance
 lto = 'fat'
 codegen-units = 1
-
+incremental = false
 panic = 'abort'
 
 [profile.bench]
 # Same as above
 lto = 'fat'
 codegen-units = 1
+incremental = false
