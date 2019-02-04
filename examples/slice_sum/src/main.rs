@@ -4,35 +4,27 @@ use packed_simd::f32x8 as f32s;
 use std::{mem, slice};
 
 fn init(n: usize) -> Vec<f32> {
+    use rand::distributions::Standard;
     use rand::prelude::*;
-    let mut rng = thread_rng();
-
-    let mut v = Vec::with_capacity(n);
-    for _ in 0..n {
-        v.push(rng.gen());
-    }
-
-    v
+    thread_rng().sample_iter(&Standard).take(n).collect()
 }
 
 fn sum_ver(x: &[f32]) -> f32 {
     assert_eq!(x.len() % f32s::lanes(), 0);
 
-    let mut sum = f32s::splat(0.);
-    for i in (0..x.len()).step_by(f32s::lanes()) {
-        sum += f32s::from_slice_unaligned(&x[i..]);
-    }
-    sum.sum()
+    x.chunks_exact(f32s::lanes())
+        .map(f32s::from_slice_unaligned)
+        .sum::<f32s>()
+        .sum()
 }
 
 fn sum_hor(x: &[f32]) -> f32 {
     assert_eq!(x.len() % f32s::lanes(), 0);
 
-    let mut sum = 0_f32;
-    for i in (0..x.len()).step_by(f32s::lanes()) {
-        sum += f32s::from_slice_unaligned(&x[i..]).sum();
-    }
-    sum
+    x.chunks_exact(f32s::lanes())
+        .map(f32s::from_slice_unaligned)
+        .map(|vec| vec.sum())
+        .sum()
 }
 
 fn sum_ver_par(x: &[f32]) -> f32 {
