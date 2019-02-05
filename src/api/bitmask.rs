@@ -14,7 +14,7 @@ macro_rules! impl_bitmask {
             }
         }
 
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 #[cfg(not(any(
@@ -78,5 +78,5 @@ macro_rules! impl_bitmask {
                 }
             }
         }
-    }
+    };
 }
