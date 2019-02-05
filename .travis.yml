@@ -29,6 +29,9 @@ matrix:
     - env: TARGET=aarch64-linux-android RUSTFLAGS="-C target-feature=+neon"
       name: "aarch64-unknown-linux-android + NEON"
       stage: android
+    - env: TARGET="thumbv7neon-linux-androideabi"
+      name: "thumbv7neon-linux-androideabi"
+      stage: android
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
       name: "i586-unknown-linux-gnu"
@@ -101,6 +104,9 @@ matrix:
       stage: linux-tier2
     - env: TARGET=armv7-unknown-linux-gnueabihf RUSTFLAGS="-C target-feature=+neon"
       name: "armv7-unknown-linux-gnueabihf + NEON"
+      stage: linux-tier2
+    - env: TARGET="thumbv7neon-unknown-linux-gnueabihf"
+      name: "thumbv7neon-unknown-linux-gnueabihf"
       stage: linux-tier2
     - env: TARGET=aarch64-unknown-linux-gnu
       name: "aarch64-unknown-linux-gnu"
@@ -214,13 +220,13 @@ matrix:
       stage: osx-tier2
     - os: osx
       env: TARGET=armv7-apple-ios NORUN=1
-      name: "armv7-apple-ios [BUILD only]"
+      name: "armv7-apple-ios [Build only]"
       script: ci/run.sh
       osx_image: xcode9.4
       stage: osx-tier2
     - os: osx
       env: TARGET=aarch64-apple-ios NORUN=1
-      name: "aarch64-apple-ios [BUILD only]"
+      name: "aarch64-apple-ios [Build only]"
       script: ci/run.sh
       osx_image: xcode9.4
       stage: osx-tier2
