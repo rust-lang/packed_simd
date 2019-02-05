@@ -23,7 +23,8 @@ cfg_if! {
         #[macro_use]
         mod x86;
     } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
-                        target_feature = "neon", feature = "core_arch"))] {
+                        target_feature = "neon",
+                        any(feature = "core_arch", libcore_neon)))] {
         #[macro_use]
         mod arm;
     } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
