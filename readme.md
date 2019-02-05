@@ -39,7 +39,7 @@ Most of the examples come with both a scalar and a vectorized implementation.
   vector type as those of another vector type safely by just using the
   `.into_bits()` method.
 
-* `coresimd` (default: disabled): enable this feature to recompile `core::arch`
+* `core_arch` (default: disabled): enable this feature to recompile `core::arch`
   for the target-features enabled. `packed_simd` includes optimizations for some
   target feature combinations that are enabled by this feature. Note, however,
   that this is an unstable dependency, that rustc might break at any time.
