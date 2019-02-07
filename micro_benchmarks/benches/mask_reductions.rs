@@ -2,8 +2,8 @@
 #![deny(warnings, rust_2018_idioms)]
 #![feature(test)]
 
-use test::black_box;
 use packed_simd::*;
+use test::black_box;
 
 use criterion::{Benchmark, Criterion, Throughput};
 const NO_ITERATIONS: u32 = 1_000;

@@ -3,9 +3,9 @@
 
 use criterion::*;
 
-use aobench_lib::*;
 use crate::geometry::{f32xN, Plane, Ray, RayxN, V3DxN, V3D};
 use crate::intersection::{Intersect, Isect, IsectxN};
+use aobench_lib::*;
 
 fn hit_scalar(c: &mut Criterion) {
     let mut s = Plane {

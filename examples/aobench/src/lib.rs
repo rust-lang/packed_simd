@@ -4,18 +4,15 @@
 //! Fujita.
 #![deny(warnings, rust_2018_idioms)]
 #![allow(non_snake_case, non_camel_case_types)]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(
-        clippy::many_single_char_names,
-        clippy::similar_names,
-        clippy::cast_precision_loss,
-        clippy::inline_always,
-        clippy::cast_possible_truncation,
-        clippy::cast_sign_loss,
-        clippy::identity_op,
-        clippy::erasing_op
-    )
+#![allow(
+    clippy::many_single_char_names,
+    clippy::similar_names,
+    clippy::cast_precision_loss,
+    clippy::inline_always,
+    clippy::cast_possible_truncation,
+    clippy::cast_sign_loss,
+    clippy::identity_op,
+    clippy::erasing_op
 )]
 
 pub mod ambient_occlusion;

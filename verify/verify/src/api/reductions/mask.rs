@@ -4,7 +4,8 @@ use cfg_if::cfg_if;
 
 #[allow(unused)]
 macro_rules! verify_mask {
-    ($mask_id:ident[$target_feature:tt] => $all_instr:tt, $any_instr:tt, $none_instr:tt) => {
+    ($mask_id:ident[$target_feature:tt] => $all_instr:tt, $any_instr:tt,
+     $none_instr:tt) => {
         paste::item! {
             #[inline]
             #[target_feature(enable = $target_feature)]

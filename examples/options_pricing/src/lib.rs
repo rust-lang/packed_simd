@@ -1,15 +1,12 @@
 #![deny(warnings, rust_2018_idioms)]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(
-        clippy::inline_always,
-        clippy::many_single_char_names,
-        clippy::excessive_precision,
-        clippy::cast_precision_loss,
-        clippy::cast_possible_truncation,
-        clippy::cast_possible_wrap,
-        clippy::too_many_arguments
-    )
+#![allow(
+    clippy::inline_always,
+    clippy::many_single_char_names,
+    clippy::excessive_precision,
+    clippy::cast_precision_loss,
+    clippy::cast_possible_truncation,
+    clippy::cast_possible_wrap,
+    clippy::too_many_arguments
 )]
 
 use packed_simd::f32x8 as f32s;
@@ -50,8 +47,15 @@ impl State {
     }
     pub fn exec<F>(&mut self, model: F) -> f64
     where
-        F: Fn(&[f32], &[f32], &[f32], &[f32], &[f32], &mut [f32], usize)
-            -> f64,
+        F: Fn(
+            &[f32],
+            &[f32],
+            &[f32],
+            &[f32],
+            &[f32],
+            &mut [f32],
+            usize,
+        ) -> f64,
     {
         model(
             &self.s,

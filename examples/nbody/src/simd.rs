@@ -12,7 +12,7 @@ pub struct Body {
     pub mass: f64,
 }
 const N_BODIES: usize = 5;
-#[cfg_attr(feature = "cargo-clippy", allow(clippy::unreadable_literal))]
+#[allow(clippy::unreadable_literal)]
 const BODIES: [Body; N_BODIES] = [
     // sun:
     Body {

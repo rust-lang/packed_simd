@@ -1,10 +1,10 @@
 //! SIMD serial aobench
 
-use cfg_if::cfg_if;
 use crate::ambient_occlusion;
 use crate::geometry::{Ray, V3D};
 use crate::intersection::{Intersect, Isect};
 use crate::scene::Scene;
+use cfg_if::cfg_if;
 
 #[inline(always)]
 fn ao_impl<S: Scene>(

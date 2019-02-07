@@ -2,7 +2,7 @@
 #![rustfmt::skip]
 use crate::*;
 
-#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_lines))]
+#[allow(clippy::too_many_lines)]
 pub fn inv4x4(m: Matrix4x4) -> Option<Matrix4x4> {
     let m = m.0;
 

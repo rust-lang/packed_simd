@@ -1,16 +1,13 @@
 #![feature(custom_inner_attributes, stmt_expr_attributes)]
 #![deny(warnings, rust_2018_idioms)]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(
-        clippy::similar_names,
-        clippy::cast_precision_loss,
-        clippy::cast_sign_loss,
-        clippy::too_many_arguments,
-        clippy::cast_possible_wrap,
-        clippy::cast_possible_truncation,
-        clippy::inline_always
-    )
+#![allow(
+    clippy::similar_names,
+    clippy::cast_precision_loss,
+    clippy::cast_sign_loss,
+    clippy::too_many_arguments,
+    clippy::cast_possible_wrap,
+    clippy::cast_possible_truncation,
+    clippy::inline_always
 )]
 
 #[cfg(feature = "ispc")]

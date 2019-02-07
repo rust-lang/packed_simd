@@ -44,7 +44,7 @@ fn sum_ver_par(x: &[f32]) -> f32 {
     let (head, tail) = x.split_at(i);
     let head_sum: f32 = head.iter().sum();
 
-    #[cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
+    #[allow(clippy::cast_ptr_alignment)]
     let tail: &[f32s] = unsafe {
         slice::from_raw_parts(
             tail.as_ptr() as *const f32s,

@@ -3,13 +3,10 @@
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
 
 #![deny(warnings, rust_2018_idioms)]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(
-        clippy::cast_precision_loss,
-        clippy::cast_sign_loss,
-        clippy::cast_possible_truncation
-    )
+#![allow(
+    clippy::cast_precision_loss,
+    clippy::cast_sign_loss,
+    clippy::cast_possible_truncation
 )]
 
 use rayon::prelude::*;
