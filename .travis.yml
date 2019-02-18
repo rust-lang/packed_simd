@@ -248,8 +248,10 @@ matrix:
       stage: tools
     - name: "rustfmt"
       install: true
-      before_script: rustup component add rustfmt-preview
-      script: ci/all.sh check_fmt || true
+      script: |
+        if rustup component add rustfmt-preview ; then
+            ci/all.sh check_fmt || true
+        fi
       stage: tools
     - name: "clippy"
       install: true
