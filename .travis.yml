@@ -255,8 +255,10 @@ matrix:
       stage: tools
     - name: "clippy"
       install: true
-      before_script: rustup component add clippy-preview
-      script: ci/all.sh clippy
+      script: |
+        if rustup component add clippy-preview ; then
+            ci/all.sh clippy
+        fi
       stage: tools
 
   allow_failures:
