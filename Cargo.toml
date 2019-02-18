@@ -21,7 +21,7 @@ is-it-maintained-open-issues = { repository = "rust-lang-nursery/packed_simd" }
 maintenance = { status = "experimental" }
 
 [dependencies]
-cfg-if = "^0.1"
+cfg-if = "^0.1.6"
 core_arch = { version = "^0.1.4", optional = true }
 
 [features]
