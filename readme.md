@@ -12,8 +12,7 @@
 
 * [API docs (`master` branch)][master_docs]
 * [Performance guide][perf_guide]
-* [API docs (`docs.rs`)][docs.rs]: **CURRENTLY DOWN** due to
-  https://github.com/rust-lang-nursery/packed_simd/issues/110
+* [API docs (`docs.rs`)][docs.rs]
 * [RFC2366 `std::simd`][rfc2366]: - contains motivation, design rationale,
   discussion, etc.
 
