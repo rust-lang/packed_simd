@@ -16,3 +16,4 @@ crate mod sin_cos_pi;
 crate mod sin_pi;
 crate mod sqrt;
 crate mod sqrte;
+crate mod tanh;
