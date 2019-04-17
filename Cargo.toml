@@ -1,6 +1,6 @@
 [package]
 name = "packed_simd"
-version = "0.3.3"
+version = "0.3.4"
 authors = ["Gonzalo Brito Gadeschi <gonzalobg88@gmail.com>"]
 description = "Portable Packed SIMD vectors"
 documentation = "https://docs.rs/crate/packed_simd/"
