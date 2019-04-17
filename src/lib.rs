@@ -222,8 +222,8 @@
          // FIXME: This lint is currently broken for generic code
          // See https://github.com/rust-lang/rust-clippy/issues/3410
          clippy::use_self,
-         // FIXME: This lint is currently broke for macros
-         // See 
+         // FIXME: This lint is currently broken for macros
+         // See https://github.com/rust-lang/rust-clippy/issues/3981
          clippy::unnecessary_cast,
 )]
 #![cfg_attr(test, feature(hashmap_internals))]
