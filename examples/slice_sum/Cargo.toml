@@ -12,4 +12,4 @@ path = "src/main.rs"
 packed_simd = { path = "../.." }
 rayon = "^1.0"
 time = "^0.1"
-rand = "0.6.0"
+rand = "0.7.0"
