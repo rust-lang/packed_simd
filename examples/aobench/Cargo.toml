@@ -16,7 +16,7 @@ path = "src/lib.rs"
 [dependencies]
 structopt = "^0.2"
 failure = "^0.1"
-png = "^0.14"
+png = "^0.15"
 packed_simd = { path = "../.." }
 rayon = "^1.0"
 time = "^0.1"
