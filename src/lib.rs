@@ -255,6 +255,8 @@ mod api;
 mod codegen;
 mod sealed;
 
+pub use crate::sealed::{Simd as SimdVector, Shuffle, SimdArray, Mask};
+
 /// Packed SIMD vector type.
 ///
 /// # Examples
