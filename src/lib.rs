@@ -255,6 +255,8 @@ mod api;
 mod codegen;
 mod sealed;
 
+pub use crate::sealed::{Simd as SimdVector, Shuffle, SimdArray, Mask};
+
 /// Packed SIMD vector type.
 ///
 /// # Examples
@@ -274,6 +276,8 @@ pub struct Simd<A: sealed::SimdArray>(
     // to call the shuffle intrinsics.
     #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
 );
+
+impl<A: sealed::SimdArray> sealed::Seal for Simd<A> {}
 
 /// Wrapper over `T` implementing a lexicoraphical order via the `PartialOrd`
 /// and/or `Ord` traits.
