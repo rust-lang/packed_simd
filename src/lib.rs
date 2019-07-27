@@ -275,6 +275,8 @@ pub struct Simd<A: sealed::SimdArray>(
     #[doc(hidden)] pub <A as sealed::SimdArray>::Tuple,
 );
 
+impl<A: sealed::SimdArray> sealed::Seal for Simd<A> {}
+
 /// Wrapper over `T` implementing a lexicoraphical order via the `PartialOrd`
 /// and/or `Ord` traits.
 #[repr(transparent)]
