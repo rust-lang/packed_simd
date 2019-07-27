@@ -6,6 +6,7 @@ macro_rules! impl_mask_ty {
         #[derive(Copy, Clone)]
         pub struct $id($elem_ty);
 
+        impl crate::sealed::Seal for $id {}
         impl crate::sealed::Mask for $id {
             fn test(&self) -> bool {
                 $id::test(self)
