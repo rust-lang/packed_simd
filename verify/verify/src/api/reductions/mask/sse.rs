@@ -2,7 +2,7 @@
 
 #![allow(unused)]
 use packed_simd::*;
-use stdsimd_test::assert_instr;
+use stdarch_test::assert_instr;
 
 macro_rules! verify {
     ($id:ident => $instr:tt) => {
