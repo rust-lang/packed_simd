@@ -1,7 +1,7 @@
 //! Verification of the mask reduction API for `x86`/`x86_64`+`SSE2`
 
 use packed_simd::*;
-use stdsimd_test::assert_instr;
+use stdarch_test::assert_instr;
 
 macro_rules! verify {
     ($id:ident => $instr:tt) => {

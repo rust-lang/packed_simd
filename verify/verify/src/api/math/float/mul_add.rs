@@ -3,7 +3,7 @@ mod x86 {
     mod f32x4 {
         #![allow(unused)]
         use packed_simd::*;
-        use stdsimd_test::assert_instr;
+        use stdarch_test::assert_instr;
 
         #[inline]
         #[target_feature(enable = "sse,fma")]

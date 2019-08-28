@@ -1,7 +1,7 @@
 mod u64x8 {
     #![allow(unused)]
     use packed_simd::*;
-    use stdsimd_test::assert_instr;
+    use stdarch_test::assert_instr;
 
     #[inline]
     #[target_feature(enable = "avx512f,avx512vl")]
