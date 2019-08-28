@@ -223,7 +223,7 @@
          clippy::use_self
 )]
 #![cfg_attr(test, feature(hashmap_internals))]
-#![deny(warnings, rust_2018_idioms, clippy::missing_inline_in_public_items)]
+#![deny(rust_2018_idioms, clippy::missing_inline_in_public_items)]
 #![no_std]
 
 use cfg_if::cfg_if;

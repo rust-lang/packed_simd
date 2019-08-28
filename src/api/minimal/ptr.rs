@@ -215,7 +215,7 @@ macro_rules! impl_minimal_p {
                     f,
                     "{}<{}>(",
                     stringify!($id),
-                    crate::intrinsics::type_name::<T>()
+                    unsafe { crate::intrinsics::type_name::<T>() }
                 )?;
                 for i in 0..$elem_count {
                     if i > 0 {
