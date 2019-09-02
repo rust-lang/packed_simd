@@ -14,7 +14,7 @@ name = "aobench_lib"
 path = "src/lib.rs"
 
 [dependencies]
-structopt = "^0.2"
+structopt = "^0.3"
 failure = "^0.1"
 png = "^0.15"
 packed_simd = { path = "../.." }
