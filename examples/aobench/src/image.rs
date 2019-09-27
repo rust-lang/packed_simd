@@ -48,7 +48,6 @@ impl Image {
             i as u8
         }
 
-        use png::HasParameters;
         use std::fs::File;
         use std::io::BufWriter;
 
@@ -60,7 +59,8 @@ impl Image {
             self.height as u32,
         );
 
-        encoder.set(png::ColorType::RGB).set(png::BitDepth::Eight);
+        encoder.set_color(png::ColorType::RGB);
+        encoder.set_depth(png::BitDepth::Eight);
         let mut writer = encoder.write_header().unwrap();
 
         if soa {

@@ -67,7 +67,7 @@ pub mod scalar {
 
     pub fn thread_rng() -> RngH {
         RngH {
-            rng: THREAD_RNG_KEY.with(|t| t.clone()),
+            rng: THREAD_RNG_KEY.with(Clone::clone),
         }
     }
 }
@@ -134,7 +134,7 @@ pub mod vector {
 
     pub fn thread_rng() -> RngH {
         RngH {
-            rng: THREAD_RNG_KEY.with(|t| t.clone()),
+            rng: THREAD_RNG_KEY.with(Clone::clone),
         }
     }
 }
