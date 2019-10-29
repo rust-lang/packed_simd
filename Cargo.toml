@@ -21,9 +21,9 @@ is-it-maintained-open-issues = { repository = "rust-lang-nursery/packed_simd" }
 maintenance = { status = "experimental" }
 
 [dependencies]
-cfg-if = "^0.1.6"
-core_arch = { version = "^0.1.4", optional = true }
-libm = "0.1.2"
+cfg-if = "0.1.10"
+core_arch = { version = "0.1.5", optional = true }
+libm = "0.1.4"
 
 [features]
 default = []
@@ -35,7 +35,7 @@ paste = "^0.1.3"
 arrayvec = { version = "^0.5", default-features = false }
 
 [target.'cfg(target_arch = "x86_64")'.dependencies.sleef-sys]
-version = "^0.1.2"
+version = "0.1.2"
 optional = true
 
 [target.wasm32-unknown-unknown.dev-dependencies]
