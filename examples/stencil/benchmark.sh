@@ -30,5 +30,5 @@ fi
 
 for alg in "${algs[@]}"
 do
-    hyperfine "target/release/stencil ${alg}"
+    hyperfine "../target/release/stencil ${alg}"
 done
