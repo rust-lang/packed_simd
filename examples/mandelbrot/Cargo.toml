@@ -9,7 +9,7 @@ edition = "2018"
 packed_simd = { path = "../.." }
 rayon = "^1.0"
 ispc = { version = "^1.0.4", optional = true }
-structopt = "0.3.0"
+structopt = { version = "0.3.0", features = ["color"] }
 
 [build-dependencies]
 ispc = { version = "^1.0.4", optional = true }
