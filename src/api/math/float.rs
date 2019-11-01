@@ -16,6 +16,9 @@ mod exp;
 mod powf;
 
 #[macro_use]
+mod powi;
+
+#[macro_use]
 mod ln;
 
 #[macro_use]

@@ -218,9 +218,12 @@
          clippy::cast_lossless,
          clippy::cast_possible_wrap,
          clippy::cast_precision_loss,
-         // This lint is currently broken for generic code
+         // FIXME: This lint is currently broken for generic code
          // See https://github.com/rust-lang/rust-clippy/issues/3410
-         clippy::use_self
+         clippy::use_self,
+         // FIXME: This lint is currently broken for macros
+         // See https://github.com/rust-lang/rust-clippy/issues/3981
+         clippy::unnecessary_cast,
 )]
 #![cfg_attr(test, feature(hashmap_internals))]
 #![deny(rust_2018_idioms, clippy::missing_inline_in_public_items)]

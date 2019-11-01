@@ -23,7 +23,7 @@ fn sum_hor(x: &[f32]) -> f32 {
 
     x.chunks_exact(f32s::lanes())
         .map(f32s::from_slice_unaligned)
-        .map(|vec| vec.sum())
+        .map(f32s::sum)
         .sum()
 }
 

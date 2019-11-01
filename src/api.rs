@@ -208,6 +208,7 @@ macro_rules! impl_f {
         impl_math_float_mul_add!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_mul_adde!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_powf!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_math_float_powi!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_recpre!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_rsqrte!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_sin!([$elem_ty; $elem_n]: $tuple_id | $test_tt);

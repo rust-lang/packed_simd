@@ -55,8 +55,8 @@ macro_rules! impl_slice_write_to_slice {
                     0
                 );
 
-                                #[allow(clippy::cast_ptr_alignment)]
-                        #[allow(clippy::cast_ptr_alignment)]
+                #[allow(clippy::cast_ptr_alignment)]
+                #[allow(clippy::cast_ptr_alignment)]
                 #[allow(clippy::cast_ptr_alignment)]
                 #[allow(clippy::cast_ptr_alignment)]
                 *(target_ptr as *mut Self) = self;
