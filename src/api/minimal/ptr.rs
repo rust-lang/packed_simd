@@ -68,7 +68,7 @@ macro_rules! impl_minimal_p {
 
             /// Extracts the value at `index`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
@@ -96,7 +96,7 @@ macro_rules! impl_minimal_p {
 
             /// Returns a new vector where the value at `index` is replaced by `new_value`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
@@ -611,7 +611,7 @@ macro_rules! impl_minimal_p {
 
             /// Instantiates a new vector with the values of the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` or `&slice[0]` is not aligned
             /// to an `align_of::<Self>()` boundary, the behavior is undefined.
@@ -624,7 +624,7 @@ macro_rules! impl_minimal_p {
 
             /// Instantiates a new vector with the values of the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` the behavior is undefined.
             #[inline]
@@ -827,7 +827,7 @@ macro_rules! impl_minimal_p {
 
             /// Writes the values of the vector to the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` or `&slice[0]` is not
             /// aligned to an `align_of::<Self>()` boundary, the behavior is
@@ -843,7 +843,7 @@ macro_rules! impl_minimal_p {
 
             /// Writes the values of the vector to the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` the behavior is undefined.
             #[inline]
@@ -1151,7 +1151,7 @@ macro_rules! impl_minimal_p {
             /// As such, memory acquired directly from allocators or memory
             /// mapped files may be too large to handle with this function.
             ///
-            /// Consider using wrapping_offset_from instead if these constraints
+            /// Consider using `wrapping_offset_from` instead if these constraints
             /// are difficult to satisfy. The only advantage of this method is
             /// that it enables more aggressive compiler optimizations.
             #[inline]

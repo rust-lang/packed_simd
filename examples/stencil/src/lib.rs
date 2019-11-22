@@ -7,7 +7,8 @@
     clippy::too_many_arguments,
     clippy::cast_possible_wrap,
     clippy::cast_possible_truncation,
-    clippy::inline_always
+    clippy::inline_always,
+    clippy::must_use_candidate
 )]
 
 #[cfg(feature = "ispc")]

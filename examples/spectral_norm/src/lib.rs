@@ -1,7 +1,10 @@
 //! Spectral Norm
 #![deny(warnings, rust_2018_idioms)]
 #![allow(non_snake_case, non_camel_case_types)]
-#![allow(clippy::cast_precision_loss)]
+#![allow(
+    clippy::cast_precision_loss,
+    clippy::must_use_candidate
+)]
 
 pub mod scalar;
 pub mod simd;

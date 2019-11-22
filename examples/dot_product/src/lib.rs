@@ -1,6 +1,7 @@
 //! Vector dot product
 #![deny(warnings, rust_2018_idioms)]
 #![feature(custom_inner_attributes)]
+#![allow(clippy::must_use_candidate)]
 
 pub mod scalar;
 pub mod simd;

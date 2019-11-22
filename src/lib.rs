@@ -218,6 +218,8 @@
          clippy::cast_lossless,
          clippy::cast_possible_wrap,
          clippy::cast_precision_loss,
+         // TODO: manually add the `#[must_use]` attribute where appropiate
+         clippy::must_use_candidate,
          // This lint is currently broken for generic code
          // See https://github.com/rust-lang/rust-clippy/issues/3410
          clippy::use_self,

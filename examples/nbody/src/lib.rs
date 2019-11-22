@@ -2,7 +2,11 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
 #![deny(warnings, rust_2018_idioms)]
-#![allow(clippy::similar_names, clippy::excessive_precision)]
+#![allow(
+    clippy::similar_names,
+    clippy::excessive_precision,
+    clippy::must_use_candidate
+)]
 
 pub mod scalar;
 pub mod simd;

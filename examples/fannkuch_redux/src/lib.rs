@@ -6,7 +6,8 @@
     clippy::many_single_char_names,
     clippy::cast_possible_truncation,
     clippy::cast_sign_loss,
-    clippy::cast_possible_wrap
+    clippy::cast_possible_wrap,
+    clippy::must_use_candidate
 )]
 
 pub mod scalar;
