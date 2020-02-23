@@ -201,6 +201,7 @@
 
 #![feature(
     repr_simd,
+    rustc_attrs,
     const_fn,
     platform_intrinsics,
     stdsimd,
