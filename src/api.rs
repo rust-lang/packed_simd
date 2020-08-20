@@ -202,6 +202,7 @@ macro_rules! impl_f {
 
         // floating-point math
         impl_math_float_abs!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_math_float_acos!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_cos!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_exp!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_ln!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
@@ -211,6 +212,7 @@ macro_rules! impl_f {
         impl_math_float_recpre!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_rsqrte!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_sin!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
+        impl_math_float_sin_cos!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_sqrt!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_sqrte!([$elem_ty; $elem_n]: $tuple_id | $test_tt);
         impl_math_float_tanh!([$elem_ty; $elem_n]: $tuple_id | $test_tt);

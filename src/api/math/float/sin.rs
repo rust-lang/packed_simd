@@ -16,13 +16,6 @@ macro_rules! impl_math_float_sin {
                 use crate::codegen::math::float::sin_pi::SinPi;
                 SinPi::sin_pi(self)
             }
-
-            /// Sine and cosine of `self * PI`.
-            #[inline]
-            pub fn sin_cos_pi(self) -> (Self, Self) {
-                use crate::codegen::math::float::sin_cos_pi::SinCosPi;
-                SinCosPi::sin_cos_pi(self)
-            }
         }
 
         test_if!{

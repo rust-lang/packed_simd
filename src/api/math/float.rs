@@ -4,6 +4,9 @@
 mod abs;
 
 #[macro_use]
+mod acos;
+
+#[macro_use]
 mod consts;
 
 #[macro_use]
@@ -32,6 +35,9 @@ mod rsqrte;
 
 #[macro_use]
 mod sin;
+
+#[macro_use]
+mod sin_cos;
 
 #[macro_use]
 mod sqrt;
