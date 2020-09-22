@@ -11,7 +11,7 @@ stages:
   - android
 
 matrix:
-  fast_finish: true    
+  fast_finish: true
   include:
     # Android:
     - env: TARGET=x86_64-linux-android NOVERIFY=1
@@ -233,11 +233,13 @@ matrix:
     # BENCHMARKS:
     - name: "Benchmarks - x86_64-unknown-linux-gnu"
       install: TARGET=x86_64-unknown-linux-gnu ./ci/setup_benchmarks.sh
-      script: PATH=$(pwd):$PATH NORUN=1 VERIFY=1 FEATURES=core_arch,ispc,sleef-sys ci/benchmark.sh
+      # FIXME: Use `core_arch,sleef-sys` features once they works again
+      script: PATH=$(pwd):$PATH NORUN=1 VERIFY=1 FEATURES=ispc ci/benchmark.sh
       stage: tools
     - name: "Benchmarks - x86_64-apple-darwin"
       install: TARGET=x86_64-apple-darwin ./ci/setup_benchmarks.sh
-      script: PATH=$(pwd):$PATH NORUN=1 VERIFY=1 FEATURES=core_arch,ispc,sleef-sys ci/benchmark.sh
+      # FIXME: Use `core_arch,sleef-sys` features once they works again
+      script: PATH=$(pwd):$PATH NORUN=1 VERIFY=1 FEATURES=ispc ci/benchmark.sh
       os: osx
       osx_image: xcode9.4
       stage: tools
