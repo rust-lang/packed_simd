@@ -28,28 +28,7 @@ macro_rules! impl_fallback {
 macro_rules! impl_shuffle1_dyn {
     (u8x8) => {
         cfg_if! {
-            if #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
-                         target_feature = "ssse3"))] {
-                impl Shuffle1Dyn for u8x8 {
-                    type Indices = Self;
-                    #[inline]
-                    fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
-                        #[cfg(target_arch = "x86")]
-                        use crate::arch::x86::_mm_shuffle_pi8;
-                        #[cfg(target_arch = "x86_64")]
-                        use crate::arch::x86_64::_mm_shuffle_pi8;
-
-                        unsafe {
-                            crate::mem::transmute(
-                                _mm_shuffle_pi8(
-                                    crate::mem::transmute(self.0),
-                                    crate::mem::transmute(indices.0)
-                                )
-                            )
-                        }
-                    }
-                }
-            } else if #[cfg(all(
+            if #[cfg(all(
                 any(
                     all(target_aarch = "aarch64", target_feature = "neon"),
                     all(target_aarch = "arm", target_feature = "v7",
