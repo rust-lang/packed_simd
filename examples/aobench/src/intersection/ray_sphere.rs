@@ -43,7 +43,7 @@ impl Intersect<Sphere> for RayxN {
         let c = radius.mul_adde(-radius, rs.dot(rs));
         let d = b.mul_adde(b, -c);
 
-        let old_isect = isect;
+        let _old_isect = isect;
 
         let m = d.gt(f32xN::splat(0.));
         if m.any() {
@@ -64,10 +64,10 @@ impl Intersect<Sphere> for RayxN {
             // Check that the vector and the scalar version produce the same results
             // for the same inputs in debug builds
             for i in 0..f32xN::lanes() {
-                let old_isect_i = old_isect.get(i);
+                let old_isect_i = _old_isect.get(i);
                 let ray_i = self.get(i);
                 let isect_i = ray_i.intersect(sphere, old_isect_i);
-                assert!(isect_i.almost_eq(&isect.get(i)), "{:?} !~= {:?}\n\nsphere: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\n\n", isect_i, isect.get(i), sphere, old_isect, self, i, old_isect_i, ray_i);
+                assert!(isect_i.almost_eq(&isect.get(i)), "{:?} !~= {:?}\n\nsphere: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\n\n", isect_i, isect.get(i), sphere, _old_isect, self, i, old_isect_i, ray_i);
             }
         }
 

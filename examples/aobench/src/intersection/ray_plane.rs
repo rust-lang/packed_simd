@@ -38,7 +38,7 @@ impl Intersect<Plane> for RayxN {
         let d = -plane.p.dot(plane.n);
         let v = ray.dir.dot(plane.n);
 
-        let old_isect = isect;
+        let _old_isect = isect;
 
         let m = v.abs().ge(f32xN::splat(1e-17));
         if m.any() {
@@ -58,10 +58,10 @@ impl Intersect<Plane> for RayxN {
             // Check that the vector and the scalar version produce the same results
             // for the same inputs in debug builds
             for i in 0..f32xN::lanes() {
-                let old_isect_i = old_isect.get(i);
+                let old_isect_i = _old_isect.get(i);
                 let ray_i = self.get(i);
                 let isect_i = ray_i.intersect(plane, old_isect_i);
-                assert!(isect_i.almost_eq(&isect.get(i)), "{:?} !~= {:?}\n\nplane: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\n\n", isect_i, isect.get(i), plane, old_isect, self, i, old_isect_i, ray_i);
+                assert!(isect_i.almost_eq(&isect.get(i)), "{:?} !~= {:?}\n\nplane: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\n\n", isect_i, isect.get(i), plane, _old_isect, self, i, old_isect_i, ray_i);
             }
         }
 
