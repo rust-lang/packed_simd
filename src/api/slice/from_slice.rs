@@ -38,7 +38,7 @@ macro_rules! impl_slice_from_slice {
 
             /// Instantiates a new vector with the values of the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` or `&slice[0]` is not aligned
             /// to an `align_of::<Self>()` boundary, the behavior is undefined.
@@ -59,7 +59,7 @@ macro_rules! impl_slice_from_slice {
 
             /// Instantiates a new vector with the values of the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` the behavior is undefined.
             #[inline]

@@ -39,7 +39,7 @@ macro_rules! impl_slice_write_to_slice {
 
             /// Writes the values of the vector to the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` or `&slice[0]` is not
             /// aligned to an `align_of::<Self>()` boundary, the behavior is
@@ -64,7 +64,7 @@ macro_rules! impl_slice_write_to_slice {
 
             /// Writes the values of the vector to the `slice`.
             ///
-            /// # Precondition
+            /// # Safety
             ///
             /// If `slice.len() < Self::lanes()` the behavior is undefined.
             #[inline]
