@@ -17,7 +17,7 @@ fn endian_indexing() {
 #[cfg_attr(not(target_arch = "wasm32"), test)]
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_bitcasts() {
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -34,13 +34,13 @@ fn endian_bitcasts() {
 #[cfg_attr(not(target_arch = "wasm32"), test)]
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_casts() {
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
     );
     let t: i16x16 = x.into(); // simd_cast
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let e = i16x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -51,7 +51,7 @@ fn endian_casts() {
 #[cfg_attr(not(target_arch = "wasm32"), test)]
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
 fn endian_load_and_stores() {
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -93,7 +93,7 @@ fn endian_array_union() {
         data: [i8; 16],
         vec: i8x16,
     }
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -104,12 +104,12 @@ fn endian_array_union() {
         assert_eq!(x[i], i as i8);
     }
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let y = [
         15, 14, 13, 12, 11, 19, 9, 8,
         7, 6, 5, 4, 3, 2, 1, 0
     ];
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let e = i8x16::new(
         15, 14, 13, 12, 11, 19, 9, 8,
         7, 6, 5, 4, 3, 2, 1, 0
@@ -121,7 +121,7 @@ fn endian_array_union() {
         data: [i16; 8],
         vec: i8x16,
     }
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -152,14 +152,14 @@ fn endian_tuple_access() {
     let y: f32x4 = unsafe { A { data: (3., 2., 1., 0.) }.vec };
     assert_eq!(y, f32x4::new(3., 2., 1., 0.));
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     type I8x16T = (i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8);
     union B {
         data: I8x16T,
         vec: i8x16,
     }
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -183,27 +183,27 @@ fn endian_tuple_access() {
     assert_eq!(x.14, 14);
     assert_eq!(x.15, 15);
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let y = (
         15, 14, 13, 12, 11, 10, 9, 8,
         7, 6, 5, 4, 3, 2, 1, 0
     );
     let z: i8x16 = unsafe { B { data: y }.vec };
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let e = i8x16::new(
         15, 14, 13, 12, 11, 10, 9, 8,
         7, 6, 5, 4, 3, 2, 1, 0
     );
     assert_eq!(e, z);
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     type I16x8T = (i16, i16, i16, i16, i16, i16, i16, i16);
     union C {
         data: I16x8T,
         vec: i8x16,
     }
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
@@ -224,7 +224,7 @@ fn endian_tuple_access() {
     assert_eq!(x.6, e[6]);
     assert_eq!(x.7, e[7]);
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     #[repr(C)]
     #[derive(Copy ,Clone)]
     pub struct Tup(pub i8, pub i8, pub i16, pub i8, pub i8, pub i16,
@@ -235,7 +235,7 @@ fn endian_tuple_access() {
         vec: i8x16,
     }
 
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     let x = i8x16::new(
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,

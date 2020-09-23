@@ -1,5 +1,5 @@
 //! 64-bit wide vector types
-#![rustfmt::skip]
+#[rustfmt::skip]
 
 use super::*;
 
