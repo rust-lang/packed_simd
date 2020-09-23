@@ -39,7 +39,7 @@ impl_m!([msize; 4]: msizex4 | isize_, u8 | test_v256 |
 impl_i!([isize; 8]: isizex8, msizex8 | isize_, u8 | test_v512 |
         x0, x1, x2, x3, x4, x5, x6, x7 |
         From: |
-        /// A vector with 4 `isize` lanes.
+        /// A vector with 8 `isize` lanes.
 );
 impl_u!([usize; 8]: usizex8, msizex8 | usize_, u8 | test_v512 |
         x0, x1, x2, x3, x4, x5, x6, x7 |
