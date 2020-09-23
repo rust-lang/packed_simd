@@ -12,7 +12,8 @@
     clippy::cast_possible_truncation,
     clippy::cast_sign_loss,
     clippy::identity_op,
-    clippy::erasing_op
+    clippy::erasing_op,
+    clippy::must_use_candidate
 )]
 
 pub mod ambient_occlusion;

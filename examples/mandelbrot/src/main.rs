@@ -12,7 +12,6 @@ use structopt::StructOpt;
 ///
 /// Output is printed to `stdout`.
 #[derive(StructOpt)]
-#[structopt(raw(setting = "structopt::clap::AppSettings::ColoredHelp"))]
 struct Opt {
     /// Image width.
     width: usize,

@@ -53,7 +53,8 @@ impl Intersect<Plane> for RayxN {
             }
         }
 
-        debug_assert!({
+        #[cfg(debug_assertions)]
+        {
             // Check that the vector and the scalar version produce the same results
             // for the same inputs in debug builds
             for i in 0..f32xN::lanes() {
@@ -62,8 +63,7 @@ impl Intersect<Plane> for RayxN {
                 let isect_i = ray_i.intersect(plane, old_isect_i);
                 assert!(isect_i.almost_eq(&isect.get(i)), "{:?} !~= {:?}\n\nplane: {:?}\n\nold_isect: {:?}\n\nrays: {:?}\n\ni: {:?}\nold_isect_i: {:?}\nray_i: {:?}\n\n", isect_i, isect.get(i), plane, old_isect, self, i, old_isect_i, ray_i);
             }
-            true
-        });
+        }
 
         isect
     }

@@ -1,3 +1,5 @@
+#![allow(clippy::must_use_candidate)]
+
 /// Simple matrix type.
 /// The memory layout is the same as the one for Direct3D/OpenGL: fourth vector
 /// represents the translation vector `[x, y, z]`.

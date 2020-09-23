@@ -145,10 +145,11 @@ pub fn generate(dims: Dimensions, xr: Range, yr: Range) -> Vec<u32> {
         });
     });
 
+    // This is safe, we're transmuting from a more-aligned type to a
+    // less-aligned one.
+    #[allow(clippy::unsound_collection_transmute)]
     unsafe {
         let mut out: Vec<u32> = std::mem::transmute(out);
-        // This is safe, we're transmuting from a more-aligned type to a
-        // less-aligned one.
         out.set_len(width * height);
         out
     }

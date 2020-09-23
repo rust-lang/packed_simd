@@ -34,7 +34,7 @@ fi
 
 for alg in "${ALGS[@]}"
 do
-    hyperfine "target/release/aobench ${WIDTH} ${HEIGHT} --algo ${alg}"
+    hyperfine "../target/release/aobench ${WIDTH} ${HEIGHT} --algo ${alg}"
 done
 
 echo "Benchmark 128-bit wide vectors"
@@ -43,5 +43,5 @@ RUSTFLAGS="-C target-cpu=native ${RUSTFLAGS}" \
          --features="${FEATURES}"
 for alg in "${ALGS[@]}"
 do
-    hyperfine "target/release/aobench ${WIDTH} ${HEIGHT} --algo ${alg}"
+    hyperfine "../target/release/aobench ${WIDTH} ${HEIGHT} --algo ${alg}"
 done

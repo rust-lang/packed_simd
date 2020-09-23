@@ -27,7 +27,7 @@ fi
 
 #for alg in "${ALGS[@]}"
 #do
-#    hyperfine "target/release/options_pricing ${NUM_OPTIONS_BLACK_SCHOLES} ${alg}"
+#    hyperfine "../target/release/options_pricing ${NUM_OPTIONS_BLACK_SCHOLES} ${alg}"
 #done
 
 # Binomial put:
@@ -40,5 +40,5 @@ NUM_OPTIONS_BINOMIAL_PUT=500000
 
 for alg in "${ALGS[@]}"
 do
-    hyperfine "target/release/options_pricing ${NUM_OPTIONS_BINOMIAL_PUT} ${alg}"
+    hyperfine "../target/release/options_pricing ${NUM_OPTIONS_BINOMIAL_PUT} ${alg}"
 done
