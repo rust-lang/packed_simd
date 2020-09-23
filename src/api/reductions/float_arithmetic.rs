@@ -93,6 +93,8 @@ macro_rules! impl_reduction_float_arithmetic {
         test_if! {
             $test_tt:
             paste::item! {
+                // Comparisons use integer casts within mantissa^1 range.
+                #[allow(clippy::float_cmp)]
                 pub mod [<$id _reduction_float_arith>] {
                     use super::*;
                     fn alternating(x: usize) -> $id {
@@ -225,7 +227,7 @@ macro_rules! impl_reduction_float_arithmetic {
                         let mut v = $id::splat(0. as $elem_ty);
                         for i in 0..$id::lanes() {
                             let c = if i % 2 == 0 { 1e3 } else { -1. };
-                            start *= 3.14 * c;
+                            start *= ::core::$elem_ty::consts::PI * c;
                             scalar_reduction += start;
                             v = v.replace(i, start);
                         }
@@ -278,7 +280,7 @@ macro_rules! impl_reduction_float_arithmetic {
                         let mut v = $id::splat(0. as $elem_ty);
                         for i in 0..$id::lanes() {
                             let c = if i % 2 == 0 { 1e3 } else { -1. };
-                            start *= 3.14 * c;
+                            start *= ::core::$elem_ty::consts::PI * c;
                             scalar_reduction *= start;
                             v = v.replace(i, start);
                         }

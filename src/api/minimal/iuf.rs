@@ -101,6 +101,8 @@ macro_rules! impl_minimal_iuf {
         test_if!{
             $test_tt:
             paste::item! {
+                // Comparisons use integer casts within mantissa^1 range.
+                #[allow(clippy::float_cmp)]
                 pub mod [<$id _minimal>] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)]

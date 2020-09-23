@@ -97,7 +97,7 @@ impl Data {
     pub fn exec<F>(&mut self, f: F)
     where
         F: Fn(i32, i32, i32, i32, i32, i32, i32, i32, i32, i32, i32,
-            &[f32; 4], &[f32], &mut [f32], &mut [f32]) -> (),
+            &[f32; 4], &[f32], &mut [f32], &mut [f32]),
     {
         f(
             self.t.0, self.t.1,

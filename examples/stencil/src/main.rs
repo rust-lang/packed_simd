@@ -8,7 +8,7 @@ use std::env;
 fn run<F>(name: &str, f: F)
 where
     F: Fn(i32, i32, i32, i32, i32, i32, i32, i32, i32, i32, i32,
-        &[f32; 4], &[f32], &mut [f32], &mut [f32]) -> (),
+        &[f32; 4], &[f32], &mut [f32], &mut [f32]),
 {
     let mut d = Data::benchmark();
     let t = time::Duration::span(move || d.exec(f));

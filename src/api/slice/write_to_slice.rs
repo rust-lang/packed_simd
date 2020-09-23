@@ -86,6 +86,8 @@ macro_rules! impl_slice_write_to_slice {
         test_if! {
             $test_tt:
             paste::item! {
+                // Comparisons use integer casts within mantissa^1 range.
+                #[allow(clippy::float_cmp)]
                 pub mod [<$id _slice_write_to_slice>] {
                     use super::*;
                     use crate::iter::Iterator;

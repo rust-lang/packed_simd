@@ -82,10 +82,15 @@ fn endian_array_union() {
         vec: f32x4,
     }
     let x: [f32; 4] = unsafe { A { vec: f32x4::new(0., 1., 2., 3.) }.data };
-    assert_eq!(x[0], 0_f32);
-    assert_eq!(x[1], 1_f32);
-    assert_eq!(x[2], 2_f32);
-    assert_eq!(x[3], 3_f32);
+    // As all of these are integer values within the mantissa^1 range, it
+    // would be very unusual for them to actually fail to compare.
+    #[allow(clippy::float_cmp)]
+    {
+        assert_eq!(x[0], 0_f32);
+        assert_eq!(x[1], 1_f32);
+        assert_eq!(x[2], 2_f32);
+        assert_eq!(x[3], 3_f32);
+    }
     let y: f32x4 = unsafe { A { data: [3., 2., 1., 0.] }.vec };
     assert_eq!(y, f32x4::new(3., 2., 1., 0.));
 
@@ -100,8 +105,8 @@ fn endian_array_union() {
     );
     let x: [i8; 16] = unsafe { B { vec: x }.data };
 
-    for i in 0..16 {
-        assert_eq!(x[i], i as i8);
+    for (i, v) in x.iter().enumerate() {
+        assert_eq!(i as i8, *v);
     }
 
     #[rustfmt::skip]
@@ -145,10 +150,15 @@ fn endian_tuple_access() {
         vec: f32x4,
     }
     let x: F32x4T = unsafe { A { vec: f32x4::new(0., 1., 2., 3.) }.data };
-    assert_eq!(x.0, 0_f32);
-    assert_eq!(x.1, 1_f32);
-    assert_eq!(x.2, 2_f32);
-    assert_eq!(x.3, 3_f32);
+    // As all of these are integer values within the mantissa^1 range, it
+    // would be very unusual for them to actually fail to compare.
+    #[allow(clippy::float_cmp)]
+    {
+        assert_eq!(x.0, 0_f32);
+        assert_eq!(x.1, 1_f32);
+        assert_eq!(x.2, 2_f32);
+        assert_eq!(x.3, 3_f32);
+    }
     let y: f32x4 = unsafe { A { data: (3., 2., 1., 0.) }.vec };
     assert_eq!(y, f32x4::new(3., 2., 1., 0.));
 
