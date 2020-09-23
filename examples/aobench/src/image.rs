@@ -1,7 +1,8 @@
 //! Image utilities
 
 use failure::Error;
-use png;
+#[allow(unused)]
+use png::{BitDepth, ColorType, Encoder};
 use std::path::Path;
 
 /// PNG image in RGB format
@@ -53,14 +54,14 @@ impl Image {
 
         let file = File::create(output)?;
         let buf_writer = &mut BufWriter::new(file);
-        let mut encoder = png::Encoder::new(
+        let mut encoder = Encoder::new(
             buf_writer,
             self.width as u32,
             self.height as u32,
         );
 
-        encoder.set_color(png::ColorType::RGB);
-        encoder.set_depth(png::BitDepth::Eight);
+        encoder.set_color(ColorType::RGB);
+        encoder.set_depth(BitDepth::Eight);
         let mut writer = encoder.write_header().unwrap();
 
         if soa {

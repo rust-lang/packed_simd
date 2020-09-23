@@ -29,7 +29,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    static OUTPUT: &'static [u8] = include_bytes!("nbody-output.txt");
+    static OUTPUT: &[u8] = include_bytes!("nbody-output.txt");
     #[test]
     fn verify_output_simd() {
         let mut out: Vec<u8> = Vec::new();

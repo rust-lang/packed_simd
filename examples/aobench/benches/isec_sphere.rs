@@ -5,7 +5,6 @@ use crate::geometry::{f32xN, Ray, RayxN, Sphere, V3DxN, V3D};
 use crate::intersection::{Intersect, Isect, IsectxN};
 use aobench_lib::*;
 use criterion::*;
-use test::*;
 
 fn hit_scalar(c: &mut Criterion) {
     let mut s = Sphere {
@@ -121,7 +120,7 @@ fn hit_vector(c: &mut Criterion) {
                 assert_eq!(v.hit.all(), true);
             })
         })
-        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        .throughput(Throughput::Elements(f32xN::lanes() as u64)),
     );
 }
 
@@ -160,7 +159,7 @@ fn miss_vector(c: &mut Criterion) {
                 assert_eq!(v.hit.any(), false);
             })
         })
-        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        .throughput(Throughput::Elements(f32xN::lanes() as u64)),
     );
 }
 

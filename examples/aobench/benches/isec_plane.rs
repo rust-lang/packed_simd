@@ -132,7 +132,7 @@ fn hit_vector(c: &mut Criterion) {
                 assert_eq!(v.hit.all(), true);
             })
         })
-        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        .throughput(Throughput::Elements(f32xN::lanes() as u64)),
     );
 }
 
@@ -175,7 +175,7 @@ fn miss_vector(c: &mut Criterion) {
                 assert_eq!(v.hit.any(), false);
             })
         })
-        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        .throughput(Throughput::Elements(f32xN::lanes() as u64)),
     );
 }
 

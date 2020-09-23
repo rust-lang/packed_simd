@@ -7,7 +7,8 @@
     clippy::cast_possible_truncation,
     clippy::cast_possible_wrap,
     clippy::must_use_candidate,
-    clippy::too_many_arguments
+    clippy::too_many_arguments,
+    clippy::float_cmp
 )]
 
 use packed_simd::f32x8 as f32s;

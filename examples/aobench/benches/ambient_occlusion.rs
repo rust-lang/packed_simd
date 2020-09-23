@@ -4,10 +4,10 @@
 use aobench_lib::*;
 use criterion::*;
 use intersection::Isect;
-use scene::Test;
+use aobench_lib::scene::Test;
 
 fn hit_scalar(c: &mut Criterion) {
-    let mut scene = Test::new();
+    let mut scene = Test::default();
     c.bench(
         "scalar",
         Benchmark::new("ao_hit", move |b| {
@@ -24,7 +24,7 @@ fn hit_scalar(c: &mut Criterion) {
 }
 
 fn hit_vector(c: &mut Criterion) {
-    let mut scene = Test::new();
+    let mut scene = Test::default();
 
     c.bench(
         "vector",

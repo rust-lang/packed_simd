@@ -70,9 +70,9 @@ mod tests {
             scalar_xformed.into_iter().zip(simd_xformed.into_iter()).for_each(
                 |(a, b)| {
                     if a != b {
-                        a.0.into_iter().zip(b.0.into_iter()).for_each(
+                        a.0.iter().zip(b.0.iter()).for_each(
                             |(v1, v2)| {
-                                v1.into_iter().zip(v2.into_iter()).for_each(
+                                v1.iter().zip(v2.iter()).for_each(
                                     |(a, b)| {
                                         assert!(
                                             (a - b).abs() <= EPSILON,
