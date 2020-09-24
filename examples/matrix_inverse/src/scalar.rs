@@ -1,5 +1,5 @@
 //! Scalar implementation
-#![rustfmt::skip]
+#[rustfmt::skip]
 use crate::*;
 
 #[allow(clippy::too_many_lines)]

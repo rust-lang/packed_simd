@@ -13,7 +13,8 @@
     clippy::cast_sign_loss,
     clippy::identity_op,
     clippy::erasing_op,
-    clippy::must_use_candidate
+    clippy::must_use_candidate,
+    clippy::float_cmp
 )]
 
 pub mod ambient_occlusion;

@@ -215,7 +215,7 @@ mod tests {
     }
 
     fn verify_algo(algo: Algorithm) {
-        static OUTPUT: &'static [u8] = include_bytes!("mandelbrot-output.txt");
+        static OUTPUT: &[u8] = include_bytes!("mandelbrot-output.txt");
 
         let (width, height) = (200, 200);
 
@@ -231,7 +231,7 @@ mod tests {
         assert_eq!(out.len(), OUTPUT.len());
 
         if out != OUTPUT {
-            out.into_iter().zip(OUTPUT.into_iter()).enumerate().for_each(
+            out.into_iter().zip(OUTPUT.iter()).enumerate().for_each(
                 |(i, (a, &b))| {
                     assert_eq!(
                         a, b,

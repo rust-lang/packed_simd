@@ -36,12 +36,12 @@ pub(crate) fn step_x8(
 
                         let sum = {
                             let i = i as i32;
-                            (a_cur!(i, 0, 0)
+                            a_cur!(i, 0, 0)
                                 + a_cur!(-i, 0, 0)
                                 + a_cur!(0, i, 0)
                                 + a_cur!(0, -i, 0)
                                 + a_cur!(0, 0, i)
-                                + a_cur!(0, 0, -i))
+                                + a_cur!(0, 0, -i)
                         };
 
                         div = coef.mul_adde(sum, div);

@@ -1,5 +1,5 @@
 //! 512-bit wide vector types
-#![rustfmt::skip]
+#[rustfmt::skip]
 
 use crate::*;
 

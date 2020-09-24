@@ -27,7 +27,7 @@ fn random_vector(c: &mut Criterion) {
                 black_box(rng.gen());
             })
         })
-        .throughput(Throughput::Elements(f32xN::lanes() as u32)),
+        .throughput(Throughput::Elements(f32xN::lanes() as u64)),
     );
 }
 

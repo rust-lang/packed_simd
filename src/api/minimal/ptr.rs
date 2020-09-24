@@ -550,11 +550,7 @@ macro_rules! impl_minimal_p {
                         ];
 
                         for i in 0..$elem_count {
-                            let ptr = unsafe {
-                                crate::mem::transmute(
-                                    &values[i] as *const i32
-                                )
-                            };
+                            let ptr = &values[i] as *const i32 as *mut i32;
                             vec = vec.replace(i, ptr);
                             array[i] = ptr;
                         }
@@ -1025,11 +1021,7 @@ macro_rules! impl_minimal_p {
                         ];
 
                         for i in 0..$elem_count {
-                            let ptr = unsafe {
-                                crate::mem::transmute(
-                                    &values[i] as *const i32
-                                )
-                            };
+                            let ptr = &values[i] as *const i32 as *mut i32;
                             vec = vec.replace(i, ptr);
                             array[i] = ptr;
                         }
