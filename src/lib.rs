@@ -214,16 +214,19 @@
     llvm_asm
 )]
 #![allow(non_camel_case_types, non_snake_case,
-         clippy::cast_possible_truncation,
-         clippy::cast_lossless,
-         clippy::cast_possible_wrap,
-         clippy::cast_precision_loss,
-         // TODO: manually add the `#[must_use]` attribute where appropiate
-         clippy::must_use_candidate,
-         // This lint is currently broken for generic code
-         // See https://github.com/rust-lang/rust-clippy/issues/3410
-         clippy::use_self,
-         clippy::wrong_self_convention
+        // FIXME: these types are unsound in C FFI already
+        // See https://github.com/rust-lang/rust/issues/53346
+        improper_ctypes_definitions,
+        clippy::cast_possible_truncation,
+        clippy::cast_lossless,
+        clippy::cast_possible_wrap,
+        clippy::cast_precision_loss,
+        // TODO: manually add the `#[must_use]` attribute where appropriate
+        clippy::must_use_candidate,
+        // This lint is currently broken for generic code
+        // See https://github.com/rust-lang/rust-clippy/issues/3410
+        clippy::use_self,
+        clippy::wrong_self_convention,
 )]
 #![cfg_attr(test, feature(hashmap_internals))]
 #![deny(rust_2018_idioms, clippy::missing_inline_in_public_items)]
