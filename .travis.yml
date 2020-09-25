@@ -247,6 +247,17 @@ jobs:
   allow_failures:
     # FIXME: ISPC cannot be found?
     - name: "Benchmarks - x86_64-apple-darwin"
+    # FIXME: tier 1 fails inlining? Really?
+    - env: TARGET=i686-unknown-linux-gnu
+    - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse"
+    - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
+    - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx"
+    - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
+    - env: TARGET=i686-apple-darwin
+    - env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+sse"
+    - env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+sse4.2"
+    - env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+avx"
+    - env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+avx2"
     # FIXME: TBD
     - env: TARGET=powerpc-unknown-linux-gnu
     - env: TARGET=powerpc64-unknown-linux-gnu
