@@ -1,6 +1,7 @@
 language: rust
-sudo: false
 rust: nightly
+os: linux
+dist: focal
 
 stages:
   - tools
@@ -10,7 +11,7 @@ stages:
   - linux-tier2
   - android
 
-matrix:
+jobs:
   fast_finish: true
   include:
     # Android:
