@@ -67,26 +67,6 @@ matrix:
       name: "x86_64-unknown-linux-gnu + AVX2"
       install: rustup component add rustfmt-preview
       stage: linux-tier1
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated
-      name: "Intel SDE + SSE2"
-      install: true
-      stage: linux-tier1
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+sse4.2"
-      name: "Intel SDE + SSE4.2"
-      install: true
-      stage: linux-tier1
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx"
-      name: "Intel SDE + AVX"
-      install: true
-      stage: linux-tier1
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx2"
-      name: "Intel SDE + AVX2"
-      install: true
-      stage: linux-tier1
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated RUSTFLAGS="-C target-feature=+avx-512f"
-      name: "Intel SDE + AVX-512"
-      install: true
-      stage: linux-tier1
     - env: TARGET=arm-unknown-linux-gnueabi
       name: "arm-unknown-linux-gnueabi"
       stage: linux-tier2
