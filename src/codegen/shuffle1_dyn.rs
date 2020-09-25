@@ -30,8 +30,8 @@ macro_rules! impl_shuffle1_dyn {
         cfg_if! {
             if #[cfg(all(
                 any(
-                    all(target_aarch = "aarch64", target_feature = "neon"),
-                    all(target_aarch = "arm", target_feature = "v7",
+                    all(target_arch = "aarch64", target_feature = "neon"),
+                    all(target_arch = "arm", target_feature = "v7",
                         target_feature = "neon")
                 ),
                 any(feature = "core_arch", libcore_neon)
@@ -41,9 +41,9 @@ macro_rules! impl_shuffle1_dyn {
                     type Indices = Self;
                     #[inline]
                     fn shuffle1_dyn(self, indices: Self::Indices) -> Self {
-                        #[cfg(targt_arch = "aarch64")]
+                        #[cfg(target_arch = "aarch64")]
                         use crate::arch::aarch64::vtbl1_u8;
-                        #[cfg(targt_arch = "arm")]
+                        #[cfg(target_arch = "arm")]
                         use crate::arch::arm::vtbl1_u8;
 
                         // This is safe because the binary is compiled with
@@ -85,7 +85,7 @@ macro_rules! impl_shuffle1_dyn {
                         }
                     }
                 }
-            } else if #[cfg(all(target_aarch = "aarch64", target_feature = "neon",
+            } else if #[cfg(all(target_arch = "aarch64", target_feature = "neon",
                                 any(feature = "core_arch", libcore_neon)))] {
                 impl Shuffle1Dyn for u8x16 {
                     type Indices = Self;
@@ -104,7 +104,7 @@ macro_rules! impl_shuffle1_dyn {
                         }
                     }
                 }
-            } else if #[cfg(all(target_aarch = "arm", target_feature = "v7",
+            } else if #[cfg(all(target_arch = "arm", target_feature = "v7",
                                 target_feature = "neon",
                                 any(feature = "core_arch", libcore_neon)))] {
                 impl Shuffle1Dyn for u8x16 {
