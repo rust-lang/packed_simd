@@ -9,7 +9,6 @@ stages:
   - 32bit-tier1
   - 64bit-tier2
   - 32bit-tier2
-  - android-and-ios
 
 jobs:
   fast_finish: true
@@ -29,7 +28,7 @@ jobs:
       stage: build-test-verify
     - env: TARGET="thumbv7neon-linux-androideabi"
       name: "thumbv7neon-linux-androideabi"
-      stage: android-and-ios
+      stage: 32bit-tier2
     # Linux:
     - env: TARGET=i586-unknown-linux-gnu
       name: "i586-unknown-linux-gnu"
@@ -126,25 +125,7 @@ jobs:
       name: "wasm32-unknown-unknown"
       stage: 32bit-tier2
     # MacOSX:
-    - os: osx
-      env: TARGET=i686-apple-darwin
-      name: "i686-apple-darwin + SSE2"
-      script: ci/run.sh
-      osx_image: xcode10
-      stage: 32bit-tier1
-    - os: osx
-      env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+sse4.2"
-      name: "i686-apple-darwin + SSE4.2"
-      script: ci/run.sh
-      osx_image: xcode10
-      stage: 32bit-tier1
-      # Travis-CI OSX build bots do not support AVX2:
-    - os: osx
-      env: TARGET=i686-apple-darwin RUSTFLAGS="-C target-feature=+avx"
-      name: "i686-apple-darwin + AVX"
-      script: ci/run.sh
-      osx_image: xcode10
-      stage: 32bit-tier1
+    # Travis-CI OSX build bots do not support AVX2:
     - os: osx
       env: TARGET=x86_64-apple-darwin
       name: "x86_64-apple-darwin + SSE2"
@@ -179,23 +160,11 @@ jobs:
     #  script: ci/run.sh
     # iOS:
     - os: osx
-      env: TARGET=i386-apple-ios
-      name: "i386-apple-ios"
-      script: ci/run.sh
-      osx_image: xcode9.4
-      stage: android-and-ios
-    - os: osx
       env: TARGET=x86_64-apple-ios
       name: "x86_64-apple-ios + SSE2"
       script: ci/run.sh
       osx_image: xcode9.4
-      stage: android-and-ios
-    - os: osx
-      env: TARGET=armv7-apple-ios NORUN=1
-      name: "armv7-apple-ios [Build only]"
-      script: ci/run.sh
-      osx_image: xcode9.4
-      stage: android-and-ios
+      stage: 64bit-tier2
     - name: "aarch64-apple-ios + NEON"
       env: TARGET=aarch64-apple-ios RUSTFLAGS="-C target-feature=+neon"
       os: osx
@@ -246,13 +215,11 @@ jobs:
     #- env: TARGET=x86_64-sun-solaris NORUN=1
 
     # FIXME: TBD
-    - stage: android-and-ios
     - stage: 64bit-tier2
     - stage: 32bit-tier2
 
     # FIXME: iOS
     # https://github.com/rust-lang-nursery/packed_simd/issues/26
-    - env: TARGET=i386-apple-ios
     - env: TARGET=x86_64-apple-ios
 
     # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/182
