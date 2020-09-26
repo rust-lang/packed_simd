@@ -24,9 +24,6 @@ jobs:
     - env: TARGET=arm-linux-androideabi RUSTFLAGS="-C target-feature=+v7,+neon"
       name: "arm-linux-androideabi + NEON"
       stage: android-and-ios
-    - env: TARGET=aarch64-linux-android
-      name: "aarch64-unknown-linux-android"
-      stage: build-test-verify
     - name: "aarch64-unknown-linux-android + NEON"
       env: TARGET=aarch64-linux-android RUSTFLAGS="-C target-feature=+neon"
       stage: build-test-verify
@@ -86,9 +83,6 @@ jobs:
     - env: TARGET="thumbv7neon-unknown-linux-gnueabihf"
       name: "thumbv7neon-unknown-linux-gnueabihf"
       stage: 32bit-tier2
-    - name: "aarch64-unknown-linux-gnu"
-      env: TARGET=aarch64-unknown-linux-gnu
-      stage: build-test-verify
     - name: "aarch64-unknown-linux-gnu + NEON"
       env: TARGET=aarch64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+neon"
       stage: build-test-verify
@@ -203,7 +197,7 @@ jobs:
       osx_image: xcode9.4
       stage: android-and-ios
     - name: "aarch64-apple-ios [Build only]"
-      env: TARGET=aarch64-apple-ios NORUN=1
+      env: TARGET=aarch64-apple-ios RUSTFLAGS="-C target-feature=+neon" NORUN=1
       os: osx
       osx_image: xcode9.4
       script: ci/run.sh
