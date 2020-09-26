@@ -205,6 +205,8 @@ jobs:
     # FIXME: iOS
     # https://github.com/rust-lang-nursery/packed_simd/issues/26
     - env: TARGET=x86_64-apple-ios
+    # Is this related to the above? Mysterious test failure
+    - name: "aarch64-apple-ios + NEON"
 
     # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/182
     - env: TARGET=arm-unknown-linux-gnueabi RUSTFLAGS="-C target-feature=+v7,+neon"
