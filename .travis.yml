@@ -15,15 +15,15 @@ jobs:
   fast_finish: true
   include:
     # Android:
-    - env: TARGET=x86_64-linux-android NOVERIFY=1
+    - env: TARGET=x86_64-linux-android
       name: "x86_64-unknown-linux-android + SSE2"
-      stage: android-and-ios
+      stage: build-test-verify
     - env: TARGET=arm-linux-androideabi
       name: "arm-linux-androideabi"
-      stage: android-and-ios
+      stage: build-test-verify
     - env: TARGET=arm-linux-androideabi RUSTFLAGS="-C target-feature=+v7,+neon"
       name: "arm-linux-androideabi + NEON"
-      stage: android-and-ios
+      stage: build-test-verify
     - name: "aarch64-unknown-linux-android + NEON"
       env: TARGET=aarch64-linux-android RUSTFLAGS="-C target-feature=+neon"
       stage: build-test-verify
@@ -196,12 +196,12 @@ jobs:
       script: ci/run.sh
       osx_image: xcode9.4
       stage: android-and-ios
-    - name: "aarch64-apple-ios [Build only]"
-      env: TARGET=aarch64-apple-ios RUSTFLAGS="-C target-feature=+neon" NORUN=1
+    - name: "aarch64-apple-ios + NEON"
+      env: TARGET=aarch64-apple-ios RUSTFLAGS="-C target-feature=+neon"
       os: osx
       osx_image: xcode9.4
       script: ci/run.sh
-      stage: android-and-ios
+      stage: 64bit-tier2
     # BENCHMARKS:
     - name: "Benchmarks - x86_64-unknown-linux-gnu"
       install: TARGET=x86_64-unknown-linux-gnu ./ci/setup_benchmarks.sh
