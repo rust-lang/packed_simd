@@ -48,16 +48,8 @@ jobs:
     - env: TARGET=i686-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
       name: "i686-unknown-linux-gnu + AVX2"
       stage: 32bit-tier1
-    - env: TARGET=x86_64-unknown-linux-gnu
-      name: "x86_64-unknown-linux-gnu + SSE2"
-      install: rustup component add rustfmt-preview
-      stage: build-test-verify
     - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
       name: "x86_64-unknown-linux-gnu + SSE4.2"
-      install: rustup component add rustfmt-preview
-      stage: build-test-verify
-    - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx"
-      name: "x86_64-unknown-linux-gnu + AVX"
       install: rustup component add rustfmt-preview
       stage: build-test-verify
     - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
@@ -125,14 +117,6 @@ jobs:
       name: "wasm32-unknown-unknown"
       stage: 32bit-tier2
     # MacOSX:
-    # Travis-CI OSX build bots do not support AVX2:
-    - os: osx
-      env: TARGET=x86_64-apple-darwin
-      name: "x86_64-apple-darwin + SSE2"
-      install: true
-      script: ci/run.sh
-      osx_image: xcode10
-      stage: build-test-verify
     - os: osx
       env: TARGET=x86_64-apple-darwin RUSTFLAGS="-C target-feature=+sse4.2"
       name: "x86_64-apple-darwin + SSE4.2"
