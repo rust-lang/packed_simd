@@ -2,7 +2,7 @@
 
 ## Implementation of [Rust RFC #2366: `std::simd`][rfc2366]
 
-[![Travis-CI Status]][travis] [![Appveyor Status]][appveyor] [![Latest Version]][crates.io] [![docs]][master_docs]
+[![Travis-CI Status]][travis] <!-- [![Appveyor Status]][appveyor] --> [![Latest Version]][crates.io] [![docs]][master_docs]
 
 **WARNING**: this crate only supports the most recent nightly Rust toolchain
 and will be superceded by [stdsimd](https://github.com/rust-lang/stdsimd).
@@ -129,8 +129,8 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in `packed_simd` by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
 
-[travis]: https://travis-ci.com/rust-lang-nursery/packed_simd
-[Travis-CI Status]: https://travis-ci.com/rust-lang-nursery/packed_simd.svg?branch=master
+[travis]: https://travis-ci.com/rust-lang/packed_simd
+[Travis-CI Status]: https://travis-ci.com/rust-lang/packed_simd.svg?branch=master
 [appveyor]: https://ci.appveyor.com/project/gnzlbg/packed-simd
 [Appveyor Status]: https://ci.appveyor.com/api/projects/status/hd7v9dvr442hgdix?svg=true
 [Latest Version]: https://img.shields.io/crates/v/packed_simd.svg
