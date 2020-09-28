@@ -20,9 +20,6 @@ jobs:
     - env: TARGET=arm-linux-androideabi
       name: "arm-linux-androideabi"
       stage: build-test-verify
-    - env: TARGET=arm-linux-androideabi RUSTFLAGS="-C target-feature=+v7,+neon"
-      name: "arm-linux-androideabi + NEON"
-      stage: build-test-verify
     - name: "aarch64-unknown-linux-android + NEON"
       env: TARGET=aarch64-linux-android RUSTFLAGS="-C target-feature=+neon"
       stage: build-test-verify
@@ -56,14 +53,8 @@ jobs:
       name: "x86_64-unknown-linux-gnu + AVX2"
       install: rustup component add rustfmt-preview
       stage: build-test-verify
-    - env: TARGET=arm-unknown-linux-gnueabi RUSTFLAGS="-C target-feature=+v7,+neon"
-      name: "arm-unknown-linux-gnueabi + NEON"
-      stage: build-test-verify
     - env: TARGET=arm-unknown-linux-gnueabihf
       name: "arm-unknown-linux-gnueabihf"
-      stage: build-test-verify
-    - env: TARGET=arm-unknown-linux-gnueabihf RUSTFLAGS="-C target-feature=+v7,+neon"
-      name: "arm-unknown-linux-gnueabihf + NEON"
       stage: build-test-verify
     - env: TARGET=armv7-unknown-linux-gnueabihf
       name: "armv7-unknown-linux-gnueabihf"
