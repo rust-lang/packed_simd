@@ -1,7 +1,7 @@
 [package]
-name = "packed_simd"
+name = "packed_simd_2"
 version = "0.3.4"
-authors = ["Gonzalo Brito Gadeschi <gonzalobg88@gmail.com>"]
+authors = ["Gonzalo Brito Gadeschi <gonzalobg88@gmail.com>", "Jubilee Young <workingjubilee@gmail.com>"]
 description = "Portable Packed SIMD vectors"
 documentation = "https://docs.rs/crate/packed_simd/"
 homepage = "https://github.com/rust-lang-nursery/packed_simd"
@@ -13,11 +13,11 @@ build = "build.rs"
 edition = "2018"
 
 [badges]
-appveyor = { repository = "rust-lang-nursery/packed_simd" }
-travis-ci = { repository = "rust-lang-nursery/packed_simd" }
-codecov = { repository = "rust-lang-nursery/packed_simd" }
-is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/packed_simd" }
-is-it-maintained-open-issues = { repository = "rust-lang-nursery/packed_simd" }
+appveyor = { repository = "rust-lang/packed_simd" }
+travis-ci = { repository = "rust-lang/packed_simd" }
+codecov = { repository = "rust-lang/packed_simd" }
+is-it-maintained-issue-resolution = { repository = "rust-lang/packed_simd" }
+is-it-maintained-open-issues = { repository = "rust-lang/packed_simd" }
 maintenance = { status = "experimental" }
 
 [dependencies]
