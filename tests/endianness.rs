@@ -1,7 +1,7 @@
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen_test::*;
 
-use packed_simd::*;
+use packed_simd_2::*;
 use std::{mem, slice};
 
 #[cfg_attr(not(target_arch = "wasm32"), test)]

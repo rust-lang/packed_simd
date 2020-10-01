@@ -27,9 +27,7 @@
 /// Shuffling elements of two vectors:
 ///
 /// ```
-/// # #[macro_use]
-/// # extern crate packed_simd;
-/// # use packed_simd::*;
+/// # use packed_simd_2::*;
 /// # fn main() {
 /// // Shuffle allows reordering the elements:
 /// let x = i32x4::new(1, 2, 3, 4);
@@ -51,9 +49,7 @@
 /// Shuffling elements of one vector:
 ///
 /// ```
-/// # #[macro_use]
-/// # extern crate packed_simd;
-/// # use packed_simd::*;
+/// # use packed_simd_2::*;
 /// # fn main() {
 /// // Shuffle allows reordering the elements of a vector:
 /// let x = i32x4::new(1, 2, 3, 4);
