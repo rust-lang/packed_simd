@@ -1,3 +1,16 @@
+# The Crates.io Version Can No Longer Be Updated!
+
+The original maintainer is out of contact, and the new maintainers (the Portable SIMD Project Group) do not have the appropriate crates.io permissions to issue updates.
+
+We are aware that the version available on crates.io is currenly broken, and will not build.
+
+If you need to continue to use the crate, we have published a "next version" under an anternative name.
+
+Adjust your `[dependencies]` section of `Cargo.toml` to be the following:
+```toml
+packed_simd = { version = "0.3.4", package = "packed_simd_2" }
+```
+
 # `Simd<[T; N]>`
 
 ## Implementation of [Rust RFC #2366: `std::simd`][rfc2366]
