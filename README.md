@@ -2,7 +2,7 @@
 
 The original maintainer is out of contact, and the new maintainers (the Portable SIMD Project Group) do not have the appropriate crates.io permissions to issue updates.
 
-We are aware that the version available on crates.io is currenly broken, and will not build.
+We are aware that the version available on crates.io is currently broken, and will not build.
 
 If you need to continue to use the crate, we have published a "next version" under an alternative name.
 
