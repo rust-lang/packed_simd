@@ -206,7 +206,7 @@
 //! `RUSTFLAGS`. For example, with no configured `RUSTFLAGS`, `u64x8` on
 //! x86_64 will use SSE2 operations like `PCMPEQD`. If you configure
 //! `RUSTFLAGS='-C target-feature=+avx2,+avx'` on supported x86_64 hardware
-//! the same `u86x8` may use wider AVX2 operations like `VPCMPEQQ`. It is
+//! the same `u64x8` may use wider AVX2 operations like `VPCMPEQQ`. It is
 //! important for performance and for hardware support requirements that
 //! you choose an appropriate set of `target-feature` and `target-cpu`
 //! options during builds. For more information, see the [Performance
