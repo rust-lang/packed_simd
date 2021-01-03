@@ -15,7 +15,7 @@ There are two flags which can be used to enable specific vector extensions:
 - Provides the compiler with a comma-separated set of instruction extensions
   to enable.
 
-  **Example**: Use `-C target-features=+sse3,+avx` to enable generating instructions
+  **Example**: Use `-C target-feature=+sse3,+avx` to enable generating instructions
   for [Streaming SIMD Extensions 3](https://en.wikipedia.org/wiki/SSE3) and
   [Advanced Vector Extensions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions).
 
@@ -33,9 +33,9 @@ There are two flags which can be used to enable specific vector extensions:
 
 - Note that all CPU features are independent, and will have to be enabled individually.
 
-  **Example**: Setting `-C target-features=+avx2` will _not_ enable `fma`, even though
+  **Example**: Setting `-C target-feature=+avx2` will _not_ enable `fma`, even though
   all CPUs which support AVX2 also support FMA. To enable both, one has to use
-  `-C target-features=+avx2,+fma`
+  `-C target-feature=+avx2,+fma`
 
 - Some features also depend on other features, which need to be enabled for the
   target instructions to be generated.
