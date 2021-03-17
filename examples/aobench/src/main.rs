@@ -89,6 +89,6 @@ fn main() {
         for a in ALGORITHMS {
             error.push_str(&format!("\n- {}", a));
         }
-        panic!(error);
+        panic!("{}", error);
     }
 }

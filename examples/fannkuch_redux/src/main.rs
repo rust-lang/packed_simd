@@ -10,7 +10,7 @@ fn run<O: std::io::Write>(o: &mut O, n: usize, alg: usize) {
 fn main() {
     let n: usize =
         std::env::args().nth(1).expect("need one arg").parse().unwrap();
-    assert!(3 <= n && n <= 14, "n = {} is out-of-range [3, 14]", n);
+    assert!((3..=14).contains(&n), "n = {} is out-of-range [3, 14]", n);
     let alg = if let Some(v) = std::env::args().nth(2) {
         v.parse().unwrap()
     } else {
