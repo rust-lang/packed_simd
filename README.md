@@ -18,7 +18,7 @@ packed_simd = { version = "0.3.4", package = "packed_simd_2" }
 [![Travis-CI Status]][travis] <!-- [![Appveyor Status]][appveyor] --> [![Latest Version]][crates.io] [![docs]][master_docs]
 
 **WARNING**: this crate only supports the most recent nightly Rust toolchain
-and will be superceded by [stdsimd](https://github.com/rust-lang/stdsimd).
+and will be superseded by [stdsimd](https://github.com/rust-lang/stdsimd).
 
 ## Documentation
 
