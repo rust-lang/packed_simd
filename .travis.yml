@@ -47,11 +47,9 @@ jobs:
       stage: 32bit-tier1
     - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+sse4.2"
       name: "x86_64-unknown-linux-gnu + SSE4.2"
-      install: rustup component add rustfmt-preview
       stage: build-test-verify
     - env: TARGET=x86_64-unknown-linux-gnu RUSTFLAGS="-C target-feature=+avx2"
       name: "x86_64-unknown-linux-gnu + AVX2"
-      install: rustup component add rustfmt-preview
       stage: build-test-verify
     - env: TARGET=arm-unknown-linux-gnueabihf
       name: "arm-unknown-linux-gnueabihf"
@@ -172,16 +170,14 @@ jobs:
     - name: "rustfmt"
       install: true
       script: |
-        if rustup component add rustfmt-preview ; then
-            ci/all.sh check_fmt || true
-        fi
+        rustup toolchain install nightly -c rustfmt --allow-downgrade
+        ci/all.sh check_fmt || true
       stage: tools
     - name: "clippy"
       install: true
       script: |
-        if rustup component add clippy-preview ; then
-            ci/all.sh clippy
-        fi
+        rustup component add clippy
+        ci/all.sh clippy
       stage: tools
 
   allow_failures:
