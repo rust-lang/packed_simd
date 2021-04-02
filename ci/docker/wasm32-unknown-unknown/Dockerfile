@@ -24,8 +24,8 @@ ENV PATH=$PATH:/wasm-bindgen-0.2.52-x86_64-unknown-linux-musl
 ENV CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner
 
 # Install `node`
-RUN curl https://nodejs.org/dist/v10.8.0/node-v10.8.0-linux-x64.tar.xz | tar xJf -
-ENV PATH=$PATH:/node-v10.8.0-linux-x64/bin
+RUN curl https://nodejs.org/dist/v14.16.0/node-v14.16.0-linux-x64.tar.xz | tar xJf -
+ENV PATH=$PATH:/node-v14.16.0-linux-x64/bin
 
 # We use a shim linker that removes `--strip-debug` when passed to LLD. While
 # this typically results in invalid debug information in release mode it doesn't
