@@ -17,10 +17,10 @@ RUN make -C wabt -j$(nproc)
 ENV PATH=$PATH:/wabt/bin
 
 # Install `wasm-bindgen-test-runner`
-RUN curl -L https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.52/wasm-bindgen-0.2.52-x86_64-unknown-linux-musl.tar.gz \
+RUN curl -L https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.73/wasm-bindgen-0.2.73-x86_64-unknown-linux-musl.tar.gz \
   | tar xzf -
 # Keep in sync with the version on Cargo.toml.
-ENV PATH=$PATH:/wasm-bindgen-0.2.52-x86_64-unknown-linux-musl
+ENV PATH=$PATH:/wasm-bindgen-0.2.73-x86_64-unknown-linux-musl
 ENV CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner
 
 # Install `node`
