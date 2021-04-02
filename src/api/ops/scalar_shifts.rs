@@ -41,6 +41,8 @@ macro_rules! impl_ops_scalar_shifts {
                                      unused_mut)
                     )]
                     // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
+                    #[cfg(not(target_arch = "aarch64"))]
+                    //~^ FIXME: https://github.com/rust-lang/packed_simd/issues/317
                     fn ops_scalar_shifts() {
                         let z = $id::splat(0 as $elem_ty);
                         let o = $id::splat(1 as $elem_ty);
