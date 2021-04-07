@@ -37,11 +37,8 @@ macro_rules! impl_ops_vector_shifts {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)] #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[cfg_attr(any(target_arch = "s390x", target_arch = "sparc64"),
-                               allow(unreachable_code,
-                                     unused_variables,
-                                     unused_mut)
+                               allow(unreachable_code, unused_variables)
                     )]
-                    // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
                     #[cfg(not(target_arch = "aarch64"))]
                     //~^ FIXME: https://github.com/rust-lang/packed_simd/issues/317
                     fn ops_vector_shifts() {

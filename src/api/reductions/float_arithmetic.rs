@@ -144,8 +144,6 @@ macro_rules! impl_reduction_float_arithmetic {
                     #[cfg_attr(not(target_arch = "wasm32"), test)]
                     #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
-                    #[allow(unused_mut)]
-                    // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
                     fn sum_nan() {
                         // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
@@ -175,8 +173,6 @@ macro_rules! impl_reduction_float_arithmetic {
                     #[cfg_attr(not(target_arch = "wasm32"), test)]
                     #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
                     #[allow(unreachable_code)]
-                    #[allow(unused_mut)]
-                    // ^^^ FIXME: https://github.com/rust-lang/rust/issues/55344
                     fn product_nan() {
                         // FIXME: https://bugs.llvm.org/show_bug.cgi?id=36732
                         // https://github.com/rust-lang-nursery/packed_simd/issues/6
