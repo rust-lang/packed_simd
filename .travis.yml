@@ -200,9 +200,6 @@ jobs:
     # Is this related to the above? Mysterious test failure
     - name: "aarch64-apple-ios + NEON"
 
-    # FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/183
-    - env: TARGET=wasm32-unknown-unknown
-
 install: travis_retry rustup target add $TARGET
 before_script: cargo generate-lockfile
 script: travis_wait 50 ci/run-docker.sh
