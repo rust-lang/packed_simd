@@ -13,6 +13,7 @@
 //! - [Vector types](#vector-types)
 //! - [Conditional operations](#conditional-operations)
 //! - [Conversions](#conversions)
+//! - [Hardware Features](#hardware-features)
 //! - [Performance
 //!   guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
 //!
@@ -198,6 +199,19 @@
 //!
 //!   Numeric casts are not very "precise": sometimes lossy, sometimes value
 //!   preserving, etc.
+//!
+//! ## Hardware Features
+//!
+//! This crate can use different hardware features based on your configured
+//! `RUSTFLAGS`. For example, with no configured `RUSTFLAGS`, `u64x8` on
+//! x86_64 will use SSE2 operations like `PCMPEQD`. If you configure
+//! `RUSTFLAGS='-C target-feature=+avx2,+avx'` on supported x86_64 hardware
+//! the same `u64x8` may use wider AVX2 operations like `VPCMPEQQ`. It is
+//! important for performance and for hardware support requirements that
+//! you choose an appropriate set of `target-feature` and `target-cpu`
+//! options during builds. For more information, see the [Performance
+//! guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
+//!
 
 #![feature(
     repr_simd,
