@@ -1,4 +1,4 @@
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 
 use packed_simd::f32x8 as f32s;
 use std::{mem, slice};

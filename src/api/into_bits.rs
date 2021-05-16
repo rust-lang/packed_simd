@@ -19,9 +19,7 @@ where
 {
     #[inline]
     fn into_bits(self) -> U {
-        debug_assert!(
-            crate::mem::size_of::<Self>() == crate::mem::size_of::<U>()
-        );
+        debug_assert!(crate::mem::size_of::<Self>() == crate::mem::size_of::<U>());
         U::from_bits(self)
     }
 }

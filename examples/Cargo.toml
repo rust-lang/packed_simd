@@ -1,3 +1,6 @@
+# FIXME: Many members of this workspace, including aobench, mandelbrot, and stencil,
+# currently trigger a "null pointer deref" warning.
+# This is likely due to unsoundness inside packed_simd.
 [workspace]
 members = [
     "aobench",

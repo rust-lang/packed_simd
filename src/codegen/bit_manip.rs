@@ -212,8 +212,7 @@ macro_rules! impl_bit_manip {
             fn ctpop(self) -> Self {
                 let mut ones = self;
                 for i in 0..Self::lanes() {
-                    ones = ones
-                        .replace(i, self.extract(i).count_ones() as $scalar);
+                    ones = ones.replace(i, self.extract(i).count_ones() as $scalar);
                 }
                 ones
             }
@@ -222,10 +221,7 @@ macro_rules! impl_bit_manip {
             fn ctlz(self) -> Self {
                 let mut lz = self;
                 for i in 0..Self::lanes() {
-                    lz = lz.replace(
-                        i,
-                        self.extract(i).leading_zeros() as $scalar,
-                    );
+                    lz = lz.replace(i, self.extract(i).leading_zeros() as $scalar);
                 }
                 lz
             }
@@ -234,10 +230,7 @@ macro_rules! impl_bit_manip {
             fn cttz(self) -> Self {
                 let mut tz = self;
                 for i in 0..Self::lanes() {
-                    tz = tz.replace(
-                        i,
-                        self.extract(i).trailing_zeros() as $scalar,
-                    );
+                    tz = tz.replace(i, self.extract(i).trailing_zeros() as $scalar);
                 }
                 tz
             }

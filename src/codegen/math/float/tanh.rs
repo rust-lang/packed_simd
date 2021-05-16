@@ -10,7 +10,6 @@ crate trait Tanh {
 }
 
 macro_rules! define_tanh {
-
     ($name:ident, $basetype:ty, $simdtype:ty, $lanes:expr, $trait:path) => {
         fn $name(x: $simdtype) -> $simdtype {
             use core::intrinsics::transmute;
@@ -31,8 +30,9 @@ macro_rules! define_tanh {
     };
 }
 
-// llvm does not seem to expose the hyperbolic versions of trigonometric functions;
-// we thus call the classical rust versions on all of them (which stem from cmath).
+// llvm does not seem to expose the hyperbolic versions of trigonometric
+// functions; we thus call the classical rust versions on all of them (which
+// stem from cmath).
 define_tanh!(f32 => tanh_v2f32, f32x2, 2);
 define_tanh!(f32 => tanh_v4f32, f32x4, 4);
 define_tanh!(f32 => tanh_v8f32, f32x8, 8);

@@ -119,52 +119,12 @@ macro_rules! impl_swap_bytes {
 impl_swap_bytes!(v16: u8x2, i8x2,);
 impl_swap_bytes!(v32: u8x4, i8x4, u16x2, i16x2,);
 // FIXME: 64-bit single element vector
-impl_swap_bytes!(
-    v64: u8x8,
-    i8x8,
-    u16x4,
-    i16x4,
-    u32x2,
-    i32x2, /* u64x1, i64x1, */
-);
+impl_swap_bytes!(v64: u8x8, i8x8, u16x4, i16x4, u32x2, i32x2 /* u64x1, i64x1, */,);
 
-impl_swap_bytes!(
-    v128: u8x16,
-    i8x16,
-    u16x8,
-    i16x8,
-    u32x4,
-    i32x4,
-    u64x2,
-    i64x2,
-    u128x1,
-    i128x1,
-);
-impl_swap_bytes!(
-    v256: u8x32,
-    i8x32,
-    u16x16,
-    i16x16,
-    u32x8,
-    i32x8,
-    u64x4,
-    i64x4,
-    u128x2,
-    i128x2,
-);
+impl_swap_bytes!(v128: u8x16, i8x16, u16x8, i16x8, u32x4, i32x4, u64x2, i64x2, u128x1, i128x1,);
+impl_swap_bytes!(v256: u8x32, i8x32, u16x16, i16x16, u32x8, i32x8, u64x4, i64x4, u128x2, i128x2,);
 
-impl_swap_bytes!(
-    v512: u8x64,
-    i8x64,
-    u16x32,
-    i16x32,
-    u32x16,
-    i32x16,
-    u64x8,
-    i64x8,
-    u128x4,
-    i128x4,
-);
+impl_swap_bytes!(v512: u8x64, i8x64, u16x32, i16x32, u32x16, i32x16, u64x8, i64x8, u128x4, i128x4,);
 
 cfg_if! {
     if #[cfg(target_pointer_width = "8")] {

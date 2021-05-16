@@ -38,13 +38,7 @@ macro_rules! impl_mul_adde {
                 #[cfg(not(target_arch = "s390x"))]
                 {
                     use crate::mem::transmute;
-                    unsafe {
-                        transmute($fn(
-                            transmute(self),
-                            transmute(y),
-                            transmute(z),
-                        ))
-                    }
+                    unsafe { transmute($fn(transmute(self), transmute(y), transmute(z))) }
                 }
                 #[cfg(target_arch = "s390x")]
                 {

@@ -2,7 +2,7 @@
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/mandelbrot.html#mandelbrot
 
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 
 use mandelbrot_lib::*;
 use std::io;

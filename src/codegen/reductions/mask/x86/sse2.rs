@@ -16,8 +16,7 @@ macro_rules! x86_m64x2_sse2_impl {
                 // most significant bit of each lane of `a`. If all
                 // bits are set, then all 2 lanes of the mask are
                 // true.
-                _mm_movemask_pd(crate::mem::transmute(self))
-                    == 0b_11_i32
+                _mm_movemask_pd(crate::mem::transmute(self)) == 0b_11_i32
             }
         }
         impl Any for $id {
@@ -50,8 +49,7 @@ macro_rules! x86_m8x16_sse2_impl {
                 // most significant bit of each byte of `a`. If all
                 // bits are set, then all 16 lanes of the mask are
                 // true.
-                _mm_movemask_epi8(crate::mem::transmute(self))
-                    == i32::from(u16::max_value())
+                _mm_movemask_epi8(crate::mem::transmute(self)) == i32::from(u16::max_value())
             }
         }
         impl Any for $id {

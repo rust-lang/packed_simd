@@ -13,10 +13,7 @@ macro_rules! x86_m8x32_avx_impl {
                 use crate::arch::x86::_mm256_testc_si256;
                 #[cfg(target_arch = "x86_64")]
                 use crate::arch::x86_64::_mm256_testc_si256;
-                _mm256_testc_si256(
-                    crate::mem::transmute(self),
-                    crate::mem::transmute($id::splat(true)),
-                ) != 0
+                _mm256_testc_si256(crate::mem::transmute(self), crate::mem::transmute($id::splat(true))) != 0
             }
         }
         impl Any for $id {
@@ -27,10 +24,7 @@ macro_rules! x86_m8x32_avx_impl {
                 use crate::arch::x86::_mm256_testz_si256;
                 #[cfg(target_arch = "x86_64")]
                 use crate::arch::x86_64::_mm256_testz_si256;
-                _mm256_testz_si256(
-                    crate::mem::transmute(self),
-                    crate::mem::transmute(self),
-                ) == 0
+                _mm256_testz_si256(crate::mem::transmute(self), crate::mem::transmute(self)) == 0
             }
         }
     };

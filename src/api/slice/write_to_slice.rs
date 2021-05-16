@@ -13,13 +13,8 @@ macro_rules! impl_slice_write_to_slice {
             pub fn write_to_slice_aligned(self, slice: &mut [$elem_ty]) {
                 unsafe {
                     assert!(slice.len() >= $elem_count);
-                    let target_ptr =
-                        slice.get_unchecked_mut(0) as *mut $elem_ty;
-                    assert_eq!(
-                        target_ptr
-                            .align_offset(crate::mem::align_of::<Self>()),
-                        0
-                    );
+                    let target_ptr = slice.get_unchecked_mut(0) as *mut $elem_ty;
+                    assert_eq!(target_ptr.align_offset(crate::mem::align_of::<Self>()), 0);
                     self.write_to_slice_aligned_unchecked(slice);
                 }
             }
@@ -45,18 +40,13 @@ macro_rules! impl_slice_write_to_slice {
             /// aligned to an `align_of::<Self>()` boundary, the behavior is
             /// undefined.
             #[inline]
-            pub unsafe fn write_to_slice_aligned_unchecked(
-                self, slice: &mut [$elem_ty],
-            ) {
+            pub unsafe fn write_to_slice_aligned_unchecked(self, slice: &mut [$elem_ty]) {
                 debug_assert!(slice.len() >= $elem_count);
                 let target_ptr = slice.get_unchecked_mut(0) as *mut $elem_ty;
-                debug_assert_eq!(
-                    target_ptr.align_offset(crate::mem::align_of::<Self>()),
-                    0
-                );
+                debug_assert_eq!(target_ptr.align_offset(crate::mem::align_of::<Self>()), 0);
 
-                                #[allow(clippy::cast_ptr_alignment)]
-                        #[allow(clippy::cast_ptr_alignment)]
+                #[allow(clippy::cast_ptr_alignment)]
+                #[allow(clippy::cast_ptr_alignment)]
                 #[allow(clippy::cast_ptr_alignment)]
                 #[allow(clippy::cast_ptr_alignment)]
                 *(target_ptr as *mut Self) = self;
@@ -68,18 +58,11 @@ macro_rules! impl_slice_write_to_slice {
             ///
             /// If `slice.len() < Self::lanes()` the behavior is undefined.
             #[inline]
-            pub unsafe fn write_to_slice_unaligned_unchecked(
-                self, slice: &mut [$elem_ty],
-            ) {
+            pub unsafe fn write_to_slice_unaligned_unchecked(self, slice: &mut [$elem_ty]) {
                 debug_assert!(slice.len() >= $elem_count);
-                let target_ptr =
-                    slice.get_unchecked_mut(0) as *mut $elem_ty as *mut u8;
+                let target_ptr = slice.get_unchecked_mut(0) as *mut $elem_ty as *mut u8;
                 let self_ptr = &self as *const Self as *const u8;
-                crate::ptr::copy_nonoverlapping(
-                    self_ptr,
-                    target_ptr,
-                    crate::mem::size_of::<Self>(),
-                );
+                crate::ptr::copy_nonoverlapping(self_ptr, target_ptr, crate::mem::size_of::<Self>());
             }
         }
 

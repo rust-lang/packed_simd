@@ -123,7 +123,7 @@ macro_rules! impl_reduction_min_max {
 
 macro_rules! test_reduction_float_min_max {
     ([$elem_ty:ident; $elem_count:expr]: $id:ident | $test_tt:tt) => {
-        test_if!{
+        test_if! {
             $test_tt:
             paste::item! {
                 // Comparisons use integer casts within mantissa^1 range.
@@ -193,7 +193,7 @@ macro_rules! test_reduction_float_min_max {
                             if $id::lanes() == 1 {
                                 assert!(v.min_element().is_nan(),
                                         "[C]: all nans | v={:?} | min={} | \
-                                         is_nan: {}",
+is_nan: {}",
                                         v, v.min_element(),
                                         v.min_element().is_nan()
                                 );
@@ -225,7 +225,7 @@ macro_rules! test_reduction_float_min_max {
                                     // "i - 1" does not overflow.
                                     assert!(v.min_element().is_nan(),
                                             "[E]: all nans | v={:?} | min={} | \
-                                             is_nan: {}",
+is_nan: {}",
                                             v, v.min_element(),
                                             v.min_element().is_nan());
                                 } else {
@@ -303,7 +303,7 @@ macro_rules! test_reduction_float_min_max {
                             if $id::lanes() == 1 {
                                 assert!(v.max_element().is_nan(),
                                         "[C]: all nans | v={:?} | min={} | \
-                                         is_nan: {}",
+is_nan: {}",
                                         v, v.max_element(),
                                         v.max_element().is_nan());
 
@@ -334,7 +334,7 @@ macro_rules! test_reduction_float_min_max {
                                     // "i - 1" does not overflow.
                                     assert!(v.max_element().is_nan(),
                                             "[E]: all nans | v={:?} | max={} | \
-                                             is_nan: {}",
+is_nan: {}",
                                             v, v.max_element(),
                                             v.max_element().is_nan());
                                 } else {
@@ -356,5 +356,5 @@ macro_rules! test_reduction_float_min_max {
                 }
             }
         }
-    }
+    };
 }

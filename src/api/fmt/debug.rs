@@ -44,9 +44,7 @@ macro_rules! impl_fmt_debug {
     ([$elem_ty:ty; $elem_count:expr]: $id:ident | $test_tt:tt) => {
         impl crate::fmt::Debug for $id {
             #[allow(clippy::missing_inline_in_public_items)]
-            fn fmt(
-                &self, f: &mut crate::fmt::Formatter<'_>,
-            ) -> crate::fmt::Result {
+            fn fmt(&self, f: &mut crate::fmt::Formatter<'_>) -> crate::fmt::Result {
                 write!(f, "{}(", stringify!($id))?;
                 for i in 0..$elem_count {
                     if i > 0 {

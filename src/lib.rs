@@ -14,8 +14,7 @@
 //! - [Conditional operations](#conditional-operations)
 //! - [Conversions](#conversions)
 //! - [Hardware Features](#hardware-features)
-//! - [Performance
-//!   guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
+//! - [Performance guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
 //!
 //! ## Introduction
 //!
@@ -211,9 +210,9 @@
 //! you choose an appropriate set of `target-feature` and `target-cpu`
 //! options during builds. For more information, see the [Performance
 //! guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
-//!
 
 #![feature(
+    const_generics,
     repr_simd,
     rustc_attrs,
     platform_intrinsics,
@@ -231,6 +230,7 @@
         // FIXME: these types are unsound in C FFI already
         // See https://github.com/rust-lang/rust/issues/53346
         improper_ctypes_definitions,
+        incomplete_features,
         clippy::cast_possible_truncation,
         clippy::cast_lossless,
         clippy::cast_possible_wrap,
@@ -241,6 +241,7 @@
         // See https://github.com/rust-lang/rust-clippy/issues/3410
         clippy::use_self,
         clippy::wrong_self_convention,
+        clippy::from_over_into,
 )]
 #![cfg_attr(test, feature(hashmap_internals))]
 #![deny(rust_2018_idioms, clippy::missing_inline_in_public_items)]
@@ -263,9 +264,8 @@ use wasm_bindgen_test::*;
 
 #[allow(unused_imports)]
 use core::{
-    /* arch (handled above), */ cmp, f32, f64, fmt, hash, hint, i128,
-    i16, i32, i64, i8, intrinsics, isize, iter, marker, mem, ops, ptr, slice,
-    u128, u16, u32, u64, u8, usize,
+    /* arch (handled above), */ cmp, f32, f64, fmt, hash, hint, i128, i16, i32, i64, i8, intrinsics,
+    isize, iter, marker, mem, ops, ptr, slice, u128, u16, u32, u64, u8, usize,
 };
 
 #[macro_use]
@@ -341,8 +341,8 @@ pub use self::api::into_bits::*;
 // Re-export the shuffle intrinsics required by the `shuffle!` macro.
 #[doc(hidden)]
 pub use self::codegen::llvm::{
-    __shuffle_vector16, __shuffle_vector2, __shuffle_vector32,
-    __shuffle_vector4, __shuffle_vector64, __shuffle_vector8,
+    __shuffle_vector16, __shuffle_vector2, __shuffle_vector32, __shuffle_vector4, __shuffle_vector64,
+    __shuffle_vector8,
 };
 
 crate mod llvm {

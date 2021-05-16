@@ -12,13 +12,9 @@ macro_rules! impl_cmp_partial_ord {
             }
         }
 
-        impl crate::cmp::PartialOrd<LexicographicallyOrdered<$id>>
-            for LexicographicallyOrdered<$id>
-        {
+        impl crate::cmp::PartialOrd<LexicographicallyOrdered<$id>> for LexicographicallyOrdered<$id> {
             #[inline]
-            fn partial_cmp(
-                &self, other: &Self,
-            ) -> Option<crate::cmp::Ordering> {
+            fn partial_cmp(&self, other: &Self) -> Option<crate::cmp::Ordering> {
                 if PartialEq::eq(self, other) {
                     Some(crate::cmp::Ordering::Equal)
                 } else if PartialOrd::lt(self, other) {

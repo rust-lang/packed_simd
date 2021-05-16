@@ -1,7 +1,6 @@
 //! Utility macros
 #![allow(unused)]
 
-
 macro_rules! impl_unary_ {
     // implementation mapping 1:1
     (vec | $trait_id:ident, $trait_method:ident, $vec_id:ident,
@@ -64,10 +63,8 @@ macro_rules! impl_unary_ {
 
                     let mut halves = U { vec: self }.halves;
 
-                    *halves.get_unchecked_mut(0) =
-                        transmute($fun(transmute(*halves.get_unchecked(0))));
-                    *halves.get_unchecked_mut(1) =
-                        transmute($fun(transmute(*halves.get_unchecked(1))));
+                    *halves.get_unchecked_mut(0) = transmute($fun(transmute(*halves.get_unchecked(0))));
+                    *halves.get_unchecked_mut(1) = transmute($fun(transmute(*halves.get_unchecked(1))));
 
                     U { halves }.vec
                 }
@@ -89,14 +86,10 @@ macro_rules! impl_unary_ {
 
                     let mut quarters = U { vec: self }.quarters;
 
-                    *quarters.get_unchecked_mut(0) =
-                        transmute($fun(transmute(*quarters.get_unchecked(0))));
-                    *quarters.get_unchecked_mut(1) =
-                        transmute($fun(transmute(*quarters.get_unchecked(1))));
-                    *quarters.get_unchecked_mut(2) =
-                        transmute($fun(transmute(*quarters.get_unchecked(2))));
-                    *quarters.get_unchecked_mut(3) =
-                        transmute($fun(transmute(*quarters.get_unchecked(3))));
+                    *quarters.get_unchecked_mut(0) = transmute($fun(transmute(*quarters.get_unchecked(0))));
+                    *quarters.get_unchecked_mut(1) = transmute($fun(transmute(*quarters.get_unchecked(1))));
+                    *quarters.get_unchecked_mut(2) = transmute($fun(transmute(*quarters.get_unchecked(2))));
+                    *quarters.get_unchecked_mut(3) = transmute($fun(transmute(*quarters.get_unchecked(3))));
 
                     U { quarters }.vec
                 }
@@ -137,43 +130,19 @@ macro_rules! gen_unary_impl_table {
                 impl_unary_!(gen | $trait_id, $trait_method, $vid, $fun);
             };
             ($vid:ident[$sid:ident; $sc:expr]: $fun:ident) => {
-                impl_unary_!(
-                    scalar | $trait_id,
-                    $trait_method,
-                    $vid,
-                    [$sid; $sc],
-                    $fun
-                );
+                impl_unary_!(scalar | $trait_id, $trait_method, $vid, [$sid; $sc], $fun);
             };
             ($vid:ident[s]: $fun:ident) => {
                 impl_unary_!(scalar | $trait_id, $trait_method, $vid, $fun);
             };
             ($vid:ident[h => $vid_h:ident]: $fun:ident) => {
-                impl_unary_!(
-                    halves | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_h,
-                    $fun
-                );
+                impl_unary_!(halves | $trait_id, $trait_method, $vid, $vid_h, $fun);
             };
             ($vid:ident[q => $vid_q:ident]: $fun:ident) => {
-                impl_unary_!(
-                    quarter | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_q,
-                    $fun
-                );
+                impl_unary_!(quarter | $trait_id, $trait_method, $vid, $vid_q, $fun);
             };
             ($vid:ident[t => $vid_t:ident]: $fun:ident) => {
-                impl_unary_!(
-                    twice | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_t,
-                    $fun
-                );
+                impl_unary_!(twice | $trait_id, $trait_method, $vid, $vid_t, $fun);
             };
         }
     };
@@ -188,11 +157,7 @@ macro_rules! impl_tertiary_ {
             fn $trait_method(self, y: Self, z: Self) -> Self {
                 unsafe {
                     use crate::mem::transmute;
-                    transmute($fun(
-                        transmute(self),
-                        transmute(y),
-                        transmute(z),
-                    ))
+                    transmute($fun(transmute(self), transmute(y), transmute(z)))
                 }
             }
         }
@@ -314,11 +279,8 @@ macro_rules! impl_tertiary_ {
                     let x_twice = U { vec: [self, uninitialized()] }.twice;
                     let y_twice = U { vec: [y, uninitialized()] }.twice;
                     let z_twice = U { vec: [z, uninitialized()] }.twice;
-                    let twice: $vect_id = transmute($fun(
-                        transmute(x_twice),
-                        transmute(y_twice),
-                        transmute(z_twice),
-                    ));
+                    let twice: $vect_id =
+                        transmute($fun(transmute(x_twice), transmute(y_twice), transmute(z_twice)));
 
                     *(U { twice }.vec.get_unchecked(0))
                 }
@@ -334,43 +296,19 @@ macro_rules! gen_tertiary_impl_table {
                 impl_tertiary_!(vec | $trait_id, $trait_method, $vid, $fun);
             };
             ($vid:ident[$sid:ident; $sc:expr]: $fun:ident) => {
-                impl_tertiary_!(
-                    scalar | $trait_id,
-                    $trait_method,
-                    $vid,
-                    [$sid; $sc],
-                    $fun
-                );
+                impl_tertiary_!(scalar | $trait_id, $trait_method, $vid, [$sid; $sc], $fun);
             };
             ($vid:ident[s]: $fun:ident) => {
                 impl_tertiary_!(scalar | $trait_id, $trait_method, $vid, $fun);
             };
             ($vid:ident[h => $vid_h:ident]: $fun:ident) => {
-                impl_tertiary_!(
-                    halves | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_h,
-                    $fun
-                );
+                impl_tertiary_!(halves | $trait_id, $trait_method, $vid, $vid_h, $fun);
             };
             ($vid:ident[q => $vid_q:ident]: $fun:ident) => {
-                impl_tertiary_!(
-                    quarter | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_q,
-                    $fun
-                );
+                impl_tertiary_!(quarter | $trait_id, $trait_method, $vid, $vid_q, $fun);
             };
             ($vid:ident[t => $vid_t:ident]: $fun:ident) => {
-                impl_tertiary_!(
-                    twice | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_t,
-                    $fun
-                );
+                impl_tertiary_!(twice | $trait_id, $trait_method, $vid, $vid_t, $fun);
             };
         }
     };
@@ -497,10 +435,7 @@ macro_rules! impl_binary_ {
 
                     let x_twice = U { vec: [self, uninitialized()] }.twice;
                     let y_twice = U { vec: [y, uninitialized()] }.twice;
-                    let twice: $vect_id = transmute($fun(
-                        transmute(x_twice),
-                        transmute(y_twice),
-                    ));
+                    let twice: $vect_id = transmute($fun(transmute(x_twice), transmute(y_twice)));
 
                     *(U { twice }.vec.get_unchecked(0))
                 }
@@ -516,43 +451,19 @@ macro_rules! gen_binary_impl_table {
                 impl_binary_!(vec | $trait_id, $trait_method, $vid, $fun);
             };
             ($vid:ident[$sid:ident; $sc:expr]: $fun:ident) => {
-                impl_binary_!(
-                    scalar | $trait_id,
-                    $trait_method,
-                    $vid,
-                    [$sid; $sc],
-                    $fun
-                );
+                impl_binary_!(scalar | $trait_id, $trait_method, $vid, [$sid; $sc], $fun);
             };
             ($vid:ident[s]: $fun:ident) => {
                 impl_binary_!(scalar | $trait_id, $trait_method, $vid, $fun);
             };
             ($vid:ident[h => $vid_h:ident]: $fun:ident) => {
-                impl_binary_!(
-                    halves | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_h,
-                    $fun
-                );
+                impl_binary_!(halves | $trait_id, $trait_method, $vid, $vid_h, $fun);
             };
             ($vid:ident[q => $vid_q:ident]: $fun:ident) => {
-                impl_binary_!(
-                    quarter | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_q,
-                    $fun
-                );
+                impl_binary_!(quarter | $trait_id, $trait_method, $vid, $vid_q, $fun);
             };
             ($vid:ident[t => $vid_t:ident]: $fun:ident) => {
-                impl_binary_!(
-                    twice | $trait_id,
-                    $trait_method,
-                    $vid,
-                    $vid_t,
-                    $fun
-                );
+                impl_binary_!(twice | $trait_id, $trait_method, $vid, $vid_t, $fun);
             };
         }
     };

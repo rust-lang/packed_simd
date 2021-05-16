@@ -18,9 +18,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use crate::llvm::simd_reduce_add_ordered;
-                    let v: $ielem_ty = unsafe {
-                        simd_reduce_add_ordered(self.0, 0 as $ielem_ty)
-                    };
+                    let v: $ielem_ty = unsafe { simd_reduce_add_ordered(self.0, 0 as $ielem_ty) };
                     v as $elem_ty
                 }
                 #[cfg(target_arch = "aarch64")]
@@ -49,9 +47,7 @@ macro_rules! impl_reduction_integer_arithmetic {
                 #[cfg(not(target_arch = "aarch64"))]
                 {
                     use crate::llvm::simd_reduce_mul_ordered;
-                    let v: $ielem_ty = unsafe {
-                        simd_reduce_mul_ordered(self.0, 1 as $ielem_ty)
-                    };
+                    let v: $ielem_ty = unsafe { simd_reduce_mul_ordered(self.0, 1 as $ielem_ty) };
                     v as $elem_ty
                 }
                 #[cfg(target_arch = "aarch64")]
