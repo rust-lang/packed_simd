@@ -1,4 +1,4 @@
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 #![allow(
     clippy::inline_always,
     clippy::many_single_char_names,

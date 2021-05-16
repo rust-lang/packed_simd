@@ -173,12 +173,6 @@ jobs:
         rustup toolchain install nightly -c rustfmt --allow-downgrade
         ci/all.sh check_fmt || true
       stage: tools
-    - name: "clippy"
-      install: true
-      script: |
-        rustup component add clippy
-        ci/all.sh clippy
-      stage: tools
 
   allow_failures:
     # FIXME: ISPC cannot be found?

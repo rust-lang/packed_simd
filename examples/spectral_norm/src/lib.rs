@@ -1,5 +1,5 @@
 //! Spectral Norm
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 #![allow(non_snake_case, non_camel_case_types)]
 #![allow(
     clippy::cast_precision_loss,

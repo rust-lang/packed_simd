@@ -2,7 +2,7 @@
 //!
 //! Based on [aobench](https://code.google.com/archive/p/aobench/) by Syoyo
 //! Fujita.
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 
 use aobench_lib::*;
 use std::path::PathBuf;

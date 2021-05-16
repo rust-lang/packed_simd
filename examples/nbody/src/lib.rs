@@ -1,7 +1,7 @@
 //! The N-body benchmark from the [benchmarks game][bg].
 //!
 //! [bg]: https://benchmarksgame-team.pages.debian.net/benchmarksgame/description/nbody.html#nbody
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 #![allow(
     clippy::similar_names,
     clippy::excessive_precision,

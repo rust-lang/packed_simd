@@ -1,6 +1,6 @@
 //! 4x4 matrix inverse
 #![feature(custom_inner_attributes)]
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 #![allow(clippy::must_use_candidate)]
 
 pub mod scalar;

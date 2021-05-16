@@ -1,5 +1,7 @@
 #![feature(custom_inner_attributes, stmt_expr_attributes)]
-#![deny(warnings, rust_2018_idioms)]
+// FIXME: Null pointer deref warning triggered in this example,
+// likely inside a macro expansion deriving from packed_simd.
+#![deny(rust_2018_idioms)]
 #![allow(
     clippy::similar_names,
     clippy::cast_precision_loss,

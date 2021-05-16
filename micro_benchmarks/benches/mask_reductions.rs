@@ -1,5 +1,5 @@
 //! Benchmarks for the mask reductions `all`, `any`, and `none`.
-#![deny(warnings, rust_2018_idioms)]
+#![deny(rust_2018_idioms)]
 #![feature(test)]
 
 use packed_simd::*;

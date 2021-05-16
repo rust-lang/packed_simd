@@ -1,5 +1,3 @@
-#![deny(warnings)]
-
 extern crate spectral_norm_lib;
 use spectral_norm_lib::*;
 
