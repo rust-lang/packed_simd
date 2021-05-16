@@ -7,9 +7,8 @@
 use crate::{cmp::PartialOrd, fmt::Debug, LexicographicallyOrdered};
 
 /// Tests PartialOrd for `a` and `b` where `a < b` is true.
-pub fn test_lt<T>(
-    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
-) where
+pub fn test_lt<T>(a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>)
+where
     LexicographicallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a < b, "{:?}, {:?}", a, b);
@@ -37,9 +36,8 @@ pub fn test_lt<T>(
 }
 
 /// Tests PartialOrd for `a` and `b` where `a <= b` is true.
-pub fn test_le<T>(
-    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
-) where
+pub fn test_le<T>(a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>)
+where
     LexicographicallyOrdered<T>: Debug + PartialOrd,
 {
     assert!(a <= b, "{:?}, {:?}", a, b);
@@ -61,7 +59,8 @@ pub fn test_le<T>(
 
 /// Test PartialOrd::partial_cmp for `a` and `b` returning `Ordering`
 pub fn test_cmp<T>(
-    a: LexicographicallyOrdered<T>, b: LexicographicallyOrdered<T>,
+    a: LexicographicallyOrdered<T>,
+    b: LexicographicallyOrdered<T>,
     o: Option<crate::cmp::Ordering>,
 ) where
     LexicographicallyOrdered<T>: PartialOrd + Debug,
@@ -72,18 +71,8 @@ pub fn test_cmp<T>(
     let mut arr_a: [T::Element; 64] = [Default::default(); 64];
     let mut arr_b: [T::Element; 64] = [Default::default(); 64];
 
-    unsafe {
-        crate::ptr::write_unaligned(
-            arr_a.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
-            a,
-        )
-    }
-    unsafe {
-        crate::ptr::write_unaligned(
-            arr_b.as_mut_ptr() as *mut LexicographicallyOrdered<T>,
-            b,
-        )
-    }
+    unsafe { crate::ptr::write_unaligned(arr_a.as_mut_ptr() as *mut LexicographicallyOrdered<T>, a) }
+    unsafe { crate::ptr::write_unaligned(arr_b.as_mut_ptr() as *mut LexicographicallyOrdered<T>, b) }
     let expected = arr_a[0..T::LANES].partial_cmp(&arr_b[0..T::LANES]);
     let result = a.partial_cmp(&b);
     assert_eq!(expected, result, "{:?}, {:?}", a, b);
@@ -134,8 +123,7 @@ macro_rules! ptr_vals {
             // all bits cleared
             let clear: <$id as sealed::Simd>::Element = crate::mem::zeroed();
             // all bits set
-            let set: <$id as sealed::Simd>::Element =
-                crate::mem::transmute(-1_isize);
+            let set: <$id as sealed::Simd>::Element = crate::mem::transmute(-1_isize);
             (clear, set)
         }
     };

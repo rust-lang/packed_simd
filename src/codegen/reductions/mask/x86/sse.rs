@@ -16,8 +16,7 @@ macro_rules! x86_m32x4_sse_impl {
                 // most significant bit of each lane of `a`. If all
                 // bits are set, then all 4 lanes of the mask are
                 // true.
-                _mm_movemask_ps(crate::mem::transmute(self))
-                    == 0b_1111_i32
+                _mm_movemask_ps(crate::mem::transmute(self)) == 0b_1111_i32
             }
         }
         impl Any for $id {

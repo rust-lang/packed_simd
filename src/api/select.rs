@@ -12,9 +12,7 @@ macro_rules! impl_select {
             #[inline]
             pub fn select<T>(self, a: Simd<T>, b: Simd<T>) -> Simd<T>
             where
-                T: sealed::SimdArray<
-                    NT = <[$elem_ty; $elem_count] as sealed::SimdArray>::NT,
-                >,
+                T: sealed::SimdArray<NT = <[$elem_ty; $elem_count] as sealed::SimdArray>::NT>,
             {
                 use crate::llvm::simd_select;
                 Simd(unsafe { simd_select(self.0, a.0, b.0) })

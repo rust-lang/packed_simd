@@ -2,7 +2,7 @@
 //! lanes and vector element types.
 
 use crate::masks::*;
-use crate::sealed::{Shuffle, Seal};
+use crate::sealed::{Seal, Shuffle};
 
 macro_rules! impl_shuffle {
     ($array:ty, $base:ty, $out:ty) => {
@@ -10,7 +10,7 @@ macro_rules! impl_shuffle {
         impl Shuffle<$array> for $base {
             type Output = $out;
         }
-    }
+    };
 }
 
 impl_shuffle! { [u32; 2], i8, crate::codegen::i8x2 }

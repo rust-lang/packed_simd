@@ -14,8 +14,7 @@
 //! - [Conditional operations](#conditional-operations)
 //! - [Conversions](#conversions)
 //! - [Hardware Features](#hardware-features)
-//! - [Performance
-//!   guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
+//! - [Performance guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
 //!
 //! ## Introduction
 //!
@@ -211,7 +210,6 @@
 //! you choose an appropriate set of `target-feature` and `target-cpu`
 //! options during builds. For more information, see the [Performance
 //! guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
-//!
 
 #![feature(
     repr_simd,
@@ -263,9 +261,8 @@ use wasm_bindgen_test::*;
 
 #[allow(unused_imports)]
 use core::{
-    /* arch (handled above), */ cmp, f32, f64, fmt, hash, hint, i128,
-    i16, i32, i64, i8, intrinsics, isize, iter, marker, mem, ops, ptr, slice,
-    u128, u16, u32, u64, u8, usize,
+    /* arch (handled above), */ cmp, f32, f64, fmt, hash, hint, i128, i16, i32, i64, i8, intrinsics,
+    isize, iter, marker, mem, ops, ptr, slice, u128, u16, u32, u64, u8, usize,
 };
 
 #[macro_use]
@@ -341,8 +338,8 @@ pub use self::api::into_bits::*;
 // Re-export the shuffle intrinsics required by the `shuffle!` macro.
 #[doc(hidden)]
 pub use self::codegen::llvm::{
-    __shuffle_vector16, __shuffle_vector2, __shuffle_vector32,
-    __shuffle_vector4, __shuffle_vector64, __shuffle_vector8,
+    __shuffle_vector16, __shuffle_vector2, __shuffle_vector32, __shuffle_vector4, __shuffle_vector64,
+    __shuffle_vector8,
 };
 
 crate mod llvm {

@@ -21,9 +21,7 @@ macro_rules! impl_cmp_partial_eq {
 
         // FIXME: https://github.com/rust-lang-nursery/rust-clippy/issues/2892
         #[allow(clippy::partialeq_ne_impl)]
-        impl crate::cmp::PartialEq<LexicographicallyOrdered<$id>>
-            for LexicographicallyOrdered<$id>
-        {
+        impl crate::cmp::PartialEq<LexicographicallyOrdered<$id>> for LexicographicallyOrdered<$id> {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
                 self.0 == other.0

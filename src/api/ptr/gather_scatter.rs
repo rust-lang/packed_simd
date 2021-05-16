@@ -22,7 +22,8 @@ macro_rules! impl_ptr_read {
             /// pointers must be aligned to `mem::align_of::<T>()`.
             #[inline]
             pub unsafe fn read<M>(
-                self, mask: Simd<[M; $elem_count]>,
+                self,
+                mask: Simd<[M; $elem_count]>,
                 value: Simd<[T; $elem_count]>,
             ) -> Simd<[T; $elem_count]>
             where
@@ -128,10 +129,8 @@ macro_rules! impl_ptr_write {
             /// This method is unsafe because it dereferences raw pointers. The
             /// pointers must be aligned to `mem::align_of::<T>()`.
             #[inline]
-            pub unsafe fn write<M>(
-                self, mask: Simd<[M; $elem_count]>,
-                value: Simd<[T; $elem_count]>,
-            ) where
+            pub unsafe fn write<M>(self, mask: Simd<[M; $elem_count]>, value: Simd<[T; $elem_count]>)
+            where
                 M: sealed::Mask,
                 [M; $elem_count]: sealed::SimdArray,
             {

@@ -243,7 +243,7 @@ macro_rules! impl_reduction_float_arithmetic {
                                 tree_bits - red_bits
                             } < 2,
                             "vector: {:?} | simd_reduction: {:?} | \
-                             tree_reduction: {} | scalar_reduction: {}",
+tree_reduction: {} | scalar_reduction: {}",
                             v,
                             simd_reduction,
                             tree_reduction,
@@ -299,7 +299,7 @@ macro_rules! impl_reduction_float_arithmetic {
                                 tree_bits - red_bits
                             } < ulp_limit.try_into().unwrap(),
                             "vector: {:?} | simd_reduction: {:?} | \
-                             tree_reduction: {} | scalar_reduction: {}",
+tree_reduction: {} | scalar_reduction: {}",
                             v,
                             simd_reduction,
                             tree_reduction,
