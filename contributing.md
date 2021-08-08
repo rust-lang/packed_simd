@@ -35,7 +35,7 @@ If LLVM is indeed the cause, the issue will be reported upstream to the
 ## Submitting Pull Requests
 
 New code is submitted to the crate using GitHub's [pull request] mechanism.
-You should first fork this repository, make your changes (preferrably in a new
+You should first fork this repository, make your changes (preferably in a new
 branch), then use GitHub's web UI to create a new PR.
 
 [pull request]: https://help.github.com/articles/about-pull-requests/

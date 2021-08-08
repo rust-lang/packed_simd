@@ -15,7 +15,7 @@ where
     assert!(b > a, "{:?}, {:?}", a, b);
 
     assert!(!(a == b), "{:?}, {:?}", a, b);
-    assert!(a != b, "{:?}, {:?}", a, b);
+    assert_ne!(a, b, "{:?}, {:?}", a, b);
 
     assert!(a <= b, "{:?}, {:?}", a, b);
     assert!(b >= a, "{:?}, {:?}", a, b);
@@ -52,7 +52,7 @@ where
 
         assert!(!(a != b), "{:?}, {:?}", a, b);
     } else {
-        assert!(a != b, "{:?}, {:?}", a, b);
+        assert_ne!(a, b, "{:?}, {:?}", a, b);
         test_lt(a, b);
     }
 }
