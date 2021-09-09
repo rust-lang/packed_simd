@@ -212,7 +212,7 @@
 //! guide](https://rust-lang-nursery.github.io/packed_simd/perf-guide/)
 
 #![feature(
-    const_generics,
+    adt_const_params,
     repr_simd,
     rustc_attrs,
     platform_intrinsics,
