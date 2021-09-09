@@ -146,8 +146,8 @@ macro_rules! impl_ptr_write {
                     use super::*;
                     #[test]
                     fn write() {
-                        // fourty_two = [42, 42, 42, ...]
-                        let fourty_two
+                        // forty_two = [42, 42, 42, ...]
+                        let forty_two
                             = Simd::<[i32; $elem_count]>::splat(42_i32);
 
                         // This test will write to this array
@@ -165,11 +165,11 @@ macro_rules! impl_ptr_write {
                         }
                         // ptr = [&arr[0], &arr[1], ...]
 
-                        // write `fourty_two` to all elements of `v`
+                        // write `forty_two` to all elements of `v`
                         {
                             let backup = arr;
                             unsafe {
-                                ptr.write($mask_ty::splat(true), fourty_two)
+                                ptr.write($mask_ty::splat(true), forty_two)
                             };
                             assert_eq!(arr, [42_i32; $elem_count]);
                             arr = backup;  // arr = [0, 1, 2, ...]
@@ -195,7 +195,7 @@ macro_rules! impl_ptr_write {
                             }
 
                             let backup = arr;
-                            unsafe { ptr.write(mask, fourty_two) };
+                            unsafe { ptr.write(mask, forty_two) };
                             assert_eq!(arr, r);
                             arr = backup;  // arr = [0, 1, 2, 3, ...]
                         }
@@ -204,7 +204,7 @@ macro_rules! impl_ptr_write {
                         {
                             let backup = arr;
                             unsafe {
-                                ptr.write($mask_ty::splat(false), fourty_two)
+                                ptr.write($mask_ty::splat(false), forty_two)
                             };
                             assert_eq!(arr, backup);
                         }

@@ -7,7 +7,7 @@ homepage = "https://github.com/rust-lang/packed_simd"
 repository = "https://github.com/rust-lang/packed_simd"
 keywords = ["simd", "vector", "portability"]
 categories = ["hardware-support", "concurrency", "no-std", "data-structures"]
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 build = "build.rs"
 edition = "2018"
 
@@ -20,7 +20,7 @@ is-it-maintained-open-issues = { repository = "rust-lang/packed_simd" }
 maintenance = { status = "experimental" }
 
 [dependencies]
-cfg-if = "0.1.10"
+cfg-if = "1.0.0"
 core_arch = { version = "0.1.5", optional = true }
 libm = "0.1.4"
 

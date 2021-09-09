@@ -1,6 +1,6 @@
 //! Code generation workaround for `all()` mask horizontal reduction.
 //!
-//! Works arround [LLVM bug 36702].
+//! Works around [LLVM bug 36702].
 //!
 //! [LLVM bug 36702]: https://bugs.llvm.org/show_bug.cgi?id=36702
 #![allow(unused_macros)]

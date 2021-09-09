@@ -24,7 +24,7 @@ macro_rules! impl_from_bits_ {
                         use crate::IntoBits;
                         assert_eq!(size_of::<$id>(),
                                    size_of::<$from_ty>());
-                        // This is safe becasue we never create a reference to
+                        // This is safe because we never create a reference to
                         // uninitialized memory:
                         let a: $from_ty = unsafe { zeroed() };
 

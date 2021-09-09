@@ -49,7 +49,7 @@
 //! ```
 //! # use packed_simd_2::*;
 //! fn reduce(x: &[i32]) -> i32 {
-//!     assert!(x.len() % 4 == 0);
+//!     assert_eq!(x.len() % 4, 0);
 //!     let mut sum = i32x4::splat(0); // [0, 0, 0, 0]
 //!     for i in (0..x.len()).step_by(4) {
 //!         sum += i32x4::from_slice_unaligned(&x[i..]);
@@ -134,7 +134,7 @@
 //! > of lanes as the mask. The example shows this by using [`m16x4`] instead
 //! > of [`m32x4`]. It is _typically_ more performant to use a mask element
 //! > width equal to the element width of the vectors being operated upon.
-//! > This is, however, not true for 512-bit wide vectors when targetting
+//! > This is, however, not true for 512-bit wide vectors when targeting
 //! > AVX-512, where the most efficient masks use only 1-bit per element.
 //!
 //! All vertical comparison operations returns masks:
@@ -168,11 +168,11 @@
 //!   u8x8 = m8x8::splat(true).into_bits();` is provided because all `m8x8` bit
 //!   patterns are valid `u8x8` bit patterns. However, the opposite is not
 //! true,   not all `u8x8` bit patterns are valid `m8x8` bit-patterns, so this
-//!   operation cannot be peformed safely using `x.into_bits()`; one needs to
+//!   operation cannot be performed safely using `x.into_bits()`; one needs to
 //!   use `unsafe { crate::mem::transmute(x) }` for that, making sure that the
 //!   value in the `u8x8` is a valid bit-pattern of `m8x8`.
 //!
-//! * **numeric casts** (`as`): are peformed using [`FromCast`]/[`Cast`]
+//! * **numeric casts** (`as`): are performed using [`FromCast`]/[`Cast`]
 //! (`x.cast()`), just like `as`:
 //!
 //!   * casting integer vectors whose lane types have the same size (e.g.
