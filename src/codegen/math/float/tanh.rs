@@ -9,45 +9,31 @@ crate trait Tanh {
     fn tanh(self) -> Self;
 }
 
-macro_rules! define_tanh {
-    ($name:ident, $basetype:ty, $simdtype:ty, $lanes:expr, $trait:path) => {
-        fn $name(x: $simdtype) -> $simdtype {
-            use core::intrinsics::transmute;
-            let mut buf: [$basetype; $lanes] = unsafe { transmute(x) };
-            for elem in &mut buf {
-                *elem = <$basetype as $trait>::tanh(*elem);
-            }
-            unsafe { transmute(buf) }
-        }
-    };
+#[allow(improper_ctypes)]
+extern "C" {
+    #[link_name = "llvm.tan.v2f32"]
+    fn tan_v2f32(x: f32x2) -> f32x2;
+    #[link_name = "llvm.tan.v4f32"]
+    fn tanh_v4f32(x: f32x4) -> f32x4;
+    #[link_name = "llvm.tan.v8f32"]
+    fn tanh_v8f32(x: f32x8) -> f32x8;
+    #[link_name = "llvm.tan.v16f32"]
+    fn tanh_v16f32(x: f32x16) -> f32x16;
+    /* FIXME 64-bit single elem vectors
+    #[link_name = "llvm.tan.v1f64"]
+    fn tan_v1f64(x: f64x1) -> f64x1;
+     */
+    #[link_name = "llvm.tan.v2f64"]
+    fn tanh_v2f64(x: f64x2) -> f64x2;
+    #[link_name = "llvm.tan.v4f64"]
+    fn tanh_v4f64(x: f64x4) -> f64x4;
+    #[link_name = "llvm.tan.v8f64"]
+    fn tanh_v8f64(x: f64x8) -> f64x8;
 
-    (f32 => $name:ident, $type:ty, $lanes:expr) => {
-        define_tanh!($name, f32, $type, $lanes, libm::F32Ext);
-    };
-
-    (f64 => $name:ident, $type:ty, $lanes:expr) => {
-        define_tanh!($name, f64, $type, $lanes, libm::F64Ext);
-    };
-}
-
-// llvm does not seem to expose the hyperbolic versions of trigonometric
-// functions; we thus call the classical rust versions on all of them (which
-// stem from cmath).
-define_tanh!(f32 => tanh_v2f32, f32x2, 2);
-define_tanh!(f32 => tanh_v4f32, f32x4, 4);
-define_tanh!(f32 => tanh_v8f32, f32x8, 8);
-define_tanh!(f32 => tanh_v16f32, f32x16, 16);
-
-define_tanh!(f64 => tanh_v2f64, f64x2, 2);
-define_tanh!(f64 => tanh_v4f64, f64x4, 4);
-define_tanh!(f64 => tanh_v8f64, f64x8, 8);
-
-fn tanh_f32(x: f32) -> f32 {
-    libm::F32Ext::tanh(x)
-}
-
-fn tanh_f64(x: f64) -> f64 {
-    libm::F64Ext::tanh(x)
+    #[link_name = "llvm.tan.f32"]
+    fn tanh_f32(x: f32) -> f32;
+    #[link_name = "llvm.tan.f64"]
+    fn tanh_f64(x: f64) -> f64;
 }
 
 gen_unary_impl_table!(Tanh, tanh);

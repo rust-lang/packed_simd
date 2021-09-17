@@ -22,7 +22,6 @@ maintenance = { status = "experimental" }
 [dependencies]
 cfg-if = "1.0.0"
 core_arch = { version = "0.1.5", optional = true }
-libm = "0.1.4"
 
 [features]
 default = []
