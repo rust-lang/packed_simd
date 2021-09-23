@@ -244,6 +244,7 @@
         clippy::from_over_into,
 )]
 #![cfg_attr(test, feature(hashmap_internals))]
+#![cfg_attr(doc_cfg, feature(doc_cfg))]
 #![deny(rust_2018_idioms, clippy::missing_inline_in_public_items)]
 #![no_std]
 
