@@ -11,6 +11,12 @@ license = "MIT OR Apache-2.0"
 build = "build.rs"
 edition = "2018"
 
+[package.metadata.docs.rs]
+features = ["into_bits"]
+rustdoc-args = ["--cfg", "doc_cfg"]
+# To build locally:
+# RUSTDOCFLAGS="--cfg doc_cfg" cargo +nightly doc --features into_bits --no-deps --open
+
 [badges]
 appveyor = { repository = "rust-lang/packed_simd" }
 travis-ci = { repository = "rust-lang/packed_simd" }
