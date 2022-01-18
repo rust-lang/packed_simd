@@ -224,7 +224,6 @@
     stmt_expr_attributes,
     crate_visibility_modifier,
     custom_inner_attributes,
-    llvm_asm
 )]
 #![allow(non_camel_case_types, non_snake_case,
         // FIXME: these types are unsound in C FFI already
