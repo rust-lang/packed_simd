@@ -5,7 +5,7 @@
 
 use crate::*;
 
-crate trait SwapBytes {
+pub(crate) trait SwapBytes {
     fn swap_bytes(self) -> Self;
 }
 

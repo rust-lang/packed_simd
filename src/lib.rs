@@ -222,7 +222,6 @@
     link_llvm_intrinsics,
     core_intrinsics,
     stmt_expr_attributes,
-    crate_visibility_modifier,
     custom_inner_attributes,
 )]
 #![allow(non_camel_case_types, non_snake_case,
@@ -344,6 +343,6 @@ pub use self::codegen::llvm::{
     __shuffle_vector8,
 };
 
-crate mod llvm {
-    crate use crate::codegen::llvm::*;
+pub(crate) mod llvm {
+    pub(crate) use crate::codegen::llvm::*;
 }
