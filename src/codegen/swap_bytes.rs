@@ -15,7 +15,7 @@ macro_rules! impl_swap_bytes {
             impl SwapBytes for $id {
                 #[inline]
                 fn swap_bytes(self) -> Self {
-                    unsafe { shuffle!(self, [1, 0]) }
+                    shuffle!(self, [1, 0])
                 }
             }
         )+

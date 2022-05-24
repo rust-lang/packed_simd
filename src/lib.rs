@@ -217,7 +217,6 @@
     rustc_attrs,
     platform_intrinsics,
     stdsimd,
-    aarch64_target_feature,
     arm_target_feature,
     link_llvm_intrinsics,
     core_intrinsics,
