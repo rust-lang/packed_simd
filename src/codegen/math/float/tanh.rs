@@ -5,7 +5,7 @@
 
 use crate::*;
 
-crate trait Tanh {
+pub(crate) trait Tanh {
     fn tanh(self) -> Self;
 }
 
