@@ -23,8 +23,8 @@ macro_rules! impl_ops_vector_rotates {
             /// amount in the corresponding lane of `n`, wrapping the
             /// truncated bits to the beginning of the resulting integer.
             ///
-            /// Note: this is neither the same operation as `<<` nor equivalent
-            /// to `slice::rotate_left`.
+            /// Note: this is neither the same operation as `>>` nor equivalent
+            /// to `slice::rotate_right`.
             #[inline]
             pub fn rotate_right(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty =
