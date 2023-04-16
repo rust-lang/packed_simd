@@ -5,7 +5,7 @@ authors = ["Gonzalo Brito Gadeschi <gonzalobg88@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-packed_simd = { package = "packed_simd_2", path = "../.." }
+packed_simd = { package = "packed_simd", path = "../.." }
 
 [lib]
 name = "matrix_inverse_lib"

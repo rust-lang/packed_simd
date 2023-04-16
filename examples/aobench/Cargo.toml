@@ -17,7 +17,7 @@ path = "src/lib.rs"
 structopt = "^0.3"
 failure = "^0.1"
 png = "^0.15"
-packed_simd = { package = "packed_simd_2", path = "../.." }
+packed_simd = { package = "packed_simd", path = "../.." }
 rayon = "^1.0"
 time = "^0.1"
 cfg-if = "^0.1"

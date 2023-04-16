@@ -6,6 +6,6 @@ edition = "2018"
 
 [dev-dependencies]
 stdarch-test = { git = "https://github.com/rust-lang/stdarch.git"  }
-packed_simd = { package = "packed_simd_2", path = "../.." }
+packed_simd = { package = "packed_simd", path = "../.." }
 cfg-if = "^0.1"
 paste = "^0.1.3"

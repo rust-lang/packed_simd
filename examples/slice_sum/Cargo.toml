@@ -9,7 +9,7 @@ name = "slice_sum"
 path = "src/main.rs"
 
 [dependencies]
-packed_simd = { package = "packed_simd_2", path = "../.." }
+packed_simd = { package = "packed_simd", path = "../.." }
 rayon = "^1.0"
 time = "^0.1"
 rand = "0.7.0"
