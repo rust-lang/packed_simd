@@ -61,6 +61,7 @@ macro_rules! impl_from_array {
                 mod [<$id _from>] {
                     use super::*;
                     #[test]
+                    #[cfg_attr(miri, ignore)]
                     fn array() {
                         let vec: $id = Default::default();
 
