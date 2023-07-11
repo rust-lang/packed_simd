@@ -14,6 +14,10 @@ on:
         required: false
         type: string
         default: ''
+      script:
+        required: false
+        type: string
+        default: ci/run-docker.sh
 
 jobs:
   build-test-verify:
@@ -31,9 +35,9 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           target: ${{ inputs.target }}
-          #toolchain: nightly
           override: true
           default: true
+          components: rustfmt
       - name: Generate Lockfile
         run: cargo generate-lockfile
       - name: Init Cargo Cache
@@ -45,10 +49,9 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             target/
-          # should hash Cargo.lock,
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Run CI
-        run: ci/run-docker.sh
+        run: ${{ inputs.script }}
         env:
           TARGET: ${{ inputs.target }}
           RUSTFLAGS: ${{ inputs.rustflags }}
