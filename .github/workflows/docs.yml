@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - port-ci-to-github-actions # during testing
 
 jobs:
   docs:

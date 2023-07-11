@@ -3,7 +3,8 @@ name: benchmarks
 on:
   push:
     branches:
-      - port-ci-to-github-actions # during testing
+      - master
+  pull_request:
   workflow_dispatch:
 
 jobs:
