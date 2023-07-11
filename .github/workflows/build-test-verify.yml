@@ -1,0 +1,54 @@
+name: build-test-verify
+
+on:
+  workflow_call:
+    inputs:
+      runner:
+        required: false
+        type: string
+        default: ubuntu-latest
+      target:
+        required: true
+        type: string
+      rustflags:
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  build-test-verify:
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Init Rustup Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.rustup/toolchains
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/rust-toolchain') }}
+      - name: Install Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          target: ${{ inputs.target }}
+          toolchain: nightly
+          override: true
+          default: true
+      - name: Generate Lockfile
+        run: cargo generate-lockfile
+      - name: Init Cargo Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          # should hash Cargo.lock,
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Run CI
+        run: ci/run-docker.sh
+        env:
+          TARGET: ${{ inputs.target }}
+          RUSTFLAGS: ${{ inputs.rustflags }}
