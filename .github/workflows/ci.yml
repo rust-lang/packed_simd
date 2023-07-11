@@ -40,40 +40,42 @@ jobs:
       fail-fast: false
     with:
       target: i586-unknown-linux-gnu
+      rustflags: -Crelocation-model=static
   i586-unknown-linux-gnu-SSE:
     uses: ./.github/workflows/build-test-verify.yml
     strategy:
       fail-fast: false
     with:
       target: i586-unknown-linux-gnu
-      rustflags: -Ctarget-feature=+sse
+      rustflags: -Crelocation-model=static -Ctarget-feature=+sse
   i586-unknown-linux-gnu-SSE2:
     uses: ./.github/workflows/build-test-verify.yml
     strategy:
       fail-fast: false
     with:
       target: i586-unknown-linux-gnu
-      rustflags: -Ctarget-feature=+sse2
+      rustflags: -Crelocation-model=static -Ctarget-feature=+sse2
   i686-unknown-linux-gnu:
     uses: ./.github/workflows/build-test-verify.yml
     strategy:
       fail-fast: false
     with:
       target: i686-unknown-linux-gnu
+      rustflags: -Crelocation-model=static
   i686-unknown-linux-gnu-SSE4_2:
     uses: ./.github/workflows/build-test-verify.yml
     strategy:
       fail-fast: false
     with:
       target: i686-unknown-linux-gnu
-      rustflags: -Ctarget-feature=+sse4.2
+      rustflags: -Crelocation-model=static -Ctarget-feature=+sse4.2
   i686-unknown-linux-gnu-AVX2:
     uses: ./.github/workflows/build-test-verify.yml
     strategy:
       fail-fast: false
     with:
       target: i686-unknown-linux-gnu
-      rustflags: -Ctarget-feature=+avx2
+      rustflags: -Crelocation-model=static -Ctarget-feature=+avx2
   x86_64-unknown-linux-gnu:
     uses: ./.github/workflows/build-test-verify.yml
     strategy:
