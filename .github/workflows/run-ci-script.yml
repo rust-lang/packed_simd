@@ -1,4 +1,4 @@
-name: build-test-verify
+name: run-ci-script
 
 on:
   workflow_call:
@@ -8,8 +8,9 @@ on:
         type: string
         default: ubuntu-latest
       target:
-        required: true
+        required: false
         type: string
+        default: ''
       rustflags:
         required: false
         type: string
@@ -18,9 +19,24 @@ on:
         required: false
         type: string
         default: ci/run-docker.sh
+      setup_script:
+        required: false
+        type: string
+      norun:
+        required: false
+        type: string
+        default: ''
+      verify:
+        required: false
+        type: string
+        default: ''
+      features:
+        required: false
+        type: string
+        default: ''
 
 jobs:
-  build-test-verify:
+  run-ci-script:
     runs-on: ${{ inputs.runner }}
     steps:
       - name: Checkout
@@ -50,9 +66,21 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Run CI
+      - name: Setup
+        if: ${{ inputs.setup_script != '' }}
+        run: ${{ inputs.setup_script }}
+        env:
+          TARGET: ${{ inputs.target }}
+          RUSTFLAGS: ${{ inputs.rustflags }}
+          NORUN: ${{ inputs.norun }}
+          VERIFY: ${{ inputs.verify }}
+          FEATURES: ${{ inputs.features }}
+      - name: Run CI Script
         timeout-minutes: 15
         run: ${{ inputs.script }}
         env:
           TARGET: ${{ inputs.target }}
           RUSTFLAGS: ${{ inputs.rustflags }}
+          NORUN: ${{ inputs.norun }}
+          VERIFY: ${{ inputs.verify }}
+          FEATURES: ${{ inputs.features }}
