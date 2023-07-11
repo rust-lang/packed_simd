@@ -51,6 +51,7 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Run CI
+        timeout-minutes: 15
         run: ${{ inputs.script }}
         env:
           TARGET: ${{ inputs.target }}
