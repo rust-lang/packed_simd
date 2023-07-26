@@ -207,12 +207,12 @@ jobs:
       runner: macos-latest
       script: ci/run.sh
       target: x86_64-apple-ios
-  aarch-apple-ios:
+  aarch64-apple-ios:
     uses: ./.github/workflows/run-ci-script.yml
     strategy:
       fail-fast: true
     with:
       runner: macos-latest
       script: ci/run.sh
-      target: aarch-apple-ios
+      target: aarch64-apple-ios
       rustflags: -Ctarget-feature=+neon
