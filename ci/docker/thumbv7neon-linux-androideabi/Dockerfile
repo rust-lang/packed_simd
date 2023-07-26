@@ -25,11 +25,11 @@ RUN sh /android/android-install-ndk.sh
 ENV PATH=$PATH:/android/ndk/toolchains/llvm/prebuilt/linux-x86_64/bin
 
 RUN sh /android/android-install-sdk.sh $ANDROID_ARCH
-ENV PATH=$PATH:/android/sdk/tools:/android/sdk/platform-tools
+ENV PATH=$PATH:/android/sdk/cmdline-tools:/android/sdk/platform-tools
 
 RUN mv /root/.android /tmp
 RUN chmod 777 -R /tmp/.android
-RUN chmod 755 /android/sdk/tools/* /android/sdk/emulator/qemu/linux-x86_64/*
+RUN chmod 755 /android/sdk/*tools/**/* /android/sdk/emulator/qemu/linux-x86_64/*
 
 ENV PATH=$PATH:/rust/bin \
     CARGO_TARGET_THUMBV7NEON_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi19-clang \
