@@ -26,7 +26,7 @@
 //! are applied to each vector lane in isolation of the others:
 //!
 //! ```
-//! # use packed_simd_2::*;
+//! # use packed_simd::*;
 //! let a = i32x4::new(1, 2, 3, 4);
 //! let b = i32x4::new(5, 6, 7, 8);
 //! assert_eq!(a + b, i32x4::new(6, 8, 10, 12));
@@ -35,7 +35,7 @@
 //! Many "horizontal" operations are also provided:
 //!
 //! ```
-//! # use packed_simd_2::*;
+//! # use packed_simd::*;
 //! # let a = i32x4::new(1, 2, 3, 4);
 //! assert_eq!(a.wrapping_sum(), 10);
 //! ```
@@ -47,7 +47,7 @@
 //! and performing a single horizontal operation at the end:
 //!
 //! ```
-//! # use packed_simd_2::*;
+//! # use packed_simd::*;
 //! fn reduce(x: &[i32]) -> i32 {
 //!     assert_eq!(x.len() % 4, 0);
 //!     let mut sum = i32x4::splat(0); // [0, 0, 0, 0]
@@ -79,7 +79,7 @@
 //! ## Basic operations
 //!
 //! ```
-//! # use packed_simd_2::*;
+//! # use packed_simd::*;
 //! // Sets all elements to `0`:
 //! let a = i32x4::splat(0);
 //!
@@ -107,7 +107,7 @@
 //! to be performed:
 //!
 //! ```
-//! # use packed_simd_2::*;
+//! # use packed_simd::*;
 //! let a = i32x4::new(1, 1, 2, 2);
 //!
 //! // Add `1` to the first two lanes of the vector.
@@ -140,7 +140,7 @@
 //! All vertical comparison operations returns masks:
 //!
 //! ```
-//! # use packed_simd_2::*;
+//! # use packed_simd::*;
 //! let a = i32x4::new(1, 1, 3, 3);
 //! let b = i32x4::new(2, 2, 0, 0);
 //!
@@ -279,7 +279,7 @@ pub use crate::sealed::{Mask, Shuffle, Simd as SimdVector, SimdArray};
 /// # Examples
 ///
 /// ```
-/// # use packed_simd_2::Simd;
+/// # use packed_simd::Simd;
 /// let v = Simd::<[i32; 4]>::new(0, 1, 2, 3);
 /// assert_eq!(v.extract(2), 2);
 /// ```
