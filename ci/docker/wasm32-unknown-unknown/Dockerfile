@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
   ca-certificates \
@@ -8,7 +8,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
   git \
   libc6-dev \
   make \
-  python \
+  ninja-build \
+  python-is-python3 \
   xz-utils
 
 # Install `wasm2wat`
@@ -17,10 +18,10 @@ RUN make -C wabt -j$(nproc)
 ENV PATH=$PATH:/wabt/bin
 
 # Install `wasm-bindgen-test-runner`
-RUN curl -L https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.73/wasm-bindgen-0.2.73-x86_64-unknown-linux-musl.tar.gz \
+RUN curl -L https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.87/wasm-bindgen-0.2.87-x86_64-unknown-linux-musl.tar.gz \
   | tar xzf -
 # Keep in sync with the version on Cargo.toml.
-ENV PATH=$PATH:/wasm-bindgen-0.2.73-x86_64-unknown-linux-musl
+ENV PATH=$PATH:/wasm-bindgen-0.2.87-x86_64-unknown-linux-musl
 ENV CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner
 
 # Install `node`
