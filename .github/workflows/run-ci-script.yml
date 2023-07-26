@@ -77,7 +77,7 @@ jobs:
           VERIFY: ${{ inputs.verify }}
           FEATURES: ${{ inputs.features }}
       - name: Run CI Script
-        timeout-minutes: 15
+        timeout-minutes: 30
         run: ${{ inputs.script }}
         env:
           TARGET: ${{ inputs.target }}
