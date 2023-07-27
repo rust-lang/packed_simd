@@ -3,6 +3,9 @@
 
 // FIXME 64-bit 1 elem vectors tanh
 
+#[cfg(not(feature = "std"))]
+use num_traits::Float;
+
 use crate::*;
 
 pub(crate) trait Tanh {
@@ -22,11 +25,11 @@ macro_rules! define_tanh {
     };
 
     (f32 => $name:ident, $type:ty, $lanes:expr) => {
-        define_tanh!($name, f32, $type, $lanes, libm::F32Ext);
+        define_tanh!($name, f32, $type, $lanes, Float);
     };
 
     (f64 => $name:ident, $type:ty, $lanes:expr) => {
-        define_tanh!($name, f64, $type, $lanes, libm::F64Ext);
+        define_tanh!($name, f64, $type, $lanes, Float);
     };
 }
 
@@ -43,11 +46,11 @@ define_tanh!(f64 => tanh_v4f64, f64x4, 4);
 define_tanh!(f64 => tanh_v8f64, f64x8, 8);
 
 fn tanh_f32(x: f32) -> f32 {
-    libm::F32Ext::tanh(x)
+    Float::tanh(x)
 }
 
 fn tanh_f64(x: f64) -> f64 {
-    libm::F64Ext::tanh(x)
+    Float::tanh(x)
 }
 
 gen_unary_impl_table!(Tanh, tanh);
