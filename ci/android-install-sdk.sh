@@ -60,10 +60,10 @@ yes | "$ANDROID_SDK_BIN/sdkmanager" --licenses --no_https
 yes | "$ANDROID_SDK_BIN/sdkmanager" --no_https \
         "emulator" \
         "platform-tools" \
-        "platforms;android-33" \
-        "system-images;android-33;default;$abi"
+        "platforms;android-24" \
+        "system-images;android-24;default;$abi"
 
 echo "no" |
     "$ANDROID_SDK_BIN/avdmanager" create avd \
         --name "${1}" \
-        --package "system-images;android-33;default;$abi"
+        --package "system-images;android-24;default;$abi"
