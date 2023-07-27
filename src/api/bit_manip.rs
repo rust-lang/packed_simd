@@ -34,7 +34,7 @@ macro_rules! impl_bit_manip {
 
         test_if! {
             $test_tt:
-            paste::item_with_macros! {
+            paste::item! {
                 #[allow(overflowing_literals)]
                 pub mod [<$id _bit_manip>] {
                     #![allow(const_item_mutation)]

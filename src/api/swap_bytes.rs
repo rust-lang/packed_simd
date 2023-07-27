@@ -76,7 +76,7 @@ macro_rules! impl_swap_bytes {
 
         test_if! {
             $test_tt:
-            paste::item_with_macros! {
+            paste::item! {
                 pub mod [<$id _swap_bytes>] {
                     use super::*;
 
