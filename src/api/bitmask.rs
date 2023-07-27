@@ -17,13 +17,10 @@ macro_rules! impl_bitmask {
         test_if! {
             $test_tt:
             paste::item! {
-                #[cfg(not(any(
+                #[cfg(not(
                     // FIXME: https://github.com/rust-lang-nursery/packed_simd/issues/210
-                    all(target_arch = "mips", target_endian = "big"),
-                    all(target_arch = "mips64", target_endian = "big"),
-                    target_arch = "sparc64",
-                    target_arch = "s390x",
-                )))]
+                    target_endian = "big"
+                ))]
                 pub mod [<$id _bitmask>] {
                     use super::*;
                     #[cfg_attr(not(target_arch = "wasm32"), test)]
