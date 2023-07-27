@@ -71,8 +71,12 @@ cargo_test_impl() {
 }
 
 # Debug run:
-if [[ "${TARGET}" != "wasm32-unknown-unknown" ]] && [[ ! "${TARGET}" =~ "aarch64" ]]; then
-   # Run wasm32-unknown-unknown and aarch64 in release mode only
+if [[ "${TARGET}" != "wasm32-unknown-unknown" ]] &&
+   [[ ! "${TARGET}" =~ "aarch64" ]] &&
+   [[ "${TARGET}" != "armv7-linux-androideabi" ]] &&
+   [[ "${TARGET}" != "thumbv7neon-linux-androideabi" ]]; then
+   # Run wasm32-unknown-unknown, aarch64, and android in release mode only
+   # as for some reason the emulation quality of these is low
    cargo_test_impl
 fi
 
