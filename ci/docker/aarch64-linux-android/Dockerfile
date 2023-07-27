@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
@@ -7,7 +7,7 @@ RUN dpkg --add-architecture i386 && \
   make \
   curl \
   ca-certificates \
-  python \
+  python-is-python3 \
   unzip \
   expect \
   openjdk-11-jre \
