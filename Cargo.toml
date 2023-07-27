@@ -39,6 +39,3 @@ optional = true
 # Keep in sync with the version on Dockerfile.
 wasm-bindgen = "=0.2.87"
 wasm-bindgen-test = "=0.3.37"
-
-[target.'cfg(target_arch = "aarch64")'.profile.dev]
-opt-level = 3 # slow emulators
