@@ -27,11 +27,13 @@ unzip -d sdk "$ANDROID_SDK_ARCHIVE"
 
 case "$1" in
   arm | armv7)
-    abi=armeabi-v7a
+    version="android-24"
+    abi="armeabi-v7a"
     ;;
 
   aarch64)
-    abi=arm64-v8a
+    version="android-31"
+    abi="arm64-v8a"
     ;;
 
   i686)
@@ -60,10 +62,10 @@ yes | "$ANDROID_SDK_BIN/sdkmanager" --licenses --no_https
 yes | "$ANDROID_SDK_BIN/sdkmanager" --no_https \
         "emulator" \
         "platform-tools" \
-        "platforms;android-24" \
-        "system-images;android-24;default;$abi"
+        "platforms;$version" \
+        "system-images;$version;default;$abi"
 
 echo "no" |
     "$ANDROID_SDK_BIN/avdmanager" create avd \
         --name "${1}" \
-        --package "system-images;android-24;default;$abi"
+        --package "system-images;$version;default;$abi"
