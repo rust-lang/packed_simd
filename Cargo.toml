@@ -12,8 +12,6 @@ build = "build.rs"
 edition = "2018"
 
 [badges]
-appveyor = { repository = "rust-lang/packed_simd" }
-travis-ci = { repository = "rust-lang/packed_simd" }
 codecov = { repository = "rust-lang/packed_simd" }
 is-it-maintained-issue-resolution = { repository = "rust-lang/packed_simd" }
 is-it-maintained-open-issues = { repository = "rust-lang/packed_simd" }
