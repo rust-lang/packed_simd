@@ -18,12 +18,12 @@ jobs:
       fail-fast: true
     with:
       target: x86_64-linux-android
-  arm-linux-androideabi:
+  armv7-linux-androideabi:
     uses: ./.github/workflows/run-ci-script.yml
     strategy:
       fail-fast: true
     with:
-      target: arm-linux-androideabi
+      target: armv7-linux-androideabi
   aarch64-unknown-linux-android-NEON:
     uses: ./.github/workflows/run-ci-script.yml
     strategy:
