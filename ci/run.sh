@@ -71,8 +71,8 @@ cargo_test_impl() {
 }
 
 # Debug run:
-if [[ "${TARGET}" != "wasm32-unknown-unknown" ]]; then
-   # Run wasm32-unknown-unknown in release mode only
+if [[ "${TARGET}" != "wasm32-unknown-unknown" ]] && [[ ! "${TARGET}" ~= "aarch64" ]] then
+   # Run wasm32-unknown-unknown and aarch64 in release mode only
    cargo_test_impl
 fi
 
