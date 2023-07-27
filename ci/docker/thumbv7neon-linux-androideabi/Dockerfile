@@ -44,7 +44,7 @@ ENTRYPOINT [ \
   # set SHELL so android can detect a 64bits system, see
   # http://stackoverflow.com/a/41789144
   "SHELL=/bin/dash /android/sdk/emulator/emulator @arm -no-window & \
-   rustc /tmp/runtest.rs -o /tmp/runtest && \
+   rustc /tmp/runtest.rs -O -o /tmp/runtest && \
    exec \"$@\"", \
   "--" \
 ]
