@@ -48,11 +48,10 @@ jobs:
             ~/.rustup/toolchains
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/rust-toolchain') }}
       - name: Install Toolchain
-        uses: dtolnay/rust-toolchain@master
+        uses: dtolnay/rust-toolchain@nightly
         with:
           # FIXME: change to nightly once https://github.com/rust-lang/packed_simd/pull/350 is merged
           # needs to be kept in sync with the toolchain files
-          toolchain: nightly-2023-06-14
           targets: ${{ inputs.target }}
           components: rustfmt
       - name: Generate Lockfile
