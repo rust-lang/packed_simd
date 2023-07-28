@@ -1,12 +1,14 @@
 //! Implementation of `FromBits` and `IntoBits`.
 
 /// Safe lossless bitwise conversion from `T` to `Self`.
+#[cfg_attr(doc_cfg, doc(cfg(feature = "into_bits")))]
 pub trait FromBits<T>: crate::marker::Sized {
     /// Safe lossless bitwise transmute from `T` to `Self`.
     fn from_bits(t: T) -> Self;
 }
 
 /// Safe lossless bitwise conversion from `Self` to `T`.
+#[cfg_attr(doc_cfg, doc(cfg(feature = "into_bits")))]
 pub trait IntoBits<T>: crate::marker::Sized {
     /// Safe lossless bitwise transmute from `self` to `T`.
     fn into_bits(self) -> T;
