@@ -583,7 +583,7 @@ macro_rules! impl_minimal_p {
             pub fn from_slice_aligned(slice: &[$elem_ty]) -> Self {
                 unsafe {
                     assert!(slice.len() >= $elem_count);
-                    let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
+                    let target_ptr = slice.as_ptr();
                     assert!(
                         target_ptr.align_offset(crate::mem::align_of::<Self>())
                             == 0
@@ -615,7 +615,7 @@ macro_rules! impl_minimal_p {
             pub unsafe fn from_slice_aligned_unchecked(slice: &[$elem_ty])
                                                        -> Self {
                 #[allow(clippy::cast_ptr_alignment)]
-                *(slice.get_unchecked(0) as *const $elem_ty as *const Self)
+                *(slice.as_ptr().cast())
             }
 
             /// Instantiates a new vector with the values of the `slice`.
@@ -628,8 +628,7 @@ macro_rules! impl_minimal_p {
                 slice: &[$elem_ty],
             ) -> Self {
                 use crate::mem::size_of;
-                let target_ptr =
-                    slice.get_unchecked(0) as *const $elem_ty as *const u8;
+                let target_ptr = slice.as_ptr().cast();
                 let mut x = Self::splat(crate::ptr::null_mut() as $elem_ty);
                 let self_ptr = &mut x as *mut Self as *mut u8;
                 crate::ptr::copy_nonoverlapping(
@@ -798,8 +797,7 @@ macro_rules! impl_minimal_p {
             pub fn write_to_slice_aligned(self, slice: &mut [$elem_ty]) {
                 unsafe {
                     assert!(slice.len() >= $elem_count);
-                    let target_ptr =
-                        slice.get_unchecked_mut(0) as *mut $elem_ty;
+                    let target_ptr = slice.as_mut_ptr();
                     assert!(
                         target_ptr.align_offset(crate::mem::align_of::<Self>())
                             == 0
@@ -833,8 +831,7 @@ macro_rules! impl_minimal_p {
                 self, slice: &mut [$elem_ty],
             ) {
                 #[allow(clippy::cast_ptr_alignment)]
-                *(slice.get_unchecked_mut(0) as *mut $elem_ty as *mut Self) =
-                    self;
+                *(slice.as_mut_ptr().cast()) = self;
             }
 
             /// Writes the values of the vector to the `slice`.
@@ -846,8 +843,7 @@ macro_rules! impl_minimal_p {
             pub unsafe fn write_to_slice_unaligned_unchecked(
                 self, slice: &mut [$elem_ty],
             ) {
-                let target_ptr =
-                    slice.get_unchecked_mut(0) as *mut $elem_ty as *mut u8;
+                let target_ptr = slice.as_mut_ptr().cast();
                 let self_ptr = &self as *const Self as *const u8;
                 crate::ptr::copy_nonoverlapping(
                     self_ptr,

@@ -13,7 +13,7 @@ macro_rules! impl_slice_from_slice {
             pub fn from_slice_aligned(slice: &[$elem_ty]) -> Self {
                 unsafe {
                     assert!(slice.len() >= $elem_count);
-                    let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
+                    let target_ptr = slice.as_ptr();
                     assert_eq!(target_ptr.align_offset(crate::mem::align_of::<Self>()), 0);
                     Self::from_slice_aligned_unchecked(slice)
                 }
@@ -41,7 +41,7 @@ macro_rules! impl_slice_from_slice {
             #[inline]
             pub unsafe fn from_slice_aligned_unchecked(slice: &[$elem_ty]) -> Self {
                 debug_assert!(slice.len() >= $elem_count);
-                let target_ptr = slice.get_unchecked(0) as *const $elem_ty;
+                let target_ptr = slice.as_ptr();
                 debug_assert_eq!(target_ptr.align_offset(crate::mem::align_of::<Self>()), 0);
 
                 #[allow(clippy::cast_ptr_alignment)]
@@ -57,7 +57,7 @@ macro_rules! impl_slice_from_slice {
             pub unsafe fn from_slice_unaligned_unchecked(slice: &[$elem_ty]) -> Self {
                 use crate::mem::size_of;
                 debug_assert!(slice.len() >= $elem_count);
-                let target_ptr = slice.get_unchecked(0) as *const $elem_ty as *const u8;
+                let target_ptr = slice.as_ptr().cast();
                 let mut x = Self::splat(0 as $elem_ty);
                 let self_ptr = &mut x as *mut Self as *mut u8;
                 crate::ptr::copy_nonoverlapping(target_ptr, self_ptr, size_of::<Self>());
