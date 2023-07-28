@@ -18,17 +18,22 @@ set -ex
 # located in https://github.com/appunite/docker by just wrapping it in a script
 # which apparently magically accepts the licenses.
 
+ANDROID_SDK_URL=https://dl.google.com/android/repository
+ANDROID_SDK_ARCHIVE=commandlinetools-linux-9477386_latest.zip
+
 mkdir sdk
-curl --retry 5 https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip -O
-unzip -d sdk sdk-tools-linux-3859397.zip
+curl --retry 5 "$ANDROID_SDK_URL/$ANDROID_SDK_ARCHIVE" -O
+unzip -d sdk "$ANDROID_SDK_ARCHIVE"
 
 case "$1" in
   arm | armv7)
-    abi=armeabi-v7a
+    version="android-24"
+    abi="armeabi-v7a"
     ;;
 
   aarch64)
-    abi=arm64-v8a
+    version="android-31"
+    abi="arm64-v8a"
     ;;
 
   i686)
@@ -45,16 +50,22 @@ case "$1" in
     ;;
 esac;
 
+mv sdk/cmdline-tools latest
+mkdir sdk/cmdline-tools
+mv latest sdk/cmdline-tools
+
+ANDROID_SDK_BIN="./sdk/cmdline-tools/latest/bin"
+
 # --no_https avoids
      # javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: No trusted certificate found
-yes | ./sdk/tools/bin/sdkmanager --licenses --no_https
-yes | ./sdk/tools/bin/sdkmanager --no_https \
+yes | "$ANDROID_SDK_BIN/sdkmanager" --licenses --no_https
+yes | "$ANDROID_SDK_BIN/sdkmanager" --no_https \
         "emulator" \
         "platform-tools" \
-        "platforms;android-24" \
-        "system-images;android-24;default;$abi"
+        "platforms;$version" \
+        "system-images;$version;default;$abi"
 
 echo "no" |
-    ./sdk/tools/bin/avdmanager create avd \
+    "$ANDROID_SDK_BIN/avdmanager" create avd \
         --name "${1}" \
-        --package "system-images;android-24;default;$abi"
+        --package "system-images;$version;default;$abi"
