@@ -1,6 +1,6 @@
 [package]
 name = "packed_simd"
-version = "0.3.8"
+version = "0.3.9"
 description = "Portable Packed SIMD vectors"
 documentation = "https://docs.rs/crate/packed_simd/"
 homepage = "https://github.com/rust-lang/packed_simd"
