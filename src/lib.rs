@@ -284,6 +284,10 @@ pub use crate::sealed::{Mask, Shuffle, Simd as SimdVector, SimdArray};
 /// let v = Simd::<[i32; 4]>::new(0, 1, 2, 3);
 /// assert_eq!(v.extract(2), 2);
 /// ```
+///
+/// # Layout
+///
+/// `Simd<A>` has the same layout and ABI as `A`.
 #[repr(transparent)]
 #[derive(Copy, Clone)]
 pub struct Simd<A: sealed::SimdArray>(
