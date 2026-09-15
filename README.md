@@ -1,4 +1,9 @@
-# `Simd<[T; N]>`
+# `packed_simd` crate
+
+**NOTE**: This crate has been superceded by the [`rust-lang/portable-simd`] repo, which is the implementation for [`std::simd`].
+
+[`rust-lang/portable-simd`]: https://github.com/rust-lang/portable-simd
+[`std::simd`]: https://doc.rust-lang.org/std/simd/index.html
 
 ## Implementation of [Rust RFC #2366: `std::simd`][rfc2366]
 
